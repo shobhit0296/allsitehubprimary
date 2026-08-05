@@ -1,0 +1,143 @@
+{
+  "sites": [
+    {
+      "id": "site001",
+      "name": "Netflix",
+      "url": "https://www.netflix.com",
+      "description": "World's leading streaming service with thousands of movies, TV shows, and originals.",
+      "category": "Movies & Shows",
+      "region": "Global",
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "createdAt": 1720000000000
+    },
+    {
+      "id": "site002",
+      "name": "Crunchyroll",
+      "url": "https://www.crunchyroll.com",
+      "description": "The world's largest anime streaming library with simulcasts.",
+      "category": "Anime",
+      "region": "Global",
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "createdAt": 1720100000000
+    },
+    {
+      "id": "site003",
+      "name": "Prime Video",
+      "url": "https://www.primevideo.com",
+      "description": "Amazon's streaming platform with award-winning originals and live sports.",
+      "category": "Movies & Shows",
+      "region": "Global",
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "createdAt": 1720200000000
+    },
+    {
+      "id": "site004",
+      "name": "Hotstar",
+      "url": "https://www.hotstar.com",
+      "description": "India's biggest streaming platform with live cricket, Bollywood, and Hollywood content.",
+      "category": "Movies & Shows",
+      "region": "IN",
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "createdAt": 1720300000000
+    },
+    {
+      "id": "site005",
+      "name": "Manga Plus",
+      "url": "https://mangaplus.shueisha.co.jp",
+      "description": "Free official manga reading from Shueisha. Read One Piece, Naruto & more.",
+      "category": "Manga",
+      "region": "Global",
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "createdAt": 1720400000000
+    },
+    {
+      "id": "site006",
+      "name": "BBC iPlayer",
+      "url": "https://www.bbc.co.uk/iplayer",
+      "description": "Watch BBC TV programmes on demand — news, drama, documentaries and more.",
+      "category": "Movies & Shows",
+      "region": "UK",
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "createdAt": 1720500000000
+    },
+    {
+      "id": "site007",
+      "name": "DAZN",
+      "url": "https://www.dazn.com",
+      "description": "Live and on-demand sports streaming — football, boxing, MMA and more.",
+      "category": "Live TV & Sports",
+      "region": "Global",
+      "tags": [
+        "trusted",
+        "new"
+      ],
+      "isTrusted": true,
+      "isNew": true,
+      "isFeatured": false,
+      "createdAt": 1720600000000
+    },
+    {
+      "id": "site008",
+      "name": "Funimation",
+      "url": "https://www.funimation.com",
+      "description": "Premium anime streaming with English dubbing and simulcasts.",
+      "category": "Anime",
+      "region": "US",
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "createdAt": 1720700000000
+    }
+  ],
+  "categories": [
+    "Movies & Shows",
+    "Anime",
+    "Manga",
+    "Live TV & Sports"
+  ],
+  "regions": [
+    "Global",
+    "US",
+    "UK",
+    "CA",
+    "AU",
+    "IN",
+    "DE",
+    "FR",
+    "JP"
+  ],
+  "onlineCount": 12
+}

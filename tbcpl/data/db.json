@@ -1,0 +1,705 @@
+{
+  "sites": [
+    {
+      "id": "ms1",
+      "name": "Netflix",
+      "url": "https://www.netflix.com",
+      "domain": "netflix.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "World's leading streaming platform with thousands of originals.",
+      "addedAt": 1774286367835
+    },
+    {
+      "id": "ms2",
+      "name": "Prime Video",
+      "url": "https://www.primevideo.com",
+      "domain": "primevideo.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Amazon Prime streaming with award-winning originals and live sports.",
+      "addedAt": 1775150367835
+    },
+    {
+      "id": "ms3",
+      "name": "Disney+",
+      "url": "https://www.disneyplus.com",
+      "domain": "disneyplus.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "Disney, Pixar, Marvel, Star Wars, and National Geographic.",
+      "addedAt": 1776014367835
+    },
+    {
+      "id": "ms4",
+      "name": "Max",
+      "url": "https://www.max.com",
+      "domain": "max.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "US",
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Premium HBO content, Warner Bros. films, and Max originals.",
+      "addedAt": 1776878367835
+    },
+    {
+      "id": "ms5",
+      "name": "Apple TV+",
+      "url": "https://tv.apple.com",
+      "domain": "tv.apple.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Apple Originals — award-winning series, films, and documentaries.",
+      "addedAt": 1777310367835
+    },
+    {
+      "id": "ms6",
+      "name": "Hulu",
+      "url": "https://www.hulu.com",
+      "domain": "hulu.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "US"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Current-season TV episodes, movies, and Hulu originals.",
+      "addedAt": 1777742367835
+    },
+    {
+      "id": "ms7",
+      "name": "Peacock",
+      "url": "https://www.peacocktv.com",
+      "domain": "peacocktv.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "US"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "NBCUniversal streaming with free and premium tiers.",
+      "addedAt": 1778174367835
+    },
+    {
+      "id": "ms8",
+      "name": "Paramount+",
+      "url": "https://www.paramountplus.com",
+      "domain": "paramountplus.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "US",
+        "UK",
+        "AU",
+        "CA"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "CBS, BET, MTV, Nickelodeon content plus Paramount originals.",
+      "addedAt": 1778606367835
+    },
+    {
+      "id": "ms9",
+      "name": "Tubi",
+      "url": "https://tubitv.com",
+      "domain": "tubitv.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "US",
+        "CA",
+        "AU"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Free ad-supported streaming with 50,000+ movies and shows.",
+      "addedAt": 1783963167835
+    },
+    {
+      "id": "ms10",
+      "name": "Hotstar",
+      "url": "https://www.hotstar.com",
+      "domain": "hotstar.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "IN"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "India's biggest streaming platform with live cricket and Bollywood.",
+      "addedAt": 1779038367835
+    },
+    {
+      "id": "ms11",
+      "name": "Pluto TV",
+      "url": "https://pluto.tv",
+      "domain": "pluto.tv",
+      "category": "Movies & Shows",
+      "regions": [
+        "US",
+        "UK",
+        "DE",
+        "ES"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Free live TV + on-demand streaming with 250+ channels.",
+      "addedAt": 1784222367835
+    },
+    {
+      "id": "ms12",
+      "name": "Mubi",
+      "url": "https://mubi.com",
+      "domain": "mubi.com",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Curated hand-picked films — a cinema lover's streaming service.",
+      "addedAt": 1779470367835
+    },
+    {
+      "id": "an1",
+      "name": "Crunchyroll",
+      "url": "https://www.crunchyroll.com",
+      "domain": "crunchyroll.com",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "World's largest anime library with daily simulcasts.",
+      "addedAt": 1774718367835
+    },
+    {
+      "id": "an2",
+      "name": "HiDive",
+      "url": "https://www.hidive.com",
+      "domain": "hidive.com",
+      "category": "Anime",
+      "regions": [
+        "US",
+        "CA",
+        "UK",
+        "AU"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Premium anime streaming with exclusive simulcasts and dubs.",
+      "addedAt": 1776878367835
+    },
+    {
+      "id": "an3",
+      "name": "Aniwatch",
+      "url": "https://aniwatch.to",
+      "domain": "aniwatch.to",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Free anime streaming with high-quality subs and dubs.",
+      "addedAt": 1783617567835
+    },
+    {
+      "id": "an4",
+      "name": "AnimePahe",
+      "url": "https://animepahe.ru",
+      "domain": "animepahe.ru",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Mini-compressed anime streams and downloads in HD.",
+      "addedAt": 1779902367835
+    },
+    {
+      "id": "an5",
+      "name": "Bilibili",
+      "url": "https://www.bilibili.com",
+      "domain": "bilibili.com",
+      "category": "Anime",
+      "regions": [
+        "JP",
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Chinese video platform with extensive anime library.",
+      "addedAt": 1780334367835
+    },
+    {
+      "id": "an6",
+      "name": "AnimeDao",
+      "url": "https://animedao.to",
+      "domain": "animedao.to",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Watch anime online free in HD quality, no signup needed.",
+      "addedAt": 1780766367835
+    },
+    {
+      "id": "mg1",
+      "name": "MangaDex",
+      "url": "https://mangadex.org",
+      "domain": "mangadex.org",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "The largest manga scanlation platform with 500k+ chapters.",
+      "addedAt": 1776014367835
+    },
+    {
+      "id": "mg2",
+      "name": "Manga Plus",
+      "url": "https://mangaplus.shueisha.co.jp",
+      "domain": "mangaplus.shueisha.co.jp",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Official Shueisha manga — One Piece, Naruto, Dragon Ball, and more.",
+      "addedAt": 1776446367835
+    },
+    {
+      "id": "mg3",
+      "name": "Webtoon",
+      "url": "https://www.webtoons.com",
+      "domain": "webtoons.com",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Free digital comics and webtoons from creators worldwide.",
+      "addedAt": 1776878367835
+    },
+    {
+      "id": "mg4",
+      "name": "MangaFire",
+      "url": "https://mangafire.to",
+      "domain": "mangafire.to",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Read manga online in high quality, updated daily.",
+      "addedAt": 1784135967835
+    },
+    {
+      "id": "mg5",
+      "name": "MangaSee",
+      "url": "https://mangasee123.com",
+      "domain": "mangasee123.com",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "One of the biggest manga reading sites with a clean reader.",
+      "addedAt": 1779470367835
+    },
+    {
+      "id": "sp1",
+      "name": "ESPN+",
+      "url": "https://www.espnplus.com",
+      "domain": "espnplus.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "US"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Premium sports streaming with live events and ESPN originals.",
+      "addedAt": 1776014367835
+    },
+    {
+      "id": "sp2",
+      "name": "DAZN",
+      "url": "https://www.dazn.com",
+      "domain": "dazn.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "Live and on-demand sports — football, boxing, MMA and more.",
+      "addedAt": 1776878367835
+    },
+    {
+      "id": "sp3",
+      "name": "fuboTV",
+      "url": "https://www.fubo.tv",
+      "domain": "fubo.tv",
+      "category": "Live TV & Sports",
+      "regions": [
+        "US",
+        "CA",
+        "ES"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Sports-first live TV streaming with 100+ channels.",
+      "addedAt": 1777742367835
+    },
+    {
+      "id": "sp4",
+      "name": "BBC iPlayer",
+      "url": "https://www.bbc.co.uk/iplayer",
+      "domain": "bbc.co.uk",
+      "category": "Live TV & Sports",
+      "regions": [
+        "UK"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Watch BBC TV programmes, news, and radio on demand.",
+      "addedAt": 1778174367835
+    },
+    {
+      "id": "sp5",
+      "name": "SonyLIV",
+      "url": "https://www.sonyliv.com",
+      "domain": "sonyliv.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "IN"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Indian OTT with live sports, movies, TV shows and originals.",
+      "addedAt": 1779038367835
+    },
+    {
+      "id": "sp6",
+      "name": "Sling TV",
+      "url": "https://www.sling.com",
+      "domain": "sling.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "US"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Affordable live TV streaming — no contracts needed.",
+      "addedAt": 1779470367835
+    },
+    {
+      "id": "pd1",
+      "name": "Starz",
+      "url": "https://www.starz.com",
+      "domain": "starz.com",
+      "category": "Paid",
+      "regions": [
+        "US",
+        "CA"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Premium cable network with blockbuster movies and originals.",
+      "addedAt": 1777742367835
+    },
+    {
+      "id": "pd2",
+      "name": "Shudder",
+      "url": "https://www.shudder.com",
+      "domain": "shudder.com",
+      "category": "Paid",
+      "regions": [
+        "US",
+        "UK",
+        "CA",
+        "AU"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Premium horror, thriller, and supernatural streaming.",
+      "addedAt": 1783876767835
+    },
+    {
+      "id": "pd3",
+      "name": "BritBox",
+      "url": "https://www.britbox.com",
+      "domain": "britbox.com",
+      "category": "Paid",
+      "regions": [
+        "US",
+        "UK",
+        "CA",
+        "AU"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "The best of British TV from BBC, ITV, Channel 4, and more.",
+      "addedAt": 1778606367835
+    },
+    {
+      "id": "ap1",
+      "name": "Plex",
+      "url": "https://www.plex.tv",
+      "domain": "plex.tv",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "Personal media server and free ad-supported streaming.",
+      "addedAt": 1776014367835
+    },
+    {
+      "id": "ap2",
+      "name": "Kodi",
+      "url": "https://kodi.tv",
+      "domain": "kodi.tv",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Open-source media player — stream anything, anywhere.",
+      "addedAt": 1776446367835
+    },
+    {
+      "id": "ap3",
+      "name": "VLC",
+      "url": "https://www.videolan.org/vlc",
+      "domain": "videolan.org",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Free, open-source media player supporting virtually any format.",
+      "addedAt": 1776878367835
+    },
+    {
+      "id": "ap4",
+      "name": "Infuse",
+      "url": "https://firecore.com/infuse",
+      "domain": "firecore.com",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Beautiful video player for Apple devices — supports all formats.",
+      "addedAt": 1778174367835
+    },
+    {
+      "id": "mruxjgyctzacj",
+      "name": "world4ufree",
+      "url": "https://world4ufree.im/",
+      "domain": "world4ufree.im",
+      "category": "Movies & Shows",
+      "regions": [
+        "IN"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1784655054228,
+      "faviconUrl": "https://world4ufree.im/wp-content/uploads/2026/04/cropped-favicon-v3-512-32x32.png"
+    }
+  ],
+  "categories": [
+    "Movies & Shows",
+    "Anime",
+    "Manga",
+    "Live TV & Sports",
+    "Paid",
+    "Apps"
+  ],
+  "regions": [
+    "Global",
+    "US",
+    "UK",
+    "CA",
+    "AU",
+    "IN",
+    "DE",
+    "FR",
+    "JP",
+    "KR",
+    "MX",
+    "BR",
+    "IT",
+    "ES",
+    "NL",
+    "PL"
+  ],
+  "requests": []
+}
