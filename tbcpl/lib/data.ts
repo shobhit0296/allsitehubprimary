@@ -12,6 +12,7 @@ export interface Site {
   description: string;
   faviconUrl?: string;   // custom favicon — overrides Google favicon API
   addedAt: number;
+  order: number;         // manual ranking — lower shows first, scoped within its category
 }
 
 export interface Category {
@@ -50,7 +51,7 @@ export const REGION_FLAGS: Record<string, string> = {
 const now = Date.now();
 const d = (days: number) => now - 86_400_000 * days;
 
-export const SITES: Site[] = [
+const RAW_SITES: Omit<Site, 'order'>[] = [
   // ── Movies & Shows ─────────────────────────────────────────────────────────
   {
     id: 'ms1', name: 'Netflix', url: 'https://www.netflix.com', domain: 'netflix.com',
@@ -316,9 +317,23 @@ export const SITES: Site[] = [
   },
 ];
 
+// Ranking is scoped per category (that's how sites are grouped for display),
+// so the initial `order` is just each site's position within its own category
+// block above — preserving the original hand-curated ordering.
+export const SITES: Site[] = (() => {
+  const counters: Record<string, number> = {};
+  return RAW_SITES.map(site => {
+    const order = counters[site.category] ?? 0;
+    counters[site.category] = order + 1;
+    return { ...site, order };
+  });
+})();
+
 export function getSitesByCategory(sites: Site[]): Record<string, Site[]> {
   return CATEGORIES.reduce((acc, cat) => {
-    acc[cat.name] = sites.filter(s => s.category === cat.name);
+    acc[cat.name] = sites
+      .filter(s => s.category === cat.name)
+      .sort((a, b) => a.order - b.order);
     return acc;
   }, {} as Record<string, Site[]>);
 }

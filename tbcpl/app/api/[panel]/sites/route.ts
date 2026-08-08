@@ -33,12 +33,14 @@ export async function POST(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'name and url are required' }, { status: 400 });
   }
   const db = await readDB();
+  const category = body.category ?? db.categories[0] ?? 'Movies & Shows';
+  const maxOrder = db.sites.reduce((max, s) => s.category === category ? Math.max(max, s.order) : max, -1);
   const newSite: Site = {
     id: generateId(),
     name: name.trim(),
     url: url.trim(),
     domain: domain?.trim() ?? new URL(url.trim()).hostname.replace(/^www\./, ''),
-    category: body.category ?? db.categories[0] ?? 'Movies & Shows',
+    category,
     regions: body.regions ?? ['Global'],
     tags: body.tags ?? [],
     isTrusted: body.isTrusted ?? false,
@@ -46,6 +48,7 @@ export async function POST(req: NextRequest, { params }: Params) {
     isFeatured: body.isFeatured ?? false,
     description: body.description?.trim() ?? '',
     addedAt: Date.now(),
+    order: maxOrder + 1,
   };
   db.sites.push(newSite);
   await writeDB(db);
@@ -61,7 +64,14 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const db = await readDB();
   const idx = db.sites.findIndex(s => s.id === body.id);
   if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  db.sites[idx] = { ...db.sites[idx], ...body };
+  const current = db.sites[idx];
+  // Moving to a different category drops the site to the bottom of the new
+  // category's ranking — its old `order` value has no meaning there.
+  if (body.category && body.category !== current.category) {
+    const maxOrder = db.sites.reduce((max, s) => s.category === body.category ? Math.max(max, s.order) : max, -1);
+    body.order = maxOrder + 1;
+  }
+  db.sites[idx] = { ...current, ...body };
   await writeDB(db);
   return NextResponse.json(db.sites[idx]);
 }

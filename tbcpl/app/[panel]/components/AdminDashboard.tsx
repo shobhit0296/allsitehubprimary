@@ -1,10 +1,17 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type { Site } from '@/lib/data';
 import type { SiteRequest } from '@/lib/db';
+import {
+  DndContext, closestCenter, PointerSensor, KeyboardSensor, useSensor, useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext, verticalListSortingStrategy, useSortable, arrayMove, sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   panel: string;
@@ -239,7 +246,16 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
               <input type="text" placeholder="Search sites..." value={siteSearch} onChange={e => setSiteSearch(e.target.value)} style={{ width: '100%', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 9, padding: '8px 12px 8px 30px', color: 'var(--text-primary)', fontSize: 13, outline: 'none' }} onFocus={e => { e.currentTarget.style.borderColor = 'var(--text-accent)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--glow)'; }} onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }} />
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 10 }}>Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredSites.length}</strong> of {sites.length} sites</p>
-            <SitesTable sites={filteredSites} onEdit={openEdit} onDelete={handleDeleteSite} deletingId={deletingId} />
+            <SitesTable
+              sites={filteredSites}
+              categories={categories}
+              searchActive={!!siteSearch.trim()}
+              apiReorder={`/api/${panel}/sites/reorder`}
+              onEdit={openEdit}
+              onDelete={handleDeleteSite}
+              deletingId={deletingId}
+              onReorder={refreshSites}
+            />
           </>
         )}
 
@@ -421,21 +437,70 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   );
 }
 
-/* ── Sites Table component ── */
-function SitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]; onEdit: (s: Site) => void; onDelete: (id: string, name: string) => void; deletingId: string | null }) {
+/* ── Sites Table component ──
+ * Ranking is scoped per category (that's how the public site groups and
+ * renders them), so drag-and-drop / "move to position" only make sense
+ * grouped by category, one reorderable table per category. Search mixes
+ * categories together, where per-category position has no clear meaning —
+ * so it falls back to a plain flat table with rank controls hidden.
+ */
+function SitesTable({ sites, categories, searchActive, apiReorder, onEdit, onDelete, deletingId, onReorder }: {
+  sites: Site[];
+  categories: string[];
+  searchActive: boolean;
+  apiReorder: string;
+  onEdit: (s: Site) => void;
+  onDelete: (id: string, name: string) => void;
+  deletingId: string | null;
+  onReorder: () => void;
+}) {
+  if (sites.length === 0) {
+    return (
+      <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
+        No sites found
+      </div>
+    );
+  }
+
+  if (searchActive) {
+    return <FlatSitesTable sites={sites} onEdit={onEdit} onDelete={onDelete} deletingId={deletingId} />;
+  }
+
+  const groups = categories
+    .map(category => ({ category, items: sites.filter(s => s.category === category).sort((a, b) => a.order - b.order) }))
+    .filter(g => g.items.length > 0);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {groups.map(g => (
+        <CategoryRankTable
+          key={g.category}
+          category={g.category}
+          items={g.items}
+          apiReorder={apiReorder}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          deletingId={deletingId}
+          onReorder={onReorder}
+        />
+      ))}
+    </div>
+  );
+}
+
+const thStyle: React.CSSProperties = { textAlign: 'left', padding: '11px 16px', fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' };
+
+function FlatSitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]; onEdit: (s: Site) => void; onDelete: (id: string, name: string) => void; deletingId: string | null }) {
   return (
     <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
-              {['Site', 'Category', 'Region', 'Tags', 'Added', 'Actions'].map(h => (
-                <th key={h} style={{ textAlign: 'left', padding: '11px 16px', fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>{h}</th>
-              ))}
+              {['Site', 'Category', 'Region', 'Tags', 'Added', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
             </tr>
           </thead>
           <tbody>
-            {sites.length === 0 && <tr><td colSpan={6} style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontSize: 14 }}>No sites found</td></tr>}
             {sites.map((site, i) => (
               <tr key={site.id} style={{ borderBottom: i < sites.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none', transition: 'background 0.1s' }}
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'}
@@ -474,6 +539,176 @@ function SitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]; on
         </table>
       </div>
     </div>
+  );
+}
+
+/* One drag-and-drop-reorderable table, scoped to a single category. */
+function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, deletingId, onReorder }: {
+  category: string;
+  items: Site[];
+  apiReorder: string;
+  onEdit: (s: Site) => void;
+  onDelete: (id: string, name: string) => void;
+  deletingId: string | null;
+  onReorder: () => void;
+}) {
+  const [rows, setRows] = useState(items);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => { setRows(items); }, [items]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  const persist = async (ordered: Site[]) => {
+    setIsSaving(true);
+    try {
+      await fetch(apiReorder, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category, orderedIds: ordered.map(s => s.id) }),
+      });
+      onReorder();
+    } finally { setIsSaving(false); }
+  };
+
+  const moveTo = (fromIndex: number, toIndex: number) => {
+    const reordered = arrayMove(rows, fromIndex, toIndex);
+    setRows(reordered);
+    persist(reordered);
+  };
+
+  const handleDragEnd = (event: { active: { id: string | number }; over: { id: string | number } | null }) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const fromIndex = rows.findIndex(s => s.id === active.id);
+    const toIndex = rows.findIndex(s => s.id === over.id);
+    if (fromIndex === -1 || toIndex === -1) return;
+    moveTo(fromIndex, toIndex);
+  };
+
+  return (
+    <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: '1px solid var(--border)' }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{category}</span>
+        <span style={{ fontSize: 11, color: isSaving ? 'var(--text-accent)' : 'var(--text-muted)' }}>
+          {isSaving ? 'Saving…' : `Drag ⣿ or type a rank to reorder`}
+        </span>
+      </div>
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              {['', 'Rank', 'Site', 'Region', 'Tags', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext items={rows.map(s => s.id)} strategy={verticalListSortingStrategy}>
+                {rows.map((site, index) => (
+                  <SortableSiteRow
+                    key={site.id}
+                    site={site}
+                    index={index}
+                    total={rows.length}
+                    onMove={moveTo}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    deletingId={deletingId}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function SortableSiteRow({ site, index, total, onMove, onEdit, onDelete, deletingId }: {
+  site: Site;
+  index: number;
+  total: number;
+  onMove: (from: number, to: number) => void;
+  onEdit: (s: Site) => void;
+  onDelete: (id: string, name: string) => void;
+  deletingId: string | null;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: site.id });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition ?? undefined,
+    opacity: isDragging ? 0.5 : 1,
+    borderBottom: index < total - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none',
+  };
+
+  return (
+    <tr ref={setNodeRef} style={style}>
+      <td style={{ padding: '11px 8px', width: 30 }}>
+        <button {...attributes} {...listeners} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'grab', fontSize: 14, padding: 4, touchAction: 'none' }} aria-label={`Drag to reorder ${site.name}`}>⣿</button>
+      </td>
+      <td style={{ padding: '11px 16px', width: 70 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>#{index + 1}</span>
+          <RankInput index={index} total={total} onMove={onMove} />
+        </div>
+      </td>
+      <td style={{ padding: '11px 16px', minWidth: 160 }}>
+        <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>{site.name}</div>
+        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1, maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{site.domain}</div>
+      </td>
+      <td style={{ padding: '11px 16px' }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+          {site.regions.slice(0, 2).map(r => <span key={r} style={{ fontSize: 10, color: 'var(--text-muted)', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 6px' }}>{r}</span>)}
+          {site.regions.length > 2 && <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>+{site.regions.length - 2}</span>}
+        </div>
+      </td>
+      <td style={{ padding: '11px 16px' }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+          {site.tags.length === 0 ? <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>—</span> : site.tags.map(t => <span key={t} className={`tag tag-${t}`}>{t}</span>)}
+        </div>
+      </td>
+      <td style={{ padding: '11px 16px', whiteSpace: 'nowrap' }}>
+        <button onClick={() => onEdit(site)} style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 7, padding: '5px 10px', color: 'var(--text-accent)', fontSize: 12, cursor: 'pointer', marginRight: 6, transition: 'background 0.15s' }}
+          onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.2)'} onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.1)'}
+        >✎ Edit</button>
+        <button onClick={() => onDelete(site.id, site.name)} disabled={deletingId === site.id} style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.2)', borderRadius: 7, padding: '5px 10px', color: 'var(--red)', fontSize: 12, cursor: deletingId === site.id ? 'not-allowed' : 'pointer', opacity: deletingId === site.id ? 0.5 : 1, transition: 'background 0.15s' }}
+          onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(244,63,94,0.15)'} onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(244,63,94,0.08)'}
+        >{deletingId === site.id ? '...' : '✕'}</button>
+      </td>
+    </tr>
+  );
+}
+
+/* "Move to position N" — a plain number input, committed on blur/Enter. */
+function RankInput({ index, total, onMove }: { index: number; total: number; onMove: (from: number, to: number) => void }) {
+  const [value, setValue] = useState(String(index + 1));
+  useEffect(() => { setValue(String(index + 1)); }, [index]);
+
+  const commit = () => {
+    const n = parseInt(value, 10);
+    if (Number.isFinite(n)) {
+      const clamped = Math.min(Math.max(n, 1), total);
+      if (clamped !== index + 1) { onMove(index, clamped - 1); return; }
+    }
+    setValue(String(index + 1));
+  };
+
+  return (
+    <input
+      type="number"
+      min={1}
+      max={total}
+      value={value}
+      onChange={e => setValue(e.target.value)}
+      onBlur={commit}
+      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); commit(); } }}
+      aria-label="Move to position"
+      style={{ width: 46, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 6, padding: '3px 5px', color: 'var(--text-primary)', fontSize: 12, textAlign: 'center', outline: 'none' }}
+    />
   );
 }
 

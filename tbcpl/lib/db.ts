@@ -89,8 +89,29 @@ function writeDBFs(data: DB): void {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
 }
 
+// Sites persisted before manual ranking existed have no `order` field.
+// Backfill them per-category (matching the array position they already
+// render in) and persist the backfill once so this only has to run once.
+function ensureOrder(data: DB): boolean {
+  let changed = false;
+  const counters: Record<string, number> = {};
+  for (const site of data.sites) {
+    if (typeof site.order !== 'number') {
+      const order = counters[site.category] ?? 0;
+      site.order = order;
+      counters[site.category] = order + 1;
+      changed = true;
+    } else {
+      counters[site.category] = Math.max(counters[site.category] ?? 0, site.order + 1);
+    }
+  }
+  return changed;
+}
+
 export async function readDB(): Promise<DB> {
-  return redis ? readDBRedis() : readDBFs();
+  const data = redis ? await readDBRedis() : readDBFs();
+  if (ensureOrder(data)) await writeDB(data);
+  return data;
 }
 
 export async function writeDB(data: DB): Promise<void> {
