@@ -873,38 +873,7 @@ h1, h2, h3, .font-display {
   .nav-inner { gap: 1.25rem; padding-inline: 3rem; }
 }
 
-/* Collapsible mobile search bar */
-.nav-mobile-search-wrap {
-  display: block;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition:
-    max-height 0.32s var(--ease-soft),
-    opacity 0.24s ease,
-    padding 0.32s var(--ease-soft);
-  padding: 0 0.875rem;
-  border-top: 1px solid transparent;
-}
-.nav-mobile-search-wrap.is-open {
-  max-height: 72px;
-  opacity: 1;
-  padding: 0.5rem 0.875rem 0.625rem;
-  border-top-color: rgba(255, 255, 255, 0.06);
-}
-@media (min-width: 640px) {
-  .nav-mobile-search-wrap,
-  .nav-mobile-search-wrap.is-open {
-    padding-inline: 1.25rem;
-  }
-}
-@media (min-width: 1024px) {
-  .nav-mobile-search-wrap { display: none !important; }
-}
-.nav-mobile-search-inner {
-  display: flex;
-  width: 100%;
-}
+
 
 .nav-icon-btn {
   display: inline-flex;
