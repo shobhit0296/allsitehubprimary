@@ -21,7 +21,7 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
       className="mb-12 sm:mb-16 fade-up scroll-mt-24"
     >
       {/* ── Section Header ─────────────────────────── */}
-      <div className="flex items-end justify-between mb-4 sm:mb-7 flex-wrap gap-3">
+      <div className="flex items-end justify-between mb-4 sm:mb-6 flex-wrap gap-3">
         <div className="flex items-center gap-3 sm:gap-4 group">
           {/* Glowing accent bar */}
           <div
@@ -51,8 +51,8 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
         </div>
       </div>
 
-      {/* ── Sites Grid: 2 cards per row on mobile, 3 on tablet/desktop ──────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2.5 sm:gap-4 w-full">
+      {/* ── Sites Grid: 2 on phone, 3 on tablet, 4-6 on desktop ──────────────── */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-3.5 md:gap-4 w-full">
         {sites.map(site => (
           <SiteCard
             key={site.id}
