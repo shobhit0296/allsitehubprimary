@@ -1,30 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Sora, Space_Grotesk } from 'next/font/google';
 import Script from 'next/script';
 import ShaderBackground from './components/ShaderBackground';
 import CommunityModal from './components/CommunityModal';
 import './globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
-});
-
-const sora = Sora({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['600', '700', '800'],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space',
-  display: 'swap',
-  weight: ['600', '700'],
-});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -138,7 +116,7 @@ const jsonLdOrganization = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable} ${spaceGrotesk.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

@@ -1,10 +1,14 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════
    ALLSITEHUB — Design System
 ═══════════════════════════════════════════════════ */
 
 :root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-space: 'Space Grotesk', monospace, sans-serif;
   /* Backgrounds — Aether glass theme */
   --bg-base:       #0a0a12;
   --bg-surface:    #111118;
