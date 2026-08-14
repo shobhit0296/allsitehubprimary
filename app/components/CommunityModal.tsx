@@ -43,15 +43,15 @@ export default function CommunityModal() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="community-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fade-in"
-      style={{ background: 'rgba(5, 7, 13, 0.78)', backdropFilter: 'blur(12px)' }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-6 animate-fade-in"
+      style={{ background: 'rgba(5, 7, 13, 0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
       onClick={handleClose}
     >
       {/* ── Modal Card ── */}
       <div
-        className="relative w-full max-w-md rounded-3xl p-6 sm:p-8 text-center overflow-hidden border border-white/12 shadow-[0_24px_70px_rgba(0,0,0,0.85)] animate-scale-in"
+        className="relative w-full max-w-[410px] mx-auto rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-center overflow-hidden border border-white/12 shadow-[0_24px_70px_rgba(0,0,0,0.85)] animate-scale-in max-h-[92vh] overflow-y-auto no-scrollbar"
         style={{
-          background: 'linear-gradient(145deg, rgba(20, 24, 39, 0.96) 0%, rgba(10, 13, 24, 0.98) 100%)',
+          background: 'linear-gradient(145deg, rgba(20, 24, 39, 0.98) 0%, rgba(10, 13, 24, 0.99) 100%)',
         }}
         onClick={e => e.stopPropagation()}
       >

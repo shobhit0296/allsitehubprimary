@@ -166,7 +166,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
       />
 
       {/* Categories & Directory */}
-      <section id="directory" className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 w-full grid grid-cols-1 xl:grid-cols-12 gap-12 mb-20 scroll-mt-24">
+      <section id="directory" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-12 mb-16 sm:mb-20 scroll-mt-24">
         <div className="hidden xl:block xl:col-span-3">
           <div className="sticky top-[calc(var(--nav-h)+1rem)] max-h-[calc(100vh-var(--nav-h)-2rem)] overflow-y-auto no-scrollbar">
             <Sidebar
@@ -178,17 +178,25 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
           </div>
         </div>
 
-        <div className="xl:col-span-9">
-          {/* Mobile: horizontal category scroll */}
-          <div className="flex xl:hidden no-scrollbar gap-2.5 overflow-x-auto pb-2.5 mb-8 scroll-fade-right">
+        <div className="xl:col-span-9 min-w-0 w-full">
+          {/* Mobile & Tablet: horizontal category scroll */}
+          <div
+            className="flex xl:hidden no-scrollbar gap-2 overflow-x-auto pb-2.5 mb-6 sm:mb-8 scroll-smooth overscroll-x-contain"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             {categories.map(c => (
               <button
                 key={c.name}
                 onClick={() => handleCategoryChange(c.name)}
-                className={`chip shrink-0 ${activeCategory === c.name ? 'chip-active' : ''}`}
+                className={`chip shrink-0 select-none touch-manipulation transition-all duration-200 active:scale-95 ${
+                  activeCategory === c.name ? 'chip-active' : ''
+                }`}
               >
-                <span>{c.icon}</span>
-                <span>{c.name}</span>
+                <span className="text-sm leading-none">{c.icon}</span>
+                <span className="font-semibold text-xs sm:text-[13px]">{c.name}</span>
+                {categoryCounts[c.name] !== undefined && (
+                  <span className="text-[10px] opacity-75 ml-0.5 font-mono">({categoryCounts[c.name]})</span>
+                )}
               </button>
             ))}
           </div>
