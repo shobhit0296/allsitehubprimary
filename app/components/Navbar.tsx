@@ -64,52 +64,36 @@ export default function Navbar({
   return (
     <header ref={menuRef} className={`site-header${scrolled || menuOpen ? ' is-scrolled' : ''}`}>
       <div className="nav-inner">
-        {/* ── Logo ── */}
+
+        {/* ── Logo ── (always fixed left) */}
         <Link
           href="/"
-          className="nav-logo-link"
-          onClick={() => {
-            setMenuOpen(false);
-            setSearchOpen(false);
-          }}
+          className="nav-logo-link shrink-0"
+          onClick={() => { setMenuOpen(false); setSearchOpen(false); }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/icon.svg"
-            alt="AllSiteHub logo"
-            width={30}
-            height={30}
-            className="nav-logo-img"
-          />
-          <span className="nav-logo-text">
-            All<span className="nav-logo-accent">Site</span>Hub
-          </span>
+          <img src="/icon.svg" alt="AllSiteHub logo" width={28} height={28} className="nav-logo-img" />
+          <span className="nav-logo-text">All<span className="nav-logo-accent">Site</span>Hub</span>
         </Link>
 
-        {/* ── Divider (Desktop) ── */}
+        {/* ── Desktop divider + nav links ── */}
         <span className="nav-divider hidden md:block" aria-hidden="true" />
-
-        {/* ── Desktop nav links ── */}
         <nav className="hidden md:flex items-center gap-1 shrink-0" aria-label="Main navigation">
           {NAV_LINKS.map(link => {
             const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
             const isActive = link === 'Home' ? pathname === '/' : pathname === href;
             return (
-              <Link
-                key={link}
-                href={href}
-                className={`nav-pill-link${isActive ? ' is-active' : ''}`}
-              >
+              <Link key={link} href={href} className={`nav-pill-link${isActive ? ' is-active' : ''}`}>
                 {link}
               </Link>
             );
           })}
         </nav>
 
-        {/* ── Spacer ── */}
+        {/* ── Flexible spacer ── */}
         <div className="flex-1 min-w-0" />
 
-        {/* ── Search — desktop lg+ ── */}
+        {/* ── Desktop search bar (lg+) ── */}
         <div className="hidden lg:flex nav-search-bar">
           <span className="material-symbols-outlined nav-search-icon">search</span>
           <input
@@ -120,33 +104,26 @@ export default function Navbar({
             className="nav-search-input"
           />
           {search && (
-            <button
-              type="button"
-              aria-label="Clear search"
-              onClick={() => onSearchChange('')}
-              className="nav-search-clear"
-            >
+            <button type="button" aria-label="Clear search" onClick={() => onSearchChange('')} className="nav-search-clear">
               <span className="material-symbols-outlined text-[16px]">close</span>
             </button>
           )}
         </div>
 
-        {/* ── Right cluster (Visible on ALL devices) ── */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Active Online Badge (Refined on mobile & desktop) */}
-          <div
-            className="nav-online-badge touch-manipulation"
-            title={`${onlineCount.toLocaleString()} active online visitors`}
-          >
-            <span className="pulse-dot nav-online-dot" />
-            <span className="nav-online-text" suppressHydrationWarning>
-              <span className="font-semibold">{onlineCount.toLocaleString()}</span>
-              <span className="hidden sm:inline font-normal opacity-85"> online</span>
+        {/* ── Right actions cluster ── always visible, compact on mobile ── */}
+        <div className="nav-right-cluster">
+
+          {/* 🟢 Online counter pill — always shown */}
+          <div className="nav-online-pill" title={`${onlineCount.toLocaleString()} visitors online`}>
+            <span className="nav-online-dot" />
+            <span className="nav-online-count" suppressHydrationWarning>
+              {onlineCount.toLocaleString()}
             </span>
+            <span className="nav-online-label">online</span>
           </div>
 
-          {/* Region selector (Refined on mobile & desktop) */}
-          <div className="relative touch-manipulation">
+          {/* 🌍 Region selector — always shown */}
+          <div className="nav-region-wrap">
             <select
               value={activeRegion}
               onChange={e => onRegionChange(e.target.value)}
@@ -162,42 +139,33 @@ export default function Navbar({
             <span className="material-symbols-outlined nav-region-chevron">expand_more</span>
           </div>
 
-          {/* Mobile search toggle */}
+          {/* 🔍 Search toggle (hidden on lg+) */}
           <button
             type="button"
-            aria-label={searchOpen ? 'Close search' : 'Search'}
+            aria-label={searchOpen ? 'Close search' : 'Open search'}
             aria-expanded={searchOpen}
-            onClick={() => {
-              setSearchOpen(o => !o);
-              setMenuOpen(false);
-            }}
-            className={`nav-icon-btn flex lg:hidden touch-manipulation${searchOpen ? ' is-open' : ''}`}
+            onClick={() => { setSearchOpen(o => !o); setMenuOpen(false); }}
+            className={`nav-icon-btn lg:hidden${searchOpen ? ' is-open' : ''}`}
           >
-            <span className="material-symbols-outlined text-[19px] sm:text-[20px]">
+            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
               {searchOpen ? 'close' : 'search'}
             </span>
           </button>
 
-          {/* Hamburger Menu Toggle */}
+          {/* ☰ Hamburger (hidden on md+) */}
           <button
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
-            onClick={() => {
-              setMenuOpen(o => !o);
-              setSearchOpen(false);
-            }}
-            className={`nav-icon-btn flex md:hidden touch-manipulation${menuOpen ? ' is-open' : ''}`}
+            onClick={() => { setMenuOpen(o => !o); setSearchOpen(false); }}
+            className={`nav-icon-btn md:hidden${menuOpen ? ' is-open' : ''}`}
           >
             <HamburgerIcon open={menuOpen} />
           </button>
         </div>
       </div>
 
-      {/* ── Collapsible mobile search ── */}
-      <div
-        className={`nav-mobile-search-wrap${searchOpen ? ' is-open' : ''}`}
-        aria-hidden={!searchOpen}
-      >
+      {/* ── Collapsible search (mobile/tablet) ── */}
+      <div className={`nav-mobile-search-wrap${searchOpen ? ' is-open' : ''}`} aria-hidden={!searchOpen}>
         <div className="nav-mobile-search-inner">
           <div className="nav-search-bar w-full">
             <span className="material-symbols-outlined nav-search-icon">search</span>
@@ -206,16 +174,11 @@ export default function Navbar({
               type="search"
               value={search}
               onChange={e => onSearchChange(e.target.value)}
-              placeholder="Search sites across all categories..."
-              className="nav-search-input text-base sm:text-sm"
+              placeholder="Search across all categories..."
+              className="nav-search-input"
             />
             {search && (
-              <button
-                type="button"
-                aria-label="Clear search"
-                onClick={() => onSearchChange('')}
-                className="nav-search-clear"
-              >
+              <button type="button" aria-label="Clear" onClick={() => onSearchChange('')} className="nav-search-clear">
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
             )}
@@ -242,36 +205,38 @@ export default function Navbar({
               >
                 <span>{link}</span>
                 {isActive && (
-                  <span className="material-symbols-outlined text-[16px] text-blue-400 ml-auto">
-                    check
-                  </span>
+                  <span className="material-symbols-outlined text-[16px] text-blue-400 ml-auto">check</span>
                 )}
               </Link>
             );
           })}
         </div>
 
-        {/* Mobile menu social community row */}
-        <div className="mobile-menu-footer flex flex-col gap-2.5 pt-3 mt-2 border-t border-white/10">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] px-1">
-            Community Channels
+        {/* Community links in mobile menu */}
+        <div className="mobile-menu-footer">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
+            Community
           </div>
           <div className="grid grid-cols-2 gap-2">
             <a
               href="https://discord.gg/EDH5ScSsv"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#5865F2]/15 hover:bg-[#5865F2]/25 border border-[#5865F2]/30 text-white text-xs font-bold transition-all"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
+              style={{ background: 'rgba(88,101,242,0.18)', border: '1px solid rgba(88,101,242,0.35)' }}
             >
-              <span>Discord</span>
+              💬 Discord
             </a>
             <a
-              href="https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+              href="https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#FF4500]/15 hover:bg-[#FF4500]/25 border border-[#FF4500]/30 text-white text-xs font-bold transition-all"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
+              style={{ background: 'rgba(255,69,0,0.18)', border: '1px solid rgba(255,69,0,0.35)' }}
             >
-              <span>Reddit</span>
+              🔴 Reddit
             </a>
           </div>
         </div>
@@ -280,46 +245,20 @@ export default function Navbar({
   );
 }
 
-/** Animated hamburger → X icon */
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinecap="round"
-    >
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
       <line
-        x1="2"
-        y1={open ? '9' : '4'}
-        x2="16"
-        y2={open ? '9' : '4'}
-        style={{
-          transform: open ? 'rotate(45deg)' : 'none',
-          transformOrigin: '9px 9px',
-          transition: 'transform 0.25s, y 0.25s',
-        }}
+        x1="2" y1={open ? '9' : '4'} x2="16" y2={open ? '9' : '4'}
+        style={{ transform: open ? 'rotate(45deg)' : 'none', transformOrigin: '9px 9px', transition: 'transform 0.25s, y 0.25s' }}
       />
       <line
-        x1="2"
-        y1="9"
-        x2="16"
-        y2="9"
+        x1="2" y1="9" x2="16" y2="9"
         style={{ opacity: open ? 0 : 1, transition: 'opacity 0.2s' }}
       />
       <line
-        x1="2"
-        y1={open ? '9' : '14'}
-        x2="16"
-        y2={open ? '9' : '14'}
-        style={{
-          transform: open ? 'rotate(-45deg)' : 'none',
-          transformOrigin: '9px 9px',
-          transition: 'transform 0.25s, y 0.25s',
-        }}
+        x1="2" y1={open ? '9' : '14'} x2="16" y2={open ? '9' : '14'}
+        style={{ transform: open ? 'rotate(-45deg)' : 'none', transformOrigin: '9px 9px', transition: 'transform 0.25s, y 0.25s' }}
       />
     </svg>
   );

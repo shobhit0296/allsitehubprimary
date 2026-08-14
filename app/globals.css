@@ -404,87 +404,151 @@ h1, h2, h3, .font-display {
 }
 .nav-search-clear:hover { color: var(--text-primary); }
 
-/* Online badge */
-.nav-online-badge {
-  display: inline-flex;
+/* ──────────────────────────────────────────────────
+   Right cluster — always visible on ALL screen sizes
+   The key: no `hidden` utilities, just shrink control
+────────────────────────────────────────────────── */
+.nav-right-cluster {
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.24);
-  border-radius: 99px;
-  padding: 0.24rem 0.55rem;
-  white-space: nowrap;
+  gap: 5px;
   flex-shrink: 0;
 }
 @media (min-width: 640px) {
-  .nav-online-badge {
-    gap: 0.4rem;
-    padding: 0.28rem 0.7rem;
-  }
+  .nav-right-cluster { gap: 8px; }
+}
+@media (min-width: 1024px) {
+  .nav-right-cluster { gap: 10px; }
+}
+
+/* 🟢 Online counter pill */
+.nav-online-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  border-radius: 99px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: default;
+  transition: background 0.2s, border-color 0.2s;
+}
+.nav-online-pill:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
 }
 .nav-online-dot {
   width: 6px;
   height: 6px;
+  min-width: 6px;
   border-radius: 50%;
   background: #34d399;
-  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
-  flex-shrink: 0;
+  box-shadow: 0 0 7px rgba(52, 211, 153, 0.9);
+  animation: pulse-dot 2.2s ease-in-out infinite;
 }
-.nav-online-text {
+.nav-online-count {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: #34d399;
   letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
+.nav-online-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(52, 211, 153, 0.75);
+  line-height: 1;
+  display: none;
+}
+@media (min-width: 400px) {
+  .nav-online-count { font-size: 11.5px; }
+  .nav-online-label { display: inline; }
+}
 @media (min-width: 640px) {
-  .nav-online-text {
-    font-size: 11.5px;
-  }
+  .nav-online-count { font-size: 12px; }
 }
 
-/* Region selector */
+/* 🌍 Region selector wrapper + select */
+.nav-region-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
 .nav-region-select {
   appearance: none;
   -webkit-appearance: none;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
-  padding: 0.26rem 1.45rem 0.26rem 0.5rem;
-  font-size: 12px;
+  /* Mobile: show only flag emoji, no text = very compact */
+  padding: 5px 20px 5px 6px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
   outline: none;
   cursor: pointer;
-  max-width: 7.2rem;
-  transition: border-color 0.2s, background 0.2s;
-  line-height: 1.35;
+  width: 52px;
+  transition: border-color 0.2s, background 0.2s, width 0.25s;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@media (min-width: 400px) {
+  /* Show flag + code (e.g. "🇺🇸 US") */
+  .nav-region-select {
+    width: 74px;
+    padding: 5px 22px 5px 8px;
+  }
 }
 @media (min-width: 640px) {
+  /* Full label */
   .nav-region-select {
-    padding: 0.32rem 1.75rem 0.32rem 0.65rem;
+    width: auto;
+    max-width: 8.5rem;
+    padding: 5px 24px 5px 10px;
     font-size: 12.5px;
-    max-width: 8rem;
   }
 }
 .nav-region-select:hover {
-  border-color: rgba(96, 165, 250, 0.35);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(96, 165, 250, 0.4);
+  background: rgba(255, 255, 255, 0.09);
 }
 .nav-region-select:focus {
-  border-color: rgba(96, 165, 250, 0.5);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
 }
 .nav-region-chevron {
   position: absolute;
-  right: 0.25rem;
+  right: 3px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   pointer-events: none;
   line-height: 1;
+}
+
+/* Legacy badge — keep for mobile menu */
+.nav-online-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 99px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-online-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #34d399;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Submit a Site CTA button */
