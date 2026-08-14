@@ -25,11 +25,9 @@ export default function Navbar({
   onlineCount,
 }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -57,14 +55,9 @@ export default function Navbar({
     return () => window.removeEventListener('scroll', handler);
   }, [menuOpen]);
 
-  useEffect(() => {
-    if (searchOpen) setTimeout(() => searchInputRef.current?.focus(), 50);
-  }, [searchOpen]);
-
   return (
     <header ref={menuRef} className={`site-header${scrolled || menuOpen ? ' is-scrolled' : ''}`}>
       <div className="nav-inner">
-
         {/* ── Logo ── hard refresh on click / touch */}
         <a
           href="/"
@@ -72,7 +65,6 @@ export default function Navbar({
           onClick={e => {
             e.preventDefault();
             setMenuOpen(false);
-            setSearchOpen(false);
             if (typeof window !== 'undefined') {
               if (window.location.pathname === '/') {
                 window.location.reload();
@@ -84,8 +76,16 @@ export default function Navbar({
           aria-label="AllSiteHub — refresh and go to homepage"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon.svg" alt="AllSiteHub logo" width={28} height={28} className="nav-logo-img" />
-          <span className="nav-logo-text">All<span className="nav-logo-accent">Site</span>Hub</span>
+          <img
+            src="/icon.svg"
+            alt="AllSiteHub logo"
+            width={28}
+            height={28}
+            className="nav-logo-img"
+          />
+          <span className="nav-logo-text">
+            All<span className="nav-logo-accent">Site</span>Hub
+          </span>
         </a>
 
         {/* ── Desktop divider + nav links ── */}
@@ -95,7 +95,11 @@ export default function Navbar({
             const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
             const isActive = link === 'Home' ? pathname === '/' : pathname === href;
             return (
-              <Link key={link} href={href} className={`nav-pill-link${isActive ? ' is-active' : ''}`}>
+              <Link
+                key={link}
+                href={href}
+                className={`nav-pill-link${isActive ? ' is-active' : ''}`}
+              >
                 {link}
               </Link>
             );
@@ -105,7 +109,7 @@ export default function Navbar({
         {/* ── Flexible spacer ── */}
         <div className="flex-1 min-w-0" />
 
-        {/* ── Desktop search bar (lg+) ── */}
+        {/* ── Desktop search bar (lg+ only, completely removed from mobile navigation) ── */}
         <div className="hidden lg:flex nav-search-bar">
           <span className="material-symbols-outlined nav-search-icon">search</span>
           <input
@@ -116,17 +120,24 @@ export default function Navbar({
             className="nav-search-input"
           />
           {search && (
-            <button type="button" aria-label="Clear search" onClick={() => onSearchChange('')} className="nav-search-clear">
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => onSearchChange('')}
+              className="nav-search-clear"
+            >
               <span className="material-symbols-outlined text-[16px]">close</span>
             </button>
           )}
         </div>
 
-        {/* ── Right actions cluster ── always visible, compact on mobile ── */}
+        {/* ── Right actions cluster — always perfectly aligned on ALL screen sizes ── */}
         <div className="nav-right-cluster">
-
-          {/* 🟢 Online counter pill — always shown */}
-          <div className="nav-online-pill" title={`${onlineCount.toLocaleString()} visitors online`}>
+          {/* 🟢 Online counter pill */}
+          <div
+            className="nav-online-pill"
+            title={`${onlineCount.toLocaleString()} visitors online`}
+          >
             <span className="nav-online-dot" />
             <span className="nav-online-count" suppressHydrationWarning>
               {onlineCount.toLocaleString()}
@@ -134,7 +145,7 @@ export default function Navbar({
             <span className="nav-online-label">online</span>
           </div>
 
-          {/* 🌍 Region selector — always shown */}
+          {/* 🌍 Region selector */}
           <div className="nav-region-wrap">
             <select
               value={activeRegion}
@@ -151,50 +162,15 @@ export default function Navbar({
             <span className="material-symbols-outlined nav-region-chevron">expand_more</span>
           </div>
 
-          {/* 🔍 Search toggle (hidden on lg+) */}
-          <button
-            type="button"
-            aria-label={searchOpen ? 'Close search' : 'Open search'}
-            aria-expanded={searchOpen}
-            onClick={() => { setSearchOpen(o => !o); setMenuOpen(false); }}
-            className={`nav-icon-btn lg:hidden${searchOpen ? ' is-open' : ''}`}
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-              {searchOpen ? 'close' : 'search'}
-            </span>
-          </button>
-
           {/* ☰ Hamburger (hidden on md+) */}
           <button
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
-            onClick={() => { setMenuOpen(o => !o); setSearchOpen(false); }}
-            className={`nav-icon-btn md:hidden${menuOpen ? ' is-open' : ''}`}
+            onClick={() => setMenuOpen(o => !o)}
+            className={`nav-icon-btn md:hidden touch-manipulation${menuOpen ? ' is-open' : ''}`}
           >
             <HamburgerIcon open={menuOpen} />
           </button>
-        </div>
-      </div>
-
-      {/* ── Collapsible search (mobile/tablet) ── */}
-      <div className={`nav-mobile-search-wrap${searchOpen ? ' is-open' : ''}`} aria-hidden={!searchOpen}>
-        <div className="nav-mobile-search-inner">
-          <div className="nav-search-bar w-full">
-            <span className="material-symbols-outlined nav-search-icon">search</span>
-            <input
-              ref={searchInputRef}
-              type="search"
-              value={search}
-              onChange={e => onSearchChange(e.target.value)}
-              placeholder="Search across all categories..."
-              className="nav-search-input"
-            />
-            {search && (
-              <button type="button" aria-label="Clear" onClick={() => onSearchChange('')} className="nav-search-clear">
-                <span className="material-symbols-outlined text-[18px]">close</span>
-              </button>
-            )}
-          </div>
         </div>
       </div>
 
@@ -204,6 +180,30 @@ export default function Navbar({
         aria-label="Mobile navigation"
         aria-hidden={!menuOpen}
       >
+        {/* Search inside mobile menu for convenience */}
+        <div className="px-1 pt-1 pb-2">
+          <div className="nav-search-bar w-full">
+            <span className="material-symbols-outlined nav-search-icon">search</span>
+            <input
+              type="search"
+              value={search}
+              onChange={e => onSearchChange(e.target.value)}
+              placeholder="Search websites..."
+              className="nav-search-input text-sm"
+            />
+            {search && (
+              <button
+                type="button"
+                aria-label="Clear"
+                onClick={() => onSearchChange('')}
+                className="nav-search-clear"
+              >
+                <span className="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-col gap-1 py-1">
           {NAV_LINKS.map(link => {
             const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
@@ -217,7 +217,9 @@ export default function Navbar({
               >
                 <span>{link}</span>
                 {isActive && (
-                  <span className="material-symbols-outlined text-[16px] text-blue-400 ml-auto">check</span>
+                  <span className="material-symbols-outlined text-[16px] text-blue-400 ml-auto">
+                    check
+                  </span>
                 )}
               </Link>
             );
@@ -226,7 +228,7 @@ export default function Navbar({
 
         {/* Community links in mobile menu */}
         <div className="mobile-menu-footer">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2 px-1">
             Community
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -236,7 +238,10 @@ export default function Navbar({
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
-              style={{ background: 'rgba(88,101,242,0.18)', border: '1px solid rgba(88,101,242,0.35)' }}
+              style={{
+                background: 'rgba(88,101,242,0.18)',
+                border: '1px solid rgba(88,101,242,0.35)',
+              }}
             >
               💬 Discord
             </a>
@@ -246,7 +251,10 @@ export default function Navbar({
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
-              style={{ background: 'rgba(255,69,0,0.18)', border: '1px solid rgba(255,69,0,0.35)' }}
+              style={{
+                background: 'rgba(255,69,0,0.18)',
+                border: '1px solid rgba(255,69,0,0.35)',
+              }}
             >
               🔴 Reddit
             </a>
@@ -259,18 +267,43 @@ export default function Navbar({
 
 function HamburgerIcon({ open }: { open: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    >
       <line
-        x1="2" y1={open ? '9' : '4'} x2="16" y2={open ? '9' : '4'}
-        style={{ transform: open ? 'rotate(45deg)' : 'none', transformOrigin: '9px 9px', transition: 'transform 0.25s, y 0.25s' }}
+        x1="2"
+        y1={open ? '9' : '4'}
+        x2="16"
+        y2={open ? '9' : '4'}
+        style={{
+          transform: open ? 'rotate(45deg)' : 'none',
+          transformOrigin: '9px 9px',
+          transition: 'transform 0.25s, y 0.25s',
+        }}
       />
       <line
-        x1="2" y1="9" x2="16" y2="9"
+        x1="2"
+        y1="9"
+        x2="16"
+        y2="9"
         style={{ opacity: open ? 0 : 1, transition: 'opacity 0.2s' }}
       />
       <line
-        x1="2" y1={open ? '9' : '14'} x2="16" y2={open ? '9' : '14'}
-        style={{ transform: open ? 'rotate(-45deg)' : 'none', transformOrigin: '9px 9px', transition: 'transform 0.25s, y 0.25s' }}
+        x1="2"
+        y1={open ? '9' : '14'}
+        x2="16"
+        y2={open ? '9' : '14'}
+        style={{
+          transform: open ? 'rotate(-45deg)' : 'none',
+          transformOrigin: '9px 9px',
+          transition: 'transform 0.25s, y 0.25s',
+        }}
       />
     </svg>
   );
