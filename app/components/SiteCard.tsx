@@ -28,10 +28,10 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
       aria-label={site.name}
       onClick={openSite}
       onKeyDown={e => e.key === 'Enter' && openSite()}
-      className="group relative glass-lux rounded-xl sm:rounded-2xl border border-white/[0.08] card-hover-lux cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden p-3 sm:p-4 transition-all duration-200"
+      className="group relative glass-lux rounded-xl sm:rounded-2xl border border-white/[0.08] card-hover-lux cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden px-2.5 py-2.5 sm:px-4 sm:py-3.5 h-[68px] sm:h-[78px] flex items-center transition-all duration-200"
     >
-      {/* ── Main content: Logo + Title & Domain ── */}
-      <div className="flex items-center gap-2.5 sm:gap-3.5">
+      {/* ── Main content: Logo + Title & Domain (Always Identical Height & Aligned) ── */}
+      <div className="flex items-center gap-2.5 sm:gap-3.5 w-full min-w-0 pr-6 sm:pr-7">
         {/* Logo */}
         <div
           className="shrink-0 rounded-xl sm:rounded-2xl overflow-hidden shadow-md transition-transform duration-200 group-hover:scale-[1.05]"
@@ -42,7 +42,7 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={40}
+              size={38}
             />
           </div>
           <div className="hidden sm:block">
@@ -50,26 +50,26 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={48}
+              size={46}
             />
           </div>
         </div>
 
         {/* Site Name + Domain + Tag */}
-        <div className="min-w-0 flex-1 pr-6">
-          <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-            <h4 className="font-headline text-[0.88rem] sm:text-[1.02rem] font-bold text-[var(--text-primary)] group-hover:text-blue-400 transition-colors truncate tracking-[-0.015em] leading-tight">
+        <div className="min-w-0 flex-1 flex flex-col justify-center">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <h4 className="font-headline text-[0.85rem] sm:text-[0.98rem] font-bold text-[var(--text-primary)] group-hover:text-blue-400 transition-colors truncate tracking-[-0.015em] leading-tight">
               {site.name}
             </h4>
             {tag && (
-              <span className={`${tag.cls} text-[8.5px] sm:text-[9.5px] px-1.5 py-0.2`}>
+              <span className={`${tag.cls} text-[8px] sm:text-[9.5px] px-1 sm:px-1.5 py-0.2 shrink-0`}>
                 {tag.label}
               </span>
             )}
           </div>
 
           {/* Domain */}
-          <div className="flex items-center gap-1 text-[10.5px] sm:text-[11.5px] text-[var(--text-muted)] font-medium">
+          <div className="flex items-center gap-1 text-[10px] sm:text-[11.5px] text-[var(--text-muted)] font-medium mt-0.5 min-w-0">
             <svg
               width="10"
               height="10"
@@ -87,10 +87,10 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
         </div>
       </div>
 
-      {/* Bookmark button */}
+      {/* Bookmark button — vertically centered & aligned */}
       <button
         aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
-        className="bookmark-btn absolute top-2 right-2 sm:top-2.5 sm:right-2.5 p-1 leading-none shrink-0 rounded-lg hover:bg-white/[0.08] transition-all duration-200 z-10"
+        className="bookmark-btn absolute right-1.5 sm:right-2.5 top-1/2 -translate-y-1/2 p-1 leading-none shrink-0 rounded-lg hover:bg-white/[0.08] transition-all duration-200 z-10"
         onClick={e => {
           e.stopPropagation();
           onToggleBookmark(site.id);
