@@ -10,9 +10,9 @@ interface SiteCardProps {
 }
 
 const TAG_MAP: Record<string, { label: string; cls: string }> = {
-  trusted:  { label: 'TRUSTED',  cls: 'bg-indigo-600/30 text-indigo-300 border-indigo-500/40' },
-  featured: { label: 'FEATURED', cls: 'bg-amber-600/30 text-amber-300 border-amber-500/40' },
-  new:      { label: 'NEW',      cls: 'bg-emerald-600/30 text-emerald-300 border-emerald-500/40' },
+  trusted:  { label: 'TRUSTED',  cls: 'bg-[#1e1b4b]/90 text-indigo-300 border-indigo-500/50 shadow-[0_0_10px_rgba(99,102,241,0.2)]' },
+  featured: { label: 'FEATURED', cls: 'bg-[#451a03]/90 text-amber-300 border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.2)]' },
+  new:      { label: 'NEW',      cls: 'bg-[#064e3b]/90 text-emerald-300 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]' },
 };
 
 export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteCardProps) {
@@ -28,39 +28,37 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
       aria-label={site.name}
       onClick={openSite}
       onKeyDown={e => e.key === 'Enter' && openSite()}
-      className="group relative rounded-2xl border border-white/[0.08] hover:border-white/[0.22] hover:bg-[#14192d]/90 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden px-3 py-2.5 sm:px-3.5 sm:py-3 h-[115px] sm:h-[128px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.5)]"
+      className="group relative rounded-2xl border border-white/[0.08] hover:border-white/[0.25] hover:bg-[#151a2e] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080b14] w-full min-w-0 overflow-hidden p-3 sm:p-3.5 h-[116px] sm:h-[132px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
       style={{
-        background: 'linear-gradient(180deg, rgba(20, 25, 42, 0.85) 0%, rgba(12, 15, 26, 0.95) 100%)',
-        backdropFilter: 'blur(12px)',
+        background: 'linear-gradient(180deg, #131728 0%, #0a0d18 100%)',
       }}
     >
       {/* ── Top Row: Tag (Left) + Bookmark Star (Right) ── */}
       <div className="flex items-center justify-between w-full min-h-[20px] pointer-events-none">
         {tag ? (
           <span
-            className={`text-[8px] sm:text-[9px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full border shadow-sm ${tag.cls}`}
+            className={`text-[7.5px] sm:text-[8px] font-extrabold tracking-widest uppercase px-2 py-0.5 rounded-full border ${tag.cls}`}
           >
             {tag.label}
           </span>
         ) : (
-          <span className="w-2" />
+          <span className="w-1" />
         )}
 
-        {/* Bookmark star button */}
+        {/* Minimal Bookmark Star */}
         <button
           aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
-          className="bookmark-btn pointer-events-auto p-1 leading-none shrink-0 rounded-lg hover:bg-white/[0.1] text-gray-400 hover:text-amber-400 transition-all duration-150 -mr-1 -mt-0.5"
+          className="bookmark-btn pointer-events-auto p-0.5 leading-none shrink-0 rounded-md text-gray-400/80 hover:text-amber-400 transition-all duration-150 -mr-0.5 -mt-0.5"
           onClick={e => {
             e.stopPropagation();
             onToggleBookmark(site.id);
           }}
-          style={{ color: isBookmarked ? '#f59e0b' : undefined }}
         >
           <span
-            className={`material-symbols-outlined text-[17px] sm:text-[19px] transition-all ${
+            className={`material-symbols-outlined text-[16px] sm:text-[18px] transition-all ${
               isBookmarked
-                ? 'opacity-100 text-amber-400'
-                : 'opacity-40 sm:opacity-20 group-hover:opacity-90'
+                ? 'text-amber-400 opacity-100'
+                : 'text-gray-400 opacity-40 group-hover:opacity-80'
             }`}
             style={isBookmarked ? { fontVariationSettings: "'FILL' 1" } : undefined}
           >
@@ -69,18 +67,17 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
         </button>
       </div>
 
-      {/* ── Center: Brand Logo + Prominent Site Name (Centered) ── */}
-      <div className="flex items-center justify-center gap-2 sm:gap-2.5 w-full my-auto px-1">
+      {/* ── Center: Brand Logo + Bold Website Name (Prominent & Centered) ── */}
+      <div className="flex items-center justify-center gap-2 sm:gap-2.5 w-full my-auto px-1 text-center">
         <div
-          className="shrink-0 rounded-xl overflow-hidden shadow-md transition-transform duration-200 group-hover:scale-105"
-          style={{ boxShadow: '0 4px 14px rgba(0,0,0,0.4)' }}
+          className="shrink-0 rounded-lg overflow-hidden shadow-sm transition-transform duration-200 group-hover:scale-105"
         >
           <div className="sm:hidden">
             <SiteIcon
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={32}
+              size={28}
             />
           </div>
           <div className="hidden sm:block">
@@ -88,18 +85,18 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={38}
+              size={34}
             />
           </div>
         </div>
 
-        <h4 className="font-headline font-bold text-[0.92rem] sm:text-[1.06rem] text-white tracking-[-0.015em] group-hover:text-blue-400 transition-colors truncate">
+        <h4 className="font-headline font-black text-[0.98rem] sm:text-[1.14rem] text-white tracking-[-0.02em] group-hover:text-indigo-400 transition-colors truncate">
           {site.name}
         </h4>
       </div>
 
       {/* ── Bottom Row: Small Domain + External Link Icon ── */}
-      <div className="flex items-center justify-center gap-1 text-[10.5px] sm:text-[11.5px] text-gray-400/80 font-medium group-hover:text-gray-300 transition-colors w-full min-w-0">
+      <div className="flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[11.5px] text-gray-400/80 font-normal group-hover:text-gray-300 transition-colors w-full min-w-0">
         <svg
           width="10"
           height="10"
@@ -116,10 +113,10 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
         <span className="truncate">{site.domain}</span>
       </div>
 
-      {/* Subtle hover glow layer */}
+      {/* Subtle hover glow */}
       <div
         className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(6, 182, 212, 0.06) 100%)' }}
+        style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)' }}
       />
     </div>
   );
