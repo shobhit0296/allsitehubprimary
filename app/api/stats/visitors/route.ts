@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 
 const REDIS_URL = process.env.KV_REST_API_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN;
-const REDIS_KEY = 'tbcpl-app:stats:live_session_increments';
+const REDIS_KEY = 'allsitehub:stats:live_session_increments';
 
 async function redisGet(key: string): Promise<number> {
   if (!REDIS_URL || !REDIS_TOKEN) return 0;

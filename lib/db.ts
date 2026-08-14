@@ -13,7 +13,8 @@
 import { Redis } from '@upstash/redis';
 import type { Site } from './data';
 
-const REDIS_KEY = 'tbcpl-app:db';
+const REDIS_KEY = 'allsitehub:db';
+const LEGACY_REDIS_KEY = 'tbcpl-app:db';
 
 const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -48,7 +49,14 @@ function seedData(): DB {
 }
 
 async function readDBRedis(): Promise<DB> {
-  const data = await redis!.get<DB>(REDIS_KEY);
+  let data = await redis!.get<DB>(REDIS_KEY);
+  if (!data) {
+    const legacy = await redis!.get<DB>(LEGACY_REDIS_KEY);
+    if (legacy) {
+      data = legacy;
+      await redis!.set(REDIS_KEY, legacy);
+    }
+  }
   if (!data) {
     const initial = seedData();
     await redis!.set(REDIS_KEY, initial);
@@ -59,7 +67,10 @@ async function readDBRedis(): Promise<DB> {
 }
 
 async function writeDBRedis(data: DB): Promise<void> {
-  await redis!.set(REDIS_KEY, data);
+  await Promise.all([
+    redis!.set(REDIS_KEY, data),
+    redis!.set(LEGACY_REDIS_KEY, data),
+  ]);
 }
 
 function readDBFs(): DB {
