@@ -408,44 +408,65 @@ h1, h2, h3, .font-display {
 .nav-online-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.18);
+  gap: 0.35rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.24);
   border-radius: 99px;
-  padding: 0.28rem 0.7rem;
+  padding: 0.24rem 0.55rem;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+@media (min-width: 640px) {
+  .nav-online-badge {
+    gap: 0.4rem;
+    padding: 0.28rem 0.7rem;
+  }
 }
 .nav-online-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
   flex-shrink: 0;
 }
 .nav-online-text {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: #34d399;
   letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+@media (min-width: 640px) {
+  .nav-online-text {
+    font-size: 11.5px;
+  }
 }
 
 /* Region selector */
 .nav-region-select {
   appearance: none;
   -webkit-appearance: none;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  padding: 0.32rem 1.75rem 0.32rem 0.65rem;
-  font-size: 12.5px;
+  padding: 0.26rem 1.45rem 0.26rem 0.5rem;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-primary);
   outline: none;
   cursor: pointer;
-  max-width: 8rem;
+  max-width: 7.2rem;
   transition: border-color 0.2s, background 0.2s;
-  line-height: 1.4;
+  line-height: 1.35;
+}
+@media (min-width: 640px) {
+  .nav-region-select {
+    padding: 0.32rem 1.75rem 0.32rem 0.65rem;
+    font-size: 12.5px;
+    max-width: 8rem;
+  }
 }
 .nav-region-select:hover {
   border-color: rgba(96, 165, 250, 0.35);
@@ -457,7 +478,7 @@ h1, h2, h3, .font-display {
 }
 .nav-region-chevron {
   position: absolute;
-  right: 0.3rem;
+  right: 0.25rem;
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
