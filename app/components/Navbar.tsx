@@ -109,7 +109,7 @@ export default function Navbar({
         {/* ── Flexible spacer ── */}
         <div className="flex-1 min-w-0" />
 
-        {/* ── Desktop search bar (lg+ only, completely removed from mobile navigation) ── */}
+        {/* ── Desktop search bar (lg+ only, hidden on mobile) ── */}
         <div className="hidden lg:flex nav-search-bar">
           <span className="material-symbols-outlined nav-search-icon">search</span>
           <input
@@ -131,12 +131,12 @@ export default function Navbar({
           )}
         </div>
 
-        {/* ── Right actions cluster — always perfectly aligned on ALL screen sizes ── */}
+        {/* ── Right actions cluster — Live Views counter prominent on top ── */}
         <div className="nav-right-cluster">
-          {/* 🟢 Online counter pill */}
+          {/* 🟢 Live Views Online Counter */}
           <div
             className="nav-online-pill"
-            title={`${onlineCount.toLocaleString()} visitors online`}
+            title={`${onlineCount.toLocaleString()} live active viewers`}
           >
             <span className="nav-online-dot" />
             <span className="nav-online-count" suppressHydrationWarning>
@@ -180,30 +180,6 @@ export default function Navbar({
         aria-label="Mobile navigation"
         aria-hidden={!menuOpen}
       >
-        {/* Search inside mobile menu for convenience */}
-        <div className="px-1 pt-1 pb-2">
-          <div className="nav-search-bar w-full">
-            <span className="material-symbols-outlined nav-search-icon">search</span>
-            <input
-              type="search"
-              value={search}
-              onChange={e => onSearchChange(e.target.value)}
-              placeholder="Search websites..."
-              className="nav-search-input text-sm"
-            />
-            {search && (
-              <button
-                type="button"
-                aria-label="Clear"
-                onClick={() => onSearchChange('')}
-                className="nav-search-clear"
-              >
-                <span className="material-symbols-outlined text-[16px]">close</span>
-              </button>
-            )}
-          </div>
-        </div>
-
         <div className="flex flex-col gap-1 py-1">
           {NAV_LINKS.map(link => {
             const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
