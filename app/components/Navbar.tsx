@@ -65,16 +65,28 @@ export default function Navbar({
     <header ref={menuRef} className={`site-header${scrolled || menuOpen ? ' is-scrolled' : ''}`}>
       <div className="nav-inner">
 
-        {/* ── Logo ── (always fixed left) */}
-        <Link
+        {/* ── Logo ── hard refresh on click / touch */}
+        <a
           href="/"
-          className="nav-logo-link shrink-0"
-          onClick={() => { setMenuOpen(false); setSearchOpen(false); }}
+          className="nav-logo-link shrink-0 select-none touch-manipulation cursor-pointer"
+          onClick={e => {
+            e.preventDefault();
+            setMenuOpen(false);
+            setSearchOpen(false);
+            if (typeof window !== 'undefined') {
+              if (window.location.pathname === '/') {
+                window.location.reload();
+              } else {
+                window.location.href = '/';
+              }
+            }
+          }}
+          aria-label="AllSiteHub — refresh and go to homepage"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icon.svg" alt="AllSiteHub logo" width={28} height={28} className="nav-logo-img" />
           <span className="nav-logo-text">All<span className="nav-logo-accent">Site</span>Hub</span>
-        </Link>
+        </a>
 
         {/* ── Desktop divider + nav links ── */}
         <span className="nav-divider hidden md:block" aria-hidden="true" />
