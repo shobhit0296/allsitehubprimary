@@ -134,8 +134,8 @@ export default async function CollectionDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <main className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 w-full mb-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      <main className="max-w-[1280px] mx-auto px-4 sm:px-8 lg:px-12 w-full mb-20">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-4 w-full">
           {sites.map(site => (
             <div key={site.id} className="flex flex-col gap-2">
               <SiteCard site={site} isBookmarked={false} onToggleBookmark={() => {}} />

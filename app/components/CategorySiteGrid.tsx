@@ -29,7 +29,7 @@ export default function CategorySiteGrid({ sites }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2.5 sm:gap-4 w-full">
       {sites.map(site => (
         <SiteCard
           key={site.id}

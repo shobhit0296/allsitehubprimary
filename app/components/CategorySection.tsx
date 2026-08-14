@@ -18,41 +18,41 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
   return (
     <section
       id={`cat-${category.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`}
-      className="mb-16 fade-up scroll-mt-24"
+      className="mb-12 sm:mb-16 fade-up scroll-mt-24"
     >
       {/* ── Section Header ─────────────────────────── */}
-      <div className="flex items-end justify-between mb-7 flex-wrap gap-3">
-        <div className="flex items-center gap-4 group">
+      <div className="flex items-end justify-between mb-4 sm:mb-7 flex-wrap gap-3">
+        <div className="flex items-center gap-3 sm:gap-4 group">
           {/* Glowing accent bar */}
           <div
-            className="w-[4px] h-11 sm:h-12 rounded-full shrink-0 transition-all duration-300 group-hover:scale-y-110"
+            className="w-[3.5px] sm:w-[4px] h-9 sm:h-12 rounded-full shrink-0 transition-all duration-300 group-hover:scale-y-110"
             style={{
               background: `linear-gradient(180deg, ${accent}, ${accent}44)`,
               boxShadow: `0 0 18px ${accent}66`,
             }}
           />
           <div>
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <CategoryIcon name={category.name} size={28} className="shrink-0 transition-transform duration-300 group-hover:scale-110" />
-              <h2 className="font-headline text-[1.35rem] sm:text-2xl font-bold tracking-[-0.02em] text-[var(--text-primary)]">
+            <div className="flex items-center gap-2 sm:gap-2.5 mb-0.5 sm:mb-1.5">
+              <CategoryIcon name={category.name} size={24} className="shrink-0 transition-transform duration-300 group-hover:scale-110" />
+              <h2 className="font-headline text-[1.15rem] sm:text-2xl font-bold tracking-[-0.02em] text-[var(--text-primary)]">
                 {category.name}
               </h2>
               <span
-                className="text-[11px] font-bold rounded-md px-2.5 py-0.5 tabular-nums transition-all duration-300"
+                className="text-[10.5px] sm:text-[11px] font-bold rounded-md px-2 py-0.5 tabular-nums transition-all duration-300"
                 style={{ color: accent, background: `${accent}1a`, border: `1px solid ${accent}38` }}
               >
                 {sites.length}
               </span>
             </div>
-            <p className="text-[13px] sm:text-[13.5px] text-[var(--text-muted)] leading-snug">
+            <p className="text-[12px] sm:text-[13.5px] text-[var(--text-muted)] leading-snug line-clamp-1 sm:line-clamp-none">
               {category.description}
             </p>
           </div>
         </div>
       </div>
 
-      {/* ── Sites Grid ─────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 w-full">
+      {/* ── Sites Grid: 2 cards per row on mobile, 3 on tablet/desktop ──────────────── */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2.5 sm:gap-4 w-full">
         {sites.map(site => (
           <SiteCard
             key={site.id}
