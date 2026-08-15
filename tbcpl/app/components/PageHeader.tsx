@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ThemeNavOption from './ThemeNavOption';
 
 const NAV_LINKS = [
   ['Home', '/'],
@@ -39,6 +40,10 @@ export default function PageHeader({ active }: { active: 'About' | 'Request' | '
             </Link>
           ))}
         </nav>
+
+        <div className="ml-auto flex items-center gap-3">
+          <ThemeNavOption />
+        </div>
       </div>
     </header>
   );

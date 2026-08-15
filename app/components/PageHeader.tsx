@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 
+import ThemeNavOption from './ThemeNavOption';
+import ThemeDragToggle from './ThemeDragToggle';
+
 const NAV_LINKS = [
   ['Home', '/'],
   ['Collections', '/collections'],
@@ -76,7 +79,7 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
 
         <div className="flex-1 min-w-0" />
 
-        {/* ── Right cluster — always visible with Live Online Counter ── */}
+        {/* ── Right cluster — always visible with Live Online Counter & Theme Option ── */}
         <div className="nav-right-cluster">
           {/* 🟢 Online counter pill */}
           <div
@@ -89,6 +92,9 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
             </span>
             <span className="nav-online-label">online</span>
           </div>
+
+          {/* 🎨 Theme Option in Top Navigation */}
+          <ThemeNavOption />
 
           <a
             href="https://discord.gg/EDH5ScSsv"
@@ -120,6 +126,11 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
 
       {menuOpen && (
         <nav className="mobile-menu md:hidden">
+          {/* Mobile Theme Selector */}
+          <div className="p-3 mb-2 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+            <ThemeDragToggle />
+          </div>
+
           <div className="flex flex-col gap-1 py-1">
             {NAV_LINKS.map(([label, href]) => (
               <Link

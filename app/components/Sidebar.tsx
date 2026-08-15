@@ -3,7 +3,6 @@
 import type { Category } from '@/lib/data';
 import { categoryAccent } from '@/lib/theme';
 import CategoryIcon from './CategoryIcon';
-import ThemeDragToggle from './ThemeDragToggle';
 
 interface SidebarProps {
   categories: Category[];
@@ -37,11 +36,6 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
             />
           ))}
         </div>
-      </div>
-
-      {/* Theme Drag Slider Toggle */}
-      <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] shadow-sm">
-        <ThemeDragToggle />
       </div>
 
       {/* Community logo-only links (Seamlessly merged with background) */}

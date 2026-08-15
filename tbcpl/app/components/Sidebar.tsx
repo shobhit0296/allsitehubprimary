@@ -53,11 +53,6 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
         </div>
       </div>
 
-      {/* Theme Drag Slider Toggle */}
-      <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] shadow-sm">
-        <ThemeDragToggle />
-      </div>
-
       {/* Community logo-only links (Seamlessly merged with background) */}
       <div className="pt-0.5">
         <div className="grid grid-cols-2 gap-2">
