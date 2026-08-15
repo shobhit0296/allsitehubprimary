@@ -12,34 +12,34 @@ body[data-theme="cosmic"],
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Sora', system-ui, sans-serif;
   --font-space: 'Space Grotesk', monospace, sans-serif;
-  /* Backgrounds — Cosmic Aether glass */
-  --bg-base:       #0a0a12;
-  --bg-surface:    #111118;
-  --bg-card:       rgba(28,28,40,0.55);
-  --bg-card-hover: rgba(36,36,52,0.72);
-  --bg-input:      rgba(255,255,255,0.05);
+  /* Backgrounds — Cosmic Obsidian Dark */
+  --bg-base:       #05050a;
+  --bg-surface:    #0b0b14;
+  --bg-card:       rgba(14, 14, 24, 0.65);
+  --bg-card-hover: rgba(22, 22, 38, 0.85);
+  --bg-input:      rgba(255, 255, 255, 0.05);
 
   /* Borders */
-  --border:        rgba(255,255,255,0.09);
-  --border-accent: rgba(208,188,255,0.55);
-  --border-subtle: rgba(255,255,255,0.04);
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(167, 139, 250, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.03);
 
-  /* Brand Gradient — lavender → cyan */
-  --grad-start:    #c4b5fd;
-  --grad-end:      #67e8f9;
+  /* Brand Gradient — violet → cyan */
+  --grad-start:    #a78bfa;
+  --grad-end:      #38bdf8;
   --gradient:      linear-gradient(135deg, var(--grad-start), var(--grad-end));
-  --gradient-text: linear-gradient(90deg, #c4b5fd 0%, #818cf8 40%, #67e8f9 100%);
-  --glow:          rgba(196,181,253,0.3);
+  --gradient-text: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #38bdf8 100%);
+  --glow:          rgba(167, 139, 250, 0.28);
 
   /* Text */
-  --text-primary:   #ece9f4;
-  --text-secondary: #a8a3bb;
-  --text-muted:     #635f75;
-  --text-accent:    #c4b5fd;
+  --text-primary:   #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --text-accent:    #a78bfa;
 
   /* Material 3 accents */
-  --primary:   #c4b5fd;
-  --secondary: #67e8f9;
+  --primary:   #a78bfa;
+  --secondary: #38bdf8;
   --tertiary:  #e4b4ff;
 
   /* Status */
@@ -58,17 +58,17 @@ body[data-theme="cosmic"],
   --nav-search-h: 52px;
   --nav-gap:      32px;
   --max-w:        1600px;
-  --header-bg:    rgba(10, 14, 28, 0.42);
-  --header-bg-scrolled: rgba(8, 11, 22, 0.68);
-  --glass-nav-border: rgba(255, 255, 255, 0.14);
-  --glass-nav-highlight: rgba(255, 255, 255, 0.32);
+  --header-bg:    rgba(5, 5, 10, 0.65);
+  --header-bg-scrolled: rgba(4, 4, 8, 0.88);
+  --glass-nav-border: rgba(255, 255, 255, 0.12);
+  --glass-nav-highlight: rgba(255, 255, 255, 0.25);
   --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft:    cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Shadows */
-  --shadow-card:  0 2px 8px rgba(0,0,0,0.45), 0 0 0 1px var(--border);
-  --shadow-hover: 0 12px 40px rgba(196,181,253,0.18), 0 0 0 1px var(--border-accent);
-  --shadow-glow:  0 0 60px rgba(196,181,253,0.14);
+  --shadow-card:  0 4px 16px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
+  --shadow-hover: 0 16px 48px rgba(0,0,0,0.8), 0 0 24px rgba(167, 139, 250, 0.25), 0 0 0 1px var(--border-accent);
+  --shadow-glow:  0 0 60px rgba(167, 139, 250, 0.16);
 }
 
 /* ⚡ Cyberpunk Neon */

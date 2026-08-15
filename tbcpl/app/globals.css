@@ -8,29 +8,29 @@
 html[data-theme="cosmic"],
 body[data-theme="cosmic"],
 [data-theme="cosmic"] {
-  --bg-base:       #0a0a12;
-  --bg-surface:    #111118;
-  --bg-card:       rgba(28,28,40,0.55);
-  --bg-card-hover: rgba(36,36,52,0.72);
-  --bg-input:      rgba(255,255,255,0.05);
+  --bg-base:       #05050a;
+  --bg-surface:    #0b0b14;
+  --bg-card:       rgba(14, 14, 24, 0.65);
+  --bg-card-hover: rgba(22, 22, 38, 0.85);
+  --bg-input:      rgba(255, 255, 255, 0.05);
 
-  --border:        rgba(255,255,255,0.09);
-  --border-accent: rgba(208,188,255,0.55);
-  --border-subtle: rgba(255,255,255,0.04);
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(167, 139, 250, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.03);
 
-  --grad-start:    #c4b5fd;
-  --grad-end:      #67e8f9;
+  --grad-start:    #a78bfa;
+  --grad-end:      #38bdf8;
   --gradient:      linear-gradient(135deg, var(--grad-start), var(--grad-end));
-  --gradient-text: linear-gradient(90deg, #c4b5fd 0%, #818cf8 40%, #67e8f9 100%);
-  --glow:          rgba(196,181,253,0.3);
+  --gradient-text: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #38bdf8 100%);
+  --glow:          rgba(167, 139, 250, 0.28);
 
-  --text-primary:   #ece9f4;
-  --text-secondary: #a8a3bb;
-  --text-muted:     #635f75;
-  --text-accent:    #c4b5fd;
+  --text-primary:   #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --text-accent:    #a78bfa;
 
-  --primary:   #c4b5fd;
-  --secondary: #67e8f9;
+  --primary:   #a78bfa;
+  --secondary: #38bdf8;
   --tertiary:  #e4b4ff;
 
   --green:   #10b981;
