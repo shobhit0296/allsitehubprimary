@@ -1,6 +1,7 @@
 'use client';
 
 import type { Category } from '@/lib/data';
+import ThemeDragToggle from './ThemeDragToggle';
 
 interface SidebarProps {
   categories: Category[];
@@ -22,7 +23,7 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
   const totalCount = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="flex flex-col gap-5 pb-6">
+    <div className="flex flex-col gap-4 pb-6">
       {/* Categories */}
       <div>
         <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] mb-3 flex items-center gap-2">
@@ -50,6 +51,11 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
             />
           ))}
         </div>
+      </div>
+
+      {/* Theme Drag Slider Toggle */}
+      <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] shadow-sm">
+        <ThemeDragToggle />
       </div>
 
       {/* Community logo-only links (Seamlessly merged with background) */}
