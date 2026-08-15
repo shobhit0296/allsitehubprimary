@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { THEMES, type ThemeOption } from '@/lib/theme';
+import { THEMES, applyThemeGlobal, type ThemeOption } from '@/lib/theme';
 
 export default function ThemeNavOption() {
   const [activeTheme, setActiveTheme] = useState<string>('cosmic');
@@ -18,6 +18,7 @@ export default function ThemeNavOption() {
       const initial = saved || document.documentElement.getAttribute('data-theme') || 'cosmic';
       if (THEMES.some(t => t.id === initial)) {
         setActiveTheme(initial);
+        applyThemeGlobal(initial);
         const idx = THEMES.findIndex(t => t.id === initial);
         if (idx !== -1) setDragProgress(idx / (THEMES.length - 1));
       }
@@ -59,14 +60,7 @@ export default function ThemeNavOption() {
 
   const applyTheme = useCallback((themeId: string) => {
     setActiveTheme(themeId);
-    try {
-      document.documentElement.setAttribute('data-theme', themeId);
-      document.body.setAttribute('data-theme', themeId);
-      localStorage.setItem('allSiteHub_theme', themeId);
-      window.dispatchEvent(new CustomEvent('allSiteHub_theme_changed', { detail: themeId }));
-    } catch {
-      // ignore
-    }
+    applyThemeGlobal(themeId);
   }, []);
 
   const selectTheme = useCallback((theme: ThemeOption, idx: number) => {

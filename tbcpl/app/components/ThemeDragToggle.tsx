@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { THEMES, type ThemeOption } from '@/lib/theme';
+import { THEMES, applyThemeGlobal, type ThemeOption } from '@/lib/theme';
 
 export default function ThemeDragToggle({ compact = false }: { compact?: boolean }) {
   const [activeTheme, setActiveTheme] = useState<string>('cosmic');
@@ -16,6 +16,7 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
       const initial = saved || document.documentElement.getAttribute('data-theme') || 'cosmic';
       if (THEMES.some(t => t.id === initial)) {
         setActiveTheme(initial);
+        applyThemeGlobal(initial);
         const idx = THEMES.findIndex(t => t.id === initial);
         if (idx !== -1) setDragProgress(idx / (THEMES.length - 1));
       }
@@ -40,14 +41,7 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
 
   const applyTheme = useCallback((themeId: string) => {
     setActiveTheme(themeId);
-    try {
-      document.documentElement.setAttribute('data-theme', themeId);
-      document.body.setAttribute('data-theme', themeId);
-      localStorage.setItem('allSiteHub_theme', themeId);
-      window.dispatchEvent(new CustomEvent('allSiteHub_theme_changed', { detail: themeId }));
-    } catch {
-      // ignore
-    }
+    applyThemeGlobal(themeId);
   }, []);
 
   const selectTheme = useCallback((theme: ThemeOption, idx: number) => {
@@ -213,7 +207,7 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
         </div>
       </div>
 
-      {/* Direct Theme Quick Pick Buttons */}
+      {/* Direct Theme Quick Pick Buttons (both onPointerDown and onClick supported) */}
       <div className="grid grid-cols-6 gap-1 pt-0.5">
         {THEMES.map((theme, idx) => {
           const isSelected = theme.id === activeTheme;
