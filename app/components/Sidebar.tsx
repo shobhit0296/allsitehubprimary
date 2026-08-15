@@ -75,9 +75,6 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
         Allsitehub curates the best streaming sites for entertainment. We don&apos;t host any content.
       </p>
     </div>
-        Allsitehub curates the best streaming sites for entertainment. We don&apos;t host any content.
-      </p>
-    </div>
   );
 }
 
