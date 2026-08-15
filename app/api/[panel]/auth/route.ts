@@ -20,18 +20,18 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!isPanelSegment(panel)) return NOT_FOUND();
 
   const ip = requestIp(req);
-  if (isLoginLocked(ip)) {
+  if (await isLoginLocked(ip)) {
     return NextResponse.json({ error: 'Too many attempts. Try again later.' }, { status: 429 });
   }
 
   const { password } = await req.json().catch(() => ({ password: '' }));
 
   if (typeof password !== 'string' || !checkPassword(password)) {
-    recordLoginFailure(ip);
+    await recordLoginFailure(ip);
     return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
   }
 
-  recordLoginSuccess(ip);
+  await recordLoginSuccess(ip);
   const res = NextResponse.json({ ok: true });
   res.cookies.set(ADMIN_COOKIE, createSessionToken(), {
     httpOnly: true,

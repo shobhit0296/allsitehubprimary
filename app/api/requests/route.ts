@@ -3,20 +3,43 @@ import { readDB, writeDB, generateId } from '@/lib/db';
 import type { SiteRequest } from '@/lib/db';
 import { requestIp } from '@/lib/admin-auth';
 
-/* ── Rate Limiting (in-memory per IP) ── */
+import { Redis } from '@upstash/redis';
+
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null;
+
+/* ── Rate Limiting (Distributed Redis + in-memory fallback per IP) ── */
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_REQUESTS_PER_WINDOW = 5;
 const ipSubmissions = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(ip: string): boolean {
+async function checkRateLimit(ip: string): Promise<boolean> {
   const now = Date.now();
   const record = ipSubmissions.get(ip);
+  if (record && now <= record.resetAt && record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return false;
+  }
+
+  if (redis) {
+    try {
+      const key = `ratelimit:requests:${ip}`;
+      const count = await redis.incr(key);
+      if (count === 1) {
+        await redis.expire(key, 600); // 10 min TTL
+      }
+      if (count > MAX_REQUESTS_PER_WINDOW) {
+        return false;
+      }
+      return true;
+    } catch {
+      // fallback to memory
+    }
+  }
+
   if (!record || now > record.resetAt) {
     ipSubmissions.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return true;
-  }
-  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
-    return false;
   }
   record.count += 1;
   return true;
@@ -32,7 +55,7 @@ export async function POST(req: NextRequest) {
   const ip = requestIp(req);
 
   // 1. Rate Limiting Check
-  if (!checkRateLimit(ip)) {
+  if (!(await checkRateLimit(ip))) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait a few minutes before trying again.' },
       { status: 429 }

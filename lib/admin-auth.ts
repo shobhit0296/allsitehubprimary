@@ -56,13 +56,30 @@ export function checkPassword(input: string): boolean {
   return matchesLength && bytesMatch;
 }
 
-/** Simple per-IP brute-force lockout for the login endpoint. */
-export function isLoginLocked(ip: string): boolean {
-  const rec = attempts.get(ip);
-  return !!rec && Date.now() < rec.lockUntil;
+import { Redis } from '@upstash/redis';
+
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null;
+
+/** Distributed per-IP brute-force lockout for login with in-memory fallback. */
+export async function isLoginLocked(ip: string): Promise<boolean> {
+  const memRec = attempts.get(ip);
+  if (memRec && Date.now() < memRec.lockUntil) return true;
+
+  if (redis) {
+    try {
+      const locked = await redis.get<number>(`ratelimit:login:lock:${ip}`);
+      if (locked) return true;
+    } catch {
+      // fallback to memory
+    }
+  }
+  return false;
 }
 
-export function recordLoginFailure(ip: string): void {
+export async function recordLoginFailure(ip: string): Promise<void> {
+  // In-memory record
   const rec = attempts.get(ip) ?? { count: 0, lockUntil: 0 };
   rec.count += 1;
   if (rec.count >= MAX_ATTEMPTS) {
@@ -70,14 +87,47 @@ export function recordLoginFailure(ip: string): void {
     rec.count = 0;
   }
   attempts.set(ip, rec);
+
+  // Redis distributed record
+  if (redis) {
+    try {
+      const failKey = `ratelimit:login:fail:${ip}`;
+      const fails = await redis.incr(failKey);
+      if (fails === 1) {
+        await redis.expire(failKey, 900); // 15 min window
+      }
+      if (fails >= MAX_ATTEMPTS) {
+        await redis.set(`ratelimit:login:lock:${ip}`, 1, { ex: 900 });
+        await redis.del(failKey);
+      }
+    } catch {
+      // ignore redis errors
+    }
+  }
 }
 
-export function recordLoginSuccess(ip: string): void {
+export async function recordLoginSuccess(ip: string): Promise<void> {
   attempts.delete(ip);
+  if (redis) {
+    try {
+      await Promise.all([
+        redis.del(`ratelimit:login:fail:${ip}`),
+        redis.del(`ratelimit:login:lock:${ip}`),
+      ]);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 export function requestIp(req: NextRequest): string {
-  return req.headers.get('x-real-ip') ?? req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  return (
+    req.headers.get('x-vercel-ip') ??
+    req.headers.get('cf-connecting-ip') ??
+    req.headers.get('x-real-ip') ??
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    'unknown'
+  );
 }
 
 /** Verify the admin session cookie on an incoming request. Use in every protected route handler. */
