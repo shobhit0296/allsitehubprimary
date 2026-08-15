@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { REGION_FLAGS } from '@/lib/data';
+import ThemeNavOption from './ThemeNavOption';
+import ThemeDragToggle from './ThemeDragToggle';
 
 interface NavbarProps {
   search: string;
@@ -66,12 +68,14 @@ export default function Navbar({ search, onSearchChange, regions, activeRegion, 
           />
         </div>
 
-        {/* Online + region */}
+        {/* Online + Theme + region */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="hidden sm:flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1.5">
             <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
             <span className="text-[11px] font-semibold text-emerald-400 tabular-nums">{onlineCount.toLocaleString()}</span>
           </div>
+
+          <ThemeNavOption />
 
           <a
             href="https://discord.gg/EDH5ScSsv"
@@ -136,6 +140,9 @@ export default function Navbar({ search, onSearchChange, regions, activeRegion, 
       {/* Mobile dropdown */}
       {menuOpen && (
         <nav className="mobile-menu md:hidden">
+          <div className="p-3 mb-2 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+            <ThemeDragToggle />
+          </div>
           {NAV_LINKS.map(link => (
             <Link
               key={link}

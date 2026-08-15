@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { REGION_FLAGS } from '@/lib/data';
+import ThemeNavOption from './ThemeNavOption';
+import ThemeDragToggle from './ThemeDragToggle';
 
 interface NavbarProps {
   search: string;
@@ -145,6 +147,9 @@ export default function Navbar({
             <span className="nav-online-label">online</span>
           </div>
 
+          {/* 🎨 Theme Option in Top Navigation */}
+          <ThemeNavOption />
+
           {/* 🌍 Region selector */}
           <div className="nav-region-wrap">
             <select
@@ -180,6 +185,11 @@ export default function Navbar({
         aria-label="Mobile navigation"
         aria-hidden={!menuOpen}
       >
+        {/* Mobile Theme Selector */}
+        <div className="p-3 mb-2 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
+          <ThemeDragToggle />
+        </div>
+
         <div className="flex flex-col gap-1 py-1">
           {NAV_LINKS.map(link => {
             const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
