@@ -217,7 +217,7 @@ export default async function SiteDetailPage({ params }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {relatedSites.map(rel => (
                   <div key={rel.id} className="flex flex-col gap-2">
-                    <SiteCard site={rel} isBookmarked={false} onToggleBookmark={() => {}} />
+                    <SiteCard site={rel} />
                     <Link
                       href={`/site/${slugify(rel.name)}`}
                       className="text-[11.5px] font-semibold text-blue-400 hover:text-blue-300 transition-colors self-end px-2"

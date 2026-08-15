@@ -5,8 +5,8 @@ import SiteIcon from './SiteIcon';
 
 interface SiteCardProps {
   site: Site;
-  isBookmarked: boolean;
-  onToggleBookmark: (id: string) => void;
+  isBookmarked?: boolean;
+  onToggleBookmark?: (id: string) => void;
 }
 
 const TAG_MAP: Record<string, { label: string; cls: string }> = {
@@ -15,7 +15,7 @@ const TAG_MAP: Record<string, { label: string; cls: string }> = {
   new:      { label: 'NEW',      cls: 'bg-[#064e3b]/90 text-[#6ee7b7] border-[#10b981]/40' },
 };
 
-export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteCardProps) {
+export default function SiteCard({ site, isBookmarked = false, onToggleBookmark }: SiteCardProps) {
   const priorityTag = site.tags?.find(t => TAG_MAP[t]);
   const tag = priorityTag ? TAG_MAP[priorityTag] : null;
 
@@ -47,25 +47,29 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
         )}
 
         {/* Minimal Bookmark Star */}
-        <button
-          aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
-          className="bookmark-btn pointer-events-auto p-0.5 leading-none shrink-0 rounded-md text-[#64748b] hover:text-[#fbbf24] transition-all duration-150 -mr-0.5 -mt-0.5"
-          onClick={e => {
-            e.stopPropagation();
-            onToggleBookmark(site.id);
-          }}
-        >
-          <span
-            className={`material-symbols-outlined text-[16px] sm:text-[18px] transition-all ${
-              isBookmarked
-                ? 'text-[#fbbf24] opacity-100'
-                : 'text-[#64748b] opacity-40 group-hover:opacity-85'
-            }`}
-            style={isBookmarked ? { fontVariationSettings: "'FILL' 1" } : undefined}
+        {onToggleBookmark ? (
+          <button
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
+            className="bookmark-btn pointer-events-auto p-0.5 leading-none shrink-0 rounded-md text-[#64748b] hover:text-[#fbbf24] transition-all duration-150 -mr-0.5 -mt-0.5"
+            onClick={e => {
+              e.stopPropagation();
+              onToggleBookmark(site.id);
+            }}
           >
-            {isBookmarked ? 'star' : 'star_border'}
-          </span>
-        </button>
+            <span
+              className={`material-symbols-outlined text-[16px] sm:text-[18px] transition-all ${
+                isBookmarked
+                  ? 'text-[#fbbf24] opacity-100'
+                  : 'text-[#64748b] opacity-40 group-hover:opacity-85'
+              }`}
+              style={isBookmarked ? { fontVariationSettings: "'FILL' 1" } : undefined}
+            >
+              {isBookmarked ? 'star' : 'star_border'}
+            </span>
+          </button>
+        ) : (
+          <span className="w-1" />
+        )}
       </div>
 
       {/* ── Center: Brand Icon + Bold Website Name (Prominent & Centered) ── */}
