@@ -62,9 +62,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
-        {children}
+        <div className="relative z-10 flex flex-col flex-1 w-full">
+          {children}
+        </div>
       </body>
     </html>
   );
