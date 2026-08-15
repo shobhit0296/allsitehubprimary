@@ -181,8 +181,11 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
       />
       {/* Categories & Directory */}
       <section id="directory" className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 mb-16 sm:mb-20 scroll-mt-24">
-        <aside className="hidden lg:block lg:col-span-4 xl:col-span-3">
-          <div className="sticky top-[84px] max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar z-20">
+        <aside
+          className="hidden lg:block lg:col-span-4 xl:col-span-3 self-start sticky top-[84px] z-30"
+          style={{ position: 'sticky', top: '84px', alignSelf: 'flex-start' }}
+        >
+          <div className="max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-1">
             <Sidebar
               categories={categories}
               categoryCounts={categoryCounts}
@@ -193,10 +196,11 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         </aside>
 
         <div className="lg:col-span-8 xl:col-span-9 min-w-0 w-full">
-          {/* Mobile only (< lg): normal horizontal category scroll */}
+          {/* Mobile only (< lg): sticky horizontal category scroll */}
           <div
-            className="flex lg:hidden no-scrollbar gap-2 overflow-x-auto pb-2.5 mb-6 sm:mb-8 scroll-smooth overscroll-x-contain"
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            ref={mobileCatContainerRef}
+            className="flex lg:hidden sticky top-[64px] z-20 bg-[#0a0a12]/90 backdrop-blur-md py-2.5 -mx-2 px-2 no-scrollbar gap-2 overflow-x-auto mb-6 sm:mb-8 scroll-smooth overscroll-x-contain border-b border-white/[0.06]"
+            style={{ WebkitOverflowScrolling: 'touch', position: 'sticky', top: '64px' }}
           >
             {categories.map(c => (
               <button
