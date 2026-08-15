@@ -21,9 +21,18 @@ export default function Hero({
     <section className="relative overflow-hidden w-full">
       {/* Background decor */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-[25%] -left-[12%] w-[75%] sm:w-[65%] h-[65%] bg-blue-600/10 blur-[120px] rounded-full" />
-        <div className="absolute top-[25%] -right-[12%] w-[65%] sm:w-[55%] h-[55%] bg-violet-600/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] sm:w-[80%] h-[30%] bg-indigo-600/5 blur-[100px] rounded-full" />
+        <div
+          className="absolute -top-[25%] -left-[12%] w-[75%] sm:w-[65%] h-[65%] blur-[120px] rounded-full transition-colors duration-500"
+          style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 70%)', opacity: 0.2 }}
+        />
+        <div
+          className="absolute top-[25%] -right-[12%] w-[65%] sm:w-[55%] h-[55%] blur-[120px] rounded-full transition-colors duration-500"
+          style={{ background: 'radial-gradient(circle, var(--secondary) 0%, transparent 70%)', opacity: 0.18 }}
+        />
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] sm:w-[80%] h-[30%] blur-[100px] rounded-full transition-colors duration-500"
+          style={{ background: 'radial-gradient(circle, var(--glow) 0%, transparent 70%)', opacity: 0.15 }}
+        />
         <div className="absolute inset-0 bg-grid-lux opacity-[0.12] sm:opacity-[0.15]" />
       </div>
 
@@ -31,8 +40,8 @@ export default function Hero({
         {/* Left — headline */}
         <div className="w-full min-w-0">
           <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full glass-lux mb-5 sm:mb-7 border border-white/10 max-w-full">
-            <span className="pulse-dot w-2 h-2 rounded-full bg-blue-400 shrink-0" />
-            <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] sm:tracking-[0.1em] uppercase text-blue-400 truncate">
+            <span className="pulse-dot w-2 h-2 rounded-full bg-[var(--primary)] shrink-0" />
+            <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] sm:tracking-[0.1em] uppercase text-[var(--text-accent)] truncate">
               Website Discovery Platform
             </span>
           </div>

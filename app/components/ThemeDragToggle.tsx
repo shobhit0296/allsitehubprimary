@@ -28,7 +28,9 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
     setActiveTheme(themeId);
     try {
       document.documentElement.setAttribute('data-theme', themeId);
+      document.body.setAttribute('data-theme', themeId);
       localStorage.setItem('allSiteHub_theme', themeId);
+      window.dispatchEvent(new CustomEvent('allSiteHub_theme_changed', { detail: themeId }));
     } catch {
       // ignore
     }

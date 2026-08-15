@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { THEMES } from '@/lib/theme';
 
 const VERTEX_SRC = `attribute vec2 a_position;
 void main() {
@@ -10,30 +11,33 @@ void main() {
 const FRAGMENT_SRC = `precision highp float;
 uniform float u_time;
 uniform vec2 u_resolution;
+uniform vec3 u_bg_color;
+uniform vec3 u_accent_color;
+uniform vec3 u_accent2_color;
 
 void main() {
     vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
 
-    // Background deep purple
-    vec3 color = vec3(0.035, 0.035, 0.059); // #09090F
+    // Dynamic background color from theme
+    vec3 color = u_bg_color;
 
     // Animated glowing clouds/nebula
     for (float i = 1.0; i < 4.0; i++) {
-        p.x += 0.3 / i * sin(i * 3.0 * p.y + u_time * 0.5);
-        p.y += 0.3 / i * cos(i * 3.0 * p.x + u_time * 0.5);
+        p.x += 0.3 / i * sin(i * 3.0 * p.y + u_time * 0.35);
+        p.y += 0.3 / i * cos(i * 3.0 * p.x + u_time * 0.35);
 
         float dist = length(p);
-        float glow = 0.02 / dist;
+        float glow = 0.028 / max(dist, 0.04);
 
-        // Deep purple to violet gradient
-        vec3 accent = vec3(0.54, 0.36, 0.96) * glow; // #8B5CF6
+        // Mix between primary accent and secondary accent
+        vec3 accent = mix(u_accent_color, u_accent2_color, sin(u_time * 0.3 + i * 1.5) * 0.5 + 0.5) * glow;
         color += accent * (1.0 / i);
     }
 
     // Subtle grid overlay
     vec2 grid = fract(gl_FragCoord.xy / min(u_resolution.x, u_resolution.y) * 40.0);
     float line = step(0.98, grid.x) + step(0.98, grid.y);
-    color += line * vec3(0.1, 0.08, 0.2) * 0.2;
+    color += line * u_accent_color * 0.08;
 
     gl_FragColor = vec4(color, 1.0);
 }`;
@@ -43,6 +47,10 @@ function compileShader(gl: WebGLRenderingContext, type: number, src: string): We
   gl.shaderSource(shader, src);
   gl.compileShader(shader);
   return shader;
+}
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
 }
 
 export default function ShaderBackground() {
@@ -86,13 +94,53 @@ export default function ShaderBackground() {
 
     const uTime = gl.getUniformLocation(program, 'u_time');
     const uRes = gl.getUniformLocation(program, 'u_resolution');
+    const uBg = gl.getUniformLocation(program, 'u_bg_color');
+    const uAccent = gl.getUniformLocation(program, 'u_accent_color');
+    const uAccent2 = gl.getUniformLocation(program, 'u_accent2_color');
+
+    // Theme color management with smooth interpolation
+    const getThemeColors = (themeId: string) => {
+      const found = THEMES.find(t => t.id === themeId) || THEMES[0];
+      return {
+        bg: [...found.bgRgb] as [number, number, number],
+        accent: [...found.accentRgb] as [number, number, number],
+        accent2: [...found.accent2Rgb] as [number, number, number],
+      };
+    };
+
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
+    let current = getThemeColors(initialTheme);
+    let target = getThemeColors(initialTheme);
+
+    // Watch for data-theme changes on documentElement
+    const observer = new MutationObserver(() => {
+      const nextTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
+      target = getThemeColors(nextTheme);
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
 
     let raf = 0;
     const render = (t: number) => {
       if (!ro) syncSize();
       gl.viewport(0, 0, canvas.width, canvas.height);
+
+      // Smooth color lerp towards target theme
+      const speed = 0.08;
+      for (let i = 0; i < 3; i++) {
+        current.bg[i] = lerp(current.bg[i], target.bg[i], speed);
+        current.accent[i] = lerp(current.accent[i], target.accent[i], speed);
+        current.accent2[i] = lerp(current.accent2[i], target.accent2[i], speed);
+      }
+
       gl.uniform1f(uTime, t * 0.001);
       gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform3fv(uBg, current.bg);
+      gl.uniform3fv(uAccent, current.accent);
+      gl.uniform3fv(uAccent2, current.accent2);
+
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       raf = requestAnimationFrame(render);
     };
@@ -100,6 +148,7 @@ export default function ShaderBackground() {
 
     return () => {
       cancelAnimationFrame(raf);
+      observer.disconnect();
       ro?.disconnect();
     };
   }, []);

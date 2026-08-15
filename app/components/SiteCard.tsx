@@ -28,9 +28,10 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
       aria-label={site.name}
       onClick={openSite}
       onKeyDown={e => e.key === 'Enter' && openSite()}
-      className="group relative rounded-xl sm:rounded-2xl border border-[#1e2438] hover:border-[#384266] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080b14] w-full min-w-0 overflow-hidden px-4 py-3 sm:px-4.5 sm:py-3.5 min-h-[104px] sm:min-h-[116px] md:min-h-[122px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(0,0,0,0.7)] active:scale-[0.98]"
+      className="site-card-item group relative rounded-xl sm:rounded-2xl border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden px-4 py-3 sm:px-4.5 sm:py-3.5 min-h-[104px] sm:min-h-[116px] md:min-h-[122px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 active:scale-[0.98]"
       style={{
-        background: 'linear-gradient(180deg, #11162b 0%, #0a0d1c 100%)',
+        background: 'var(--bg-card)',
+        borderColor: 'var(--border)',
         boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.45)',
       }}
     >
@@ -50,7 +51,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
         {onToggleBookmark ? (
           <button
             aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
-            className="bookmark-btn pointer-events-auto p-0.5 leading-none shrink-0 rounded-md text-[#64748b] hover:text-[#fbbf24] transition-all duration-150 -mr-0.5 -mt-0.5"
+            className="bookmark-btn pointer-events-auto p-0.5 leading-none shrink-0 rounded-md text-[var(--text-muted)] hover:text-[#fbbf24] transition-all duration-150 -mr-0.5 -mt-0.5"
             onClick={e => {
               e.stopPropagation();
               onToggleBookmark(site.id);
@@ -60,7 +61,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
               className={`material-symbols-outlined text-[16px] sm:text-[18px] transition-all ${
                 isBookmarked
                   ? 'text-[#fbbf24] opacity-100'
-                  : 'text-[#64748b] opacity-40 group-hover:opacity-85'
+                  : 'text-[var(--text-muted)] opacity-40 group-hover:opacity-85'
               }`}
               style={isBookmarked ? { fontVariationSettings: "'FILL' 1" } : undefined}
             >
@@ -96,13 +97,13 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
           </div>
         </div>
 
-        <h4 className="font-headline font-black text-[1.02rem] sm:text-[1.18rem] text-[#f8fafc] tracking-[-0.02em] group-hover:text-indigo-400 transition-colors truncate">
+        <h4 className="font-headline font-black text-[1.02rem] sm:text-[1.18rem] text-[var(--text-primary)] tracking-[-0.02em] group-hover:text-[var(--text-accent)] transition-colors truncate">
           {site.name}
         </h4>
       </div>
 
       {/* ── Bottom Row: Small Domain + External Link Icon ── */}
-      <div className="flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[12px] text-[#64748b] font-medium group-hover:text-[#94a3b8] transition-colors w-full min-w-0">
+      <div className="flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[12px] text-[var(--text-muted)] font-medium group-hover:text-[var(--text-secondary)] transition-colors w-full min-w-0">
         <svg
           width="10.5"
           height="10.5"
@@ -119,10 +120,13 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
         <span className="truncate">{site.domain}</span>
       </div>
 
-      {/* Subtle hover sheen */}
+      {/* Dynamic theme hover sheen */}
       <div
         className="absolute inset-0 rounded-xl sm:rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(168, 85, 247, 0.06) 100%)' }}
+        style={{
+          background: 'linear-gradient(135deg, var(--glow) 0%, transparent 100%)',
+          borderColor: 'var(--border-accent)',
+        }}
       />
     </div>
   );
