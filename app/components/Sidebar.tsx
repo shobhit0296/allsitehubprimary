@@ -16,14 +16,14 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
   const totalCount = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="flex flex-col gap-9">
+    <div className="flex flex-col gap-5 pb-6">
       {/* Categories */}
       <div>
-        <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] mb-3.5 flex items-center gap-2">
+        <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] mb-3 flex items-center gap-2">
           <span className="w-3 h-px bg-blue-500/60 inline-block" />
           Categories
         </h4>
-        <div className="glass-lux border border-white/[0.07] rounded-2xl p-2 flex flex-col gap-0.5">
+        <div className="glass-lux border border-white/[0.07] rounded-2xl p-1.5 flex flex-col gap-0.5 shadow-sm">
           {categories.map(cat => (
             <CatItem
               key={cat.name}
@@ -39,47 +39,78 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
       </div>
 
       {/* Community links */}
-      <div>
-        <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] mb-3.5 flex items-center gap-2">
-          <span className="w-3 h-px bg-violet-500/60 inline-block" />
-          Community
+      <div className="mt-1">
+        <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] mb-3 flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <span className="w-3 h-px bg-orange-500/80 inline-block" />
+            Official Communities
+          </span>
+          <span className="text-[9.5px] font-bold text-orange-400/90 bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/25">
+            JOIN US
+          </span>
         </h4>
-        <div className="flex flex-col gap-2">
-          <a
-            href="https://discord.gg/EDH5ScSsv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sidebar-social-link sidebar-discord"
-          >
-            <span className="sidebar-social-icon" style={{ background: '#5865F2' }}>
-              <DiscordIcon />
-            </span>
-            <span className="flex flex-col leading-tight min-w-0">
-              <span className="text-[13px] font-semibold text-[var(--text-primary)]">Discord</span>
-              <span className="text-[11px] text-[var(--text-muted)] mt-0.5">Join our server</span>
-            </span>
-            <span className="material-symbols-outlined text-[15px] text-[var(--text-muted)] ml-auto shrink-0 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">arrow_forward</span>
-          </a>
-
+        <div className="flex flex-col gap-2.5">
+          {/* Reddit - Highly Visible & Vibrant */}
           <a
             href="https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
             target="_blank"
             rel="noopener noreferrer"
-            className="sidebar-social-link sidebar-reddit"
+            className="sidebar-social-link sidebar-reddit group relative overflow-hidden flex items-center gap-3 p-3 rounded-xl border border-[#FF4500]/40 bg-[#FF4500]/[0.08] hover:bg-[#FF4500]/[0.16] hover:border-[#FF4500]/70 transition-all duration-200 shadow-[0_4px_16px_rgba(255,69,0,0.12)] hover:shadow-[0_6px_24px_rgba(255,69,0,0.25)] hover:scale-[1.01]"
           >
-            <span className="sidebar-social-icon" style={{ background: '#FF4500' }}>
+            <span
+              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-md transition-transform duration-200 group-hover:scale-110"
+              style={{ background: '#FF4500' }}
+            >
               <RedditIcon />
             </span>
-            <span className="flex flex-col leading-tight min-w-0">
-              <span className="text-[13px] font-semibold text-[var(--text-primary)]">Reddit</span>
-              <span className="text-[11px] text-[var(--text-muted)] mt-0.5">Follow us</span>
+            <span className="flex flex-col leading-tight min-w-0 flex-1">
+              <span className="text-[13.5px] font-bold text-white flex items-center gap-1.5">
+                Reddit
+                <span className="text-[9.5px] font-extrabold px-1.5 py-0.2 rounded bg-[#FF4500] text-white tracking-wide">
+                  COMMUNITY
+                </span>
+              </span>
+              <span className="text-[11.5px] font-medium text-orange-200/80 mt-0.5">
+                Follow updates & discussion
+              </span>
             </span>
-            <span className="material-symbols-outlined text-[15px] text-[var(--text-muted)] ml-auto shrink-0 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200">arrow_forward</span>
+            <span className="material-symbols-outlined text-[16px] text-orange-300 ml-auto shrink-0 transition-transform duration-200 group-hover:translate-x-1">
+              arrow_forward
+            </span>
+          </a>
+
+          {/* Discord */}
+          <a
+            href="https://discord.gg/EDH5ScSsv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar-social-link sidebar-discord group relative overflow-hidden flex items-center gap-3 p-3 rounded-xl border border-[#5865F2]/30 bg-[#5865F2]/[0.06] hover:bg-[#5865F2]/[0.14] hover:border-[#5865F2]/60 transition-all duration-200 shadow-sm hover:scale-[1.01]"
+          >
+            <span
+              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-md transition-transform duration-200 group-hover:scale-110"
+              style={{ background: '#5865F2' }}
+            >
+              <DiscordIcon />
+            </span>
+            <span className="flex flex-col leading-tight min-w-0 flex-1">
+              <span className="text-[13.5px] font-bold text-white flex items-center gap-1.5">
+                Discord
+                <span className="text-[9.5px] font-extrabold px-1.5 py-0.2 rounded bg-[#5865F2] text-white tracking-wide">
+                  SERVER
+                </span>
+              </span>
+              <span className="text-[11.5px] font-medium text-indigo-200/80 mt-0.5">
+                Join our live chat & support
+              </span>
+            </span>
+            <span className="material-symbols-outlined text-[16px] text-indigo-300 ml-auto shrink-0 transition-transform duration-200 group-hover:translate-x-1">
+              arrow_forward
+            </span>
           </a>
         </div>
       </div>
 
-      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed px-1">
         Allsitehub curates the best streaming sites for entertainment. We don&apos;t host any content.
       </p>
     </div>
