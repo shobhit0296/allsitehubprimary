@@ -8,26 +8,41 @@ const REDDIT_URL =
 
 const STORAGE_KEY = 'ash_community_popup_closed';
 
+/**
+ * Programmatic helper to trigger the Community Modal from anywhere
+ */
+export function openCommunityModal() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('open-community-modal'));
+  }
+}
+
 export default function CommunityModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user previously dismissed in this session
+    // 1. Auto-show popup 1.5s after mount if not previously dismissed in this session
     try {
       const isDismissed = sessionStorage.getItem(STORAGE_KEY);
       if (!isDismissed) {
-        // Show popup smoothly 1.5s after user opens the website
         const timer = setTimeout(() => {
           setIsOpen(true);
         }, 1500);
         return () => clearTimeout(timer);
       }
     } catch {
-      // ignore in case of storage restrictions
+      // ignore
     }
   }, []);
 
-  // Lock body scroll while modal is open to remove background scroll effect
+  useEffect(() => {
+    // 2. Global event listener so buttons across the site can open the modal anytime
+    const handleOpen = () => setIsOpen(true);
+    window.addEventListener('open-community-modal', handleOpen);
+    return () => window.removeEventListener('open-community-modal', handleOpen);
+  }, []);
+
+  // Lock body scroll while modal is open to preserve backdrop position
   useEffect(() => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -54,32 +69,31 @@ export default function CommunityModal() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="community-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fade-in overscroll-none select-none"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fade-in overscroll-none select-none backdrop-blur-2xl bg-black/75 transition-all duration-300"
       style={{
-        background: 'rgba(3, 6, 16, 0.65)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        backdropFilter: 'blur(24px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
       }}
       onClick={handleClose}
     >
-      {/* ── Modal Card with Translucent Blur Glassmorphism ── */}
+      {/* ── Modal Card with Frosted Glassmorphism ── */}
       <div
-        className="relative w-full max-w-[400px] mx-auto rounded-3xl p-6 sm:p-7 text-center overflow-hidden border border-white/[0.14] animate-scale-in"
+        className="relative w-full max-w-[420px] mx-auto rounded-3xl p-6 sm:p-8 text-center overflow-hidden border border-white/[0.18] shadow-2xl animate-scale-in"
         style={{
-          background: 'linear-gradient(145deg, rgba(15, 22, 42, 0.72) 0%, rgba(8, 12, 26, 0.82) 100%)',
-          backdropFilter: 'blur(36px) saturate(190%)',
-          WebkitBackdropFilter: 'blur(36px) saturate(190%)',
-          boxShadow: '0 25px 80px -15px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2)',
+          background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.85) 0%, rgba(8, 12, 28, 0.92) 100%)',
+          backdropFilter: 'blur(40px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(200%)',
+          boxShadow: '0 30px 90px -15px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.25)',
         }}
         onClick={e => e.stopPropagation()}
       >
         {/* Ambient Glows */}
         <div
-          className="absolute -top-16 -left-16 w-44 h-44 rounded-full pointer-events-none blur-3xl opacity-35"
+          className="absolute -top-16 -left-16 w-48 h-48 rounded-full pointer-events-none blur-3xl opacity-40"
           style={{ background: '#5865F2' }}
         />
         <div
-          className="absolute -bottom-16 -right-16 w-44 h-44 rounded-full pointer-events-none blur-3xl opacity-30"
+          className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full pointer-events-none blur-3xl opacity-35"
           style={{ background: '#FF4500' }}
         />
 
@@ -87,7 +101,7 @@ export default function CommunityModal() {
         <button
           onClick={handleClose}
           aria-label="Close modal"
-          className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-white/50 hover:text-white bg-white/5 hover:bg-white/10 transition-all duration-200 border border-white/10"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-white/60 hover:text-white bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/15 cursor-pointer"
         >
           <span className="material-symbols-outlined text-[19px]">close</span>
         </button>
@@ -95,10 +109,10 @@ export default function CommunityModal() {
         {/* Dual Brand Icon Badge */}
         <div className="flex items-center justify-center gap-3 mb-5">
           <div
-            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, #5865F2 0%, #4752C4 100%)',
-              boxShadow: '0 8px 24px rgba(88,101,242,0.45)',
+              boxShadow: '0 8px 24px rgba(88,101,242,0.5)',
               width: 52,
               height: 52,
             }}
@@ -106,10 +120,10 @@ export default function CommunityModal() {
             <DiscordIcon />
           </div>
           <div
-            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, #FF4500 0%, #D83A00 100%)',
-              boxShadow: '0 8px 24px rgba(255,69,0,0.45)',
+              boxShadow: '0 8px 24px rgba(255,69,0,0.5)',
               width: 52,
               height: 52,
             }}
@@ -143,7 +157,7 @@ export default function CommunityModal() {
             className="group flex items-center justify-between px-5 py-3.5 rounded-2xl font-bold text-[14.5px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: 'linear-gradient(135deg, #5865F2 0%, #404EED 100%)',
-              boxShadow: '0 6px 20px rgba(88,101,242,0.4)',
+              boxShadow: '0 6px 20px rgba(88,101,242,0.45)',
             }}
           >
             <div className="flex items-center gap-3">
@@ -164,7 +178,7 @@ export default function CommunityModal() {
             className="group flex items-center justify-between px-5 py-3.5 rounded-2xl font-bold text-[14.5px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: 'linear-gradient(135deg, #FF4500 0%, #E03D00 100%)',
-              boxShadow: '0 6px 20px rgba(255,69,0,0.4)',
+              boxShadow: '0 6px 20px rgba(255,69,0,0.45)',
             }}
           >
             <div className="flex items-center gap-3">

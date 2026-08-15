@@ -181,15 +181,13 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
       />
       {/* Categories & Directory */}
       <section id="directory" className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 mb-16 sm:mb-20 scroll-mt-24">
-        <aside className="hidden lg:block lg:col-span-4 xl:col-span-3">
-          <div className="sticky top-[80px] max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar z-20">
-            <Sidebar
-              categories={categories}
-              categoryCounts={categoryCounts}
-              activeCategory={activeCategory}
-              onCategoryChange={handleCategoryChange}
-            />
-          </div>
+        <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 self-start sticky top-[84px] max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar z-20">
+          <Sidebar
+            categories={categories}
+            categoryCounts={categoryCounts}
+            activeCategory={activeCategory}
+            onCategoryChange={handleCategoryChange}
+          />
         </aside>
 
         <div className="lg:col-span-8 xl:col-span-9 min-w-0 w-full">
