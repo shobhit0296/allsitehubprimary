@@ -27,22 +27,22 @@ export default function Hero({
         <div className="absolute inset-0 bg-grid-lux opacity-[0.12] sm:opacity-[0.15]" />
       </div>
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center page-offset-search lg:page-offset pb-14 sm:pb-20 lg:pb-28">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center page-offset-search lg:page-offset pb-14 sm:pb-20 lg:pb-28">
         {/* Left — headline */}
         <div className="w-full min-w-0">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full glass-lux mb-5 sm:mb-7 border border-white/10 max-w-full">
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full glass-lux mb-5 sm:mb-7 border border-white/10 max-w-full">
             <span className="pulse-dot w-2 h-2 rounded-full bg-blue-400 shrink-0" />
-            <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.08em] sm:tracking-[0.1em] uppercase text-blue-400 truncate">
+            <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] sm:tracking-[0.1em] uppercase text-blue-400 truncate">
               Website Discovery Platform
             </span>
           </div>
 
-          <h1 className="font-headline text-[1.95rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3.8rem] font-extrabold mb-4 sm:mb-6 leading-[1.12] sm:leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
+          <h1 className="font-headline text-[2.15rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4.15rem] font-extrabold mb-4 sm:mb-6 leading-[1.12] sm:leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
             Discover Websites.{' '}
             <span className="gradient-text">Search Smarter.</span>
           </h1>
 
-          <p className="text-[0.92rem] sm:text-[1.05rem] lg:text-[1.12rem] text-[var(--text-secondary)] mb-6 sm:mb-8 max-w-[520px] leading-[1.65]">
+          <p className="text-[0.98rem] sm:text-[1.12rem] lg:text-[1.2rem] text-[var(--text-secondary)] mb-6 sm:mb-8 max-w-[580px] leading-[1.65]">
             AllSiteHub helps you discover useful websites across the internet. Search, explore and refine websites by category to quickly find the tools, resources and online platforms you&apos;re looking for.
           </p>
 

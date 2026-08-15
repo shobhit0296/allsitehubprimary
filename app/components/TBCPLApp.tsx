@@ -126,6 +126,21 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
     };
   }, [categories]);
 
+  // ── Auto-scroll active chip into view inside mobile category bar ──
+  const mobileCatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mobileCatContainerRef.current) return;
+    const activeEl = mobileCatContainerRef.current.querySelector('.chip-active') as HTMLElement | null;
+    if (activeEl) {
+      activeEl.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [activeCategory]);
+
   // When user manually picks a category, native smooth scroll into view
   const handleCategoryChange = useCallback((cat: string) => {
     scrollSpyActive.current = false;
@@ -164,11 +179,10 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
-
       {/* Categories & Directory */}
-      <section id="directory" className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-12 mb-16 sm:mb-20 scroll-mt-24">
-        <div className="hidden xl:block xl:col-span-3">
-          <div className="sticky top-[calc(var(--nav-h)+1rem)] max-h-[calc(100vh-var(--nav-h)-2rem)] overflow-y-auto no-scrollbar">
+      <section id="directory" className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 mb-16 sm:mb-20 scroll-mt-24">
+        <aside className="hidden lg:block lg:col-span-4 xl:col-span-3">
+          <div className="sticky top-[80px] max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar z-20">
             <Sidebar
               categories={categories}
               categoryCounts={categoryCounts}
@@ -176,12 +190,12 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
               onCategoryChange={handleCategoryChange}
             />
           </div>
-        </div>
+        </aside>
 
-        <div className="xl:col-span-9 min-w-0 w-full">
-          {/* Mobile & Tablet: horizontal category scroll */}
+        <div className="lg:col-span-8 xl:col-span-9 min-w-0 w-full">
+          {/* Mobile only (< lg): normal horizontal category scroll */}
           <div
-            className="flex xl:hidden no-scrollbar gap-2 overflow-x-auto pb-2.5 mb-6 sm:mb-8 scroll-smooth overscroll-x-contain"
+            className="flex lg:hidden no-scrollbar gap-2 overflow-x-auto pb-2.5 mb-6 sm:mb-8 scroll-smooth overscroll-x-contain"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {categories.map(c => (
@@ -239,7 +253,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
 
       {/* Footer */}
       <footer className="bg-transparent w-full py-20 border-t border-white/[0.06] mt-auto">
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           <div className="col-span-2">
             <span className="font-headline text-xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] mb-5 inline-block">
               All<span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">site</span>hub

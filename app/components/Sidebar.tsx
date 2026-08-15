@@ -101,7 +101,7 @@ function CatItem({ icon, name, count, accent, isActive, onClick }: CatItemProps)
   return (
     <button
       onClick={onClick}
-      className={`cat-sidebar-btn w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group text-left relative overflow-hidden transform-gpu ${
+      className={`cat-sidebar-btn w-full flex items-center gap-3.5 px-3.5 py-3.5 rounded-xl transition-all duration-200 group text-left relative overflow-hidden transform-gpu ${
         isActive ? 'is-active' : ''
       }`}
       style={{
@@ -110,7 +110,7 @@ function CatItem({ icon, name, count, accent, isActive, onClick }: CatItemProps)
     >
       {/* Indicator Accent Bar */}
       <div
-        className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition-transform duration-250 ease-out pointer-events-none transform-gpu"
+        className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-r-full transition-transform duration-250 ease-out pointer-events-none transform-gpu"
         style={{
           background: accent,
           transform: isActive ? 'scaleY(1) translateZ(0)' : 'scaleY(0) translateZ(0)',
@@ -120,23 +120,23 @@ function CatItem({ icon, name, count, accent, isActive, onClick }: CatItemProps)
       />
 
       <span
-        className="w-8.5 h-8.5 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-105 transform-gpu"
+        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-105 transform-gpu"
         style={{
           background: isActive ? `${accent}28` : 'rgba(255,255,255,0.05)',
           border: `1px solid ${isActive ? `${accent}60` : 'rgba(255,255,255,0.07)'}`,
         }}
       >
-        <CategoryIcon name={name} size={20} />
+        <CategoryIcon name={name} size={22} />
       </span>
       <span
-        className={`flex-1 text-[13.5px] truncate transition-colors duration-200 ${
+        className={`flex-1 text-[14.5px] truncate transition-colors duration-200 ${
           isActive ? 'font-bold text-[var(--text-primary)]' : 'font-semibold text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'
         }`}
       >
         {name}
       </span>
       <span
-        className="text-[11px] font-bold rounded-full px-2.5 py-0.5 shrink-0 tabular-nums transition-colors duration-200"
+        className="text-[11.5px] font-bold rounded-full px-2.5 py-0.5 shrink-0 tabular-nums transition-colors duration-200"
         style={{
           color: isActive ? accent : 'var(--text-muted)',
           background: isActive ? `${accent}20` : 'rgba(255,255,255,0.04)',

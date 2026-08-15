@@ -28,17 +28,17 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
       aria-label={site.name}
       onClick={openSite}
       onKeyDown={e => e.key === 'Enter' && openSite()}
-      className="group relative rounded-xl sm:rounded-2xl border border-[#1e2438] hover:border-[#384266] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080b14] w-full min-w-0 overflow-hidden px-3 py-1.5 sm:px-3.5 sm:py-2 h-[82px] sm:h-[94px] md:h-[100px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,0.65)] active:scale-[0.98]"
+      className="group relative rounded-xl sm:rounded-2xl border border-[#1e2438] hover:border-[#384266] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#080b14] w-full min-w-0 overflow-hidden px-4 py-3 sm:px-4.5 sm:py-3.5 min-h-[104px] sm:min-h-[116px] md:min-h-[122px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(0,0,0,0.7)] active:scale-[0.98]"
       style={{
-        background: 'linear-gradient(180deg, #101426 0%, #090c18 100%)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 4px 18px rgba(0, 0, 0, 0.4)',
+        background: 'linear-gradient(180deg, #11162b 0%, #0a0d1c 100%)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.45)',
       }}
     >
       {/* ── Top Row: Tag (Left) + Bookmark Star (Right) ── */}
-      <div className="flex items-center justify-between w-full h-[14px] pointer-events-none">
+      <div className="flex items-center justify-between w-full h-[16px] pointer-events-none">
         {tag ? (
           <span
-            className={`text-[6.5px] sm:text-[7.5px] font-black tracking-widest uppercase px-1.5 py-0.2 rounded-full border shadow-sm ${tag.cls}`}
+            className={`text-[7.5px] sm:text-[8.5px] font-black tracking-widest uppercase px-2 py-0.5 rounded-full border shadow-sm ${tag.cls}`}
           >
             {tag.label}
           </span>
@@ -56,7 +56,7 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
           }}
         >
           <span
-            className={`material-symbols-outlined text-[14px] sm:text-[16px] transition-all ${
+            className={`material-symbols-outlined text-[16px] sm:text-[18px] transition-all ${
               isBookmarked
                 ? 'text-[#fbbf24] opacity-100'
                 : 'text-[#64748b] opacity-40 group-hover:opacity-85'
@@ -69,17 +69,17 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
       </div>
 
       {/* ── Center: Brand Icon + Bold Website Name (Prominent & Centered) ── */}
-      <div className="flex items-center justify-center gap-2 sm:gap-2.5 w-full my-auto px-1 text-center">
+      <div className="flex items-center justify-center gap-2.5 sm:gap-3 w-full my-auto px-1 text-center">
         <div
-          className="shrink-0 rounded-md sm:rounded-lg overflow-hidden transition-transform duration-200 group-hover:scale-105"
-          style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.35)' }}
+          className="shrink-0 rounded-lg overflow-hidden transition-transform duration-200 group-hover:scale-105"
+          style={{ boxShadow: '0 3px 10px rgba(0,0,0,0.4)' }}
         >
           <div className="sm:hidden">
             <SiteIcon
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={22}
+              size={28}
             />
           </div>
           <div className="hidden sm:block">
@@ -87,21 +87,21 @@ export default function SiteCard({ site, isBookmarked, onToggleBookmark }: SiteC
               name={site.name}
               domain={site.domain}
               faviconUrl={site.faviconUrl}
-              size={26}
+              size={32}
             />
           </div>
         </div>
 
-        <h4 className="font-headline font-black text-[0.88rem] sm:text-[1.04rem] text-[#f8fafc] tracking-[-0.02em] group-hover:text-indigo-400 transition-colors truncate">
+        <h4 className="font-headline font-black text-[1.02rem] sm:text-[1.18rem] text-[#f8fafc] tracking-[-0.02em] group-hover:text-indigo-400 transition-colors truncate">
           {site.name}
         </h4>
       </div>
 
       {/* ── Bottom Row: Small Domain + External Link Icon ── */}
-      <div className="flex items-center justify-center gap-1 text-[9.5px] sm:text-[10.5px] text-[#64748b] font-medium group-hover:text-[#94a3b8] transition-colors w-full min-w-0">
+      <div className="flex items-center justify-center gap-1.5 text-[10.5px] sm:text-[12px] text-[#64748b] font-medium group-hover:text-[#94a3b8] transition-colors w-full min-w-0">
         <svg
-          width="9"
-          height="9"
+          width="10.5"
+          height="10.5"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

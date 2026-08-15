@@ -27,6 +27,17 @@ export default function CommunityModal() {
     }
   }, []);
 
+  // Lock body scroll while modal is open to remove background scroll effect
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+
   const handleClose = () => {
     setIsOpen(false);
     try {
@@ -43,15 +54,22 @@ export default function CommunityModal() {
       role="dialog"
       aria-modal="true"
       aria-labelledby="community-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-6 animate-fade-in"
-      style={{ background: 'rgba(5, 7, 13, 0.82)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-fade-in overscroll-none select-none"
+      style={{
+        background: 'rgba(3, 6, 16, 0.65)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+      }}
       onClick={handleClose}
     >
-      {/* ── Modal Card ── */}
+      {/* ── Modal Card with Translucent Blur Glassmorphism ── */}
       <div
-        className="relative w-full max-w-[410px] mx-auto rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-center overflow-hidden border border-white/12 shadow-[0_24px_70px_rgba(0,0,0,0.85)] animate-scale-in max-h-[92vh] overflow-y-auto no-scrollbar"
+        className="relative w-full max-w-[400px] mx-auto rounded-3xl p-6 sm:p-7 text-center overflow-hidden border border-white/[0.14] animate-scale-in"
         style={{
-          background: 'linear-gradient(145deg, rgba(20, 24, 39, 0.98) 0%, rgba(10, 13, 24, 0.99) 100%)',
+          background: 'linear-gradient(145deg, rgba(15, 22, 42, 0.72) 0%, rgba(8, 12, 26, 0.82) 100%)',
+          backdropFilter: 'blur(36px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(36px) saturate(190%)',
+          boxShadow: '0 25px 80px -15px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2)',
         }}
         onClick={e => e.stopPropagation()}
       >
