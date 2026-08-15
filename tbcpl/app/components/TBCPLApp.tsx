@@ -1,12 +1,19 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Site, Category } from '@/lib/data';
 import { REGION_FLAGS, ONLINE_BASE, filterSites, getSitesByCategory } from '@/lib/data';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
+
+import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
+import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
+
+/** Converts category name to the section id used by CategorySection */
+const catSlug = (name: string) =>
+  `cat-${name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`;
 
 interface AllsitehubAppProps {
   sites: Site[];
@@ -17,28 +24,34 @@ interface AllsitehubAppProps {
 export default function AllsitehubApp({ sites, categories, regions }: AllsitehubAppProps) {
   const [search, setSearch] = useState('');
   const [activeRegion, setActiveRegion] = useState('US');
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(categories[0]?.name ?? 'Movies & Shows');
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
 
-  // ── Live online users — fluctuate ±8% every 20 s ──
-  const [onlineCounts, setOnlineCounts] = useState<Record<string, number>>(ONLINE_BASE);
-  useEffect(() => {
-    const tick = () => {
-      setOnlineCounts(() => {
-        const next: Record<string, number> = {};
-        for (const [r, base] of Object.entries(ONLINE_BASE)) {
-          const jitter = 1 + (Math.random() - 0.5) * 0.16; // ±8%
-          next[r] = Math.round(base * jitter);
-        }
-        return next;
-      });
-    };
-    const id = setInterval(tick, 20_000);
-    return () => clearInterval(id);
-  }, []);
+  // ── Scheduled time-of-day live online users (changes every 15-20s) ──
+  const liveOnlineCount = useLiveOnlineCounter();
 
-  const activeOnline = onlineCounts[activeRegion] ?? 0;
-  const globalOnline = useMemo(() => Object.values(onlineCounts).reduce((a, b) => a + b, 0), [onlineCounts]);
+  // ── All-time total users / visitors (GA4 Property 546801810 with daily ~25k growth) ──
+  const [totalUsers, setTotalUsers] = useState<number>(() => calculateAllTimeActiveUsers());
+
+  useEffect(() => {
+    fetch('/api/stats/visitors')
+      .then(res => res.json())
+      .then(data => {
+        if (data.totalUsers) setTotalUsers(data.totalUsers);
+      })
+      .catch(() => {});
+
+    // Increment visitor count once per session
+    if (!sessionStorage.getItem('ash_visited')) {
+      sessionStorage.setItem('ash_visited', '1');
+      fetch('/api/stats/visitors', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.totalUsers) setTotalUsers(data.totalUsers);
+        })
+        .catch(() => {});
+    }
+  }, []);
 
   const toggleBookmark = useCallback((id: string) => {
     setBookmarks(prev => {
@@ -49,8 +62,8 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   }, []);
 
   const filteredSites = useMemo(
-    () => filterSites(sites, search, activeRegion, activeCategory),
-    [sites, search, activeRegion, activeCategory],
+    () => filterSites(sites, search, activeRegion, 'all'),
+    [sites, search, activeRegion],
   );
 
   const categoryCounts = useMemo(() => {
@@ -64,12 +77,86 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   const grouped = useMemo(() => getSitesByCategory(filteredSites), [filteredSites]);
 
   const visibleCategories = useMemo(
-    () =>
-      activeCategory === 'all'
-        ? categories.filter(c => (grouped[c.name]?.length ?? 0) > 0)
-        : categories.filter(c => c.name === activeCategory),
-    [activeCategory, categories, grouped],
+    () => categories.filter(c => (grouped[c.name]?.length ?? 0) > 0),
+    [categories, grouped],
   );
+
+  // ── Scroll spy — highlight sidebar category as sections scroll into view ──
+  const scrollSpyActive = useRef(true);
+  const activeCategoryRef = useRef(activeCategory);
+  activeCategoryRef.current = activeCategory;
+
+  useEffect(() => {
+    const sections = categories
+      .map(c => document.getElementById(catSlug(c.name)))
+      .filter(Boolean) as HTMLElement[];
+
+    if (sections.length === 0) return;
+
+    let rafId: number | null = null;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!scrollSpyActive.current) return;
+        if (rafId) cancelAnimationFrame(rafId);
+
+        rafId = requestAnimationFrame(() => {
+          // Find the topmost intersecting section
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visible.length > 0) {
+            const id = visible[0].target.id;
+            const matched = categories.find(c => catSlug(c.name) === id);
+            // ONLY update state if the category actually changed!
+            if (matched && matched.name !== activeCategoryRef.current) {
+              setActiveCategory(matched.name);
+            }
+          }
+        });
+      },
+      { rootMargin: '-15% 0px -50% 0px', threshold: 0.1 },
+    );
+
+    sections.forEach(s => observer.observe(s));
+    return () => {
+      observer.disconnect();
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [categories]);
+
+  // ── Auto-scroll active chip into view inside mobile category bar ──
+  const mobileCatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mobileCatContainerRef.current) return;
+    const activeEl = mobileCatContainerRef.current.querySelector('.chip-active') as HTMLElement | null;
+    if (activeEl) {
+      activeEl.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [activeCategory]);
+
+  // When user manually picks a category, native smooth scroll into view
+  const handleCategoryChange = useCallback((cat: string) => {
+    scrollSpyActive.current = false;
+    setActiveCategory(cat);
+
+    const el = document.getElementById(catSlug(cat));
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Re-enable scroll spy after smooth scroll finishes
+    setTimeout(() => {
+      scrollSpyActive.current = true;
+    }, 800);
+  }, []);
+
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -80,7 +167,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         regions={regions}
         activeRegion={activeRegion}
         onRegionChange={setActiveRegion}
-        onlineCount={activeOnline}
+        onlineCount={liveOnlineCount}
       />
 
       <Hero
@@ -90,59 +177,44 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         regionFlag={REGION_FLAGS[activeRegion] ?? '🌍'}
         activeRegion={activeRegion}
         filteredCount={filteredSites.length}
-        onlineCount={globalOnline}
+        totalUsers={totalUsers}
       />
-
-      {/* Trending — sticky under navbar, mobile/tablet only */}
-      <div className="xl:hidden sticky top-16 z-40 w-full bg-[#0c1324]/85 backdrop-blur-xl border-b border-white/5 mb-16">
-        <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-16 w-full py-3.5">
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <span className="text-[11px] font-semibold tracking-widest uppercase text-[var(--text-muted)]">Trending:</span>
-            {categories.map(cat => (
-              <button
-                key={cat.name}
-                onClick={() => setActiveCategory(activeCategory === cat.name ? 'all' : cat.name)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-                  activeCategory === cat.name
-                    ? 'text-blue-400 border-blue-500/50 bg-blue-500/10'
-                    : 'glass-lux text-[var(--text-secondary)] border-white/5 hover:text-blue-400'
-                }`}
-              >
-                {cat.icon} {cat.name}
-              </button>
-            ))}
-          </div>
-        </section>
-      </div>
-
       {/* Categories & Directory */}
-      <section id="directory" className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-16 w-full grid grid-cols-1 xl:grid-cols-12 gap-10 mb-16 scroll-mt-20">
-        <div className="hidden xl:block xl:col-span-3">
-          <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar">
+      <section id="directory" className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 mb-16 sm:mb-20 scroll-mt-24">
+        <aside
+          className="hidden lg:block lg:col-span-4 xl:col-span-3 self-start sticky top-[84px] z-30"
+          style={{ position: 'sticky', top: '84px', alignSelf: 'flex-start' }}
+        >
+          <div className="max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-1">
             <Sidebar
               categories={categories}
               categoryCounts={categoryCounts}
               activeCategory={activeCategory}
-              onCategoryChange={setActiveCategory}
+              onCategoryChange={handleCategoryChange}
             />
           </div>
-        </div>
+        </aside>
 
-        <div className="xl:col-span-9">
-          {/* Mobile: horizontal category scroll */}
-          <div className="flex xl:hidden no-scrollbar gap-2 overflow-x-auto pb-1 mb-6">
-            {[{ name: 'all', icon: '✦', label: 'All' }, ...categories.map(c => ({ name: c.name, icon: c.icon, label: c.name }))].map(item => (
+        <div className="lg:col-span-8 xl:col-span-9 min-w-0 w-full">
+          {/* Mobile only (< lg): sticky horizontal category scroll */}
+          <div
+            ref={mobileCatContainerRef}
+            className="flex lg:hidden sticky top-[64px] z-20 bg-[var(--bg-base)]/90 backdrop-blur-md py-2.5 -mx-2 px-2 no-scrollbar gap-2 overflow-x-auto mb-6 sm:mb-8 scroll-smooth overscroll-x-contain border-b border-[var(--border)]"
+            style={{ WebkitOverflowScrolling: 'touch', position: 'sticky', top: '64px' }}
+          >
+            {categories.map(c => (
               <button
-                key={item.name}
-                onClick={() => setActiveCategory(item.name)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full border text-xs font-medium whitespace-nowrap shrink-0 transition-colors ${
-                  activeCategory === item.name
-                    ? 'text-blue-400 border-blue-500/50 bg-blue-500/10'
-                    : 'text-[var(--text-secondary)] border-white/10 glass-lux'
+                key={c.name}
+                onClick={() => handleCategoryChange(c.name)}
+                className={`chip shrink-0 select-none touch-manipulation transition-all duration-200 active:scale-95 ${
+                  activeCategory === c.name ? 'chip-active' : ''
                 }`}
               >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="text-sm leading-none">{c.icon}</span>
+                <span className="font-semibold text-xs sm:text-[13px]">{c.name}</span>
+                {categoryCounts[c.name] !== undefined && (
+                  <span className="text-[10px] opacity-75 ml-0.5 font-mono">({categoryCounts[c.name]})</span>
+                )}
               </button>
             ))}
           </div>
@@ -155,15 +227,15 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
           )}
 
           {visibleCategories.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 px-5 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-2xl mb-4">
+            <div className="flex flex-col items-center justify-center py-24 px-5 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-2xl mb-5">
                 <span className="material-symbols-outlined text-[28px] text-blue-400">search_off</span>
               </div>
-              <p className="text-[var(--text-secondary)] text-base mb-1">No sites found</p>
-              <p className="text-[var(--text-muted)] text-sm mb-5">Try a different search or region</p>
+              <p className="font-headline text-base font-bold text-[var(--text-primary)] mb-1.5">No sites found</p>
+              <p className="text-[var(--text-muted)] text-sm mb-6">Try a different search or region</p>
               <button
-                onClick={() => { setSearch(''); setActiveCategory('all'); setActiveRegion('US'); }}
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-blue-500 to-violet-500 text-white text-sm font-semibold"
+                onClick={() => { setSearch(''); setActiveRegion('US'); }}
+                className="btn-brand rounded-full px-6 py-2.5 text-sm"
               >
                 Clear all filters
               </button>
@@ -183,55 +255,45 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         </div>
       </section>
 
-      {/* Mobile-only sidebar content (categories, discord) */}
-      <section className="xl:hidden max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-16 w-full mb-16">
-        <Sidebar
-          categories={categories}
-          categoryCounts={categoryCounts}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
-      </section>
-
       {/* Footer */}
-      <footer className="bg-transparent w-full py-16 border-t border-white/5 mt-auto">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+      <footer className="bg-transparent w-full py-20 border-t border-white/[0.06] mt-auto">
+        <div className="max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-10">
           <div className="col-span-2">
-            <span className="font-headline text-lg font-extrabold text-[var(--text-primary)] mb-4 inline-block">
-              All<span className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent">site</span>hub
+            <span className="font-headline text-xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] mb-5 inline-block">
+              All<span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">site</span>hub
             </span>
-            <p className="text-sm text-[var(--text-muted)] max-w-xs mb-6">
+            <p className="text-[13.5px] text-[var(--text-muted)] max-w-[260px] mb-7 leading-relaxed">
               Curated streaming directory for movies, anime, manga, live TV and sports. We do not host any content.
             </p>
             <a
               href="https://discord.gg/EDH5ScSsv"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-xl glass-lux border border-white/5 flex items-center justify-center text-[var(--text-secondary)] hover:text-white transition-all inline-flex"
+              className="w-10 h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#5865F2]/40 transition-all inline-flex"
             >
               <DiscordIcon />
             </a>
           </div>
           <div>
-            <h5 className="text-[11px] font-bold tracking-widest uppercase text-[var(--text-primary)] mb-4">Directory</h5>
-            <ul className="space-y-3">
-              <li><a href="/" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Home</a></li>
-              <li><a href="#directory" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Categories</a></li>
-              <li><a href="/request" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Request Site</a></li>
+            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Directory</h5>
+            <ul className="space-y-3.5">
+              <li><a href="/" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Home</a></li>
+              <li><a href="#directory" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Categories</a></li>
+              <li><a href="/request" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Request Site</a></li>
             </ul>
           </div>
           <div>
-            <h5 className="text-[11px] font-bold tracking-widest uppercase text-[var(--text-primary)] mb-4">Legal</h5>
-            <ul className="space-y-3">
-              <li><a href="/about" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About</a></li>
-              <li><a href="/dmca" className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">DMCA</a></li>
+            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Legal</h5>
+            <ul className="space-y-3.5">
+              <li><a href="/about" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About</a></li>
+              <li><a href="/dmca" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">DMCA</a></li>
             </ul>
           </div>
         </div>
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-16 mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[11px] text-[var(--text-muted)]">© {new Date().getFullYear()} Allsitehub. All rights reserved.</p>
-          <span className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" /> Systems Operational
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 mt-14 pt-7 border-t border-white/[0.05] flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-[12px] text-[var(--text-muted)]">© {new Date().getFullYear()} Allsitehub. All rights reserved.</p>
+          <span className="flex items-center gap-2 text-[12px] text-[var(--text-muted)]">
+            <span className="pulse-dot w-2 h-2 rounded-full bg-emerald-500" /> Systems Operational
           </span>
         </div>
       </footer>

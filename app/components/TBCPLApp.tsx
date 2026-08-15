@@ -199,7 +199,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
           {/* Mobile only (< lg): sticky horizontal category scroll */}
           <div
             ref={mobileCatContainerRef}
-            className="flex lg:hidden sticky top-[64px] z-20 bg-[#0a0a12]/90 backdrop-blur-md py-2.5 -mx-2 px-2 no-scrollbar gap-2 overflow-x-auto mb-6 sm:mb-8 scroll-smooth overscroll-x-contain border-b border-white/[0.06]"
+            className="flex lg:hidden sticky top-[64px] z-20 bg-[var(--bg-base)]/90 backdrop-blur-md py-2.5 -mx-2 px-2 no-scrollbar gap-2 overflow-x-auto mb-6 sm:mb-8 scroll-smooth overscroll-x-contain border-b border-[var(--border)]"
             style={{ WebkitOverflowScrolling: 'touch', position: 'sticky', top: '64px' }}
           >
             {categories.map(c => (

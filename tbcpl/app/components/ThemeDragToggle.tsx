@@ -24,6 +24,20 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
     }
   }, []);
 
+  // Listen for global theme changes
+  useEffect(() => {
+    const handleThemeEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail && THEMES.some(t => t.id === detail)) {
+        setActiveTheme(detail);
+        const idx = THEMES.findIndex(t => t.id === detail);
+        if (idx !== -1) setDragProgress(idx / (THEMES.length - 1));
+      }
+    };
+    window.addEventListener('allSiteHub_theme_changed', handleThemeEvent);
+    return () => window.removeEventListener('allSiteHub_theme_changed', handleThemeEvent);
+  }, []);
+
   const applyTheme = useCallback((themeId: string) => {
     setActiveTheme(themeId);
     try {
@@ -35,6 +49,11 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
       // ignore
     }
   }, []);
+
+  const selectTheme = useCallback((theme: ThemeOption, idx: number) => {
+    setDragProgress(idx / (THEMES.length - 1));
+    applyTheme(theme.id);
+  }, [applyTheme]);
 
   const updateFromPosition = useCallback(
     (clientX: number) => {
@@ -54,18 +73,25 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
   );
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsDragging(true);
-    e.currentTarget.setPointerCapture(e.pointerId);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // ignore
+    }
     updateFromPosition(e.clientX);
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
+    e.stopPropagation();
     updateFromPosition(e.clientX);
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
+    e.stopPropagation();
     setIsDragging(false);
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
@@ -77,11 +103,6 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
     if (activeIdx !== -1) {
       setDragProgress(activeIdx / (THEMES.length - 1));
     }
-  };
-
-  const selectTheme = (theme: ThemeOption, idx: number) => {
-    setDragProgress(idx / (THEMES.length - 1));
-    applyTheme(theme.id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -99,29 +120,29 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
 
   const currentThemeObj = THEMES.find(t => t.id === activeTheme) || THEMES[0];
   const activeIdx = THEMES.findIndex(t => t.id === activeTheme);
-  const visualProgress = isDragging ? dragProgress : activeIdx / (THEMES.length - 1);
+  const visualProgress = isDragging ? dragProgress : (activeIdx !== -1 ? activeIdx / (THEMES.length - 1) : 0);
 
   return (
-    <div className="theme-toggle-container flex flex-col gap-2">
+    <div className="theme-toggle-container flex flex-col gap-2 w-full">
       {/* Header with Title & Current Theme Tag */}
       <div className="flex items-center justify-between">
         <h4 className="text-[10.5px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] flex items-center gap-1.5">
           <span
-            className="w-2 h-2 rounded-full transition-colors duration-300 shadow-sm"
+            className="w-2.5 h-2.5 rounded-full transition-colors duration-300 shadow-sm"
             style={{ background: currentThemeObj.color, boxShadow: `0 0 8px ${currentThemeObj.color}` }}
           />
-          Theme
+          Theme Preset
         </h4>
         <span
-          className="text-[10px] font-bold px-2 py-0.5 rounded-full border transition-all duration-300 flex items-center gap-1"
+          className="text-[10.5px] font-bold px-2 py-0.5 rounded-full border transition-all duration-300 flex items-center gap-1"
           style={{
             color: currentThemeObj.color,
-            background: `${currentThemeObj.color}15`,
-            borderColor: `${currentThemeObj.color}35`,
+            background: `${currentThemeObj.color}18`,
+            borderColor: `${currentThemeObj.color}40`,
           }}
         >
           <span>{currentThemeObj.icon}</span>
-          <span className="truncate max-w-[80px]">{currentThemeObj.shortName}</span>
+          <span className="truncate max-w-[90px]">{currentThemeObj.shortName}</span>
         </span>
       </div>
 
@@ -140,33 +161,35 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        className="theme-drag-track relative h-9 px-1 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/15 flex items-center justify-between cursor-grab active:cursor-grabbing select-none transition-all duration-200 shadow-inner group touch-none"
+        className="theme-drag-track relative h-10 px-1 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/18 flex items-center justify-between cursor-grab active:cursor-grabbing select-none transition-all duration-200 shadow-inner group touch-none"
       >
         {/* Glow fill bar */}
-        <div
-          className="absolute left-1 right-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden pointer-events-none"
-        >
+        <div className="absolute left-1 right-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden pointer-events-none">
           <div
             className="h-full rounded-full transition-all duration-150"
             style={{
               width: `${visualProgress * 100}%`,
               background: `linear-gradient(90deg, ${THEMES[0].color}, ${currentThemeObj.color})`,
-              boxShadow: `0 0 10px ${currentThemeObj.color}66`,
+              boxShadow: `0 0 12px ${currentThemeObj.color}66`,
             }}
           />
         </div>
 
-        {/* Snap point indicators */}
-        <div className="absolute inset-x-2.5 flex justify-between items-center pointer-events-none">
-          {THEMES.map((theme) => {
+        {/* Clickable snap point indicators */}
+        <div className="absolute inset-x-3 flex justify-between items-center pointer-events-none">
+          {THEMES.map((theme, idx) => {
             const isPointActive = theme.id === activeTheme;
             return (
               <span
                 key={theme.id}
-                className="w-2 h-2 rounded-full transition-all duration-200 transform"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  selectTheme(theme, idx);
+                }}
+                className="w-2.5 h-2.5 rounded-full transition-all duration-200 transform pointer-events-auto cursor-pointer"
                 style={{
                   background: isPointActive ? theme.color : `${theme.color}40`,
-                  boxShadow: isPointActive ? `0 0 6px ${theme.color}` : 'none',
+                  boxShadow: isPointActive ? `0 0 8px ${theme.color}` : 'none',
                   transform: isPointActive ? 'scale(1.4)' : 'scale(1)',
                 }}
               />
@@ -176,15 +199,15 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
 
         {/* Draggable Thumb Knob */}
         <div
-          className="absolute top-1 bottom-1 w-7 rounded-lg flex items-center justify-center pointer-events-none shadow-md transition-transform duration-75 ease-out"
+          className="absolute top-1 bottom-1 w-8 rounded-lg flex items-center justify-center pointer-events-none shadow-md transition-transform duration-75 ease-out"
           style={{
-            left: `calc(${visualProgress * 100}% - ${visualProgress * 28}px + 4px)`,
+            left: `calc(${visualProgress * 100}% - ${visualProgress * 32}px + 4px)`,
             background: `linear-gradient(135deg, ${currentThemeObj.color}, ${currentThemeObj.secondaryColor})`,
-            boxShadow: `0 0 14px ${currentThemeObj.color}88, inset 0 1px 1px rgba(255,255,255,0.4)`,
-            transform: isDragging ? 'scale(1.12)' : 'scale(1)',
+            boxShadow: `0 0 16px ${currentThemeObj.color}88, inset 0 1px 1px rgba(255,255,255,0.4)`,
+            transform: isDragging ? 'scale(1.15)' : 'scale(1)',
           }}
         >
-          <span className="text-[11px] font-black text-black select-none">
+          <span className="text-[12px] font-black text-black select-none">
             {currentThemeObj.icon}
           </span>
         </div>
@@ -197,21 +220,29 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
           return (
             <button
               key={theme.id}
-              onClick={() => selectTheme(theme, idx)}
               type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                selectTheme(theme, idx);
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                selectTheme(theme, idx);
+              }}
               aria-label={`Select ${theme.name} theme`}
               title={theme.name}
-              className={`flex flex-col items-center justify-center py-1.5 rounded-lg border transition-all duration-150 group/btn ${
+              className={`flex flex-col items-center justify-center py-2 rounded-lg border transition-all duration-150 cursor-pointer select-none touch-manipulation active:scale-90 group/btn ${
                 isSelected
-                  ? 'bg-white/[0.08] border-white/25 shadow-sm scale-105'
-                  : 'bg-white/[0.015] border-white/[0.04] hover:bg-white/[0.05] hover:border-white/15'
+                  ? 'bg-white/[0.12] border-white/30 shadow-sm scale-105'
+                  : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.06] hover:border-white/15'
               }`}
+              style={isSelected ? { borderColor: theme.color } : undefined}
             >
               <span
-                className="w-2.5 h-2.5 rounded-full transition-transform duration-150 group-hover/btn:scale-125"
+                className="w-3 h-3 rounded-full transition-transform duration-150 group-hover/btn:scale-125 shadow-sm"
                 style={{
-                  background: theme.color,
-                  boxShadow: isSelected ? `0 0 8px ${theme.color}` : 'none',
+                  background: `linear-gradient(135deg, ${theme.color}, ${theme.secondaryColor})`,
+                  boxShadow: isSelected ? `0 0 10px ${theme.color}` : 'none',
                 }}
               />
             </button>
