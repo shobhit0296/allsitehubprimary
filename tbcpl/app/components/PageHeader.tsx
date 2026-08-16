@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
-
 import ThemeNavOption from './ThemeNavOption';
-import ThemeDragToggle from './ThemeDragToggle';
 
 const NAV_LINKS = [
   ['Home', '/'],
@@ -19,7 +17,6 @@ const NAV_LINKS = [
 type ActivePage = string;
 
 export default function PageHeader({ active }: { active?: ActivePage }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const onlineCount = useLiveOnlineCounter();
 
@@ -31,7 +28,7 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
   }, []);
 
   return (
-    <header className={`site-header${scrolled || menuOpen ? ' is-scrolled' : ''}`}>
+    <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
       <div className="nav-inner">
         {/* ── Logo ── hard refresh on click / touch */}
         <a
@@ -39,7 +36,6 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
           className="nav-logo-link shrink-0 select-none touch-manipulation cursor-pointer"
           onClick={e => {
             e.preventDefault();
-            setMenuOpen(false);
             if (typeof window !== 'undefined') {
               if (window.location.pathname === '/') {
                 window.location.reload();
@@ -112,78 +108,8 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
           >
             Browse sites
           </Link>
-
-          <button
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(o => !o)}
-            className={`nav-icon-btn flex md:hidden rounded-lg shrink-0${menuOpen ? ' is-open' : ''}`}
-          >
-            <span className="material-symbols-outlined text-[20px]">{menuOpen ? 'close' : 'menu'}</span>
-          </button>
         </div>
       </div>
-
-      {menuOpen && (
-        <nav className="mobile-menu md:hidden">
-          {/* Mobile Theme Selector */}
-          <div className="p-3 mb-2 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
-            <ThemeDragToggle />
-          </div>
-
-          <div className="flex flex-col gap-1 py-1">
-            {NAV_LINKS.map(([label, href]) => (
-              <Link
-                key={label}
-                href={href}
-                className={`nav-link${label === active ? ' is-active' : ''}`}
-                onClick={() => setMenuOpen(false)}
-              >
-                <span>{label}</span>
-                {label === active && (
-                  <span className="material-symbols-outlined text-[16px] text-blue-400 ml-auto">
-                    check
-                  </span>
-                )}
-              </Link>
-            ))}
-          </div>
-
-          <div className="mobile-menu-footer">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2 px-1">
-              Community
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <a
-                href="https://discord.gg/EDH5ScSsv"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
-                style={{
-                  background: 'rgba(88,101,242,0.18)',
-                  border: '1px solid rgba(88,101,242,0.35)',
-                }}
-              >
-                💬 Discord
-              </a>
-              <a
-                href="https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-white text-xs font-bold transition-all active:scale-95"
-                style={{
-                  background: 'rgba(255,69,0,0.18)',
-                  border: '1px solid rgba(255,69,0,0.35)',
-                }}
-              >
-                🔴 Reddit
-              </a>
-            </div>
-          </div>
-        </nav>
-      )}
     </header>
   );
 }
