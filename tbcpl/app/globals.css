@@ -1275,3 +1275,57 @@ h1, h2, h3, .font-display {
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* ── Mobile & Desktop Super Smooth High-Performance Utilities ── */
+.site-card-item {
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.site-card-item:hover {
+  border-color: var(--border-accent) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── Mobile Category Chips ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: pan-x manipulation;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateZ(0);
+}
+.chip:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.chip.chip-active {
+  color: #fff;
+  background: var(--gradient);
+  border-color: transparent;
+  box-shadow: 0 0 16px var(--glow), 0 2px 8px rgba(0, 0, 0, 0.4);
+  font-weight: 700;
+}
+
+/* ── Animation Fade In for BackToTop ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+

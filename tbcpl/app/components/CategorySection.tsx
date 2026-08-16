@@ -18,7 +18,8 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
   return (
     <section
       id={`cat-${category.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`}
-      className="mb-12 sm:mb-16 fade-up scroll-mt-32 xl:scroll-mt-24"
+      className="mb-10 sm:mb-16 fade-up scroll-mt-28 sm:scroll-mt-32 xl:scroll-mt-24 transform-gpu"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '0 320px' }}
     >
       {/* ── Section Header ─────────────────────────── */}
       <div className="flex items-end justify-between mb-5 sm:mb-7 flex-wrap gap-3">

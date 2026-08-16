@@ -64,8 +64,9 @@ export default function ShaderBackground() {
     if (!gl || !(gl instanceof WebGLRenderingContext)) return;
 
     const syncSize = () => {
-      const w = canvas.clientWidth || 1280;
-      const h = canvas.clientHeight || 720;
+      const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 1.5) : 1;
+      const w = Math.floor((canvas.clientWidth || 1280) * dpr);
+      const h = Math.floor((canvas.clientHeight || 720) * dpr);
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
@@ -123,7 +124,21 @@ export default function ShaderBackground() {
     });
 
     let raf = 0;
+    let isVisible = true;
+
+    const onVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible && !raf) {
+        raf = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
     const render = (t: number) => {
+      if (!isVisible) {
+        raf = 0;
+        return;
+      }
       if (!ro) syncSize();
       gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -147,15 +162,16 @@ export default function ShaderBackground() {
     raf = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       observer.disconnect();
       ro?.disconnect();
     };
   }, []);
 
   return (
-    <div className="shader-bg" aria-hidden="true">
-      <canvas ref={canvasRef} />
+    <div className="shader-bg transform-gpu pointer-events-none" aria-hidden="true">
+      <canvas ref={canvasRef} className="w-full h-full block" />
     </div>
   );
 }
