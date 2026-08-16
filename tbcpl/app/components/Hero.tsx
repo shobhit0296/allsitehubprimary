@@ -80,7 +80,7 @@ export default function Hero({
 
             {/* Reddit */}
             <a
-              href="https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+              href="https://www.reddit.com/user/allsitehub/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-cta-btn social-cta-reddit group w-full sm:w-auto min-w-0 sm:min-w-[160px] touch-manipulation"

@@ -168,7 +168,7 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
                 💬 Discord
               </a>
               <a
-                href="https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x"
+                href="https://www.reddit.com/user/allsitehub/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMenuOpen(false)}

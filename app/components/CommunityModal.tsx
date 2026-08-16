@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 
 const DISCORD_URL = 'https://discord.gg/EDH5ScSsv';
-const REDDIT_URL =
-  'https://www.reddit.com/user/Ill_Committee7612/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button';
+const REDDIT_URL = 'https://www.reddit.com/user/allsitehub/';
 
 const STORAGE_KEY = 'ash_community_popup_closed';
 
