@@ -88,7 +88,7 @@ export default function Navbar({ search, onSearchChange, regions, activeRegion, 
           </a>
 
           <a
-            href="https://www.reddit.com/user/allsitehub/"
+            href="https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Follow us on Reddit"
@@ -181,7 +181,7 @@ export default function Navbar({ search, onSearchChange, regions, activeRegion, 
               <DiscordIcon />
             </a>
             <a
-              href="https://www.reddit.com/user/allsitehub/"
+              href="https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow us on Reddit"
