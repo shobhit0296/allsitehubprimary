@@ -6,7 +6,6 @@ interface HeroProps {
   activeRegion: string;
   filteredCount: number;
   totalUsers?: number;
-  onlineCount?: number;
 }
 
 export default function Hero({
@@ -111,35 +110,74 @@ export default function Hero({
           </div>
         </div>
 
-        {/* Right — stats card */}
-        <div className="glass-panel p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/10 relative overflow-hidden rim-light w-full">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.1em] uppercase text-[var(--text-muted)] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              Platform Overview
-            </span>
-            <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-              Live updates
-            </span>
-          </div>
+        {/* Right — floating stat cards */}
+        <div className="relative w-full max-w-md mx-auto lg:max-w-none mt-2 lg:mt-0">
+          <div className="absolute inset-0 bg-blue-500/5 rounded-[36px] sm:rounded-[48px] rotate-2 blur-2xl pointer-events-none" />
+          <div className="relative flex items-center justify-center p-1">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 w-full max-w-md animate-float-lux">
+              {/* Card 1 — Total Sites */}
+              <div className="glass-lux p-3.5 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-white/10 card-hover-lux flex flex-col justify-between">
+                <div className="w-7 sm:w-9 h-7 sm:h-9 rounded-xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center mb-2.5 sm:mb-4 shrink-0">
+                  <span className="material-symbols-outlined text-blue-400 text-[16px] sm:text-[20px]">trending_up</span>
+                </div>
+                <div>
+                  <div className="font-headline text-xl sm:text-3xl md:text-4xl font-extrabold mb-0.5 sm:mb-1 text-[var(--text-primary)] tracking-tight">
+                    {totalSites}+
+                  </div>
+                  <div className="text-[9.5px] sm:text-[11px] font-bold tracking-[0.06em] sm:tracking-[0.1em] uppercase text-[var(--text-muted)] truncate">
+                    Total Sites
+                  </div>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <StatBox label="Curated Sites" value={totalSites.toString()} sub="Hand-tested" />
-            <StatBox label="Categories" value={totalCategories.toString()} sub="Streaming & Anime" />
-            <StatBox label="Regions" value={totalRegions.toString()} sub="Worldwide coverage" />
-            <StatBox
-              label="All-Time Visitors"
-              value={totalUsers.toLocaleString()}
-              sub="Growing daily"
-              glow
-            />
-          </div>
+              {/* Card 2 — Categories */}
+              <div className="glass-lux-bright p-3.5 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-violet-500/25 sm:translate-y-3 md:translate-y-4 card-hover-lux flex flex-col justify-between">
+                <div className="w-7 sm:w-9 h-7 sm:h-9 rounded-xl bg-violet-500/15 border border-violet-500/25 flex items-center justify-center mb-2.5 sm:mb-4 shrink-0">
+                  <span className="material-symbols-outlined text-violet-400 text-[16px] sm:text-[20px]">category</span>
+                </div>
+                <div>
+                  <div className="font-headline text-xl sm:text-3xl md:text-4xl font-extrabold mb-0.5 sm:mb-1 text-[var(--text-primary)] tracking-tight">
+                    {totalCategories}
+                  </div>
+                  <div className="text-[9.5px] sm:text-[11px] font-bold tracking-[0.06em] sm:tracking-[0.1em] uppercase text-[var(--text-muted)] truncate">
+                    Categories
+                  </div>
+                </div>
+              </div>
 
-          <div className="bg-white/[0.03] rounded-xl p-3.5 sm:p-4 border border-white/5 flex items-start gap-3">
-            <span className="material-symbols-outlined text-blue-400 text-lg sm:text-xl shrink-0 mt-0.5">verified</span>
-            <p className="text-[11.5px] sm:text-[12.5px] text-[var(--text-secondary)] leading-relaxed">
-              Every link is community-vetted, monitored for uptime, and verified for high streaming performance.
-            </p>
+              {/* Card 3 — Regions */}
+              <div className="glass-lux-bright p-3.5 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-white/10 sm:-translate-y-2 card-hover-lux flex flex-col justify-between">
+                <div className="w-7 sm:w-9 h-7 sm:h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/25 flex items-center justify-center mb-2.5 sm:mb-4 shrink-0">
+                  <span className="material-symbols-outlined text-cyan-400 text-[16px] sm:text-[20px]">language</span>
+                </div>
+                <div>
+                  <div className="font-headline text-xl sm:text-3xl md:text-4xl font-extrabold mb-0.5 sm:mb-1 text-[var(--text-primary)] tracking-tight">
+                    {totalRegions}
+                  </div>
+                  <div className="text-[9.5px] sm:text-[11px] font-bold tracking-[0.06em] sm:tracking-[0.1em] uppercase text-[var(--text-muted)] truncate">
+                    Regions
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 4 — Active Users Till Now */}
+              <div className="glass-lux p-3.5 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-white/10 sm:translate-y-1 md:translate-y-2 card-hover-lux flex flex-col justify-between">
+                <div className="w-7 sm:w-9 h-7 sm:h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center mb-2.5 sm:mb-4 shrink-0">
+                  <span className="material-symbols-outlined text-emerald-400 text-[16px] sm:text-[20px]">groups</span>
+                </div>
+                <div>
+                  <div
+                    className="font-headline text-xl sm:text-3xl md:text-4xl font-extrabold mb-0.5 sm:mb-1 text-[var(--text-primary)] tracking-tight"
+                    suppressHydrationWarning
+                  >
+                    {totalUsers.toLocaleString()}+
+                  </div>
+                  <div className="text-[9.5px] sm:text-[11px] font-bold tracking-[0.06em] sm:tracking-[0.1em] uppercase text-[var(--text-muted)] truncate">
+                    Active Users
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -147,24 +185,9 @@ export default function Hero({
   );
 }
 
-function StatBox({ label, value, sub, glow = false }: { label: string; value: string; sub: string; glow?: boolean }) {
-  return (
-    <div className={`bg-white/[0.03] rounded-xl p-3 sm:p-4 border border-white/5 ${glow ? 'relative overflow-hidden' : ''}`}>
-      {glow && (
-        <div className="absolute -top-6 -right-6 w-16 h-16 bg-blue-500/10 rounded-full blur-xl pointer-events-none" />
-      )}
-      <div className="font-headline font-extrabold text-xl sm:text-2xl text-[var(--text-primary)] mb-0.5 tracking-tight">
-        {value}
-      </div>
-      <div className="text-[11px] sm:text-[12px] font-semibold text-[var(--text-secondary)] mb-0.5">{label}</div>
-      <div className="text-[10px] text-[var(--text-muted)]">{sub}</div>
-    </div>
-  );
-}
-
 function DiscordIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" className="shrink-0">
       <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.946 2.419-2.157 2.419z" />
     </svg>
   );
@@ -172,8 +195,8 @@ function DiscordIcon() {
 
 function RedditIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.703zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.197-2.512-.73a.326.326 0 0 0-.232-.095z" />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" className="shrink-0">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.82 14.15c.036.244.055.492.055.744 0 3.019-3.517 5.47-7.856 5.47-4.34 0-7.857-2.451-7.857-5.47 0-.252.02-.5.055-.744-.542-.246-.92-.79-.92-1.424 0-.86.698-1.558 1.558-1.558.42 0 .8.166 1.08.437 1.062-.766 2.53-1.253 4.16-1.31l.848-3.99a.32.32 0 0 1 .38-.246l2.813.598a1.076 1.076 0 1 1-.086.512l-2.518-.535-.756 3.556c1.61.065 3.056.552 4.11 1.31.28-.27.66-.437 1.08-.437.86 0 1.558.698 1.558 1.558 0 .636-.38 1.183-.926 1.428zM8.16 14.06c-.68 0-1.24-.55-1.24-1.235 0-.686.56-1.246 1.24-1.246.686 0 1.245.56 1.245 1.246 0 .686-.56 1.235-1.245 1.235zm7.68 0c-.68 0-1.24-.55-1.24-1.235 0-.686.56-1.246 1.24-1.246.686 0 1.245.56 1.245 1.246 0 .686-.56 1.235-1.245 1.235zm-6.1 2.02c-.15-.15-.15-.393 0-.543a.386.386 0 0 1 .543 0c.686.686 2.033.75 2.42.75.386 0 1.75-.064 2.42-.75a.386.386 0 0 1 .543 0c.15.15.15.393 0 .543-.75.75-2.11.943-2.963.943-.85 0-2.21-.193-2.963-.943z" />
     </svg>
   );
 }

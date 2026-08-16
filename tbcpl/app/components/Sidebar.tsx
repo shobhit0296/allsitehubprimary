@@ -1,7 +1,8 @@
 'use client';
 
 import type { Category } from '@/lib/data';
-import ThemeDragToggle from './ThemeDragToggle';
+import { categoryAccent } from '@/lib/theme';
+import CategoryIcon from './CategoryIcon';
 
 interface SidebarProps {
   categories: Category[];
@@ -10,14 +11,6 @@ interface SidebarProps {
   onCategoryChange: (cat: string) => void;
 }
 
-const ACCENT_COLORS: Record<string, string> = {
-  'Movies & Shows':   '#8b5cf6',
-  'Anime':            '#3b82f6',
-  'Manga':            '#f59e0b',
-  'Live TV & Sports': '#10b981',
-  'Paid':             '#f43f5e',
-  'Apps':             '#06b6d4',
-};
 
 export default function Sidebar({ categories, categoryCounts, activeCategory, onCategoryChange }: SidebarProps) {
   const totalCount = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
@@ -30,24 +23,16 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
           <span className="w-3 h-px bg-blue-500/60 inline-block" />
           Categories
         </h4>
-        <div className="glass-lux border border-white/10 rounded-2xl p-1.5 flex flex-col gap-0.5">
-          <CatItem
-            icon="✦"
-            name="All Sites"
-            count={totalCount}
-            accent="#3b82f6"
-            isActive={activeCategory === 'all'}
-            onClick={() => onCategoryChange('all')}
-          />
+        <div className="glass-lux border border-white/[0.07] rounded-2xl p-1.5 flex flex-col gap-0.5 shadow-sm">
           {categories.map(cat => (
             <CatItem
               key={cat.name}
               icon={cat.icon}
               name={cat.name}
               count={categoryCounts[cat.name] ?? 0}
-              accent={ACCENT_COLORS[cat.name] ?? '#3b82f6'}
+              accent={categoryAccent(cat.name)}
               isActive={activeCategory === cat.name}
-              onClick={() => onCategoryChange(activeCategory === cat.name ? 'all' : cat.name)}
+              onClick={() => onCategoryChange(cat.name)}
             />
           ))}
         </div>
@@ -93,37 +78,61 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
   );
 }
 
-function CatItem({
-  icon, name, count, accent, isActive, onClick,
-}: { icon: string; name: string; count: number; accent: string; isActive: boolean; onClick: () => void }) {
+
+
+interface CatItemProps {
+  icon: string;
+  name: string;
+  count: number;
+  accent: string;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+function CatItem({ icon, name, count, accent, isActive, onClick }: CatItemProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 px-2.5 py-2.5 rounded-xl text-left transition-all duration-150 group"
+      className={`cat-sidebar-btn w-full flex items-center gap-3.5 px-3.5 py-3.5 rounded-xl transition-all duration-200 group text-left relative overflow-hidden transform-gpu ${
+        isActive ? 'is-active' : ''
+      }`}
       style={{
-        background: isActive ? `${accent}14` : 'transparent',
-        boxShadow: isActive ? `inset 3px 0 0 0 ${accent}` : undefined,
+        background: isActive ? `${accent}16` : 'transparent',
       }}
-      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; }}
-      onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
     >
-      <span
-        className="w-8 h-8 rounded-lg flex items-center justify-center text-[15px] shrink-0 transition-transform group-hover:scale-105"
+      {/* Indicator Accent Bar */}
+      <div
+        className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-r-full transition-transform duration-250 ease-out pointer-events-none transform-gpu"
         style={{
-          background: isActive ? `${accent}22` : 'rgba(255,255,255,0.05)',
-          border: `1px solid ${isActive ? `${accent}50` : 'rgba(255,255,255,0.07)'}`,
+          background: accent,
+          transform: isActive ? 'scaleY(1) translateZ(0)' : 'scaleY(0) translateZ(0)',
+          opacity: isActive ? 1 : 0,
+          boxShadow: isActive ? `0 0 10px ${accent}` : 'none',
+        }}
+      />
+
+      <span
+        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:scale-105 transform-gpu"
+        style={{
+          background: isActive ? `${accent}28` : 'rgba(255,255,255,0.05)',
+          border: `1px solid ${isActive ? `${accent}60` : 'rgba(255,255,255,0.07)'}`,
         }}
       >
-        {icon}
+        <CategoryIcon name={name} size={22} />
       </span>
-      <span className={`flex-1 text-[13px] truncate ${isActive ? 'font-semibold text-[var(--text-primary)]' : 'font-medium text-[var(--text-secondary)]'}`}>
+      <span
+        className={`flex-1 text-[14.5px] truncate transition-colors duration-200 ${
+          isActive ? 'font-bold text-[var(--text-primary)]' : 'font-semibold text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]'
+        }`}
+      >
         {name}
       </span>
       <span
-        className="text-[10.5px] font-bold rounded-full px-2 py-0.5 shrink-0 tabular-nums"
+        className="text-[11.5px] font-bold rounded-full px-2.5 py-0.5 shrink-0 tabular-nums transition-colors duration-200"
         style={{
           color: isActive ? accent : 'var(--text-muted)',
-          background: isActive ? `${accent}1c` : 'rgba(255,255,255,0.04)',
+          background: isActive ? `${accent}20` : 'rgba(255,255,255,0.04)',
+          border: isActive ? `1px solid ${accent}35` : '1px solid transparent',
         }}
       >
         {count}
@@ -147,3 +156,7 @@ function RedditIcon() {
     </svg>
   );
 }
+
+
+
+

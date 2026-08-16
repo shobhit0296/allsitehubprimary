@@ -208,7 +208,7 @@ export default function ThemeDragToggle({ compact = false }: { compact?: boolean
       </div>
 
       {/* Direct Theme Quick Pick Buttons (both onPointerDown and onClick supported) */}
-      <div className="grid grid-cols-6 gap-1 pt-0.5">
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 pt-0.5">
         {THEMES.map((theme, idx) => {
           const isSelected = theme.id === activeTheme;
           return (

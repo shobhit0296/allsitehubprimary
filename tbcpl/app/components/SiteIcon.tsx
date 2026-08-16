@@ -10,6 +10,8 @@ interface SiteIconProps {
   className?: string;
 }
 
+// ─── Colour palette for initials placeholders ─────────────────────────────────
+
 const BRAND_GRADIENTS = [
   { bg: 'linear-gradient(135deg,#1d4ed8 0%,#3b82f6 100%)', text: '#fff' },
   { bg: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 100%)', text: '#fff' },
@@ -36,6 +38,8 @@ function getInitials(name: string): string {
     : name.slice(0, 2).toUpperCase();
 }
 
+// ─── Source chain builder ─────────────────────────────────────────────────────
+
 function buildSources(name: string, domain: string, faviconUrl?: string): string[] {
   const cleanDomain = domain
     ? domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0]
@@ -43,6 +47,7 @@ function buildSources(name: string, domain: string, faviconUrl?: string): string
 
   const sources: string[] = [];
 
+  // 1. Stored favicon (local cached /logos/ path or custom URL)
   const custom = faviconUrl?.trim();
   if (
     custom &&
@@ -54,13 +59,18 @@ function buildSources(name: string, domain: string, faviconUrl?: string): string
   }
 
   if (cleanDomain) {
+    // 2. Google Favicons CDN — 256px high-res global CDN
     sources.push(`https://www.google.com/s2/favicons?domain=${cleanDomain}&sz=256`);
+    // 3. DuckDuckGo favicon service
     sources.push(`https://icons.duckduckgo.com/ip3/${cleanDomain}.ico`);
+    // 4. icon.horse
     sources.push(`https://icon.horse/icon/${cleanDomain}`);
   }
 
   return Array.from(new Set(sources.filter(Boolean)));
 }
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SiteIcon({
   name,
@@ -97,6 +107,7 @@ export default function SiteIcon({
       style={{ width: size, height: size, borderRadius: radius, background: brand.bg }}
       aria-label={`${name} logo`}
     >
+      {/* ── Initials Placeholder (visible as instant background or fallback) ── */}
       <div
         aria-hidden={!failedAll}
         style={{
@@ -118,6 +129,7 @@ export default function SiteIcon({
         {initials}
       </div>
 
+      {/* ── High-speed Logo image (rendered directly for 0ms cached paint) ── */}
       {!failedAll && currentSrc && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
