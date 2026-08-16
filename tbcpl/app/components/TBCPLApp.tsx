@@ -131,13 +131,21 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
 
   useEffect(() => {
     if (!mobileCatContainerRef.current) return;
-    const activeEl = mobileCatContainerRef.current.querySelector('.chip-active') as HTMLElement | null;
+    const container = mobileCatContainerRef.current;
+    const activeEl = container.querySelector('.chip-active') as HTMLElement | null;
     if (activeEl) {
-      activeEl.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
+      const elLeft = activeEl.offsetLeft;
+      const elWidth = activeEl.offsetWidth;
+      const contScrollLeft = container.scrollLeft;
+      const contWidth = container.clientWidth;
+
+      // Only scroll horizontally if the active chip is outside the visible viewport
+      if (elLeft < contScrollLeft + 20 || elLeft + elWidth > contScrollLeft + contWidth - 20) {
+        container.scrollTo({
+          left: Math.max(0, elLeft - contWidth / 2 + elWidth / 2),
+          behavior: 'smooth',
+        });
+      }
     }
   }, [activeCategory]);
 
