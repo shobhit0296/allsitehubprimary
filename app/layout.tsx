@@ -147,14 +147,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-        {/* GA4 — Primary property G-83D0RM2B0Z */}
+        {/* Google Analytics GA4 */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-83D0RM2B0Z"
-          strategy="afterInteractive"
-        />
-        {/* GA4 — Property G-546801810 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-546801810"
+          src="https://www.googletagmanager.com/gtag/js?id=G-CYFKNSMCWH"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -163,16 +158,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            // Primary GA4 property
-            gtag('config', 'G-83D0RM2B0Z', {
+            gtag('config', 'G-CYFKNSMCWH', {
               page_path: window.location.pathname,
-              send_page_view: true,
-            });
-
-            // Secondary GA4 property — 546801810
-            gtag('config', 'G-546801810', {
-              page_path: window.location.pathname,
-              send_page_view: true,
             });
           `}
         </Script>
