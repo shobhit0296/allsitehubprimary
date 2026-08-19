@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
  * Returns the min/max active user range based on current time of day:
  *  - 06:00 AM - 12:00 PM (Noon):  1,800 - 2,900
  *  - 12:00 PM - 05:00 PM (17:00): 1,200 - 2,400
- *  - 05:00 PM - 12:00 AM (00:00): 3,100 - 7,000
+ *  - 05:00 PM - 12:00 AM (00:00): 2,400 - 4,200
  *  - 12:00 AM - 06:00 AM:         2,100 - 3,200 (normal night base)
  */
 export function getLiveUserRange(date: Date = new Date()): { min: number; max: number } {
@@ -17,7 +17,7 @@ export function getLiveUserRange(date: Date = new Date()): { min: number; max: n
   } else if (hour >= 12 && hour < 17) {
     return { min: 1200, max: 2400 };
   } else if (hour >= 17 && hour < 24) {
-    return { min: 3100, max: 7000 };
+    return { min: 2400, max: 4200 };
   } else {
     // 00:00 to 05:59 (Midnight to 6 AM)
     return { min: 2100, max: 3200 };
