@@ -3,25 +3,25 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Returns the min/max active user range: 1,500 - 4,200
- * With natural time-of-day distribution within 1,500 to 4,200:
- *  - 06:00 AM - 12:00 PM: 1,800 - 3,200
- *  - 12:00 PM - 05:00 PM: 1,500 - 2,900
- *  - 05:00 PM - 12:00 AM: 2,600 - 4,200 (Peak evening)
- *  - 12:00 AM - 06:00 AM: 1,500 - 2,400 (Night base)
+ * Returns the min/max active user range: 1,500 - 4,000
+ * With natural time-of-day distribution within 1,500 to 4,000:
+ *  - 06:00 AM - 12:00 PM: 1,800 - 3,000
+ *  - 12:00 PM - 05:00 PM: 1,500 - 2,700
+ *  - 05:00 PM - 12:00 AM: 2,500 - 4,000 (Peak evening)
+ *  - 12:00 AM - 06:00 AM: 1,500 - 2,200 (Night base)
  */
 export function getLiveUserRange(date: Date = new Date()): { min: number; max: number } {
   const hour = date.getHours();
 
   if (hour >= 6 && hour < 12) {
-    return { min: 1800, max: 3200 };
+    return { min: 1800, max: 3000 };
   } else if (hour >= 12 && hour < 17) {
-    return { min: 1500, max: 2900 };
+    return { min: 1500, max: 2700 };
   } else if (hour >= 17 && hour < 24) {
-    return { min: 2600, max: 4200 };
+    return { min: 2500, max: 4000 };
   } else {
     // 00:00 to 05:59 (Midnight to 6 AM)
-    return { min: 1500, max: 2400 };
+    return { min: 1500, max: 2200 };
   }
 }
 
@@ -34,11 +34,12 @@ export function generateInitialLiveUserCount(date: Date = new Date()): number {
 }
 
 /** Stable deterministic baseline for SSR to prevent hydration mismatches */
-const DEFAULT_SSR_COUNT = 2850;
+const DEFAULT_SSR_COUNT = 2750;
 
 /**
  * Hook that updates the online user counter every 15-20 seconds.
- * - Fluctuation: subtle micro up & down (±3 to ±14 users).
+ * - Fluctuation: subtle micro up & down (±3 to ±12 users max per tick).
+ * - Hard clamped to global 1,500 - 4,000 at all times.
  * - Schedule Transition: chooses the nearest valid boundary digit with slight jitter.
  */
 export function useLiveOnlineCounter(): number {
@@ -50,6 +51,9 @@ export function useLiveOnlineCounter(): number {
 
     let timeoutId: NodeJS.Timeout;
 
+    const GLOBAL_MIN = 1500;
+    const GLOBAL_MAX = 4000;
+
     const scheduleNextTick = () => {
       // Fluctuate every 15 to 20 seconds
       const nextDelay = 15000 + Math.random() * 5000;
@@ -60,21 +64,22 @@ export function useLiveOnlineCounter(): number {
 
           // When shifting to a higher schedule block: land on the nearest bottom edge with small random jitter
           if (prev < min) {
-            const nearestBottom = min + Math.floor(Math.random() * 35); // e.g. min + 12
-            return Math.min(max, nearestBottom);
+            const nearestBottom = min + Math.floor(Math.random() * 30); // e.g. min + 12
+            return Math.min(Math.min(max, GLOBAL_MAX), nearestBottom);
           }
 
           // When shifting to a lower schedule block: land on the nearest top edge with small random jitter
           if (prev > max) {
-            const nearestTop = max - Math.floor(Math.random() * 35); // e.g. max - 15
-            return Math.max(min, nearestTop);
+            const nearestTop = max - Math.floor(Math.random() * 30); // e.g. max - 15
+            return Math.max(Math.max(min, GLOBAL_MIN), nearestTop);
           }
 
-          // Inside the current block: slight, gentle micro-fluctuation (±3 to ±14 users)
-          const delta = Math.floor(Math.random() * 25) - 12; // -12 to +12
-          const next = prev + (delta === 0 ? (Math.random() > 0.5 ? 4 : -4) : delta);
+          // Inside the current block: slight, gentle micro-fluctuation (±3 to ±12 users)
+          const delta = Math.floor(Math.random() * 23) - 11; // -11 to +11
+          const next = prev + (delta === 0 ? (Math.random() > 0.5 ? 3 : -3) : delta);
 
-          return Math.min(max, Math.max(min, next));
+          // Hard clamp to global bounds [1500, 4000]
+          return Math.min(GLOBAL_MAX, Math.max(GLOBAL_MIN, Math.min(max, Math.max(min, next))));
         });
 
         scheduleNextTick();

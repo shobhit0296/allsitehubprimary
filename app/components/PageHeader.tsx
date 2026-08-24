@@ -93,7 +93,7 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
           <ThemeNavOption />
 
           <a
-            href="https://discord.gg/EDH5ScSsv"
+            href="https://discord.gg/ZEMSvP2HX"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Join our Discord"

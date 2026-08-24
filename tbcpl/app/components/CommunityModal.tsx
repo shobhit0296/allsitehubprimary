@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-const DISCORD_URL = 'https://discord.gg/EDH5ScSsv';
+const DISCORD_URL = 'https://discord.gg/ZEMSvP2HX';
 const REDDIT_URL =
   'https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button';
 

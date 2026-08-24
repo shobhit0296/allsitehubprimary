@@ -59,7 +59,7 @@ export default function Hero({
           <div className="flex flex-col sm:flex-row flex-wrap gap-2.5 sm:gap-3 mb-6 sm:mb-8 w-full">
             {/* Discord */}
             <a
-              href="https://discord.gg/EDH5ScSsv"
+              href="https://discord.gg/ZEMSvP2HX"
               target="_blank"
               rel="noopener noreferrer"
               className="social-cta-btn social-cta-discord group w-full sm:w-auto min-w-0 sm:min-w-[160px] touch-manipulation"

@@ -43,7 +43,7 @@ export default function Sidebar({ categories, categoryCounts, activeCategory, on
         <div className="grid grid-cols-2 gap-2">
           {/* Discord Logo Button */}
           <a
-            href="https://discord.gg/EDH5ScSsv"
+            href="https://discord.gg/ZEMSvP2HX"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Discord"

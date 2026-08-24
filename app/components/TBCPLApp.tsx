@@ -313,7 +313,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
             </p>
             <div className="flex items-center gap-3">
               <a
-                href="https://discord.gg/EDH5ScSsv"
+                href="https://discord.gg/ZEMSvP2HX"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Discord Server"
