@@ -1,6 +1,9 @@
 export const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 export const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_SECRET_TOKEN || '';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allsitehub.site';
+export const MOVIESNET_URL = 'https://moviesnet.site';
+export const DISCORD_URL = 'https://discord.gg/ZEMSvP2HX';
+export const TELEGRAM_GROUP_URL = 'https://t.me/+gWOCVAqtcXxkZDk9';
 
 interface InlineKeyboardButton {
   text: string;
@@ -91,32 +94,36 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
     : `<a href="tg://user?id=${user.id}">${escapeHtml(user.first_name || 'Friend')}</a>`;
 
   const text = `
-👋 <b>Welcome to AllSiteHub, ${mention}!</b> 🍿
+👋 <b>Welcome to the Community, ${mention}!</b> 🍿
 
-🌟 <b>AllSiteHub</b> is your ultimate curated directory for fast and free streaming sites across:
-• 🎬 <b>Movies & TV Shows</b>
-• 🎌 <b>Anime & Manga</b>
-• ⚽ <b>Live Sports & PPV</b>
-• 📺 <b>Live TV & News</b>
-• 📚 <b>Comics, Webtoons & More</b>
+🌟 <b>Official Links:</b>
 
-🔗 <b>Visit the Official Website:</b>
-<a href="${SITE_URL}">${SITE_URL}</a>
+• 🌐 <b>AllSiteHub Directory:</b>
+  <a href="${SITE_URL}">${SITE_URL}</a>
+  <i>(Curated directory for movies, anime, sports & live TV)</i>
+
+• 🎬 <b>MoviesNet Streaming:</b>
+  <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
+  <i>(Watch HD movies & TV series directly for free)</i>
+
+• 💬 <b>Discord Server:</b>
+  <a href="${DISCORD_URL}">${DISCORD_URL}</a>
+  <i>(Chat, request content & join community events)</i>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
     inline_keyboard: [
       [
-        { text: '🌐 Open AllSiteHub.site', url: SITE_URL },
+        { text: '🌐 AllSiteHub Directory', url: SITE_URL },
+        { text: '🍿 Watch on MoviesNet', url: MOVIESNET_URL },
+      ],
+      [
+        { text: '💬 Join Discord', url: DISCORD_URL },
+        { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
+      ],
+      [
         { text: '🎬 Movies & Shows', url: `${SITE_URL}/#cat-movies-and-shows` },
-      ],
-      [
-        { text: '🎌 Anime', url: `${SITE_URL}/#cat-anime` },
-        { text: '⚽ Live Sports', url: `${SITE_URL}/#cat-sports` },
-      ],
-      [
-        { text: '💬 Discord Community', url: 'https://discord.gg/ZEMSvP2HX' },
-        { text: '📢 Telegram Group', url: 'https://t.me/+gWOCVAqtcXxkZDk9' },
+        { text: '🎌 Anime & Manga', url: `${SITE_URL}/#cat-anime` },
       ],
     ],
   };
@@ -129,31 +136,27 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
  */
 export function buildInfoMessage() {
   const text = `
-🌟 <b>AllSiteHub — The Ultimate Streaming & Entertainment Directory</b>
+🌟 <b>AllSiteHub & MoviesNet Official Links</b>
 
-Discover verified platforms for:
-• 🎬 <b>Movies & Series:</b> Stream latest films & trending shows
-• 🎌 <b>Anime & Manga:</b> Subbed, dubbed, and high-res chapters
-• ⚽ <b>Live Sports:</b> Football, basketball, UFC, cricket & motorsport
-• 📺 <b>Live TV:</b> Global channels & news broadcasts
+• 🌐 <b>AllSiteHub Directory:</b> <a href="${SITE_URL}">${SITE_URL}</a>
+  <i>The ultimate curated directory for movies, anime, sports & live TV.</i>
 
-🔗 <b>Official Website:</b>
-<a href="${SITE_URL}">${SITE_URL}</a>
+• 🎬 <b>MoviesNet Free Streaming:</b> <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
+  <i>Stream free HD movies and TV shows online.</i>
+
+• 💬 <b>Discord Community:</b> <a href="${DISCORD_URL}">${DISCORD_URL}</a>
+  <i>Join our official Discord community for updates & support.</i>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
     inline_keyboard: [
       [
-        { text: '🌐 Open AllSiteHub', url: SITE_URL },
-        { text: '💬 Join Telegram Group', url: 'https://t.me/+gWOCVAqtcXxkZDk9' },
+        { text: '🌐 AllSiteHub', url: SITE_URL },
+        { text: '🍿 MoviesNet', url: MOVIESNET_URL },
       ],
       [
-        { text: '🎬 Browse Movies', url: `${SITE_URL}/#cat-movies-and-shows` },
-        { text: '🎌 Browse Anime', url: `${SITE_URL}/#cat-anime` },
-      ],
-      [
-        { text: '⚽ Live Sports', url: `${SITE_URL}/#cat-sports` },
-        { text: '💬 Join Discord', url: 'https://discord.gg/ZEMSvP2HX' },
+        { text: '💬 Discord Community', url: DISCORD_URL },
+        { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
       ],
     ],
   };
