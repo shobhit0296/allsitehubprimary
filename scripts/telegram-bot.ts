@@ -7,7 +7,6 @@
 import {
   sendTelegramMessage,
   buildWelcomeMessage,
-  searchSitesForTelegram,
   buildStartMessage,
   buildRulesMessage,
   SITE_URL,
@@ -58,7 +57,6 @@ async function pollUpdates() {
             const rawText = update.message.text.trim();
             const parts = rawText.split(/\s+/);
             const cmd = parts[0].toLowerCase().split('@')[0];
-            const query = parts.slice(1).join(' ');
 
             if (cmd === '/start') {
               const { text, keyboard } = buildStartMessage();
@@ -73,17 +71,6 @@ async function pollUpdates() {
               );
             } else if (cmd === '/rules') {
               const { text, keyboard } = buildRulesMessage();
-              await sendTelegramMessage(
-                {
-                  chat_id: update.message.chat.id,
-                  text,
-                  reply_markup: keyboard,
-                  reply_to_message_id: update.message.message_id,
-                },
-                token,
-              );
-            } else if (cmd === '/search' || cmd === '/find') {
-              const { text, keyboard } = searchSitesForTelegram(query);
               await sendTelegramMessage(
                 {
                   chat_id: update.message.chat.id,

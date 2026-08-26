@@ -1,5 +1,3 @@
-import { SITES, filterSites } from '@/lib/data';
-
 export const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 export const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_SECRET_TOKEN || '';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allsitehub.site';
@@ -104,8 +102,6 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 
 🔗 <b>Visit the Official Directory:</b>
 <a href="${SITE_URL}">${SITE_URL}</a>
-
-💡 <i>Tip: You can use</i> <code>/search &lt;query&gt;</code> <i>in this chat to quickly find working streaming links anytime!</i>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
@@ -120,54 +116,12 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
       ],
       [
         { text: '💬 Discord Community', url: 'https://discord.gg/ZEMSvP2HX' },
-        { text: '🤖 Search Sites', callback_data: 'help_search' },
+        { text: '📢 Telegram Group', url: 'https://t.me/+gWOCVAqtcXxkZDk9' },
       ],
     ],
   };
 
   return { text, keyboard };
-}
-
-/**
- * Build search response for `/search <query>`
- */
-export function searchSitesForTelegram(query: string) {
-  const trimmed = query.trim();
-  if (!trimmed) {
-    return {
-      text: '🔍 <b>Please provide a search term!</b>\n\nExample: <code>/search anime</code> or <code>/search movies</code>',
-      keyboard: {
-        inline_keyboard: [[{ text: '🌐 Browse All on AllSiteHub', url: SITE_URL }]],
-      },
-    };
-  }
-
-  const results = filterSites(SITES, trimmed, 'all', 'all').slice(0, 6);
-
-  if (results.length === 0) {
-    return {
-      text: `❌ <b>No sites found for &ldquo;${escapeHtml(trimmed)}&rdquo;</b>\n\nTry searching for broader keywords like <i>movie</i>, <i>anime</i>, <i>sports</i>, or check our full directory online:`,
-      keyboard: {
-        inline_keyboard: [[{ text: '🌐 Search on AllSiteHub.site', url: `${SITE_URL}` }]],
-      },
-    };
-  }
-
-  let text = `🔍 <b>Search Results for &ldquo;${escapeHtml(trimmed)}&rdquo;:</b>\n\n`;
-
-  const buttons: InlineKeyboardButton[][] = [];
-
-  results.forEach((s, idx) => {
-    text += `<b>${idx + 1}. <a href="${s.url}">${escapeHtml(s.name)}</a></b> (${escapeHtml(s.category)})\n`;
-    text += `   📝 <i>${escapeHtml(s.description.slice(0, 90))}${s.description.length > 90 ? '…' : ''}</i>\n`;
-    text += `   🌐 Domain: <code>${escapeHtml(s.domain)}</code>\n\n`;
-
-    buttons.push([{ text: `🔗 Open ${s.name}`, url: s.url }]);
-  });
-
-  buttons.push([{ text: '🌐 View all on AllSiteHub.site', url: SITE_URL }]);
-
-  return { text: text.trim(), keyboard: { inline_keyboard: buttons } };
 }
 
 /**
@@ -177,10 +131,9 @@ export function buildStartMessage() {
   const text = `
 🚀 <b>Welcome to the official AllSiteHub Telegram Bot!</b>
 
-I can help you explore working streaming sites, anime platforms, sports streams, and live TV.
+I help you explore verified streaming sites, anime platforms, sports streams, and live TV.
 
 <b>Available Commands:</b>
-• <code>/search &lt;name&gt;</code> - Search 200+ curated sites
 • <code>/categories</code> - View all directory categories
 • <code>/rules</code> - Read group guidelines & safety tips
 • <code>/help</code> - Bot usage guide

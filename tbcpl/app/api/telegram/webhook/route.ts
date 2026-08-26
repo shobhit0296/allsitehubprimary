@@ -3,7 +3,6 @@ import {
   sendTelegramMessage,
   answerCallbackQuery,
   buildWelcomeMessage,
-  searchSitesForTelegram,
   buildStartMessage,
   buildRulesMessage,
   TELEGRAM_WEBHOOK_SECRET,
@@ -35,7 +34,7 @@ export async function POST(req: NextRequest) {
         if (member.is_bot && botId && member.id === botId) {
           await sendTelegramMessage({
             chat_id: chatId,
-            text: `🤖 <b>AllSiteHub Bot activated in this group!</b>\n\nI will welcome new members and help users find working streaming sites with <code>/search</code>.\n\n🌐 Visit <a href="${SITE_URL}">AllSiteHub.site</a>`,
+            text: `🤖 <b>AllSiteHub Bot activated in this group!</b>\n\nI will welcome new members with our official directory link.\n\n🌐 Visit <a href="${SITE_URL}">AllSiteHub.site</a>`,
           });
           continue;
         }
@@ -58,11 +57,10 @@ export async function POST(req: NextRequest) {
       const chatId = update.message.chat.id;
       const messageId = update.message.message_id;
 
-      // Extract command and arguments (handles "/search@botname query" format in groups)
+      // Extract command (handles "/start@botname" format in groups)
       const parts = text.split(/\s+/);
       const rawCommand = parts[0].toLowerCase();
       const command = rawCommand.split('@')[0];
-      const query = parts.slice(1).join(' ');
 
       if (command === '/start') {
         const { text: startText, keyboard } = buildStartMessage();
@@ -90,9 +88,8 @@ export async function POST(req: NextRequest) {
         const helpText = `
 📖 <b>AllSiteHub Bot Help:</b>
 
-• <code>/search &lt;name&gt;</code> - Search 200+ streaming sites (movies, anime, sports)
-• <code>/rules</code> - Read group guidelines
 • <code>/categories</code> - Explore website categories
+• <code>/rules</code> - Read group guidelines
 • <code>/start</code> - Overview & main menu
 
 Visit our live catalog at <a href="${SITE_URL}">AllSiteHub.site</a>!
@@ -107,17 +104,6 @@ Visit our live catalog at <a href="${SITE_URL}">AllSiteHub.site</a>!
               [{ text: '🌐 Go to AllSiteHub.site', url: SITE_URL }],
             ],
           },
-        });
-        return NextResponse.json({ ok: true });
-      }
-
-      if (command === '/search' || command === '/find' || command === '/site') {
-        const { text: searchResultText, keyboard } = searchSitesForTelegram(query);
-        await sendTelegramMessage({
-          chat_id: chatId,
-          text: searchResultText,
-          reply_markup: keyboard,
-          reply_to_message_id: messageId,
         });
         return NextResponse.json({ ok: true });
       }
@@ -160,20 +146,7 @@ Click below to explore:
     // ── 3. Handle Callback Query (Button Clicks) ──
     if (update.callback_query) {
       const cb = update.callback_query;
-      const data = cb.data;
-
-      if (data === 'help_search') {
-        await answerCallbackQuery(cb.id, 'Type: /search <site or keyword>');
-        if (cb.message?.chat?.id) {
-          await sendTelegramMessage({
-            chat_id: cb.message.chat.id,
-            text: '💡 <b>How to Search:</b>\nType <code>/search movie</code> or <code>/search anime</code> in the chat to discover working sites instantly!',
-          });
-        }
-      } else {
-        await answerCallbackQuery(cb.id);
-      }
-
+      await answerCallbackQuery(cb.id);
       return NextResponse.json({ ok: true });
     }
 
