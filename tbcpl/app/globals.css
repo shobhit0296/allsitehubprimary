@@ -1225,6 +1225,16 @@ h1, h2, h3, .font-display {
   box-shadow: 0 8px 32px -8px rgba(88, 101, 242, 0.45);
 }
 
+.social-cta-telegram {
+  background: rgba(34, 158, 217, 0.14);
+  border-color: rgba(34, 158, 217, 0.28);
+}
+.social-cta-telegram:hover {
+  background: rgba(34, 158, 217, 0.22);
+  border-color: rgba(34, 158, 217, 0.55);
+  box-shadow: 0 8px 32px -8px rgba(34, 158, 217, 0.45);
+}
+
 .social-cta-reddit {
   background: rgba(255, 69, 0, 0.12);
   border-color: rgba(255, 69, 0, 0.26);
@@ -1245,8 +1255,9 @@ h1, h2, h3, .font-display {
   shrink: 0;
   flex-shrink: 0;
 }
-.social-cta-discord-icon { background: #5865F2; }
-.social-cta-reddit-icon  { background: #FF4500; }
+.social-cta-discord-icon  { background: #5865F2; }
+.social-cta-telegram-icon { background: #229ED9; }
+.social-cta-reddit-icon   { background: #FF4500; }
 
 @media (prefers-reduced-motion: reduce) {
   .social-cta-btn { transition-duration: 0.01ms !important; }
@@ -1272,6 +1283,11 @@ h1, h2, h3, .font-display {
   background: rgba(88, 101, 242, 0.1);
   border-color: rgba(88, 101, 242, 0.35);
   box-shadow: 0 4px 20px -6px rgba(88, 101, 242, 0.3);
+}
+.sidebar-telegram:hover {
+  background: rgba(34, 158, 217, 0.1);
+  border-color: rgba(34, 158, 217, 0.35);
+  box-shadow: 0 4px 20px -6px rgba(34, 158, 217, 0.3);
 }
 .sidebar-reddit:hover {
   background: rgba(255, 69, 0, 0.09);

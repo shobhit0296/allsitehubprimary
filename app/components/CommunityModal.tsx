@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 
 const DISCORD_URL = 'https://discord.gg/ZEMSvP2HX';
+const TELEGRAM_URL = 'https://t.me/+gWOCVAqtcXxkZDk9';
 const REDDIT_URL =
   'https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button';
 
@@ -89,11 +90,15 @@ export default function CommunityModal() {
       >
         {/* Ambient Glows */}
         <div
-          className="absolute -top-16 -left-16 w-48 h-48 rounded-full pointer-events-none blur-3xl opacity-40"
+          className="absolute -top-16 -left-16 w-44 h-44 rounded-full pointer-events-none blur-3xl opacity-40"
           style={{ background: '#5865F2' }}
         />
         <div
-          className="absolute -bottom-16 -right-16 w-48 h-48 rounded-full pointer-events-none blur-3xl opacity-35"
+          className="absolute -top-16 -right-16 w-44 h-44 rounded-full pointer-events-none blur-3xl opacity-35"
+          style={{ background: '#229ED9' }}
+        />
+        <div
+          className="absolute -bottom-16 -right-16 w-44 h-44 rounded-full pointer-events-none blur-3xl opacity-35"
           style={{ background: '#FF4500' }}
         />
 
@@ -106,26 +111,37 @@ export default function CommunityModal() {
           <span className="material-symbols-outlined text-[19px]">close</span>
         </button>
 
-        {/* Dual Brand Icon Badge */}
+        {/* Triple Brand Icon Badge */}
         <div className="flex items-center justify-center gap-3 mb-5">
           <div
-            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+            className="rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, #5865F2 0%, #4752C4 100%)',
               boxShadow: '0 8px 24px rgba(88,101,242,0.5)',
-              width: 52,
-              height: 52,
+              width: 48,
+              height: 48,
             }}
           >
             <DiscordIcon />
           </div>
           <div
-            className="w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+            className="rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #229ED9 0%, #0088cc 100%)',
+              boxShadow: '0 8px 24px rgba(34,158,217,0.5)',
+              width: 48,
+              height: 48,
+            }}
+          >
+            <TelegramIcon />
+          </div>
+          <div
+            className="rounded-2xl flex items-center justify-center shadow-lg transition-transform hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, #FF4500 0%, #D83A00 100%)',
               boxShadow: '0 8px 24px rgba(255,69,0,0.5)',
-              width: 52,
-              height: 52,
+              width: 48,
+              height: 48,
             }}
           >
             <RedditIcon />
@@ -143,18 +159,18 @@ export default function CommunityModal() {
         {/* Description */}
         <p className="text-[13.5px] sm:text-[14px] text-[var(--text-secondary)] leading-[1.6] mb-6 max-w-sm mx-auto">
           Get real-time updates, request your favorite websites, and join{' '}
-          <strong className="text-white font-semibold">128k+ active members</strong> on Discord and Reddit.
+          <strong className="text-white font-semibold">128k+ active members</strong> on Discord, Telegram, and Reddit.
         </p>
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           {/* Discord CTA */}
           <a
             href={DISCORD_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClose}
-            className="group flex items-center justify-between px-5 py-3.5 rounded-2xl font-bold text-[14.5px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="group flex items-center justify-between px-5 py-3 rounded-2xl font-bold text-[14px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: 'linear-gradient(135deg, #5865F2 0%, #404EED 100%)',
               boxShadow: '0 6px 20px rgba(88,101,242,0.45)',
@@ -169,13 +185,34 @@ export default function CommunityModal() {
             </span>
           </a>
 
+          {/* Telegram CTA */}
+          <a
+            href={TELEGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleClose}
+            className="group flex items-center justify-between px-5 py-3 rounded-2xl font-bold text-[14px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: 'linear-gradient(135deg, #229ED9 0%, #0088cc 100%)',
+              boxShadow: '0 6px 20px rgba(34,158,217,0.45)',
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <TelegramIcon />
+              <span>Join Telegram Group</span>
+            </div>
+            <span className="material-symbols-outlined text-[19px] text-white/70 group-hover:translate-x-0.5 transition-transform duration-200">
+              arrow_forward
+            </span>
+          </a>
+
           {/* Reddit CTA */}
           <a
             href={REDDIT_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClose}
-            className="group flex items-center justify-between px-5 py-3.5 rounded-2xl font-bold text-[14.5px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            className="group flex items-center justify-between px-5 py-3 rounded-2xl font-bold text-[14px] text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             style={{
               background: 'linear-gradient(135deg, #FF4500 0%, #E03D00 100%)',
               boxShadow: '0 6px 20px rgba(255,69,0,0.45)',
@@ -206,7 +243,15 @@ export default function CommunityModal() {
 function DiscordIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="white" className="shrink-0">
-      <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.946 2.419-2.157 2.419z" />
+      <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.078.078 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.946 2.419-2.157 2.419z" />
+    </svg>
+  );
+}
+
+function TelegramIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white" className="shrink-0">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.894-1.232 5.344-1.782 7.74-.233 1.014-.607 1.353-.969 1.386-.787.072-1.385-.52-2.148-1.02-.194-.128-1.89-1.225-2.073-1.378-.507-.423-.083-.655.124-.87.054-.057 2.47-2.395 2.518-2.6.006-.026.012-.123-.047-.176s-.138-.035-.198-.021c-.084.02-1.428.908-4.032 2.668-.381.263-.727.391-1.036.384-.34-.007-.996-.192-1.484-.351-.598-.194-1.074-.297-1.033-.626.022-.172.26-.348.716-.53 2.798-1.218 4.664-2.022 5.597-2.411 2.662-1.109 3.216-1.301 3.577-1.307.079-.001.257.018.372.112.097.079.124.186.134.263.01.078.02.257.01.37z" />
     </svg>
   );
 }
