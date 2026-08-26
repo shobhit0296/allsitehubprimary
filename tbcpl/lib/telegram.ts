@@ -158,11 +158,11 @@ export function searchSitesForTelegram(query: string) {
   const buttons: InlineKeyboardButton[][] = [];
 
   results.forEach((s, idx) => {
-    text += `<b>${idx + 1}. <a href="${s.url}">${escapeHtml(s.title)}</a></b> (${escapeHtml(s.category)})\n`;
+    text += `<b>${idx + 1}. <a href="${s.url}">${escapeHtml(s.name)}</a></b> (${escapeHtml(s.category)})\n`;
     text += `   📝 <i>${escapeHtml(s.description.slice(0, 90))}${s.description.length > 90 ? '…' : ''}</i>\n`;
-    text += `   ⚡ Quality: <code>${s.quality}</code> | 🛡️ Ads: <code>${s.adLoad}</code>\n\n`;
+    text += `   🌐 Domain: <code>${escapeHtml(s.domain)}</code>\n\n`;
 
-    buttons.push([{ text: `🔗 Open ${s.title}`, url: s.url }]);
+    buttons.push([{ text: `🔗 Open ${s.name}`, url: s.url }]);
   });
 
   buttons.push([{ text: '🌐 View all on AllSiteHub.site', url: SITE_URL }]);
