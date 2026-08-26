@@ -42,7 +42,7 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
         text: options.text,
         parse_mode: options.parse_mode || 'HTML',
         reply_markup: options.reply_markup,
-        disable_web_page_preview: options.disable_web_page_preview ?? false,
+        disable_web_page_preview: options.disable_web_page_preview ?? true, // Always true to disable preview banner
         reply_to_message_id: options.reply_to_message_id,
       }),
     });
@@ -98,17 +98,14 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 
 🌟 <b>Official Links:</b>
 
-• 🌐 <b>AllSiteHub Directory:</b>
+• 🌐 <b>AllSiteHub:</b>
   <a href="${SITE_URL}">${SITE_URL}</a>
-  <i>(Curated directory for movies, anime, sports & live TV)</i>
 
-• 🎬 <b>MoviesNet Streaming:</b>
+• 🎬 <b>MoviesNet:</b>
   <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
-  <i>(Watch HD movies & TV series directly for free)</i>
 
-• 💬 <b>Discord Server:</b>
+• 💬 <b>Discord:</b>
   <a href="${DISCORD_URL}">${DISCORD_URL}</a>
-  <i>(Chat, request content & join community events)</i>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
@@ -121,10 +118,6 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
         { text: '💬 Join Discord', url: DISCORD_URL },
         { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
       ],
-      [
-        { text: '🎬 Movies & Shows', url: `${SITE_URL}/#cat-movies-and-shows` },
-        { text: '🎌 Anime & Manga', url: `${SITE_URL}/#cat-anime` },
-      ],
     ],
   };
 
@@ -136,26 +129,21 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
  */
 export function buildInfoMessage() {
   const text = `
-🌟 <b>AllSiteHub & MoviesNet Official Links</b>
+🌟 <b>Official Links:</b>
 
-• 🌐 <b>AllSiteHub Directory:</b> <a href="${SITE_URL}">${SITE_URL}</a>
-  <i>The ultimate curated directory for movies, anime, sports & live TV.</i>
-
-• 🎬 <b>MoviesNet Free Streaming:</b> <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
-  <i>Stream free HD movies and TV shows online.</i>
-
-• 💬 <b>Discord Community:</b> <a href="${DISCORD_URL}">${DISCORD_URL}</a>
-  <i>Join our official Discord community for updates & support.</i>
+• 🌐 <b>AllSiteHub:</b> <a href="${SITE_URL}">${SITE_URL}</a>
+• 🎬 <b>MoviesNet:</b> <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
+• 💬 <b>Discord:</b> <a href="${DISCORD_URL}">${DISCORD_URL}</a>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
     inline_keyboard: [
       [
-        { text: '🌐 AllSiteHub', url: SITE_URL },
-        { text: '🍿 MoviesNet', url: MOVIESNET_URL },
+        { text: '🌐 AllSiteHub Directory', url: SITE_URL },
+        { text: '🍿 Watch on MoviesNet', url: MOVIESNET_URL },
       ],
       [
-        { text: '💬 Discord Community', url: DISCORD_URL },
+        { text: '💬 Join Discord', url: DISCORD_URL },
         { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
       ],
     ],
