@@ -91,23 +91,23 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
     : `<a href="tg://user?id=${user.id}">${escapeHtml(user.first_name || 'Friend')}</a>`;
 
   const text = `
-👋 <b>Welcome to AllSiteHub Community, ${mention}!</b> 🍿
+👋 <b>Welcome to AllSiteHub, ${mention}!</b> 🍿
 
-🌟 <b>AllSiteHub</b> is your ultimate curated directory for high-speed streaming sites across:
+🌟 <b>AllSiteHub</b> is your ultimate curated directory for fast and free streaming sites across:
 • 🎬 <b>Movies & TV Shows</b>
 • 🎌 <b>Anime & Manga</b>
-• ⚽ <b>Live Sports & Events</b>
-• 📺 <b>Live TV & Cable</b>
-• 📚 <b>Comics, Novels & More</b>
+• ⚽ <b>Live Sports & PPV</b>
+• 📺 <b>Live TV & News</b>
+• 📚 <b>Comics, Webtoons & More</b>
 
-🔗 <b>Visit the Official Directory:</b>
+🔗 <b>Visit the Official Website:</b>
 <a href="${SITE_URL}">${SITE_URL}</a>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
     inline_keyboard: [
       [
-        { text: '🌐 Open AllSiteHub', url: SITE_URL },
+        { text: '🌐 Open AllSiteHub.site', url: SITE_URL },
         { text: '🎬 Movies & Shows', url: `${SITE_URL}/#cat-movies-and-shows` },
       ],
       [
@@ -125,20 +125,20 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 }
 
 /**
- * Build /start response
+ * Build general info message (for direct message / overview)
  */
-export function buildStartMessage() {
+export function buildInfoMessage() {
   const text = `
-🚀 <b>Welcome to the official AllSiteHub Telegram Bot!</b>
+🌟 <b>AllSiteHub — The Ultimate Streaming & Entertainment Directory</b>
 
-I help you explore verified streaming sites, anime platforms, sports streams, and live TV.
+Discover verified platforms for:
+• 🎬 <b>Movies & Series:</b> Stream latest films & trending shows
+• 🎌 <b>Anime & Manga:</b> Subbed, dubbed, and high-res chapters
+• ⚽ <b>Live Sports:</b> Football, basketball, UFC, cricket & motorsport
+• 📺 <b>Live TV:</b> Global channels & news broadcasts
 
-<b>Available Commands:</b>
-• <code>/categories</code> - View all directory categories
-• <code>/rules</code> - Read group guidelines & safety tips
-• <code>/help</code> - Bot usage guide
-
-Explore the complete catalog anytime at <a href="${SITE_URL}">AllSiteHub.site</a>!
+🔗 <b>Official Website:</b>
+<a href="${SITE_URL}">${SITE_URL}</a>
 `.trim();
 
   const keyboard: InlineKeyboardMarkup = {
@@ -151,29 +151,11 @@ Explore the complete catalog anytime at <a href="${SITE_URL}">AllSiteHub.site</a
         { text: '🎬 Browse Movies', url: `${SITE_URL}/#cat-movies-and-shows` },
         { text: '🎌 Browse Anime', url: `${SITE_URL}/#cat-anime` },
       ],
+      [
+        { text: '⚽ Live Sports', url: `${SITE_URL}/#cat-sports` },
+        { text: '💬 Join Discord', url: 'https://discord.gg/ZEMSvP2HX' },
+      ],
     ],
-  };
-
-  return { text, keyboard };
-}
-
-/**
- * Build /rules response
- */
-export function buildRulesMessage() {
-  const text = `
-📜 <b>AllSiteHub Community Rules:</b>
-
-1. <b>Respect All Members</b> — No harassment, hate speech, or toxicity.
-2. <b>No Direct Pirated File Uploads / Torrents</b> — We share indexing directory links only. We do not host or upload copyrighted files.
-3. <b>No Spam or Self-Promotion</b> — Unauthorized promo or affiliate spam is prohibited.
-4. <b>Use Adblockers</b> — We recommend uBlock Origin / Brave for safer web browsing.
-
-🔗 <b>Visit:</b> <a href="${SITE_URL}">${SITE_URL}</a>
-`.trim();
-
-  const keyboard: InlineKeyboardMarkup = {
-    inline_keyboard: [[{ text: '🌐 Visit AllSiteHub', url: SITE_URL }]],
   };
 
   return { text, keyboard };

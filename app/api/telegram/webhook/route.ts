@@ -3,8 +3,7 @@ import {
   sendTelegramMessage,
   answerCallbackQuery,
   buildWelcomeMessage,
-  buildStartMessage,
-  buildRulesMessage,
+  buildInfoMessage,
   TELEGRAM_WEBHOOK_SECRET,
   SITE_URL,
 } from '@/lib/telegram';
@@ -30,11 +29,11 @@ export async function POST(req: NextRequest) {
       const botId = process.env.TELEGRAM_BOT_ID ? Number(process.env.TELEGRAM_BOT_ID) : null;
 
       for (const member of update.message.new_chat_members) {
-        // Skip if the member joining is the bot itself (unless you want to say hello)
+        // Skip if the member joining is the bot itself
         if (member.is_bot && botId && member.id === botId) {
           await sendTelegramMessage({
             chat_id: chatId,
-            text: `🤖 <b>AllSiteHub Bot activated in this group!</b>\n\nI will welcome new members with our official directory link.\n\n🌐 Visit <a href="${SITE_URL}">AllSiteHub.site</a>`,
+            text: `🤖 <b>AllSiteHub Bot Activated!</b>\n\n🌐 Explore all verified streaming sites at <a href="${SITE_URL}">AllSiteHub.site</a>`,
           });
           continue;
         }
@@ -51,93 +50,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, action: 'welcome_sent' });
     }
 
-    // ── 2. Handle Text Messages & Commands ──
+    // ── 2. Handle Private Messages / DMs to the bot ──
     if (update.message?.text) {
-      const text = update.message.text.trim();
+      const chatType = update.message.chat.type; // 'private', 'group', 'supergroup', etc.
       const chatId = update.message.chat.id;
       const messageId = update.message.message_id;
 
-      // Extract command (handles "/start@botname" format in groups)
-      const parts = text.split(/\s+/);
-      const rawCommand = parts[0].toLowerCase();
-      const command = rawCommand.split('@')[0];
-
-      if (command === '/start') {
-        const { text: startText, keyboard } = buildStartMessage();
+      // In Private DM, always respond with website info and direct links
+      if (chatType === 'private') {
+        const { text, keyboard } = buildInfoMessage();
         await sendTelegramMessage({
           chat_id: chatId,
-          text: startText,
+          text,
           reply_markup: keyboard,
           reply_to_message_id: messageId,
-        });
-        return NextResponse.json({ ok: true });
-      }
-
-      if (command === '/rules') {
-        const { text: rulesText, keyboard } = buildRulesMessage();
-        await sendTelegramMessage({
-          chat_id: chatId,
-          text: rulesText,
-          reply_markup: keyboard,
-          reply_to_message_id: messageId,
-        });
-        return NextResponse.json({ ok: true });
-      }
-
-      if (command === '/help') {
-        const helpText = `
-📖 <b>AllSiteHub Bot Help:</b>
-
-• <code>/categories</code> - Explore website categories
-• <code>/rules</code> - Read group guidelines
-• <code>/start</code> - Overview & main menu
-
-Visit our live catalog at <a href="${SITE_URL}">AllSiteHub.site</a>!
-        `.trim();
-
-        await sendTelegramMessage({
-          chat_id: chatId,
-          text: helpText,
-          reply_to_message_id: messageId,
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: '🌐 Go to AllSiteHub.site', url: SITE_URL }],
-            ],
-          },
-        });
-        return NextResponse.json({ ok: true });
-      }
-
-      if (command === '/categories' || command === '/cats') {
-        const catsText = `
-📂 <b>AllSiteHub Categories:</b>
-
-• 🎬 <a href="${SITE_URL}/#cat-movies-and-shows">Movies & TV Shows</a>
-• 🎌 <a href="${SITE_URL}/#cat-anime">Anime & Manga</a>
-• ⚽ <a href="${SITE_URL}/#cat-sports">Live Sports & PPV</a>
-• 📺 <a href="${SITE_URL}/#cat-live-tv">Live TV & News</a>
-• 📚 <a href="${SITE_URL}/#cat-manga-and-comics">Manga & Comics</a>
-
-Click below to explore:
-        `.trim();
-
-        await sendTelegramMessage({
-          chat_id: chatId,
-          text: catsText,
-          reply_to_message_id: messageId,
-          reply_markup: {
-            inline_keyboard: [
-              [
-                { text: '🎬 Movies & Shows', url: `${SITE_URL}/#cat-movies-and-shows` },
-                { text: '🎌 Anime', url: `${SITE_URL}/#cat-anime` },
-              ],
-              [
-                { text: '⚽ Live Sports', url: `${SITE_URL}/#cat-sports` },
-                { text: '📺 Live TV', url: `${SITE_URL}/#cat-live-tv` },
-              ],
-              [{ text: '🌐 Full Directory', url: SITE_URL }],
-            ],
-          },
         });
         return NextResponse.json({ ok: true });
       }
@@ -145,8 +71,7 @@ Click below to explore:
 
     // ── 3. Handle Callback Query (Button Clicks) ──
     if (update.callback_query) {
-      const cb = update.callback_query;
-      await answerCallbackQuery(cb.id);
+      await answerCallbackQuery(update.callback_query.id);
       return NextResponse.json({ ok: true });
     }
 
