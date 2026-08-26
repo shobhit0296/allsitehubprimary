@@ -38,12 +38,11 @@ async function pollUpdates() {
           // 1. Welcome new members
           if (update.message?.new_chat_members) {
             for (const member of update.message.new_chat_members) {
-              const { text, keyboard } = buildWelcomeMessage(member);
+              const { text } = buildWelcomeMessage(member);
               await sendTelegramMessage(
                 {
                   chat_id: update.message.chat.id,
                   text,
-                  reply_markup: keyboard,
                   reply_to_message_id: update.message.message_id,
                 },
                 token,
@@ -53,12 +52,11 @@ async function pollUpdates() {
 
           // 2. Direct Messages (Info message)
           if (update.message?.text && update.message.chat.type === 'private') {
-            const { text, keyboard } = buildInfoMessage();
+            const { text } = buildInfoMessage();
             await sendTelegramMessage(
               {
                 chat_id: update.message.chat.id,
                 text,
-                reply_markup: keyboard,
                 reply_to_message_id: update.message.message_id,
               },
               token,

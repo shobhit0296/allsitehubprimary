@@ -5,21 +5,10 @@ export const MOVIESNET_URL = 'https://moviesnet.site';
 export const DISCORD_URL = 'https://discord.gg/ZEMSvP2HX';
 export const TELEGRAM_GROUP_URL = 'https://t.me/+gWOCVAqtcXxkZDk9';
 
-interface InlineKeyboardButton {
-  text: string;
-  url?: string;
-  callback_data?: string;
-}
-
-interface InlineKeyboardMarkup {
-  inline_keyboard: InlineKeyboardButton[][];
-}
-
 interface SendMessageOptions {
   chat_id: number | string;
   text: string;
   parse_mode?: 'HTML' | 'MarkdownV2' | 'Markdown';
-  reply_markup?: InlineKeyboardMarkup;
   disable_web_page_preview?: boolean;
   reply_to_message_id?: number;
 }
@@ -41,8 +30,7 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
         chat_id: options.chat_id,
         text: options.text,
         parse_mode: options.parse_mode || 'HTML',
-        reply_markup: options.reply_markup,
-        disable_web_page_preview: options.disable_web_page_preview ?? true, // Always true to disable preview banner
+        disable_web_page_preview: options.disable_web_page_preview ?? true,
         reply_to_message_id: options.reply_to_message_id,
       }),
     });
@@ -59,34 +47,7 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
 }
 
 /**
- * Answer callback query for interactive buttons
- */
-export async function answerCallbackQuery(
-  callback_query_id: string,
-  text?: string,
-  show_alert = false,
-  token = TELEGRAM_BOT_TOKEN,
-) {
-  if (!token) return { ok: false };
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/answerCallbackQuery`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        callback_query_id,
-        text,
-        show_alert,
-      }),
-    });
-    return await res.json();
-  } catch (err) {
-    console.error('[Telegram] answerCallbackQuery failed:', err);
-    return { ok: false };
-  }
-}
-
-/**
- * Build welcome message for new chat members
+ * Build welcome message for new chat members (pure text with links, no buttons)
  */
 export function buildWelcomeMessage(user: { id: number; first_name?: string; username?: string }) {
   const mention = user.username
@@ -97,59 +58,28 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 👋 <b>Welcome to the Community, ${mention}!</b> 🍿
 
 🌟 <b>Official Links:</b>
-
-• 🌐 <b>AllSiteHub:</b>
-  <a href="${SITE_URL}">${SITE_URL}</a>
-
-• 🎬 <b>MoviesNet:</b>
-  <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
-
-• 💬 <b>Discord:</b>
-  <a href="${DISCORD_URL}">${DISCORD_URL}</a>
+• 🌐 <b>AllSiteHub:</b> <a href="${SITE_URL}">${SITE_URL}</a>
+• 🎬 <b>MoviesNet:</b> <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
+• 💬 <b>Discord:</b> <a href="${DISCORD_URL}">${DISCORD_URL}</a>
+• 📢 <b>Telegram:</b> <a href="${TELEGRAM_GROUP_URL}">${TELEGRAM_GROUP_URL}</a>
 `.trim();
 
-  const keyboard: InlineKeyboardMarkup = {
-    inline_keyboard: [
-      [
-        { text: '🌐 AllSiteHub Directory', url: SITE_URL },
-        { text: '🍿 Watch on MoviesNet', url: MOVIESNET_URL },
-      ],
-      [
-        { text: '💬 Join Discord', url: DISCORD_URL },
-        { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
-      ],
-    ],
-  };
-
-  return { text, keyboard };
+  return { text };
 }
 
 /**
- * Build general info message (for direct message / overview)
+ * Build general info message (for direct messages, pure text with links)
  */
 export function buildInfoMessage() {
   const text = `
 🌟 <b>Official Links:</b>
-
 • 🌐 <b>AllSiteHub:</b> <a href="${SITE_URL}">${SITE_URL}</a>
 • 🎬 <b>MoviesNet:</b> <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
 • 💬 <b>Discord:</b> <a href="${DISCORD_URL}">${DISCORD_URL}</a>
+• 📢 <b>Telegram:</b> <a href="${TELEGRAM_GROUP_URL}">${TELEGRAM_GROUP_URL}</a>
 `.trim();
 
-  const keyboard: InlineKeyboardMarkup = {
-    inline_keyboard: [
-      [
-        { text: '🌐 AllSiteHub Directory', url: SITE_URL },
-        { text: '🍿 Watch on MoviesNet', url: MOVIESNET_URL },
-      ],
-      [
-        { text: '💬 Join Discord', url: DISCORD_URL },
-        { text: '📢 Telegram Group', url: TELEGRAM_GROUP_URL },
-      ],
-    ],
-  };
-
-  return { text, keyboard };
+  return { text };
 }
 
 /**

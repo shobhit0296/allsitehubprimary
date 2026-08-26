@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   sendTelegramMessage,
-  answerCallbackQuery,
   buildWelcomeMessage,
   buildInfoMessage,
   TELEGRAM_WEBHOOK_SECRET,
@@ -33,16 +32,15 @@ export async function POST(req: NextRequest) {
         if (member.is_bot && botId && member.id === botId) {
           await sendTelegramMessage({
             chat_id: chatId,
-            text: `🤖 <b>AllSiteHub Bot Activated!</b>\n\n🌐 Explore all verified streaming sites at <a href="${SITE_URL}">AllSiteHub.site</a>`,
+            text: `🤖 <b>AllSiteHub Bot Activated!</b>\n\n🌐 Explore verified streaming sites at <a href="${SITE_URL}">${SITE_URL}</a>`,
           });
           continue;
         }
 
-        const { text, keyboard } = buildWelcomeMessage(member);
+        const { text } = buildWelcomeMessage(member);
         await sendTelegramMessage({
           chat_id: chatId,
           text,
-          reply_markup: keyboard,
           reply_to_message_id: update.message.message_id,
         });
       }
@@ -58,21 +56,14 @@ export async function POST(req: NextRequest) {
 
       // In Private DM, always respond with website info and direct links
       if (chatType === 'private') {
-        const { text, keyboard } = buildInfoMessage();
+        const { text } = buildInfoMessage();
         await sendTelegramMessage({
           chat_id: chatId,
           text,
-          reply_markup: keyboard,
           reply_to_message_id: messageId,
         });
         return NextResponse.json({ ok: true });
       }
-    }
-
-    // ── 3. Handle Callback Query (Button Clicks) ──
-    if (update.callback_query) {
-      await answerCallbackQuery(update.callback_query.id);
-      return NextResponse.json({ ok: true });
     }
 
     return NextResponse.json({ ok: true, unhandled: true });
