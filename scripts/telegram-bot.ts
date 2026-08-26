@@ -7,8 +7,7 @@
 import {
   sendTelegramMessage,
   buildWelcomeMessage,
-  buildStartMessage,
-  buildRulesMessage,
+  buildInfoMessage,
   SITE_URL,
 } from '../lib/telegram';
 
@@ -52,35 +51,18 @@ async function pollUpdates() {
             }
           }
 
-          // 2. Commands
-          if (update.message?.text) {
-            const rawText = update.message.text.trim();
-            const parts = rawText.split(/\s+/);
-            const cmd = parts[0].toLowerCase().split('@')[0];
-
-            if (cmd === '/start') {
-              const { text, keyboard } = buildStartMessage();
-              await sendTelegramMessage(
-                {
-                  chat_id: update.message.chat.id,
-                  text,
-                  reply_markup: keyboard,
-                  reply_to_message_id: update.message.message_id,
-                },
-                token,
-              );
-            } else if (cmd === '/rules') {
-              const { text, keyboard } = buildRulesMessage();
-              await sendTelegramMessage(
-                {
-                  chat_id: update.message.chat.id,
-                  text,
-                  reply_markup: keyboard,
-                  reply_to_message_id: update.message.message_id,
-                },
-                token,
-              );
-            }
+          // 2. Direct Messages (Info message)
+          if (update.message?.text && update.message.chat.type === 'private') {
+            const { text, keyboard } = buildInfoMessage();
+            await sendTelegramMessage(
+              {
+                chat_id: update.message.chat.id,
+                text,
+                reply_markup: keyboard,
+                reply_to_message_id: update.message.message_id,
+              },
+              token,
+            );
           }
         }
       }
