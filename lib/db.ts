@@ -1,17 +1,10 @@
 /**
- * lib/db.ts — persistence layer
- *
- * On Vercel, serverless functions run against a read-only filesystem
- * (except /tmp, which isn't shared between invocations and is wiped on
- * every cold start), so writing to data/db.json in production silently
- * loses every admin edit and can throw EROFS outright. When Redis env vars
- * are present (e.g. after connecting an Upstash/Vercel KV store) this
- * module persists to Redis instead; otherwise it falls back to the local
- * JSON file, which is fine for `next dev` / `next start` on a normal
- * filesystem.
+ * lib/db.ts — persistence layer with in-memory caching & rate-limit resilience
  */
 import { Redis } from '@upstash/redis';
 import type { Site } from './data';
+import { SITES, CATEGORIES, REGIONS } from './data';
+import bundledDbJson from '@/data/db.json';
 
 const REDIS_KEY = 'allsitehub:db';
 const LEGACY_REDIS_KEY = 'tbcpl-app:db';
@@ -19,6 +12,14 @@ const LEGACY_REDIS_KEY = 'tbcpl-app:db';
 const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null;
+
+// Circuit breaker: if Upstash hits monthly request limit or errors out,
+// skip Redis for 5 minutes so workers don't exceed CPU limits with failing network calls.
+let redisDisabledUntil = 0;
+
+// In-memory cache for ultra-fast SSR execution (0ms) on workers/serverless
+let memoryCache: { data: DB; timestamp: number } | null = null;
+const CACHE_TTL_MS = 60_000; // 60s memory cache
 
 export interface SiteRequest {
   id: string;
@@ -37,92 +38,73 @@ export interface DB {
   requests: SiteRequest[];
 }
 
-function seedData(): DB {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { SITES, CATEGORIES, REGIONS } = require('./data') as typeof import('./data');
+function getBundledData(): DB {
+  try {
+    const raw = bundledDbJson as unknown as Partial<DB>;
+    if (Array.isArray(raw?.sites) && raw.sites.length > 0) {
+      return {
+        sites: raw.sites,
+        categories: Array.isArray(raw.categories) ? raw.categories : CATEGORIES.map(c => c.name),
+        regions: Array.isArray(raw.regions) ? raw.regions : REGIONS,
+        requests: Array.isArray(raw.requests) ? raw.requests : [],
+      };
+    }
+  } catch {
+    // fallback
+  }
+
   return {
     sites: SITES,
-    categories: CATEGORIES.map((c: { name: string }) => c.name),
+    categories: CATEGORIES.map(c => c.name),
     regions: REGIONS,
     requests: [],
   };
 }
 
-async function readDBRedis(): Promise<DB> {
+async function readDBRedis(): Promise<DB | null> {
+  if (!redis || Date.now() < redisDisabledUntil) return null;
+
   try {
-    let data = await redis!.get<DB>(REDIS_KEY);
+    let data = await redis.get<DB>(REDIS_KEY);
     if (!data) {
-      const legacy = await redis!.get<DB>(LEGACY_REDIS_KEY);
+      const legacy = await redis.get<DB>(LEGACY_REDIS_KEY);
       if (legacy) {
         data = legacy;
-        try { await redis!.set(REDIS_KEY, legacy); } catch { /* ignore */ }
+        try { await redis.set(REDIS_KEY, legacy); } catch { /* ignore */ }
       }
     }
     if (!data) {
-      const initial = seedData();
-      try { await redis!.set(REDIS_KEY, initial); } catch { /* ignore */ }
+      const initial = getBundledData();
+      try { await redis.set(REDIS_KEY, initial); } catch { /* ignore */ }
       return initial;
     }
     if (!Array.isArray(data.requests)) data.requests = [];
     return data;
-  } catch (err) {
-    console.warn('[DB] Redis read failed, falling back to local file:', err);
-    return readDBFs();
+  } catch (err: unknown) {
+    const errMsg = String(err);
+    if (errMsg.includes('limit exceeded') || errMsg.includes('ERR max requests')) {
+      console.warn('[DB] Upstash request limit reached, using static bundle cache for 10 minutes.');
+      redisDisabledUntil = Date.now() + 10 * 60 * 1000;
+    } else {
+      console.warn('[DB] Redis read failed, temporarily bypassing Redis for 2 minutes:', err);
+      redisDisabledUntil = Date.now() + 2 * 60 * 1000;
+    }
+    return null;
   }
 }
 
 async function writeDBRedis(data: DB): Promise<void> {
+  if (!redis || Date.now() < redisDisabledUntil) return;
   try {
     await Promise.all([
-      redis!.set(REDIS_KEY, data),
-      redis!.set(LEGACY_REDIS_KEY, data),
+      redis.set(REDIS_KEY, data),
+      redis.set(LEGACY_REDIS_KEY, data),
     ]);
-  } catch (err) {
-    console.warn('[DB] Redis write failed, falling back to local file:', err);
-    writeDBFs(data);
-  }
-}
-
-function readDBFs(): DB {
-  try {
-    const fs = require('fs') as typeof import('fs');
-    const path = require('path') as typeof import('path');
-    if (!fs || typeof fs.existsSync !== 'function') return seedData();
-    const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
-    const dir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-
-    if (!fs.existsSync(DB_PATH)) {
-      const initial = seedData();
-      try { fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2), 'utf8'); } catch { /* ignore */ }
-      return initial;
-    }
-
-    const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8')) as DB;
-    if (!Array.isArray(data.requests)) { data.requests = []; }
-    return data;
   } catch {
-    return seedData();
+    redisDisabledUntil = Date.now() + 2 * 60 * 1000;
   }
 }
 
-function writeDBFs(data: DB): void {
-  try {
-    const fs = require('fs') as typeof import('fs');
-    const path = require('path') as typeof import('path');
-    if (!fs || typeof fs.writeFileSync !== 'function') return;
-    const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
-    const dir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
-  } catch {
-    // ignore in serverless/worker environments
-  }
-}
-
-// Sites persisted before manual ranking existed have no `order` field.
-// Backfill them per-category (matching the array position they already
-// render in) and persist the backfill once so this only has to run once.
 function ensureOrder(data: DB): boolean {
   let changed = false;
   const counters: Record<string, number> = {};
@@ -140,13 +122,30 @@ function ensureOrder(data: DB): boolean {
 }
 
 export async function readDB(): Promise<DB> {
-  const data = redis ? await readDBRedis() : readDBFs();
-  if (ensureOrder(data)) await writeDB(data);
+  const now = Date.now();
+  if (memoryCache && (now - memoryCache.timestamp < CACHE_TTL_MS)) {
+    return memoryCache.data;
+  }
+
+  let data: DB | null = null;
+  if (redis && now >= redisDisabledUntil) {
+    data = await readDBRedis();
+  }
+
+  if (!data) {
+    data = getBundledData();
+  }
+
+  ensureOrder(data);
+  memoryCache = { data, timestamp: now };
   return data;
 }
 
 export async function writeDB(data: DB): Promise<void> {
-  return redis ? writeDBRedis(data) : writeDBFs(data);
+  memoryCache = { data, timestamp: Date.now() };
+  if (redis && Date.now() >= redisDisabledUntil) {
+    await writeDBRedis(data);
+  }
 }
 
 export function generateId(): string {

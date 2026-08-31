@@ -21,6 +21,7 @@ async function redisGet(key: string): Promise<number> {
     const res = await fetch(`${REDIS_URL}/get/${encodeURIComponent(key)}`, {
       headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
       cache: 'no-store',
+      signal: AbortSignal.timeout(1500),
     });
     const json = await res.json();
     if (json.result !== null && json.result !== undefined) {
@@ -39,6 +40,7 @@ async function redisIncrBy(key: string, by: number): Promise<number> {
     const res = await fetch(`${REDIS_URL}/incrby/${encodeURIComponent(key)}/${by}`, {
       headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
       cache: 'no-store',
+      signal: AbortSignal.timeout(1500),
     });
     const json = await res.json();
     return typeof json.result === 'number' ? json.result : 0;
