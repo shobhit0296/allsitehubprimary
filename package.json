@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "deploy": "vercel --prod --yes"
+    "lint": "eslint"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -23,6 +22,7 @@
     "unrs-resolver": true
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.4",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -33,6 +33,7 @@
     "postcss": "^8.5.21",
     "tailwindcss": "^4.0.0",
     "typescript": "^5",
-    "vercel": "^59.1.4"
+    "vercel": "^59.1.4",
+    "wrangler": "^4.127.1"
   }
 }

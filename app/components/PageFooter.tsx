@@ -23,12 +23,12 @@ export default function PageFooter() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <p className="text-center sm:text-left">
+          <p className="text-center sm:text-left leading-relaxed">
             © {new Date().getFullYear()}{' '}
             <span className="text-blue-400 font-semibold">AllSiteHub</span>
-            {' '}· Discover & Search Useful Websites · We do not host third-party content.
+            {' '}· Founded & Curated by <span className="text-[var(--text-primary)] font-medium">Shobhit Verma</span> · Discover & Search Useful Websites.
           </p>
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 shrink-0">
             <span className="w-2 h-2 rounded-full bg-emerald-500 pulse-dot" /> Systems Operational
           </span>
         </div>

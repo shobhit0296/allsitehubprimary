@@ -123,7 +123,7 @@ export default function ThemeNavOption() {
 
   return (
     <div ref={containerRef} className="relative inline-block text-left">
-      {/* Top Navbar Option Button */}
+      {/* Top Navbar Option Button — compact sleek pill shape matching online pill */}
       <button
         type="button"
         onClick={(e) => {
@@ -132,24 +132,24 @@ export default function ThemeNavOption() {
         }}
         aria-expanded={isOpen}
         aria-label={`Theme: ${currentThemeObj.name}. Click to change theme.`}
-        className="nav-theme-btn flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-200 select-none shadow-sm cursor-pointer active:scale-95 touch-manipulation"
+        className="nav-theme-btn inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full border text-[11.5px] sm:text-xs font-semibold transition-all duration-200 select-none shadow-sm cursor-pointer active:scale-95 touch-manipulation shrink-0"
         style={{
           color: currentThemeObj.color,
           background: `${currentThemeObj.color}15`,
-          borderColor: isOpen ? currentThemeObj.color : `${currentThemeObj.color}40`,
-          boxShadow: isOpen ? `0 0 16px ${currentThemeObj.color}40` : `0 0 8px ${currentThemeObj.color}18`,
+          borderColor: isOpen ? currentThemeObj.color : `${currentThemeObj.color}35`,
+          boxShadow: isOpen ? `0 0 12px ${currentThemeObj.color}35` : `0 0 6px ${currentThemeObj.color}15`,
         }}
       >
         <span
-          className="w-2.5 h-2.5 rounded-full transition-colors duration-300 shadow-sm"
-          style={{ background: currentThemeObj.color, boxShadow: `0 0 8px ${currentThemeObj.color}` }}
+          className="w-1.5 h-1.5 min-w-[6px] rounded-full transition-colors duration-300 shrink-0"
+          style={{ background: currentThemeObj.color, boxShadow: `0 0 6px ${currentThemeObj.color}` }}
         />
-        <span className="text-[13px]">{currentThemeObj.icon}</span>
-        <span className="hidden sm:inline-block font-bold tracking-wide">
+        <span className="text-[12px] leading-none shrink-0">{currentThemeObj.icon}</span>
+        <span className="hidden sm:inline-block font-bold tracking-wide leading-none">
           {currentThemeObj.shortName}
         </span>
         <span
-          className={`material-symbols-outlined text-[15px] transition-transform duration-200 ${
+          className={`material-symbols-outlined text-[13px] leading-none transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
         >

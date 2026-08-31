@@ -1,668 +1,13 @@
 {
   "sites": [
     {
-      "id": "ms1",
-      "name": "Netflix",
-      "url": "https://www.netflix.com",
-      "domain": "netflix.com",
+      "id": "ms2tednwv7muc",
+      "name": "PANTYFLIX",
+      "url": "https://pantyflix.org/",
+      "domain": "pantyflix.org",
       "category": "Movies & Shows",
       "regions": [
         "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "World's leading streaming platform with thousands of originals.",
-      "addedAt": 1774286367835
-    },
-    {
-      "id": "ms2",
-      "name": "Prime Video",
-      "url": "https://www.primevideo.com",
-      "domain": "primevideo.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Amazon Prime streaming with award-winning originals and live sports.",
-      "addedAt": 1775150367835
-    },
-    {
-      "id": "ms3",
-      "name": "Disney+",
-      "url": "https://www.disneyplus.com",
-      "domain": "disneyplus.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "Disney, Pixar, Marvel, Star Wars, and National Geographic.",
-      "addedAt": 1776014367835
-    },
-    {
-      "id": "ms4",
-      "name": "Max",
-      "url": "https://www.max.com",
-      "domain": "max.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "US",
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Premium HBO content, Warner Bros. films, and Max originals.",
-      "addedAt": 1776878367835
-    },
-    {
-      "id": "ms5",
-      "name": "Apple TV+",
-      "url": "https://tv.apple.com",
-      "domain": "tv.apple.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Apple Originals — award-winning series, films, and documentaries.",
-      "addedAt": 1777310367835
-    },
-    {
-      "id": "ms6",
-      "name": "Hulu",
-      "url": "https://www.hulu.com",
-      "domain": "hulu.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "US"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Current-season TV episodes, movies, and Hulu originals.",
-      "addedAt": 1777742367835
-    },
-    {
-      "id": "ms7",
-      "name": "Peacock",
-      "url": "https://www.peacocktv.com",
-      "domain": "peacocktv.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "US"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "NBCUniversal streaming with free and premium tiers.",
-      "addedAt": 1778174367835
-    },
-    {
-      "id": "ms8",
-      "name": "Paramount+",
-      "url": "https://www.paramountplus.com",
-      "domain": "paramountplus.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "US",
-        "UK",
-        "AU",
-        "CA"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "CBS, BET, MTV, Nickelodeon content plus Paramount originals.",
-      "addedAt": 1778606367835
-    },
-    {
-      "id": "ms9",
-      "name": "Tubi",
-      "url": "https://tubitv.com",
-      "domain": "tubitv.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "US",
-        "CA",
-        "AU"
-      ],
-      "tags": [
-        "new"
-      ],
-      "isTrusted": false,
-      "isNew": true,
-      "isFeatured": false,
-      "description": "Free ad-supported streaming with 50,000+ movies and shows.",
-      "addedAt": 1783963167835
-    },
-    {
-      "id": "ms10",
-      "name": "Hotstar",
-      "url": "https://www.hotstar.com",
-      "domain": "hotstar.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "IN"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "India's biggest streaming platform with live cricket and Bollywood.",
-      "addedAt": 1779038367835
-    },
-    {
-      "id": "ms11",
-      "name": "Pluto TV",
-      "url": "https://pluto.tv",
-      "domain": "pluto.tv",
-      "category": "Movies & Shows",
-      "regions": [
-        "US",
-        "UK",
-        "DE",
-        "ES"
-      ],
-      "tags": [
-        "new"
-      ],
-      "isTrusted": false,
-      "isNew": true,
-      "isFeatured": false,
-      "description": "Free live TV + on-demand streaming with 250+ channels.",
-      "addedAt": 1784222367835
-    },
-    {
-      "id": "ms12",
-      "name": "Mubi",
-      "url": "https://mubi.com",
-      "domain": "mubi.com",
-      "category": "Movies & Shows",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Curated hand-picked films — a cinema lover's streaming service.",
-      "addedAt": 1779470367835
-    },
-    {
-      "id": "an1",
-      "name": "Crunchyroll",
-      "url": "https://www.crunchyroll.com",
-      "domain": "crunchyroll.com",
-      "category": "Anime",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "World's largest anime library with daily simulcasts.",
-      "addedAt": 1774718367835
-    },
-    {
-      "id": "an2",
-      "name": "HiDive",
-      "url": "https://www.hidive.com",
-      "domain": "hidive.com",
-      "category": "Anime",
-      "regions": [
-        "US",
-        "CA",
-        "UK",
-        "AU"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Premium anime streaming with exclusive simulcasts and dubs.",
-      "addedAt": 1776878367835
-    },
-    {
-      "id": "an3",
-      "name": "Aniwatch",
-      "url": "https://aniwatch.to",
-      "domain": "aniwatch.to",
-      "category": "Anime",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "new"
-      ],
-      "isTrusted": false,
-      "isNew": true,
-      "isFeatured": false,
-      "description": "Free anime streaming with high-quality subs and dubs.",
-      "addedAt": 1783617567835
-    },
-    {
-      "id": "an4",
-      "name": "AnimePahe",
-      "url": "https://animepahe.ru",
-      "domain": "animepahe.ru",
-      "category": "Anime",
-      "regions": [
-        "Global"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Mini-compressed anime streams and downloads in HD.",
-      "addedAt": 1779902367835
-    },
-    {
-      "id": "an5",
-      "name": "Bilibili",
-      "url": "https://www.bilibili.com",
-      "domain": "bilibili.com",
-      "category": "Anime",
-      "regions": [
-        "JP",
-        "Global"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Chinese video platform with extensive anime library.",
-      "addedAt": 1780334367835
-    },
-    {
-      "id": "an6",
-      "name": "AnimeDao",
-      "url": "https://animedao.to",
-      "domain": "animedao.to",
-      "category": "Anime",
-      "regions": [
-        "Global"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Watch anime online free in HD quality, no signup needed.",
-      "addedAt": 1780766367835
-    },
-    {
-      "id": "mg1",
-      "name": "MangaDex",
-      "url": "https://mangadex.org",
-      "domain": "mangadex.org",
-      "category": "Manga",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "The largest manga scanlation platform with 500k+ chapters.",
-      "addedAt": 1776014367835
-    },
-    {
-      "id": "mg2",
-      "name": "Manga Plus",
-      "url": "https://mangaplus.shueisha.co.jp",
-      "domain": "mangaplus.shueisha.co.jp",
-      "category": "Manga",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Official Shueisha manga — One Piece, Naruto, Dragon Ball, and more.",
-      "addedAt": 1776446367835
-    },
-    {
-      "id": "mg3",
-      "name": "Webtoon",
-      "url": "https://www.webtoons.com",
-      "domain": "webtoons.com",
-      "category": "Manga",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Free digital comics and webtoons from creators worldwide.",
-      "addedAt": 1776878367835
-    },
-    {
-      "id": "mg4",
-      "name": "MangaFire",
-      "url": "https://mangafire.to",
-      "domain": "mangafire.to",
-      "category": "Manga",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "new"
-      ],
-      "isTrusted": false,
-      "isNew": true,
-      "isFeatured": false,
-      "description": "Read manga online in high quality, updated daily.",
-      "addedAt": 1784135967835
-    },
-    {
-      "id": "mg5",
-      "name": "MangaSee",
-      "url": "https://mangasee123.com",
-      "domain": "mangasee123.com",
-      "category": "Manga",
-      "regions": [
-        "Global"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "One of the biggest manga reading sites with a clean reader.",
-      "addedAt": 1779470367835
-    },
-    {
-      "id": "sp1",
-      "name": "ESPN+",
-      "url": "https://www.espnplus.com",
-      "domain": "espnplus.com",
-      "category": "Live TV & Sports",
-      "regions": [
-        "US"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Premium sports streaming with live events and ESPN originals.",
-      "addedAt": 1776014367835
-    },
-    {
-      "id": "sp2",
-      "name": "DAZN",
-      "url": "https://www.dazn.com",
-      "domain": "dazn.com",
-      "category": "Live TV & Sports",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "Live and on-demand sports — football, boxing, MMA and more.",
-      "addedAt": 1776878367835
-    },
-    {
-      "id": "sp3",
-      "name": "fuboTV",
-      "url": "https://www.fubo.tv",
-      "domain": "fubo.tv",
-      "category": "Live TV & Sports",
-      "regions": [
-        "US",
-        "CA",
-        "ES"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Sports-first live TV streaming with 100+ channels.",
-      "addedAt": 1777742367835
-    },
-    {
-      "id": "sp4",
-      "name": "BBC iPlayer",
-      "url": "https://www.bbc.co.uk/iplayer",
-      "domain": "bbc.co.uk",
-      "category": "Live TV & Sports",
-      "regions": [
-        "UK"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Watch BBC TV programmes, news, and radio on demand.",
-      "addedAt": 1778174367835
-    },
-    {
-      "id": "sp5",
-      "name": "SonyLIV",
-      "url": "https://www.sonyliv.com",
-      "domain": "sonyliv.com",
-      "category": "Live TV & Sports",
-      "regions": [
-        "IN"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Indian OTT with live sports, movies, TV shows and originals.",
-      "addedAt": 1779038367835
-    },
-    {
-      "id": "sp6",
-      "name": "Sling TV",
-      "url": "https://www.sling.com",
-      "domain": "sling.com",
-      "category": "Live TV & Sports",
-      "regions": [
-        "US"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Affordable live TV streaming — no contracts needed.",
-      "addedAt": 1779470367835
-    },
-    {
-      "id": "pd1",
-      "name": "Starz",
-      "url": "https://www.starz.com",
-      "domain": "starz.com",
-      "category": "Paid",
-      "regions": [
-        "US",
-        "CA"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Premium cable network with blockbuster movies and originals.",
-      "addedAt": 1777742367835
-    },
-    {
-      "id": "pd2",
-      "name": "Shudder",
-      "url": "https://www.shudder.com",
-      "domain": "shudder.com",
-      "category": "Paid",
-      "regions": [
-        "US",
-        "UK",
-        "CA",
-        "AU"
-      ],
-      "tags": [
-        "new"
-      ],
-      "isTrusted": false,
-      "isNew": true,
-      "isFeatured": false,
-      "description": "Premium horror, thriller, and supernatural streaming.",
-      "addedAt": 1783876767835
-    },
-    {
-      "id": "pd3",
-      "name": "BritBox",
-      "url": "https://www.britbox.com",
-      "domain": "britbox.com",
-      "category": "Paid",
-      "regions": [
-        "US",
-        "UK",
-        "CA",
-        "AU"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "The best of British TV from BBC, ITV, Channel 4, and more.",
-      "addedAt": 1778606367835
-    },
-    {
-      "id": "ap1",
-      "name": "Plex",
-      "url": "https://www.plex.tv",
-      "domain": "plex.tv",
-      "category": "Apps",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted",
-        "featured"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": true,
-      "description": "Personal media server and free ad-supported streaming.",
-      "addedAt": 1776014367835
-    },
-    {
-      "id": "ap2",
-      "name": "Kodi",
-      "url": "https://kodi.tv",
-      "domain": "kodi.tv",
-      "category": "Apps",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Open-source media player — stream anything, anywhere.",
-      "addedAt": 1776446367835
-    },
-    {
-      "id": "ap3",
-      "name": "VLC",
-      "url": "https://www.videolan.org/vlc",
-      "domain": "videolan.org",
-      "category": "Apps",
-      "regions": [
-        "Global"
-      ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Free, open-source media player supporting virtually any format.",
-      "addedAt": 1776878367835
-    },
-    {
-      "id": "ap4",
-      "name": "Infuse",
-      "url": "https://firecore.com/infuse",
-      "domain": "firecore.com",
-      "category": "Apps",
-      "regions": [
-        "Global"
-      ],
-      "tags": [],
-      "isTrusted": false,
-      "isNew": false,
-      "isFeatured": false,
-      "description": "Beautiful video player for Apple devices — supports all formats.",
-      "addedAt": 1778174367835
-    },
-    {
-      "id": "mruxjgyctzacj",
-      "name": "world4ufree",
-      "url": "https://world4ufree.im/",
-      "domain": "world4ufree.im",
-      "category": "Movies & Shows",
-      "regions": [
-        "IN"
       ],
       "tags": [
         "trusted"
@@ -671,8 +16,1400 @@
       "isNew": false,
       "isFeatured": false,
       "description": "",
-      "addedAt": 1784655054228,
-      "faviconUrl": "https://world4ufree.im/wp-content/uploads/2026/04/cropped-favicon-v3-512-32x32.png"
+      "addedAt": 1785131827629,
+      "order": 1,
+      "faviconUrl": "/logos/pantyflix_org.png"
+    },
+    {
+      "id": "ms2tfcv4txa6u",
+      "name": "1 Show",
+      "url": "https://www.1shows.org/",
+      "domain": "1shows.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785131873248,
+      "faviconUrl": "/logos/1shows_org.png",
+      "order": 4
+    },
+    {
+      "id": "ms2tg2e2jw8vg",
+      "name": "ENMA",
+      "url": "https://www.enma.lol/home",
+      "domain": "enma.lol",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted",
+        "featured"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "",
+      "addedAt": 1785131906330,
+      "order": 0,
+      "faviconUrl": "/logos/enma_lol.png"
+    },
+    {
+      "id": "ms2tgj8utkoue",
+      "name": "1TUBE",
+      "url": "https://1tube.org/",
+      "domain": "1tube.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785131928174,
+      "order": 3,
+      "faviconUrl": "/logos/1tube_org.png"
+    },
+    {
+      "id": "ms2th1hf7ncwk",
+      "name": "7 movies",
+      "url": "https://7movies.in/",
+      "domain": "7movies.in",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785131951811,
+      "faviconUrl": "/logos/7movies_in.png",
+      "order": 2
+    },
+    {
+      "id": "ms2tiauj2jn35",
+      "name": "CINEZO",
+      "url": "https://cinezo.net/",
+      "domain": "cinezo.net",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785132010603,
+      "order": 0,
+      "faviconUrl": "/logos/cinezo_net.png"
+    },
+    {
+      "id": "ms2tl1qb47f6k",
+      "name": "1FLEX",
+      "url": "https://www.1flex.org/",
+      "domain": "1flex.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785132138755,
+      "order": 5,
+      "faviconUrl": "/logos/1flex_org.png"
+    },
+    {
+      "id": "ms2tvigbxglzl",
+      "name": "REDFLIX",
+      "url": "https://redflix.club/",
+      "domain": "redflix.club",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785132626987,
+      "order": 8,
+      "faviconUrl": "/logos/redflix_club.png"
+    },
+    {
+      "id": "ms2twlltw6obx",
+      "name": "YENIME",
+      "url": "https://yenime.net/",
+      "domain": "yenime.net",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785132677729,
+      "order": 1,
+      "faviconUrl": "/logos/yenime_net.png"
+    },
+    {
+      "id": "ms2u0cv0xlvak",
+      "name": "SHUTTLE TV",
+      "url": "https://shuttletv.su/",
+      "domain": "shuttletv.su",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785132853020,
+      "order": 9,
+      "faviconUrl": "/logos/shuttletv_su.png"
+    },
+    {
+      "id": "ms2ublikhkx0h",
+      "name": "FLY FLIX",
+      "url": "https://flyflix.net/",
+      "domain": "flyflix.net",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785133377452,
+      "order": 10,
+      "faviconUrl": "/logos/flyflix_net.png"
+    },
+    {
+      "id": "ms2udhv2f75gm",
+      "name": "YOU SHOWS",
+      "url": "https://youshows.org/",
+      "domain": "youshows.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785133466031,
+      "order": 11,
+      "faviconUrl": "/logos/youshows_org.svg"
+    },
+    {
+      "id": "ms2uego1lxbmv",
+      "name": "ANY SHOWS",
+      "url": "https://anishows.org/",
+      "domain": "anishows.org",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785133511137,
+      "order": 2,
+      "faviconUrl": "/logos/anishows_org.svg"
+    },
+    {
+      "id": "ms2ug2xqgt5jg",
+      "name": "FLIXHUB",
+      "url": "https://flixhub.studio/",
+      "domain": "flixhub.studio",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785133586654,
+      "order": 12,
+      "faviconUrl": "/logos/flixhub_studio.png"
+    },
+    {
+      "id": "ms2um0ncjossc",
+      "name": "PRIME MOVIES",
+      "url": "https://primeshows.org/",
+      "domain": "primeshows.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785133863624,
+      "order": 13,
+      "faviconUrl": "/logos/primeshows_org.png"
+    },
+    {
+      "id": "ms2uwsrnmrviw",
+      "name": "DULO",
+      "url": "https://dulo.cx/",
+      "domain": "dulo.cx",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134366627,
+      "order": 14,
+      "faviconUrl": "/logos/dulo_cx.png"
+    },
+    {
+      "id": "ms2uyznbldhs4",
+      "name": "STIGSTREAM",
+      "url": "https://stigstream.ru/",
+      "domain": "stigstream.ru",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134468855,
+      "order": 15,
+      "faviconUrl": "/logos/stigstream_ru.png"
+    },
+    {
+      "id": "ms2uzxxstyo73",
+      "name": "FLIXEO",
+      "url": "https://flixeo.tv/home",
+      "domain": "flixeo.tv",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134513296,
+      "order": 16,
+      "faviconUrl": "/logos/flixeo_tv.png"
+    },
+    {
+      "id": "ms2v0ta2ph0tm",
+      "name": "WILLOW",
+      "url": "https://willow.arlen.icu/",
+      "domain": "willow.arlen.icu",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134553914,
+      "order": 17,
+      "faviconUrl": "/logos/willow_arlen_icu.png"
+    },
+    {
+      "id": "ms2v1qsbnjn4f",
+      "name": "ANIME TV",
+      "url": "https://animetvplus.xyz/",
+      "domain": "animetvplus.xyz",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134597340,
+      "order": 4,
+      "faviconUrl": "/logos/animetvplus_xyz.png"
+    },
+    {
+      "id": "ms2v4fhvkrqz1",
+      "name": "KAA",
+      "url": "https://kaa.lt/",
+      "domain": "kaa.lt",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134722675,
+      "order": 6,
+      "faviconUrl": "/logos/kaa_lt.png"
+    },
+    {
+      "id": "ms2v4s9su1jh2",
+      "name": "JUST ANIME",
+      "url": "https://justanime.to/",
+      "domain": "justanime.to",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134739232,
+      "order": 7,
+      "faviconUrl": "/logos/justanime_to.png"
+    },
+    {
+      "id": "ms2v5hpg7we7t",
+      "name": "ANIME SALT",
+      "url": "https://animesalt.link/",
+      "domain": "animesalt.link",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134772196,
+      "order": 8,
+      "faviconUrl": "/logos/animesalt_link.png"
+    },
+    {
+      "id": "ms2v90v83veec",
+      "name": "ONDEMAND",
+      "url": "https://ondemand.st/",
+      "domain": "ondemand.st",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134936996,
+      "order": 0,
+      "faviconUrl": "/logos/ondemand_st.png"
+    },
+    {
+      "id": "ms2v9t0be7pvn",
+      "name": "STREAM EAST",
+      "url": "https://thestreameast.top/",
+      "domain": "thestreameast.top",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134973467,
+      "order": 1,
+      "faviconUrl": "/logos/thestreameast_top.png"
+    },
+    {
+      "id": "ms2va88dhq2dv",
+      "name": "STMIFY",
+      "url": "https://stmify.com/",
+      "domain": "stmify.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785134993197,
+      "order": 2,
+      "faviconUrl": "/logos/stmify_com.png"
+    },
+    {
+      "id": "ms2vaqvfr5810",
+      "name": "FAMELACK",
+      "url": "https://famelack.com/",
+      "domain": "famelack.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135017355,
+      "order": 3,
+      "faviconUrl": "/logos/famelack_com.png"
+    },
+    {
+      "id": "ms2vbpfemdoqp",
+      "name": "MANGABALL",
+      "url": "https://mangaball.net/",
+      "domain": "mangaball.net",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135062138,
+      "order": 0,
+      "faviconUrl": "/logos/mangaball_net.png"
+    },
+    {
+      "id": "ms2vc7tt9v0wk",
+      "name": "COMICK",
+      "url": "https://comick.dev/",
+      "domain": "comick.dev",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135085985,
+      "order": 1,
+      "faviconUrl": "/logos/comick_dev.png"
+    },
+    {
+      "id": "ms2vckb0mbtit",
+      "name": "Q TOON",
+      "url": "https://qtoon.org/",
+      "domain": "qtoon.org",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135102156,
+      "order": 2,
+      "faviconUrl": "/logos/qtoon_org.png"
+    },
+    {
+      "id": "ms2vd2dtgayp4",
+      "name": "WEEB CENTRAL",
+      "url": "https://weebcentral.com/",
+      "domain": "weebcentral.com",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135125585,
+      "order": 3,
+      "faviconUrl": "/logos/weebcentral_com.png"
+    },
+    {
+      "id": "ms2vdkyd46dy0",
+      "name": "KING OF SHOJO",
+      "url": "https://kingofshojo.com/",
+      "domain": "kingofshojo.com",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135149653,
+      "order": 4,
+      "faviconUrl": "/logos/kingofshojo_com.png"
+    },
+    {
+      "id": "ms2vfe5q5kuvu",
+      "name": "NETFLIX",
+      "url": "https://www.netflix.com/in/",
+      "domain": "netflix.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135234158,
+      "order": 0,
+      "faviconUrl": "/logos/netflix_com.png"
+    },
+    {
+      "id": "ms2vg859bnjw5",
+      "name": "HOTSTAR",
+      "url": "https://www.hotstar.com/in/home",
+      "domain": "hotstar.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135273021,
+      "order": 1,
+      "faviconUrl": "/logos/hotstar_com.png"
+    },
+    {
+      "id": "ms2vhiq3gb07g",
+      "name": "HBO MAX",
+      "url": "https://www.hbomax.com/geo-availability/india?utm_source=facebook&utm_medium=paid-social&utm_id=fb%7C120250190127540496%7C120250961158360496%7C120251616249190496&utm_content=120251616249190496&utm_term=120250961158360496&utm_campaign=120250190127540496&fbclid=PAZXh0bgNhZW0BMABhZGlkAas4e85sqIBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAafsfXCkyEl4FcZycGyBUnkFVj7iXciZ-B1yo4FfRdEWnfWpnKmcOpoY9UUcBg_aem_ll-4T2SohfzfkzGgGmV3ow%3Futm_campaign%3D120219700185430167&fbclid=PAcGRvZgJmZGlkFlCiQzGaqdjXf9Y1lyO7NwATd9GNHjVleHRuA2FlbQEwAGFkaWQBqzR0uZ50F3NydGMGYXBwX2lkDzEyNDAyNDU3NDI4NzQxNAABpyPYH6sylBRTI-W_mlr7SRYcVjWB41loEbSmtMTPlW2EeRiM8blm9N6aUD7g_aem_MU58id_RK_BLwagzXcqPJQ&utm_id=fb%7C120219700185430167%7C120219700190500167%7C120247472418060167&utm_medium=paid-social&utm_content=120247472418060167&utm_source=facebook&utm_term=120219700190500167",
+      "domain": "hbomax.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135333387,
+      "order": 2,
+      "faviconUrl": "/logos/hbomax_com.png"
+    },
+    {
+      "id": "ms2vhwcjijewa",
+      "name": "APPLE TV",
+      "url": "https://tv.apple.com/",
+      "domain": "tv.apple.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135351043,
+      "order": 3,
+      "faviconUrl": "/logos/tv_apple_com.svg"
+    },
+    {
+      "id": "ms2vismwnjk7z",
+      "name": "PRIME VIDEO",
+      "url": "https://www.primevideo.com/",
+      "domain": "primevideo.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135392888,
+      "order": 4,
+      "faviconUrl": "/logos/primevideo_com.png"
+    },
+    {
+      "id": "ms2vjb6mljbxo",
+      "name": "CRUNCHUROLL",
+      "url": "https://sso.crunchyroll.com/login?return_url=%2Fauthorize%3Fclient_id%3Dnoaihdevm_6iyg0a8l0q%26redirect_uri%3Dhttps%253A%252F%252Fwww.crunchyroll.com%252Fcallback%26response_type%3Dcookie%26state%3D%252F",
+      "domain": "sso.crunchyroll.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135416926,
+      "order": 5,
+      "faviconUrl": "/logos/sso_crunchyroll_com.png"
+    },
+    {
+      "id": "ms2vjqvwdhbhh",
+      "name": "PEACOCK",
+      "url": "https://www.peacocktv.com/unavailable",
+      "domain": "peacocktv.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785135437276,
+      "order": 6,
+      "faviconUrl": "/logos/peacocktv_com.png"
+    },
+    {
+      "id": "ms3b79g4er7kt",
+      "name": "WEBTOON",
+      "url": "https://www.webtoons.com/en/",
+      "domain": "webtoons.com",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "featured"
+      ],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": true,
+      "description": "",
+      "addedAt": 1785161728660,
+      "order": 5,
+      "faviconUrl": "/logos/webtoons_com.svg"
+    },
+    {
+      "id": "ms3befx4o6ahl",
+      "name": "NET MIRROR",
+      "url": "https://netmirror.gg/10/en-in",
+      "domain": "netmirror.gg",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785162063640,
+      "order": 0,
+      "faviconUrl": "/logos/netmirror_gg.png"
+    },
+    {
+      "id": "ms3bftq5u05bp",
+      "name": "MOVIES BOX",
+      "url": "https://www.moviesbox.com.co/home/",
+      "domain": "moviesbox.com.co",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785162128189,
+      "order": 1,
+      "faviconUrl": "/logos/moviesbox_com_co.png"
+    },
+    {
+      "id": "ms3bgpagkryc3",
+      "name": "PIKASHOWS",
+      "url": "https://pikashowtv.in/",
+      "domain": "pikashowtv.in",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785162169096,
+      "order": 2,
+      "faviconUrl": "/logos/pikashowtv_in.png"
+    },
+    {
+      "id": "ms3bhjd2e2rhk",
+      "name": "PLAY TORRIO",
+      "url": "https://playtorrio.pages.dev/",
+      "domain": "playtorrio.pages.dev",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785162208070,
+      "order": 3,
+      "faviconUrl": "/logos/playtorrio_pages_dev.png"
+    },
+    {
+      "id": "ms3bi5mak9klp",
+      "name": "YOU CINE",
+      "url": "https://youcineapkpro.com/",
+      "domain": "youcineapkpro.com",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785162236914,
+      "order": 4,
+      "faviconUrl": "/logos/youcineapkpro_com.png"
+    },
+    {
+      "id": "ms3di7p83at01",
+      "name": "CINRIFT",
+      "url": "https://cinrift.me/",
+      "domain": "cinrift.me",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785165598844,
+      "order": 18,
+      "faviconUrl": "/logos/cinrift_me.png"
+    },
+    {
+      "id": "ms3dpquywg3xx",
+      "name": "SHUDDER",
+      "url": "https://www.shudder.com/",
+      "domain": "shudder.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785165950267,
+      "order": 7,
+      "faviconUrl": "/logos/shudder_com.png"
+    },
+    {
+      "id": "ms3dvbko7co78",
+      "name": "HULU",
+      "url": "https://auth.hulu.com/web/login/",
+      "domain": "auth.hulu.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166210392,
+      "order": 8,
+      "faviconUrl": "/logos/auth_hulu_com.png"
+    },
+    {
+      "id": "ms3dwt3ldxivm",
+      "name": "VIKI",
+      "url": "https://www.viki.com/",
+      "domain": "viki.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166279761,
+      "order": 9,
+      "faviconUrl": "/logos/viki_com.png"
+    },
+    {
+      "id": "ms3dxpw7it3tw",
+      "name": "PARAMOUNT",
+      "url": "https://www.paramountplus.com/intl/",
+      "domain": "paramountplus.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166322263,
+      "order": 10,
+      "faviconUrl": "/logos/paramountplus_com.svg"
+    },
+    {
+      "id": "ms3dyh5ufxj32",
+      "name": "MGM",
+      "url": "https://www.mgmplus.com/",
+      "domain": "mgmplus.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166357602,
+      "order": 11,
+      "faviconUrl": "/logos/mgmplus_com.svg"
+    },
+    {
+      "id": "ms3dz7jebbvpj",
+      "name": "AMC",
+      "url": "https://www.amcplus.com/login",
+      "domain": "amcplus.com",
+      "category": "Paid",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166391786,
+      "order": 12,
+      "faviconUrl": "/logos/amcplus_com.png"
+    },
+    {
+      "id": "ms3e0mfmzfjuo",
+      "name": "ONSTREAM",
+      "url": "https://onstreamapks.app/",
+      "domain": "onstreamapks.app",
+      "category": "Apps",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166457747,
+      "order": 5,
+      "faviconUrl": "/logos/onstreamapks_app.png"
+    },
+    {
+      "id": "ms3e21a50cr4d",
+      "name": "PUBLIC IPTV",
+      "url": "https://publiciptv.com/",
+      "domain": "publiciptv.com",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166523645,
+      "order": 4,
+      "faviconUrl": "/logos/publiciptv_com.png"
+    },
+    {
+      "id": "ms3e2mf403jea",
+      "name": "SPORTPLUS",
+      "url": "https://en97.sportplus.watch/",
+      "domain": "en97.sportplus.watch",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166551040,
+      "order": 5,
+      "faviconUrl": "/logos/en97_sportplus_watch.png"
+    },
+    {
+      "id": "ms3e3lwsl5u80",
+      "name": "STREAM EAST",
+      "url": "https://streameastnow.net/",
+      "domain": "streameastnow.net",
+      "category": "Live TV & Sports",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785166597036,
+      "order": 6,
+      "faviconUrl": "/logos/streameastnow_net.png"
+    },
+    {
+      "id": "ms93a7zgrjq7v",
+      "name": "FLIXHUB",
+      "url": "https://flixhub.studio/",
+      "domain": "flixhub.studio",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785511226860,
+      "order": 19,
+      "faviconUrl": "/logos/flixhub_studio.png"
+    },
+    {
+      "id": "mse7lfl71u1ak",
+      "name": "SENPAI FLIX",
+      "url": "https://senpaiflix.fun/",
+      "domain": "senpaiflix.fun",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785820799275,
+      "order": 9,
+      "faviconUrl": "/logos/senpaiflix_fun.png"
+    },
+    {
+      "id": "msfsfrhgp11w7",
+      "name": "ANIMEXTRONS",
+      "url": "https://animextrons.co.in/",
+      "domain": "animextrons.co.in",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1785916272868,
+      "order": 10,
+      "faviconUrl": "/logos/animextrons_co_in.png"
+    },
+    {
+      "id": "msia0q2cjtntr",
+      "name": "ANIKOTO TV",
+      "url": "https://anikototv.to/",
+      "domain": "anikototv.to",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1786066736628,
+      "order": 11,
+      "faviconUrl": "/logos/anikototv_to.png"
+    },
+    {
+      "id": "mskbz4mxt82hu",
+      "name": "PvrPlay",
+      "url": "https://pvrplay.online",
+      "domain": "PvrPlay",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "NO ADS, SMOOTH STREAMING",
+      "addedAt": 1786190953785,
+      "order": 7,
+      "faviconUrl": "/logos/pvrplay_online.png"
+    },
+    {
+      "id": "mslv1yszv725f",
+      "name": "WATCH ANIMEx",
+      "url": "https://watchanimez.me/",
+      "domain": "https://watchanimez.me/",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "",
+      "addedAt": 1786283465075,
+      "order": 12,
+      "faviconUrl": "/logos/watchanimez_me.png"
+    },
+    {
+      "id": "mssqu1xlcfcll",
+      "name": "Cinemove - Watch Movies and TV Shows Online Streaming",
+      "url": "https://cinemove.cc/",
+      "domain": "cinemove.cc",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
+      "addedAt": 1786699640649,
+      "order": 20
+    },
+    {
+      "id": "msuj7f7yxawwt",
+      "name": "Vuflix",
+      "url": "https://vuflix.co/",
+      "domain": "vuflix.co",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "So basically anywhere, trying to make my site more popular, any help is welcome.",
+      "addedAt": 1786807759822,
+      "order": 21
+    },
+    {
+      "id": "msuj9c8k8b6mg",
+      "name": "7reels",
+      "url": "https://7reels.cc/",
+      "domain": "7reels.cc",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Watch on 7reels.",
+      "addedAt": 1786807849268,
+      "order": 22
+    },
+    {
+      "id": "mt1lfg9hm25kc",
+      "name": "Ani waves",
+      "url": "https://aniwaves.ru/home",
+      "domain": "aniwaves.ru",
+      "category": "Anime",
+      "regions": [
+        "IN"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "its one of the best anime website , you should  list it",
+      "addedAt": 1787234756885,
+      "order": 13
+    },
+    {
+      "id": "mt1lgmav1n7xt",
+      "name": "Pixel Flix",
+      "url": "https://pixelflix.cc/",
+      "domain": "pixelflix.cc",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global",
+        "IN",
+        "FR"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "free movies series and anime without ads",
+      "addedAt": 1787234811367,
+      "order": 23
+    },
+    {
+      "id": "mt1li8g02200i",
+      "name": "Anicine",
+      "url": "https://anicine.xyz/",
+      "domain": "anicine.xyz",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
+      "addedAt": 1787234886720,
+      "order": 24
+    },
+    {
+      "id": "mt1lk076av0z8",
+      "name": "Manga reader",
+      "url": "https://anireads.cc/",
+      "domain": "anireads.cc",
+      "category": "Manga",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Best ui least adds with a great reader experience and live tracking of manga",
+      "addedAt": 1787234969346,
+      "order": 6
+    },
+    {
+      "id": "mt1lk9re60o47",
+      "name": "Multi movies streaming site",
+      "url": "https://flixhub.aniflix.uno/",
+      "domain": "flixhub.aniflix.uno",
+      "category": "Movies & Shows",
+      "regions": [
+        "IN"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "The best ui and the largest library",
+      "addedAt": 1787234981738,
+      "order": 25
+    },
+    {
+      "id": "mt1ll4r0eiiiz",
+      "name": "Anime streaming site in all language along with official hindi",
+      "url": "https://aniflix.uno/",
+      "domain": "aniflix.uno",
+      "category": "Anime",
+      "regions": [
+        "US",
+        "IN"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Large library, multiple server, latest anime and lots of customisation along with watch2gather like awesome features",
+      "addedAt": 1787235021900,
+      "order": 14
+    },
+    {
+      "id": "mt1lpwjhlmfrf",
+      "name": "NIPPLEFLIX",
+      "url": "https://nippleflix.org/",
+      "domain": "nippleflix.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "trusted"
+      ],
+      "isTrusted": true,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "BEST & ADS FREE",
+      "faviconUrl": "https://www.google.com/s2/favicons?domain=nippleflix.org&sz=256",
+      "addedAt": 1787235244541,
+      "order": 6
+    },
+    {
+      "id": "mtbo1c3t14d8c",
+      "name": "animerulz",
+      "url": "https://animerulz.co.in/",
+      "domain": "animerulz.co.in",
+      "category": "Anime",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Watch on animerulz.",
+      "addedAt": 1787843798921,
+      "order": 15
+    },
+    {
+      "id": "mtbo3zw6xgpx0",
+      "name": "cinehd",
+      "url": "https://cinehd.vc/",
+      "domain": "cinehd.vc",
+      "category": "Movies & Shows",
+      "regions": [
+        "US"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
+      "addedAt": 1787843923062,
+      "order": 26
+    },
+    {
+      "id": "mtbo4ns1kut2n",
+      "name": "AllFlix",
+      "url": "https://allflix.org/",
+      "domain": "allflix.org",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
+      "addedAt": 1787843954017,
+      "order": 27
+    },
+    {
+      "id": "mtbo4ywp7dhp1",
+      "name": "Anime Play",
+      "url": "https://dub.animeplay.icu/",
+      "domain": "dub.animeplay.icu",
+      "category": "Anime",
+      "regions": [
+        "IN"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
+      "addedAt": 1787843968441,
+      "order": 16
     }
   ],
   "categories": [
@@ -701,5 +1438,1434 @@
     "NL",
     "PL"
   ],
-  "requests": []
+  "requests": [
+    {
+      "id": "ms2qna0totjar",
+      "siteName": "Primeshows",
+      "siteUrl": "https://primeshows.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Tv shows and movies",
+      "status": "approved",
+      "submittedAt": 1785127203965
+    },
+    {
+      "id": "ms2qoubb2yvs7",
+      "siteName": "Primeshows",
+      "siteUrl": "https://primeshows.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Movies and TV shows",
+      "status": "rejected",
+      "submittedAt": 1785127276919
+    },
+    {
+      "id": "ms2qqyhppnpcm",
+      "siteName": "ShyFlixer",
+      "siteUrl": "https://skyflixer.fun/browse",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Tv shows and movies ??",
+      "status": "approved",
+      "submittedAt": 1785127375645
+    },
+    {
+      "id": "ms33zpkxl5ci5",
+      "siteName": "good",
+      "siteUrl": "https://google.com",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785149619009
+    },
+    {
+      "id": "ms738gb22ormr",
+      "siteName": "Flixhub Studio",
+      "siteUrl": "https://flixhub.studio",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "JP",
+          "category": "Anime"
+        },
+        {
+          "region": "CA",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Best servers, fast speed, download option, 100% working, low ads, clean ui, Regular updates, Community ratings and leaderboard, Profile system like Netflix, huge library including OMDB, TMBD, IMDB, ANYLIST AND OTHERS. Organized content in platforms like Netflix, Prime, Apple TV, etc. Anime watch page is designed like anime sites, and the movie watch page is designed like movie sites. Already becoming popular with alot of reviews on social media.",
+      "status": "approved",
+      "submittedAt": 1785390211982
+    },
+    {
+      "id": "ms77swgfnui74",
+      "siteName": "pocketfm",
+      "siteUrl": "https://pocketfm.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "large labrriy and user frindly,soomthly runs",
+      "status": "approved",
+      "submittedAt": 1785397884495
+    },
+    {
+      "id": "ms796b91cyzls",
+      "siteName": "Mova",
+      "siteUrl": "https://mova-mu.vercel.app/",
+      "targets": [
+        {
+          "region": "DE",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Its a movie streaming site with latest movies updated on the basis of releases, no ads, need VPN though (only for india), doesnt need VPN for other countries",
+      "status": "approved",
+      "submittedAt": 1785400189813
+    },
+    {
+      "id": "ms7kgrimvocl3",
+      "siteName": "Mo",
+      "siteUrl": "https://v.moviebox.ph/UqzlwaB4on6",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785419153230
+    },
+    {
+      "id": "ms80c9n0ajfge",
+      "siteName": "StreamingUnity",
+      "siteUrl": "https://streamingunity.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Ui innovative, private server, good archive",
+      "status": "approved",
+      "submittedAt": 1785445817292
+    },
+    {
+      "id": "ms8yi66y17h7w",
+      "siteName": "Netmirror Global Hindi",
+      "siteUrl": "https://netmirror.global/explore/movie",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1785503199706
+    },
+    {
+      "id": "msahoqzxa7uu0",
+      "siteName": "animewatch",
+      "siteUrl": "https://watchanimeworld.net/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785595885485
+    },
+    {
+      "id": "msazeec9sdmno",
+      "siteName": "Isaimini",
+      "siteUrl": "https://moviesdk.com",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785625635609
+    },
+    {
+      "id": "msb7ynxpd12g4",
+      "siteName": "NetPrime",
+      "siteUrl": "https://www.netprime.cx/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785640018093
+    },
+    {
+      "id": "msbh93bbodrc3",
+      "siteName": "Senpaiflix",
+      "siteUrl": "https://senpaiflix.fun",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "SenpaiFlix is an anime streaming platform built for anime fans who want fast, high-quality streaming with multiple language options in one place.\n\nWhat SenpaiFlix offers:\n\nSubbed Anime\nEnglish Dubbed Anime\nHindi Dubbed Anime\nMulti-Language Streaming\nWatch Together feature\nFast and smooth streaming\nMobile and desktop support\nEasy anime search and discovery\n\nSenpaiFlix focuses on providing a clean, modern, and user-friendly experience with high-quality streaming, synchronized watch parties, and support for anime fans worldwide.\n\nUsers can watch the latest seasonal anime, enjoy classic series, and discover new titles through a fast and responsive interface.\n\nThe platform is regularly updated with new anime releases, feature improvements, and community events.\n\nThank you for considering SenpaiFlix for inclusion in your index.",
+      "status": "approved",
+      "submittedAt": 1785655621127
+    },
+    {
+      "id": "msbjddruplxrv",
+      "siteName": "Flemmix",
+      "siteUrl": "https://flemmix",
+      "targets": [
+        {
+          "region": "FR",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785659180538
+    },
+    {
+      "id": "mse6j4zq1ko0f",
+      "siteName": "netfix",
+      "siteUrl": "https://www.netflix.com/in/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785819012614
+    },
+    {
+      "id": "mse7x8iolnent",
+      "siteName": "ANIFIX",
+      "siteUrl": "https://animextrons.co.in/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "?? Complete Anime Experience\n?? Discord Login - Easy and secure sign-in\n?? Personal Profiles - Users can create and customize their own profile\n?? Comments & Discussions - Interact with other anime fans\n?? Manga Section - Dedicated manga reading experience\n?? Easy Navigation - Simple and user-friendly interface\n? Fast & Mobile-Friendly - Smooth experience across devices\n??? Nostalgic Experience - Bringing back the classic feeling of watching anime\n?? Modern UI - Clean, premium, and anime-focused design\n?? Community Focused - Built around interaction and discovering anime together\n?? All-in-One Platform - Streaming, manga, profiles, comments, and community features in one pla",
+      "status": "approved",
+      "submittedAt": 1785821349984
+    },
+    {
+      "id": "mse87up2m496p",
+      "siteName": "N Mirror",
+      "siteUrl": "https://nmirror.online/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "It has Large collection of Movies, series and Tv shows. You will find out almost all collections here. Moreover, it has AI assitance feature which helps user to explore the movies based on its Mood or Genre prefernce by just chatting to AI. It has multiple servers with 4K quality. Also, Developers Update it on continuous basis so new features comes up.",
+      "status": "approved",
+      "submittedAt": 1785821845286
+    },
+    {
+      "id": "msedbvp6brrwz",
+      "siteName": "Disney+",
+      "siteUrl": "https://www.disneyplus.com/home",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785830431290
+    },
+    {
+      "id": "msegwzqn19anj",
+      "siteName": "pocketfm,com",
+      "siteUrl": "https://pocketfm.com/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Apps"
+        }
+      ],
+      "reason": "i love the story hering and nice apps of auido story and best",
+      "status": "approved",
+      "submittedAt": 1785836455151
+    },
+    {
+      "id": "msekf0krtpvzg",
+      "siteName": "https://movielinkbd.shop/",
+      "siteUrl": "https://movielinkbd.shop/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785842334891
+    },
+    {
+      "id": "msf9agcwb9ftv",
+      "siteName": "FMovies",
+      "siteUrl": "https://fmovies4u.co/home/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785884112464
+    },
+    {
+      "id": "msf9bac7bxx9j",
+      "siteName": "XTubeFlix",
+      "siteUrl": "https://xtubeflix.com/home/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785884151319
+    },
+    {
+      "id": "msf9bxg9hpkg8",
+      "siteName": "9Anime",
+      "siteUrl": "https://9anime.or.at/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1785884181273
+    },
+    {
+      "id": "msfpoo4flvxls",
+      "siteName": "Netmirror",
+      "siteUrl": "https://netprime.click",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "NetPrime helps viewers discover movies, TV series, popular releases, complete seasons, and highly rated titles in one simple place. Browse the NetPrime catalog by genre, country, year, or IMDb rating, then open the title page for details, episodes, and available viewing options.",
+      "status": "approved",
+      "submittedAt": 1785911649567
+    },
+    {
+      "id": "msh2f1uc09iwf",
+      "siteName": "Ultra Jhakaas",
+      "siteUrl": "https://www.ultrajhakaas.com/series/8-waajun-13-minite/6cu99d0ks3ig",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Regional content",
+      "status": "rejected",
+      "submittedAt": 1785993501972
+    },
+    {
+      "id": "msh703dyq60la",
+      "siteName": "zstream",
+      "siteUrl": "https://zstream.mov",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "large library best sources actively developed mobile,tv native apps, download support and more",
+      "status": "approved",
+      "submittedAt": 1786001202214
+    },
+    {
+      "id": "mshcq5q2tzi5t",
+      "siteName": "OnlyFlix",
+      "siteUrl": "https://onlyflix.to/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Reliable and always working. Fast, and low ads",
+      "status": "approved",
+      "submittedAt": 1786010816378
+    },
+    {
+      "id": "mshcrhwe1qcvc",
+      "siteName": "Braflix",
+      "siteUrl": "https://braflix.uk/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Visually very good, smooth, supports 4k, many many servers, always works, little to no ads",
+      "status": "approved",
+      "submittedAt": 1786010878814
+    },
+    {
+      "id": "mshcs71exe2eq",
+      "siteName": "SWatchSeries",
+      "siteUrl": "https://swatchseries.cx/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Just another option to add when others don't work. Reliable",
+      "status": "approved",
+      "submittedAt": 1786010911394
+    },
+    {
+      "id": "mshmme3qisazy",
+      "siteName": "animelok",
+      "siteUrl": "https://animelok.live/home",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "nice website and also Hindi dub available and english",
+      "status": "approved",
+      "submittedAt": 1786027436775
+    },
+    {
+      "id": "msj04jzzfylzi",
+      "siteName": "Anime Drive",
+      "siteUrl": "https://animedrive.in/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "This Website Is For Downloading Anime And The Best Part Of This Website There Are 0 Ads On Main Pages",
+      "status": "approved",
+      "submittedAt": 1786110585407
+    },
+    {
+      "id": "msj5t4qkaic2d",
+      "siteName": "netflex",
+      "siteUrl": "https://www.netflix.com/pk/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1786120130108
+    },
+    {
+      "id": "mskf2emnnu6g7",
+      "siteName": "TmovieS",
+      "siteUrl": "https://tmovies.watch/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1786196145551
+    },
+    {
+      "id": "mskgwoosacwg2",
+      "siteName": "7reels",
+      "siteUrl": "https://7reels.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "its avery good site with lots of servers and easy to use",
+      "status": "approved",
+      "submittedAt": 1786199237884
+    },
+    {
+      "id": "msklbg8y8exyg",
+      "siteName": "Play Anima",
+      "siteUrl": "https://playanime.online/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "UK",
+          "category": "Anime"
+        },
+        {
+          "region": "CA",
+          "category": "Anime"
+        },
+        {
+          "region": "AU",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "DE",
+          "category": "Anime"
+        },
+        {
+          "region": "FR",
+          "category": "Anime"
+        },
+        {
+          "region": "JP",
+          "category": "Anime"
+        },
+        {
+          "region": "KR",
+          "category": "Anime"
+        },
+        {
+          "region": "MX",
+          "category": "Anime"
+        },
+        {
+          "region": "BR",
+          "category": "Anime"
+        },
+        {
+          "region": "IT",
+          "category": "Anime"
+        },
+        {
+          "region": "ES",
+          "category": "Anime"
+        },
+        {
+          "region": "NL",
+          "category": "Anime"
+        },
+        {
+          "region": "PL",
+          "category": "Anime"
+        }
+      ],
+      "reason": "Large Library, Latest Shows and episode, Tending Anime, Latest Anime Blogs",
+      "status": "approved",
+      "submittedAt": 1786206645250
+    },
+    {
+      "id": "msluz1ij7dgc7",
+      "siteName": "WatchAnimeX",
+      "siteUrl": "https://watchanimez.me/",
+      "targets": [
+        {
+          "region": "UK",
+          "category": "Anime"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "IT",
+          "category": "Anime"
+        },
+        {
+          "region": "JP",
+          "category": "Anime"
+        },
+        {
+          "region": "CA",
+          "category": "Anime"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "FR",
+          "category": "Anime"
+        },
+        {
+          "region": "NL",
+          "category": "Anime"
+        },
+        {
+          "region": "AU",
+          "category": "Anime"
+        }
+      ],
+      "reason": "Multi lang support anime and dub and sub sync progress watching anilist mal and Anicore for high quality metadata",
+      "status": "approved",
+      "submittedAt": 1786283328619
+    },
+    {
+      "id": "mslv2e9ov0i69",
+      "siteName": "https://watchanimez.me/",
+      "siteUrl": "https://watchanimez.me/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1786283485116
+    },
+    {
+      "id": "msmjd48k0j1mt",
+      "siteName": "Cinemove - Watch Movies and TV Shows Online Streaming",
+      "siteUrl": "https://cinemove.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
+      "status": "approved",
+      "submittedAt": 1786324296116
+    },
+    {
+      "id": "msmvp64tob16z",
+      "siteName": "Tabi",
+      "siteUrl": "https://www.tabii.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "because it has every single premium turkish series that are only accessible in turkey",
+      "status": "approved",
+      "submittedAt": 1786345013837
+    },
+    {
+      "id": "mso8aao06wz49",
+      "siteName": "ClickMovie",
+      "siteUrl": "https://clickmovie.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Our site offers a premium, user-friendly streaming experience with a clean and modern layout that is fully optimized for mobile devices. Unlike many other platforms, we maintain a strictly non-intrusive environment with minimal ads and zero inappropriate/gambling pop-ups. We update our collection daily with high-quality content to ensure users always find the latest movies and shows smoothly.",
+      "status": "rejected",
+      "submittedAt": 1786426621056
+    },
+    {
+      "id": "mso9yn82l39lp",
+      "siteName": "TNTVs",
+      "siteUrl": "https://tntvs.vercel.app/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        },
+        {
+          "region": "UK",
+          "category": "Apps"
+        },
+        {
+          "region": "CA",
+          "category": "Apps"
+        },
+        {
+          "region": "AU",
+          "category": "Apps"
+        },
+        {
+          "region": "IN",
+          "category": "Apps"
+        },
+        {
+          "region": "DE",
+          "category": "Apps"
+        },
+        {
+          "region": "FR",
+          "category": "Apps"
+        },
+        {
+          "region": "JP",
+          "category": "Apps"
+        },
+        {
+          "region": "KR",
+          "category": "Apps"
+        },
+        {
+          "region": "MX",
+          "category": "Apps"
+        },
+        {
+          "region": "BR",
+          "category": "Apps"
+        },
+        {
+          "region": "IT",
+          "category": "Apps"
+        },
+        {
+          "region": "ES",
+          "category": "Apps"
+        },
+        {
+          "region": "NL",
+          "category": "Apps"
+        },
+        {
+          "region": "PL",
+          "category": "Apps"
+        }
+      ],
+      "reason": "TNTVs is a free, mobile-friendly streaming platform that brings live TV, sports, and M3U playlist support together in one simple app. Users can watch live cricket, football, tennis, basketball, Formula 1, WWE, UFC, news, and other TV channels from around the world.\n\nThe app supports Android phones, Android TV, and Firestick, with a clean and lightweight interface designed for easy navigation. It also supports multiple streaming servers, HD/4K playback, live scores, TV casting, and M3U playlists, giving users flexibility to manage and watch their preferred streams.\n\nTNTVs is completely free with no subscription or sign-up required, making it a convenient option for users looking for an easy way to access live TV and sports streams from their devices.",
+      "status": "rejected",
+      "submittedAt": 1786429436690
+    },
+    {
+      "id": "msocqtcl7e1cd",
+      "siteName": "BoiMate Bangla Islamic PDF",
+      "siteUrl": "https://boimate.com",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Paid"
+        }
+      ],
+      "reason": "Largest Bangla Islamic PDF Collection",
+      "status": "rejected",
+      "submittedAt": 1786434110229
+    },
+    {
+      "id": "msoczy7xgw6tm",
+      "siteName": "https://allsitehub.site/request",
+      "siteUrl": "https://allsitehub.site/request",
+      "targets": [
+        {
+          "region": "FR",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786434536445
+    },
+    {
+      "id": "msoe5teyf9jwq",
+      "siteName": "Fojik",
+      "siteUrl": "https://fojik.site/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Because it have a large amout of movie and series collection. and its easy to download.",
+      "status": "rejected",
+      "submittedAt": 1786436489770
+    },
+    {
+      "id": "msolwuog0g6rs",
+      "siteName": "bingeverse",
+      "siteUrl": "https://bingeverse.online/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "fast loading, great ui, huge repository",
+      "status": "rejected",
+      "submittedAt": 1786449508432
+    },
+    {
+      "id": "msoq9fdtx8gi9",
+      "siteName": "netflix",
+      "siteUrl": "https://www.netflix.com",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Paid"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786456813601
+    },
+    {
+      "id": "msovtldzgorha",
+      "siteName": "Cloudstream",
+      "siteUrl": "https://github.com/recloudstream/cloudstream",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786466152583
+    },
+    {
+      "id": "msow4nf37ctzb",
+      "siteName": "animepahe",
+      "siteUrl": "https://animepahe.pw/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "in this site the anime is display as per the schedule. it include all types of anime with minimal ads and no malware. user experince is good and clean home screen",
+      "status": "rejected",
+      "submittedAt": 1786466668431
+    },
+    {
+      "id": "msoy1em156oep",
+      "siteName": "Streaming Site and more",
+      "siteUrl": "https://cinemove.cc",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "Global",
+          "category": "Live TV & Sports"
+        }
+      ],
+      "reason": "We have little advertising.",
+      "status": "approved",
+      "submittedAt": 1786469876281
+    },
+    {
+      "id": "msq27k33qdtmu",
+      "siteName": "Netflix.com",
+      "siteUrl": "https://www.netflix.com/in/",
+      "targets": [
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786537347951
+    },
+    {
+      "id": "msq36z7gfl9an",
+      "siteName": "Discovery FTP",
+      "siteUrl": "https://www.discoveryftp",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786539000508
+    },
+    {
+      "id": "msq5msp4lyenu",
+      "siteName": "DuaFile",
+      "siteUrl": "https://duafile.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Name: DuaFile\nSite URL: https://duafile.com/\nBackup URL: https://duafile.net/\nAddition/Removal/Modification: Addition\n\nDescription:\nFree streaming and download site for movies and TV series, (with software, games, music, and eBooks coming soon.) Currently 450,000+ titles available.\n\nWhy it should be added/changed:\nFully Mobile friendly and optimized for every device and screen size\nNo signup or account needed, fully anonymous access\nFast and lightweight with no bloated scripts\nNo ads between pages, only 1 popup on the play page\n\nContent & Library:\nSix content categories: Movies, Series, Software, Games, Music, and eBooks (software, games, music & eBooks coming soon)\n450,000+ titles and growing daily\n\nCore Features:\n45+ embed sources per title (+ multiple fallbacks inside the embed sources itself) - ensuring something always works\nDownload sources available\nContinue Watching and Watch Later, stored locally, no account needed\nDaily trending charts (both global and site-specific)\nMultiple quality options per title - 720p, 1080p, and up to 4K\nUpcoming movies feature\nTimeline feature\nFull metadata: IMDB/TMDB Links, IMDb ratings, cast, genre, production company, and release year\nPowerful search by name, genre, year, tag, description, production company, and crew\n\nAds: No ads between pages, 1 popup on the play page\nSite Language: English\nDownloads: DDL + Torrent",
+      "status": "rejected",
+      "submittedAt": 1786543097800
+    },
+    {
+      "id": "msq73pms74dmg",
+      "siteName": "7reels",
+      "siteUrl": "https://7reels.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1786545566596
+    },
+    {
+      "id": "msrt7mwx92y4d",
+      "siteName": "HindiDubbed Anime Library",
+      "siteUrl": "https://hindidub.modrao.com",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Best Hindi dubbed only anime list website",
+      "status": "rejected",
+      "submittedAt": 1786643167425
+    },
+    {
+      "id": "mst9rom4gn75s",
+      "siteName": "Spotify",
+      "siteUrl": "https://open.spotify.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Paid"
+        }
+      ],
+      "reason": "with out adss",
+      "status": "rejected",
+      "submittedAt": 1786731442780
+    },
+    {
+      "id": "msu0zlbx587q1",
+      "siteName": "msbreewc VIP PAGE",
+      "siteUrl": "https://onlyfans.com/msbreewcvip",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Paid"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786777161405
+    },
+    {
+      "id": "msu6bouv54lv1",
+      "siteName": "Vuflix",
+      "siteUrl": "https://vuflix.co/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "So basically anywhere, trying to make my site more popular, any help is welcome.",
+      "status": "approved",
+      "submittedAt": 1786786123927
+    },
+    {
+      "id": "msuv1g99ea5s3",
+      "siteName": "Sex",
+      "siteUrl": "https://sex.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786827636621
+    },
+    {
+      "id": "msvddvi6og20z",
+      "siteName": "Anime streaming site in all language along with official hindi",
+      "siteUrl": "https://aniflix.uno/",
+      "targets": [
+        {
+          "region": "US",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "Large library, multiple server, latest anime and lots of customisation along with watch2gather like awesome features",
+      "status": "approved",
+      "submittedAt": 1786858449342
+    },
+    {
+      "id": "msvdf8ijtmodx",
+      "siteName": "Multi movies streaming site",
+      "siteUrl": "https://flixhub.aniflix.uno/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "The best ui and the largest library",
+      "status": "approved",
+      "submittedAt": 1786858512859
+    },
+    {
+      "id": "msvdgw32qsgb5",
+      "siteName": "Manga reader",
+      "siteUrl": "https://anireads.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Manga"
+        }
+      ],
+      "reason": "Best ui least adds with a great reader experience and live tracking of manga",
+      "status": "approved",
+      "submittedAt": 1786858590062
+    },
+    {
+      "id": "msvu7amn4mnn5",
+      "siteName": "Anicine",
+      "siteUrl": "https://anicine.xyz/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
+      "status": "approved",
+      "submittedAt": 1786886695823
+    },
+    {
+      "id": "mswgl1eh5amez",
+      "siteName": "ben.lahcen@bluewin.ch",
+      "siteUrl": "https://example.com/",
+      "targets": [
+        {
+          "region": "FR",
+          "category": "Live TV & Sports"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786924288601
+    },
+    {
+      "id": "mswgp30jmeexh",
+      "siteName": "Ben Lahcen Lassaad",
+      "siteUrl": "https://example.com/",
+      "targets": [
+        {
+          "region": "FR",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786924477315
+    },
+    {
+      "id": "msxmeq0dj9bxb",
+      "siteName": "Nippleflix",
+      "siteUrl": "https://nippleflix.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "CA",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "AU",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1786994537773
+    },
+    {
+      "id": "mt00jttngegwm",
+      "siteName": "Free Streaming Movie",
+      "siteUrl": "https://wovie2.vercel.app/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787139222971
+    },
+    {
+      "id": "mt0dac0y08fcx",
+      "siteName": "Pixel Flix",
+      "siteUrl": "https://pixelflix.cc/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "FR",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "free movies series and anime without ads",
+      "status": "approved",
+      "submittedAt": 1787160615011
+    },
+    {
+      "id": "mt0hh2u49326z",
+      "siteName": "Ani waves",
+      "siteUrl": "https://aniwaves.ru/home",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "its one of the best anime website , you should  list it",
+      "status": "approved",
+      "submittedAt": 1787167648156
+    },
+    {
+      "id": "mt1lgohoy0z1u",
+      "siteName": "Nippleflix",
+      "siteUrl": "https://nippleflix.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787234814204
+    },
+    {
+      "id": "mt7l5tiaunwgn",
+      "siteName": "Le Paris d'avant.fr",
+      "siteUrl": "https://www.leparisdavant.fr/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787597104546
+    },
+    {
+      "id": "mt8grgrvf4v1u",
+      "siteName": "Anime Play",
+      "siteUrl": "https://dub.animeplay.icu/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
+      "status": "approved",
+      "submittedAt": 1787650182571
+    },
+    {
+      "id": "mt8gsqpnwsfqz",
+      "siteName": "Gojo Live",
+      "siteUrl": "https://gojolive.site/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "simple ui ezy to use no ads.",
+      "status": "rejected",
+      "submittedAt": 1787650242107
+    },
+    {
+      "id": "mt96pfz7635eo",
+      "siteName": "AllFlix",
+      "siteUrl": "https://allflix.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
+      "status": "approved",
+      "submittedAt": 1787693758243
+    },
+    {
+      "id": "mt9o0y7rfal7s",
+      "siteName": "cinehd",
+      "siteUrl": "https://cinehd.vc/",
+      "targets": [
+        {
+          "region": "US",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
+      "status": "approved",
+      "submittedAt": 1787722848567
+    },
+    {
+      "id": "mt9rg91qu2zgc",
+      "siteName": "Anime World",
+      "siteUrl": "https://watchanimeworld.pro/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "fast Streaming, Large Library",
+      "status": "rejected",
+      "submittedAt": 1787728601295
+    },
+    {
+      "id": "mt9rjnjy3h38q",
+      "siteName": "Toonstream",
+      "siteUrl": "https://toon-stream.site/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787728760062
+    },
+    {
+      "id": "mt9rplt4ytdbx",
+      "siteName": "Anivortex",
+      "siteUrl": "https://anivortex.in/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "mobile Friendly,Fast Streaming,Tv supported",
+      "status": "rejected",
+      "submittedAt": 1787729037736
+    },
+    {
+      "id": "mt9tqcrf2c06j",
+      "siteName": "ashrium",
+      "siteUrl": "https://www.ashrium.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "because your website is best",
+      "status": "rejected",
+      "submittedAt": 1787732431899
+    },
+    {
+      "id": "mt9tro8ugxyz9",
+      "siteName": "Animepahe",
+      "siteUrl": "https://animepahe.pw/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787732493438
+    },
+    {
+      "id": "mt9tskoef1uox",
+      "siteName": "animerulz",
+      "siteUrl": "https://animerulz.co.in/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "approved",
+      "submittedAt": 1787732535470
+    },
+    {
+      "id": "mt9tthbi31f21",
+      "siteName": "Legendary",
+      "siteUrl": "https://legendary1122.myshopify.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787732577774
+    },
+    {
+      "id": "mt9zg50wnl18d",
+      "siteName": "Cricsmart",
+      "siteUrl": "https://cricsmart.in/",
+      "targets": [
+        {
+          "region": "IN",
+          "category": "Apps"
+        }
+      ],
+      "reason": "",
+      "status": "rejected",
+      "submittedAt": 1787742033008
+    },
+    {
+      "id": "mtbry9m55oqmw",
+      "siteName": "fancode",
+      "siteUrl": "https://www.fancode.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Live TV & Sports"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1787850374189
+    }
+  ]
 }

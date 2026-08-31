@@ -12,16 +12,16 @@ body[data-theme="cosmic"],
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Sora', system-ui, sans-serif;
   --font-space: 'Space Grotesk', monospace, sans-serif;
-  /* Backgrounds — Cosmic Obsidian Dark */
-  --bg-base:       #05050a;
-  --bg-surface:    #0b0b14;
-  --bg-card:       rgba(14, 14, 24, 0.65);
-  --bg-card-hover: rgba(22, 22, 38, 0.85);
-  --bg-input:      rgba(255, 255, 255, 0.05);
+  /* Backgrounds — Premium Matte Black Finish */
+  --bg-base:       #050507;
+  --bg-surface:    #0a0a0e;
+  --bg-card:       rgba(13, 13, 17, 0.76);
+  --bg-card-hover: rgba(20, 20, 26, 0.92);
+  --bg-input:      rgba(255, 255, 255, 0.04);
 
   /* Borders */
   --border:        rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(167, 139, 250, 0.65);
+  --border-accent: rgba(167, 139, 250, 0.55);
   --border-subtle: rgba(255, 255, 255, 0.03);
 
   /* Brand Gradient — violet → cyan */
@@ -29,7 +29,7 @@ body[data-theme="cosmic"],
   --grad-end:      #38bdf8;
   --gradient:      linear-gradient(135deg, var(--grad-start), var(--grad-end));
   --gradient-text: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #38bdf8 100%);
-  --glow:          rgba(167, 139, 250, 0.28);
+  --glow:          rgba(167, 139, 250, 0.22);
 
   /* Text */
   --text-primary:   #f8fafc;
@@ -58,17 +58,17 @@ body[data-theme="cosmic"],
   --nav-search-h: 52px;
   --nav-gap:      32px;
   --max-w:        1600px;
-  --header-bg:    rgba(5, 5, 10, 0.65);
-  --header-bg-scrolled: rgba(4, 4, 8, 0.88);
-  --glass-nav-border: rgba(255, 255, 255, 0.12);
-  --glass-nav-highlight: rgba(255, 255, 255, 0.25);
+  --header-bg:    rgba(5, 5, 7, 0.72);
+  --header-bg-scrolled: rgba(4, 4, 6, 0.92);
+  --glass-nav-border: rgba(255, 255, 255, 0.10);
+  --glass-nav-highlight: rgba(255, 255, 255, 0.18);
   --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
   --ease-soft:    cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Shadows */
-  --shadow-card:  0 4px 16px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
-  --shadow-hover: 0 16px 48px rgba(0,0,0,0.8), 0 0 24px rgba(167, 139, 250, 0.25), 0 0 0 1px var(--border-accent);
-  --shadow-glow:  0 0 60px rgba(167, 139, 250, 0.16);
+  /* Shadows — Matte Depth */
+  --shadow-card:  0 4px 20px rgba(0,0,0,0.7), 0 0 0 1px var(--border);
+  --shadow-hover: 0 16px 48px rgba(0,0,0,0.85), 0 0 20px rgba(167, 139, 250, 0.2), 0 0 0 1px var(--border-accent);
+  --shadow-glow:  0 0 50px rgba(167, 139, 250, 0.12);
 }
 
 /* ⚡ Cyberpunk Neon */
@@ -230,6 +230,18 @@ body {
   transition: background-color 0.35s ease, color 0.25s ease;
 }
 
+/* 🖤 Matte Black Finish Depth & Ambient Texture Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: 
+    radial-gradient(ellipse 85% 60% at 50% 0%, rgba(255, 255, 255, 0.025), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(0, 0, 0, 0.5), transparent 80%);
+}
+
 h1, h2, h3, .font-display {
   font-family: var(--font-display), 'Sora', var(--font-inter), sans-serif;
   letter-spacing: -0.02em;
@@ -379,20 +391,21 @@ h1, h2, h3, .font-display {
   width: 100vw;
   height: 100vh;
   z-index: 0;
-  opacity: 0.75;
+  opacity: 0.62;
   pointer-events: none;
   contain: strict;
   transform: translateZ(0);
   will-change: transform;
   backface-visibility: hidden;
   overflow: hidden;
+  background: var(--bg-base);
 }
 .shader-bg canvas {
   display: block;
   width: 100%;
   height: 100%;
   transform: translateZ(0) scale(1.04);
-  filter: blur(14px);
+  filter: blur(18px);
   will-change: transform;
 }
 

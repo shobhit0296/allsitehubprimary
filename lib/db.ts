@@ -49,55 +49,75 @@ function seedData(): DB {
 }
 
 async function readDBRedis(): Promise<DB> {
-  let data = await redis!.get<DB>(REDIS_KEY);
-  if (!data) {
-    const legacy = await redis!.get<DB>(LEGACY_REDIS_KEY);
-    if (legacy) {
-      data = legacy;
-      await redis!.set(REDIS_KEY, legacy);
+  try {
+    let data = await redis!.get<DB>(REDIS_KEY);
+    if (!data) {
+      const legacy = await redis!.get<DB>(LEGACY_REDIS_KEY);
+      if (legacy) {
+        data = legacy;
+        try { await redis!.set(REDIS_KEY, legacy); } catch { /* ignore */ }
+      }
     }
+    if (!data) {
+      const initial = seedData();
+      try { await redis!.set(REDIS_KEY, initial); } catch { /* ignore */ }
+      return initial;
+    }
+    if (!Array.isArray(data.requests)) data.requests = [];
+    return data;
+  } catch (err) {
+    console.warn('[DB] Redis read failed, falling back to local file:', err);
+    return readDBFs();
   }
-  if (!data) {
-    const initial = seedData();
-    await redis!.set(REDIS_KEY, initial);
-    return initial;
-  }
-  if (!Array.isArray(data.requests)) data.requests = [];
-  return data;
 }
 
 async function writeDBRedis(data: DB): Promise<void> {
-  await Promise.all([
-    redis!.set(REDIS_KEY, data),
-    redis!.set(LEGACY_REDIS_KEY, data),
-  ]);
+  try {
+    await Promise.all([
+      redis!.set(REDIS_KEY, data),
+      redis!.set(LEGACY_REDIS_KEY, data),
+    ]);
+  } catch (err) {
+    console.warn('[DB] Redis write failed, falling back to local file:', err);
+    writeDBFs(data);
+  }
 }
 
 function readDBFs(): DB {
-  const fs = require('fs') as typeof import('fs');
-  const path = require('path') as typeof import('path');
-  const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
-  const dir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  try {
+    const fs = require('fs') as typeof import('fs');
+    const path = require('path') as typeof import('path');
+    if (!fs || typeof fs.existsSync !== 'function') return seedData();
+    const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-  if (!fs.existsSync(DB_PATH)) {
-    const initial = seedData();
-    fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2), 'utf8');
-    return initial;
+    if (!fs.existsSync(DB_PATH)) {
+      const initial = seedData();
+      try { fs.writeFileSync(DB_PATH, JSON.stringify(initial, null, 2), 'utf8'); } catch { /* ignore */ }
+      return initial;
+    }
+
+    const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8')) as DB;
+    if (!Array.isArray(data.requests)) { data.requests = []; }
+    return data;
+  } catch {
+    return seedData();
   }
-
-  const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8')) as DB;
-  if (!Array.isArray(data.requests)) { data.requests = []; writeDBFs(data); }
-  return data;
 }
 
 function writeDBFs(data: DB): void {
-  const fs = require('fs') as typeof import('fs');
-  const path = require('path') as typeof import('path');
-  const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
-  const dir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+  try {
+    const fs = require('fs') as typeof import('fs');
+    const path = require('path') as typeof import('path');
+    if (!fs || typeof fs.writeFileSync !== 'function') return;
+    const DB_PATH = path.join(process.cwd(), 'data', 'db.json');
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+  } catch {
+    // ignore in serverless/worker environments
+  }
 }
 
 // Sites persisted before manual ranking existed have no `order` field.

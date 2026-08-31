@@ -211,7 +211,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
       {/* Directory Content Section */}
       <section
         id="directory"
-        className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 mb-16 sm:mb-20 scroll-mt-24"
+        className="max-w-[1600px] mx-auto px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-12 mb-12 sm:mb-16 scroll-mt-20"
       >
         {/* Sticky Desktop Left Category Sidebar */}
         <aside
@@ -232,8 +232,12 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
           {/* Mobile only (< lg): sticky horizontal category scroll */}
           <div
             ref={mobileCatContainerRef}
-            className="flex lg:hidden sticky top-[64px] z-20 bg-[var(--bg-base)]/92 backdrop-blur-md py-2.5 -mx-2 px-3 no-scrollbar gap-2 overflow-x-auto mb-6 sm:mb-8 scroll-smooth overscroll-x-contain border-b border-[var(--border)] touch-pan-x"
-            style={{ WebkitOverflowScrolling: 'touch', position: 'sticky', top: '64px' }}
+            className="flex lg:hidden sticky z-20 bg-[var(--bg-base)]/95 backdrop-blur-xl py-2 -mx-3 sm:-mx-5 px-3 sm:px-5 no-scrollbar gap-1.5 sm:gap-2 overflow-x-auto mb-5 sm:mb-7 scroll-smooth overscroll-x-contain border-b border-[var(--border)] touch-pan-x shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              position: 'sticky',
+              top: 'var(--nav-h)',
+            }}
           >
             {categories.map(c => (
               <button
@@ -293,30 +297,34 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         <button
           onClick={scrollToTop}
           aria-label="Scroll back to top"
-          className="fixed bottom-6 right-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full glass-lux border border-white/20 text-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--glow)] touch-manipulation animate-fade-in cursor-pointer"
-          style={{ backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
+          className="fixed bottom-6 right-4 sm:right-6 z-40 w-10 h-10 sm:w-11 sm:h-11 rounded-full glass-lux border border-white/20 text-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:border-[var(--primary)] hover:shadow-[0_0_20px_var(--glow)] touch-manipulation animate-fade-in cursor-pointer"
+          style={{
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))',
+          }}
         >
-          <span className="material-symbols-outlined text-[20px] sm:text-[22px]">arrow_upward</span>
+          <span className="material-symbols-outlined text-[19px] sm:text-[21px]">arrow_upward</span>
         </button>
       )}
 
       {/* Footer */}
-      <footer className="bg-transparent w-full py-16 sm:py-20 border-t border-white/[0.06] mt-auto">
-        <div className="max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-10">
+      <footer className="bg-transparent w-full py-10 sm:py-14 lg:py-20 border-t border-white/[0.06] mt-auto">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
           <div className="col-span-2">
-            <span className="font-headline text-xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] mb-5 inline-block">
+            <span className="font-headline text-lg sm:text-xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] mb-3 sm:mb-5 inline-block">
               All<span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">site</span>hub
             </span>
-            <p className="text-[13.5px] text-[var(--text-muted)] max-w-[280px] mb-6 leading-relaxed">
+            <p className="text-[12.5px] sm:text-[13.5px] text-[var(--text-muted)] max-w-[260px] mb-4 sm:mb-6 leading-relaxed">
               Curated streaming directory for movies, anime, manga, live TV and sports. We do not host any content.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <a
                 href="https://discord.gg/ZEMSvP2HX"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Discord Server"
-                className="w-10 h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#5865F2]/50 hover:bg-[#5865F2]/20 transition-all inline-flex"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#5865F2]/50 hover:bg-[#5865F2]/20 transition-all inline-flex touch-manipulation active:scale-95"
               >
                 <DiscordIcon />
               </a>
@@ -325,7 +333,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram Group"
-                className="w-10 h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#229ED9]/50 hover:bg-[#229ED9]/20 transition-all inline-flex"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#229ED9]/50 hover:bg-[#229ED9]/20 transition-all inline-flex touch-manipulation active:scale-95"
               >
                 <TelegramIcon />
               </a>
@@ -334,7 +342,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Reddit Community"
-                className="w-10 h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#FF4500]/50 hover:bg-[#FF4500]/20 transition-all inline-flex"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#FF4500]/50 hover:bg-[#FF4500]/20 transition-all inline-flex touch-manipulation active:scale-95"
               >
                 <RedditIcon />
               </a>
@@ -356,8 +364,10 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
             </ul>
           </div>
         </div>
-        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-16 mt-14 pt-7 border-t border-white/[0.05] flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[12px] text-[var(--text-muted)]">© {new Date().getFullYear()} Allsitehub. All rights reserved.</p>
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16 mt-10 sm:mt-14 pt-5 sm:pt-7 border-t border-white/[0.05] flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-[12px] text-[var(--text-muted)]">
+            © {new Date().getFullYear()} <span className="text-blue-400 font-semibold">AllSiteHub</span> · Founded & Curated by <span className="text-[var(--text-primary)] font-medium">Shobhit Verma</span>.
+          </p>
           <span className="flex items-center gap-2 text-[12px] text-[var(--text-muted)]">
             <span className="pulse-dot w-2 h-2 rounded-full bg-emerald-500" /> Systems Operational
           </span>

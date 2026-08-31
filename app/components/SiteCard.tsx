@@ -28,7 +28,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
       aria-label={site.name}
       onClick={openSite}
       onKeyDown={e => e.key === 'Enter' && openSite()}
-      className="site-card-item group relative rounded-xl sm:rounded-2xl border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden px-4 py-3 sm:px-4.5 sm:py-3.5 min-h-[104px] sm:min-h-[116px] md:min-h-[122px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 active:scale-[0.98]"
+      className="site-card-item group relative rounded-xl sm:rounded-2xl border cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)] w-full min-w-0 overflow-hidden px-3 py-2.5 sm:px-4.5 sm:py-3.5 min-h-[90px] xs:min-h-[100px] sm:min-h-[116px] md:min-h-[122px] flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 active:scale-[0.97]"
       style={{
         background: 'var(--bg-card)',
         borderColor: 'var(--border)',

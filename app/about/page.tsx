@@ -91,6 +91,74 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Founder & Ownership */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-headline text-lg font-bold text-[var(--text-primary)] tracking-tight">Founder & Ownership</h2>
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-blue-400 glass-lux px-3 py-1 rounded-full border border-blue-500/20">
+              Verified Leadership
+            </span>
+          </div>
+          
+          <div className="glass-lux border border-white/10 rounded-2xl p-7 sm:p-8 relative overflow-hidden card-hover-lux">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-violet-500/10 blur-3xl pointer-events-none" />
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 relative z-10">
+              <div className="relative shrink-0">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 p-[2px] shadow-xl shadow-blue-500/20">
+                  <div className="w-full h-full bg-[#070b19] rounded-2xl flex items-center justify-center text-3xl sm:text-4xl select-none">
+                    👨‍💻
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-[10px] font-bold text-white px-2 py-0.5 rounded-full border-2 border-[#070b19] flex items-center gap-1 shadow-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" /> Owner
+                </div>
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                  <h3 className="font-headline text-xl font-bold text-[var(--text-primary)]">Shobhit Verma</h3>
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-400">
+                    Founder & Lead Curator
+                  </span>
+                </div>
+                <p className="text-[13.5px] text-[var(--text-secondary)] leading-relaxed mb-4">
+                  Shobhit is the founder, architect, and lead editor behind AllSiteHub. Dedicated to building an open, honest, and clutter-free web discovery ecosystem, he actively oversees platform curation, link verification standards, user feature requests, and edge infrastructure.
+                </p>
+                <div className="flex flex-wrap items-center gap-3">
+                  <a
+                    href="mailto:allsitehubsupport@gmail.com"
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--text-primary)] bg-white/5 hover:bg-white/10 border border-white/10 px-3.5 py-1.5 rounded-full transition-all"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    allsitehubsupport@gmail.com
+                  </a>
+                  <span className="text-xs text-[var(--text-muted)] flex items-center gap-1.5">
+                    📍 Independent Web Project · Global Operations
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-5 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-[var(--text-secondary)]">
+              <div className="flex items-start gap-2.5">
+                <span className="text-blue-400 text-sm">⚖️</span>
+                <span>
+                  <strong className="text-[var(--text-primary)] block mb-0.5">Ownership & Independence</strong>
+                  AllSiteHub is 100% independently owned, self-funded, and managed without third-party influence or sponsored rankings.
+                </span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <span className="text-violet-400 text-sm">🛡️</span>
+                <span>
+                  <strong className="text-[var(--text-primary)] block mb-0.5">Editorial Integrity</strong>
+                  Every directory inclusion adheres to strict safety, uptime, and minimal ad-intrusion evaluation benchmarks.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Values */}
         <div>
           <h2 className="font-headline text-lg font-bold text-[var(--text-primary)] tracking-tight mb-4">What Makes Us Different</h2>

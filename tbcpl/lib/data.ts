@@ -10,7 +10,7 @@ export interface Site {
   isNew: boolean;
   isFeatured: boolean;
   description: string;
-  faviconUrl?: string;   // custom favicon — overrides Google favicon API
+  faviconUrl?: string;   // auto-resolved at runtime by SiteIcon — no need to hardcode
   addedAt: number;
   order: number;         // manual ranking — lower shows first, scoped within its category
 }
@@ -23,15 +23,15 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   { name: 'Movies & Shows', icon: '🎬', description: 'Streaming sites for movies and TV.' },
-  { name: 'Anime', icon: '⛩️', description: 'Watch anime online legally and for free.' },
-  { name: 'Manga', icon: '📚', description: 'Read manga and comics online.' },
+  { name: 'Anime',          icon: '⛩️', description: 'Watch anime online legally and for free.' },
+  { name: 'Manga',          icon: '📚', description: 'Read manga and comics online.' },
   { name: 'Live TV & Sports', icon: '📺', description: 'Live TV channels and sports streaming.' },
-  { name: 'Paid', icon: '💳', description: 'Premium paid streaming services.' },
-  { name: 'Apps', icon: '📱', description: 'Media players and streaming apps.' },
+  { name: 'Paid',           icon: '💳', description: 'Premium paid streaming services.' },
+  { name: 'Apps',           icon: '📱', description: 'Media players and streaming apps.' },
 ];
 
 export const REGIONS = [
-  'US', 'UK', 'CA', 'AU', 'IN',
+  'Global', 'US', 'UK', 'CA', 'AU', 'IN',
   'DE', 'FR', 'JP', 'KR', 'MX', 'BR', 'IT', 'ES', 'NL', 'PL',
 ];
 
@@ -48,295 +48,1419 @@ export const REGION_FLAGS: Record<string, string> = {
   MX: '🇲🇽', BR: '🇧🇷', IT: '🇮🇹', ES: '🇪🇸', NL: '🇳🇱', PL: '🇵🇱',
 };
 
-const now = Date.now();
-const d = (days: number) => now - 86_400_000 * days;
-
-const RAW_SITES: Omit<Site, 'order'>[] = [
-  // ── Movies & Shows ─────────────────────────────────────────────────────────
+export const SITES: Site[] = [
   {
-    id: 'ms1', name: 'Netflix', url: 'https://www.netflix.com', domain: 'netflix.com',
-    category: 'Movies & Shows', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: "World's leading streaming platform with thousands of originals.",
-    addedAt: d(120),
+    "id": "ms2tednwv7muc",
+    "name": "PANTYFLIX",
+    "url": "https://pantyflix.org/",
+    "domain": "pantyflix.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785131827629,
+    "order": 1,
+    "faviconUrl": "/logos/pantyflix_org.png"
   },
   {
-    id: 'ms2', name: 'Prime Video', url: 'https://www.primevideo.com', domain: 'primevideo.com',
-    category: 'Movies & Shows', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Amazon Prime streaming with award-winning originals and live sports.',
-    addedAt: d(110),
+    "id": "ms2tfcv4txa6u",
+    "name": "1 Show",
+    "url": "https://www.1shows.org/",
+    "domain": "1shows.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785131873248,
+    "faviconUrl": "/logos/1shows_org.png",
+    "order": 4
   },
   {
-    id: 'ms3', name: 'Disney+', url: 'https://www.disneyplus.com', domain: 'disneyplus.com',
-    category: 'Movies & Shows', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: 'Disney, Pixar, Marvel, Star Wars, and National Geographic.',
-    addedAt: d(100),
+    "id": "ms2tg2e2jw8vg",
+    "name": "ENMA",
+    "url": "https://www.enma.lol/home",
+    "domain": "enma.lol",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted",
+      "featured"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": true,
+    "description": "",
+    "addedAt": 1785131906330,
+    "order": 0,
+    "faviconUrl": "/logos/enma_lol.png"
   },
   {
-    id: 'ms4', name: 'Max', url: 'https://www.max.com', domain: 'max.com',
-    category: 'Movies & Shows', regions: ['US', 'Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Premium HBO content, Warner Bros. films, and Max originals.',
-    addedAt: d(90),
+    "id": "ms2tgj8utkoue",
+    "name": "1TUBE",
+    "url": "https://1tube.org/",
+    "domain": "1tube.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785131928174,
+    "order": 3,
+    "faviconUrl": "/logos/1tube_org.png"
   },
   {
-    id: 'ms5', name: 'Apple TV+', url: 'https://tv.apple.com', domain: 'tv.apple.com',
-    category: 'Movies & Shows', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Apple Originals — award-winning series, films, and documentaries.',
-    addedAt: d(85),
+    "id": "ms2th1hf7ncwk",
+    "name": "7 movies",
+    "url": "https://7movies.in/",
+    "domain": "7movies.in",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785131951811,
+    "faviconUrl": "/logos/7movies_in.png",
+    "order": 2
   },
   {
-    id: 'ms6', name: 'Hulu', url: 'https://www.hulu.com', domain: 'hulu.com',
-    category: 'Movies & Shows', regions: ['US'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Current-season TV episodes, movies, and Hulu originals.',
-    addedAt: d(80),
+    "id": "ms2tiauj2jn35",
+    "name": "CINEZO",
+    "url": "https://cinezo.net/",
+    "domain": "cinezo.net",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132010603,
+    "order": 0,
+    "faviconUrl": "/logos/cinezo_net.png"
   },
   {
-    id: 'ms7', name: 'Peacock', url: 'https://www.peacocktv.com', domain: 'peacocktv.com',
-    category: 'Movies & Shows', regions: ['US'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'NBCUniversal streaming with free and premium tiers.',
-    addedAt: d(75),
+    "id": "ms2tl1qb47f6k",
+    "name": "1FLEX",
+    "url": "https://www.1flex.org/",
+    "domain": "1flex.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132138755,
+    "order": 5,
+    "faviconUrl": "/logos/1flex_org.png"
   },
   {
-    id: 'ms8', name: 'Paramount+', url: 'https://www.paramountplus.com', domain: 'paramountplus.com',
-    category: 'Movies & Shows', regions: ['US', 'UK', 'AU', 'CA'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'CBS, BET, MTV, Nickelodeon content plus Paramount originals.',
-    addedAt: d(70),
+    "id": "ms2tvigbxglzl",
+    "name": "REDFLIX",
+    "url": "https://redflix.club/",
+    "domain": "redflix.club",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132626987,
+    "order": 8,
+    "faviconUrl": "/logos/redflix_club.png"
   },
   {
-    id: 'ms9', name: 'Tubi', url: 'https://tubitv.com', domain: 'tubitv.com',
-    category: 'Movies & Shows', regions: ['US', 'CA', 'AU'], tags: ['new'],
-    isTrusted: false, isNew: true, isFeatured: false,
-    description: 'Free ad-supported streaming with 50,000+ movies and shows.',
-    addedAt: d(8),
+    "id": "ms2twlltw6obx",
+    "name": "YENIME",
+    "url": "https://yenime.net/",
+    "domain": "yenime.net",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132677729,
+    "order": 1,
+    "faviconUrl": "/logos/yenime_net.png"
   },
   {
-    id: 'ms10', name: 'Hotstar', url: 'https://www.hotstar.com', domain: 'hotstar.com',
-    category: 'Movies & Shows', regions: ['IN'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: "India's biggest streaming platform with live cricket and Bollywood.",
-    addedAt: d(65),
+    "id": "ms2u0cv0xlvak",
+    "name": "SHUTTLE TV",
+    "url": "https://shuttletv.su/",
+    "domain": "shuttletv.su",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132853020,
+    "order": 9,
+    "faviconUrl": "/logos/shuttletv_su.png"
   },
   {
-    id: 'ms11', name: 'Pluto TV', url: 'https://pluto.tv', domain: 'pluto.tv',
-    category: 'Movies & Shows', regions: ['US', 'UK', 'DE', 'ES'], tags: ['new'],
-    isTrusted: false, isNew: true, isFeatured: false,
-    description: 'Free live TV + on-demand streaming with 250+ channels.',
-    addedAt: d(5),
+    "id": "ms2ublikhkx0h",
+    "name": "FLY FLIX",
+    "url": "https://flyflix.net/",
+    "domain": "flyflix.net",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785133377452,
+    "order": 10,
+    "faviconUrl": "/logos/flyflix_net.png"
   },
   {
-    id: 'ms12', name: 'Mubi', url: 'https://mubi.com', domain: 'mubi.com',
-    category: 'Movies & Shows', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Curated hand-picked films — a cinema lover\'s streaming service.',
-    addedAt: d(60),
-  },
-
-  // ── Anime ──────────────────────────────────────────────────────────────────
-  {
-    id: 'an1', name: 'Crunchyroll', url: 'https://www.crunchyroll.com', domain: 'crunchyroll.com',
-    category: 'Anime', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: "World's largest anime library with daily simulcasts.",
-    addedAt: d(115),
-  },
-  {
-    id: 'an2', name: 'HiDive', url: 'https://www.hidive.com', domain: 'hidive.com',
-    category: 'Anime', regions: ['US', 'CA', 'UK', 'AU'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Premium anime streaming with exclusive simulcasts and dubs.',
-    addedAt: d(90),
+    "id": "ms2udhv2f75gm",
+    "name": "YOU SHOWS",
+    "url": "https://youshows.org/",
+    "domain": "youshows.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785133466031,
+    "order": 11,
+    "faviconUrl": "/logos/youshows_org.svg"
   },
   {
-    id: 'an3', name: 'Aniwatch', url: 'https://aniwatch.to', domain: 'aniwatch.to',
-    category: 'Anime', regions: ['Global'], tags: ['new'],
-    isTrusted: false, isNew: true, isFeatured: false,
-    description: 'Free anime streaming with high-quality subs and dubs.',
-    addedAt: d(12),
+    "id": "ms2uego1lxbmv",
+    "name": "ANY SHOWS",
+    "url": "https://anishows.org/",
+    "domain": "anishows.org",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785133511137,
+    "order": 2,
+    "faviconUrl": "/logos/anishows_org.svg"
   },
   {
-    id: 'an4', name: 'AnimePahe', url: 'https://animepahe.ru', domain: 'animepahe.ru',
-    category: 'Anime', regions: ['Global'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Mini-compressed anime streams and downloads in HD.',
-    addedAt: d(55),
+    "id": "ms2ug2xqgt5jg",
+    "name": "FLIXHUB",
+    "url": "https://flixhub.studio/",
+    "domain": "flixhub.studio",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785133586654,
+    "order": 12,
+    "faviconUrl": "/logos/flixhub_studio.png"
   },
   {
-    id: 'an5', name: 'Bilibili', url: 'https://www.bilibili.com', domain: 'bilibili.com',
-    category: 'Anime', regions: ['JP', 'Global'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Chinese video platform with extensive anime library.',
-    addedAt: d(50),
+    "id": "ms2um0ncjossc",
+    "name": "PRIME MOVIES",
+    "url": "https://primeshows.org/",
+    "domain": "primeshows.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785133863624,
+    "order": 13,
+    "faviconUrl": "/logos/primeshows_org.png"
   },
   {
-    id: 'an6', name: 'AnimeDao', url: 'https://animedao.to', domain: 'animedao.to',
-    category: 'Anime', regions: ['Global'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Watch anime online free in HD quality, no signup needed.',
-    addedAt: d(45),
-  },
-
-  // ── Manga ──────────────────────────────────────────────────────────────────
-  {
-    id: 'mg1', name: 'MangaDex', url: 'https://mangadex.org', domain: 'mangadex.org',
-    category: 'Manga', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: 'The largest manga scanlation platform with 500k+ chapters.',
-    addedAt: d(100),
-  },
-  {
-    id: 'mg2', name: 'Manga Plus', url: 'https://mangaplus.shueisha.co.jp', domain: 'mangaplus.shueisha.co.jp',
-    category: 'Manga', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Official Shueisha manga — One Piece, Naruto, Dragon Ball, and more.',
-    addedAt: d(95),
+    "id": "ms2uwsrnmrviw",
+    "name": "DULO",
+    "url": "https://dulo.cx/",
+    "domain": "dulo.cx",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134366627,
+    "order": 14,
+    "faviconUrl": "/logos/dulo_cx.png"
   },
   {
-    id: 'mg3', name: 'Webtoon', url: 'https://www.webtoons.com', domain: 'webtoons.com',
-    category: 'Manga', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Free digital comics and webtoons from creators worldwide.',
-    addedAt: d(90),
+    "id": "ms2uyznbldhs4",
+    "name": "STIGSTREAM",
+    "url": "https://stigstream.ru/",
+    "domain": "stigstream.ru",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134468855,
+    "order": 15,
+    "faviconUrl": "/logos/stigstream_ru.png"
   },
   {
-    id: 'mg4', name: 'MangaFire', url: 'https://mangafire.to', domain: 'mangafire.to',
-    category: 'Manga', regions: ['Global'], tags: ['new'],
-    isTrusted: false, isNew: true, isFeatured: false,
-    description: 'Read manga online in high quality, updated daily.',
-    addedAt: d(6),
+    "id": "ms2uzxxstyo73",
+    "name": "FLIXEO",
+    "url": "https://flixeo.tv/home",
+    "domain": "flixeo.tv",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134513296,
+    "order": 16,
+    "faviconUrl": "/logos/flixeo_tv.png"
   },
   {
-    id: 'mg5', name: 'MangaSee', url: 'https://mangasee123.com', domain: 'mangasee123.com',
-    category: 'Manga', regions: ['Global'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'One of the biggest manga reading sites with a clean reader.',
-    addedAt: d(60),
-  },
-
-  // ── Live TV & Sports ───────────────────────────────────────────────────────
-  {
-    id: 'sp1', name: 'ESPN+', url: 'https://www.espnplus.com', domain: 'espnplus.com',
-    category: 'Live TV & Sports', regions: ['US'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Premium sports streaming with live events and ESPN originals.',
-    addedAt: d(100),
-  },
-  {
-    id: 'sp2', name: 'DAZN', url: 'https://www.dazn.com', domain: 'dazn.com',
-    category: 'Live TV & Sports', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: 'Live and on-demand sports — football, boxing, MMA and more.',
-    addedAt: d(90),
+    "id": "ms2v0ta2ph0tm",
+    "name": "WILLOW",
+    "url": "https://willow.arlen.icu/",
+    "domain": "willow.arlen.icu",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134553914,
+    "order": 17,
+    "faviconUrl": "/logos/willow_arlen_icu.png"
   },
   {
-    id: 'sp3', name: 'fuboTV', url: 'https://www.fubo.tv', domain: 'fubo.tv',
-    category: 'Live TV & Sports', regions: ['US', 'CA', 'ES'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Sports-first live TV streaming with 100+ channels.',
-    addedAt: d(80),
+    "id": "ms2v1qsbnjn4f",
+    "name": "ANIME TV",
+    "url": "https://animetvplus.xyz/",
+    "domain": "animetvplus.xyz",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134597340,
+    "order": 4,
+    "faviconUrl": "/logos/animetvplus_xyz.png"
   },
   {
-    id: 'sp4', name: 'BBC iPlayer', url: 'https://www.bbc.co.uk/iplayer', domain: 'bbc.co.uk',
-    category: 'Live TV & Sports', regions: ['UK'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Watch BBC TV programmes, news, and radio on demand.',
-    addedAt: d(75),
+    "id": "ms2v4fhvkrqz1",
+    "name": "KAA",
+    "url": "https://kaa.lt/",
+    "domain": "kaa.lt",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134722675,
+    "order": 6,
+    "faviconUrl": "/logos/kaa_lt.png"
   },
   {
-    id: 'sp5', name: 'SonyLIV', url: 'https://www.sonyliv.com', domain: 'sonyliv.com',
-    category: 'Live TV & Sports', regions: ['IN'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Indian OTT with live sports, movies, TV shows and originals.',
-    addedAt: d(65),
+    "id": "ms2v4s9su1jh2",
+    "name": "JUST ANIME",
+    "url": "https://justanime.to/",
+    "domain": "justanime.to",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134739232,
+    "order": 7,
+    "faviconUrl": "/logos/justanime_to.png"
   },
   {
-    id: 'sp6', name: 'Sling TV', url: 'https://www.sling.com', domain: 'sling.com',
-    category: 'Live TV & Sports', regions: ['US'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Affordable live TV streaming — no contracts needed.',
-    addedAt: d(60),
-  },
-
-  // ── Paid ───────────────────────────────────────────────────────────────────
-  {
-    id: 'pd1', name: 'Starz', url: 'https://www.starz.com', domain: 'starz.com',
-    category: 'Paid', regions: ['US', 'CA'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Premium cable network with blockbuster movies and originals.',
-    addedAt: d(80),
-  },
-  {
-    id: 'pd2', name: 'Shudder', url: 'https://www.shudder.com', domain: 'shudder.com',
-    category: 'Paid', regions: ['US', 'UK', 'CA', 'AU'], tags: ['new'],
-    isTrusted: false, isNew: true, isFeatured: false,
-    description: 'Premium horror, thriller, and supernatural streaming.',
-    addedAt: d(9),
+    "id": "ms2v5hpg7we7t",
+    "name": "ANIME SALT",
+    "url": "https://animesalt.link/",
+    "domain": "animesalt.link",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134772196,
+    "order": 8,
+    "faviconUrl": "/logos/animesalt_link.png"
   },
   {
-    id: 'pd3', name: 'BritBox', url: 'https://www.britbox.com', domain: 'britbox.com',
-    category: 'Paid', regions: ['US', 'UK', 'CA', 'AU'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'The best of British TV from BBC, ITV, Channel 4, and more.',
-    addedAt: d(70),
-  },
-
-  // ── Apps ───────────────────────────────────────────────────────────────────
-  {
-    id: 'ap1', name: 'Plex', url: 'https://www.plex.tv', domain: 'plex.tv',
-    category: 'Apps', regions: ['Global'], tags: ['trusted', 'featured'],
-    isTrusted: true, isNew: false, isFeatured: true,
-    description: 'Personal media server and free ad-supported streaming.',
-    addedAt: d(100),
-  },
-  {
-    id: 'ap2', name: 'Kodi', url: 'https://kodi.tv', domain: 'kodi.tv',
-    category: 'Apps', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Open-source media player — stream anything, anywhere.',
-    addedAt: d(95),
+    "id": "ms2v90v83veec",
+    "name": "ONDEMAND",
+    "url": "https://ondemand.st/",
+    "domain": "ondemand.st",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134936996,
+    "order": 0,
+    "faviconUrl": "/logos/ondemand_st.png"
   },
   {
-    id: 'ap3', name: 'VLC', url: 'https://www.videolan.org/vlc', domain: 'videolan.org',
-    category: 'Apps', regions: ['Global'], tags: ['trusted'],
-    isTrusted: true, isNew: false, isFeatured: false,
-    description: 'Free, open-source media player supporting virtually any format.',
-    addedAt: d(90),
+    "id": "ms2v9t0be7pvn",
+    "name": "STREAM EAST",
+    "url": "https://thestreameast.top/",
+    "domain": "thestreameast.top",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134973467,
+    "order": 1,
+    "faviconUrl": "/logos/thestreameast_top.png"
   },
   {
-    id: 'ap4', name: 'Infuse', url: 'https://firecore.com/infuse', domain: 'firecore.com',
-    category: 'Apps', regions: ['Global'], tags: [],
-    isTrusted: false, isNew: false, isFeatured: false,
-    description: 'Beautiful video player for Apple devices — supports all formats.',
-    addedAt: d(75),
+    "id": "ms2va88dhq2dv",
+    "name": "STMIFY",
+    "url": "https://stmify.com/",
+    "domain": "stmify.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134993197,
+    "order": 2,
+    "faviconUrl": "/logos/stmify_com.png"
   },
+  {
+    "id": "ms2vaqvfr5810",
+    "name": "FAMELACK",
+    "url": "https://famelack.com/",
+    "domain": "famelack.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135017355,
+    "order": 3,
+    "faviconUrl": "/logos/famelack_com.png"
+  },
+  {
+    "id": "ms2vbpfemdoqp",
+    "name": "MANGABALL",
+    "url": "https://mangaball.net/",
+    "domain": "mangaball.net",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135062138,
+    "order": 0,
+    "faviconUrl": "/logos/mangaball_net.png"
+  },
+  {
+    "id": "ms2vc7tt9v0wk",
+    "name": "COMICK",
+    "url": "https://comick.dev/",
+    "domain": "comick.dev",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135085985,
+    "order": 1,
+    "faviconUrl": "/logos/comick_dev.png"
+  },
+  {
+    "id": "ms2vckb0mbtit",
+    "name": "Q TOON",
+    "url": "https://qtoon.org/",
+    "domain": "qtoon.org",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135102156,
+    "order": 2,
+    "faviconUrl": "/logos/qtoon_org.png"
+  },
+  {
+    "id": "ms2vd2dtgayp4",
+    "name": "WEEB CENTRAL",
+    "url": "https://weebcentral.com/",
+    "domain": "weebcentral.com",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135125585,
+    "order": 3,
+    "faviconUrl": "/logos/weebcentral_com.png"
+  },
+  {
+    "id": "ms2vdkyd46dy0",
+    "name": "KING OF SHOJO",
+    "url": "https://kingofshojo.com/",
+    "domain": "kingofshojo.com",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135149653,
+    "order": 4,
+    "faviconUrl": "/logos/kingofshojo_com.png"
+  },
+  {
+    "id": "ms2vfe5q5kuvu",
+    "name": "NETFLIX",
+    "url": "https://www.netflix.com/in/",
+    "domain": "netflix.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135234158,
+    "order": 0,
+    "faviconUrl": "/logos/netflix_com.png"
+  },
+  {
+    "id": "ms2vg859bnjw5",
+    "name": "HOTSTAR",
+    "url": "https://www.hotstar.com/in/home",
+    "domain": "hotstar.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135273021,
+    "order": 1,
+    "faviconUrl": "/logos/hotstar_com.png"
+  },
+  {
+    "id": "ms2vhiq3gb07g",
+    "name": "HBO MAX",
+    "url": "https://www.hbomax.com/geo-availability/india?utm_source=facebook&utm_medium=paid-social&utm_id=fb%7C120250190127540496%7C120250961158360496%7C120251616249190496&utm_content=120251616249190496&utm_term=120250961158360496&utm_campaign=120250190127540496&fbclid=PAZXh0bgNhZW0BMABhZGlkAas4e85sqIBzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAafsfXCkyEl4FcZycGyBUnkFVj7iXciZ-B1yo4FfRdEWnfWpnKmcOpoY9UUcBg_aem_ll-4T2SohfzfkzGgGmV3ow%3Futm_campaign%3D120219700185430167&fbclid=PAcGRvZgJmZGlkFlCiQzGaqdjXf9Y1lyO7NwATd9GNHjVleHRuA2FlbQEwAGFkaWQBqzR0uZ50F3NydGMGYXBwX2lkDzEyNDAyNDU3NDI4NzQxNAABpyPYH6sylBRTI-W_mlr7SRYcVjWB41loEbSmtMTPlW2EeRiM8blm9N6aUD7g_aem_MU58id_RK_BLwagzXcqPJQ&utm_id=fb%7C120219700185430167%7C120219700190500167%7C120247472418060167&utm_medium=paid-social&utm_content=120247472418060167&utm_source=facebook&utm_term=120219700190500167",
+    "domain": "hbomax.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135333387,
+    "order": 2,
+    "faviconUrl": "/logos/hbomax_com.png"
+  },
+  {
+    "id": "ms2vhwcjijewa",
+    "name": "APPLE TV",
+    "url": "https://tv.apple.com/",
+    "domain": "tv.apple.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135351043,
+    "order": 3,
+    "faviconUrl": "/logos/tv_apple_com.svg"
+  },
+  {
+    "id": "ms2vismwnjk7z",
+    "name": "PRIME VIDEO",
+    "url": "https://www.primevideo.com/",
+    "domain": "primevideo.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135392888,
+    "order": 4,
+    "faviconUrl": "/logos/primevideo_com.png"
+  },
+  {
+    "id": "ms2vjb6mljbxo",
+    "name": "CRUNCHUROLL",
+    "url": "https://sso.crunchyroll.com/login?return_url=%2Fauthorize%3Fclient_id%3Dnoaihdevm_6iyg0a8l0q%26redirect_uri%3Dhttps%253A%252F%252Fwww.crunchyroll.com%252Fcallback%26response_type%3Dcookie%26state%3D%252F",
+    "domain": "sso.crunchyroll.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135416926,
+    "order": 5,
+    "faviconUrl": "/logos/sso_crunchyroll_com.png"
+  },
+  {
+    "id": "ms2vjqvwdhbhh",
+    "name": "PEACOCK",
+    "url": "https://www.peacocktv.com/unavailable",
+    "domain": "peacocktv.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135437276,
+    "order": 6,
+    "faviconUrl": "/logos/peacocktv_com.png"
+  },
+  {
+    "id": "ms3b79g4er7kt",
+    "name": "WEBTOON",
+    "url": "https://www.webtoons.com/en/",
+    "domain": "webtoons.com",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "featured"
+    ],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": true,
+    "description": "",
+    "addedAt": 1785161728660,
+    "order": 5,
+    "faviconUrl": "/logos/webtoons_com.svg"
+  },
+  {
+    "id": "ms3befx4o6ahl",
+    "name": "NET MIRROR",
+    "url": "https://netmirror.gg/10/en-in",
+    "domain": "netmirror.gg",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785162063640,
+    "order": 0,
+    "faviconUrl": "/logos/netmirror_gg.png"
+  },
+  {
+    "id": "ms3bftq5u05bp",
+    "name": "MOVIES BOX",
+    "url": "https://www.moviesbox.com.co/home/",
+    "domain": "moviesbox.com.co",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785162128189,
+    "order": 1,
+    "faviconUrl": "/logos/moviesbox_com_co.png"
+  },
+  {
+    "id": "ms3bgpagkryc3",
+    "name": "PIKASHOWS",
+    "url": "https://pikashowtv.in/",
+    "domain": "pikashowtv.in",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785162169096,
+    "order": 2,
+    "faviconUrl": "/logos/pikashowtv_in.png"
+  },
+  {
+    "id": "ms3bhjd2e2rhk",
+    "name": "PLAY TORRIO",
+    "url": "https://playtorrio.pages.dev/",
+    "domain": "playtorrio.pages.dev",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785162208070,
+    "order": 3,
+    "faviconUrl": "/logos/playtorrio_pages_dev.png"
+  },
+  {
+    "id": "ms3bi5mak9klp",
+    "name": "YOU CINE",
+    "url": "https://youcineapkpro.com/",
+    "domain": "youcineapkpro.com",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785162236914,
+    "order": 4,
+    "faviconUrl": "/logos/youcineapkpro_com.png"
+  },
+  {
+    "id": "ms3di7p83at01",
+    "name": "CINRIFT",
+    "url": "https://cinrift.me/",
+    "domain": "cinrift.me",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785165598844,
+    "order": 18,
+    "faviconUrl": "/logos/cinrift_me.png"
+  },
+  {
+    "id": "ms3dpquywg3xx",
+    "name": "SHUDDER",
+    "url": "https://www.shudder.com/",
+    "domain": "shudder.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785165950267,
+    "order": 7,
+    "faviconUrl": "/logos/shudder_com.png"
+  },
+  {
+    "id": "ms3dvbko7co78",
+    "name": "HULU",
+    "url": "https://auth.hulu.com/web/login/",
+    "domain": "auth.hulu.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166210392,
+    "order": 8,
+    "faviconUrl": "/logos/auth_hulu_com.png"
+  },
+  {
+    "id": "ms3dwt3ldxivm",
+    "name": "VIKI",
+    "url": "https://www.viki.com/",
+    "domain": "viki.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166279761,
+    "order": 9,
+    "faviconUrl": "/logos/viki_com.png"
+  },
+  {
+    "id": "ms3dxpw7it3tw",
+    "name": "PARAMOUNT",
+    "url": "https://www.paramountplus.com/intl/",
+    "domain": "paramountplus.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166322263,
+    "order": 10,
+    "faviconUrl": "/logos/paramountplus_com.svg"
+  },
+  {
+    "id": "ms3dyh5ufxj32",
+    "name": "MGM",
+    "url": "https://www.mgmplus.com/",
+    "domain": "mgmplus.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166357602,
+    "order": 11,
+    "faviconUrl": "/logos/mgmplus_com.svg"
+  },
+  {
+    "id": "ms3dz7jebbvpj",
+    "name": "AMC",
+    "url": "https://www.amcplus.com/login",
+    "domain": "amcplus.com",
+    "category": "Paid",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166391786,
+    "order": 12,
+    "faviconUrl": "/logos/amcplus_com.png"
+  },
+  {
+    "id": "ms3e0mfmzfjuo",
+    "name": "ONSTREAM",
+    "url": "https://onstreamapks.app/",
+    "domain": "onstreamapks.app",
+    "category": "Apps",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166457747,
+    "order": 5,
+    "faviconUrl": "/logos/onstreamapks_app.png"
+  },
+  {
+    "id": "ms3e21a50cr4d",
+    "name": "PUBLIC IPTV",
+    "url": "https://publiciptv.com/",
+    "domain": "publiciptv.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166523645,
+    "order": 4,
+    "faviconUrl": "/logos/publiciptv_com.png"
+  },
+  {
+    "id": "ms3e2mf403jea",
+    "name": "SPORTPLUS",
+    "url": "https://en97.sportplus.watch/",
+    "domain": "en97.sportplus.watch",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166551040,
+    "order": 5,
+    "faviconUrl": "/logos/en97_sportplus_watch.png"
+  },
+  {
+    "id": "ms3e3lwsl5u80",
+    "name": "STREAM EAST",
+    "url": "https://streameastnow.net/",
+    "domain": "streameastnow.net",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166597036,
+    "order": 6,
+    "faviconUrl": "/logos/streameastnow_net.png"
+  },
+  {
+    "id": "ms93a7zgrjq7v",
+    "name": "FLIXHUB",
+    "url": "https://flixhub.studio/",
+    "domain": "flixhub.studio",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785511226860,
+    "order": 19,
+    "faviconUrl": "/logos/flixhub_studio.png"
+  },
+  {
+    "id": "mse7lfl71u1ak",
+    "name": "SENPAI FLIX",
+    "url": "https://senpaiflix.fun/",
+    "domain": "senpaiflix.fun",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785820799275,
+    "order": 9,
+    "faviconUrl": "/logos/senpaiflix_fun.png"
+  },
+  {
+    "id": "msfsfrhgp11w7",
+    "name": "ANIMEXTRONS",
+    "url": "https://animextrons.co.in/",
+    "domain": "animextrons.co.in",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785916272868,
+    "order": 10,
+    "faviconUrl": "/logos/animextrons_co_in.png"
+  },
+  {
+    "id": "msia0q2cjtntr",
+    "name": "ANIKOTO TV",
+    "url": "https://anikototv.to/",
+    "domain": "anikototv.to",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1786066736628,
+    "order": 11,
+    "faviconUrl": "/logos/anikototv_to.png"
+  },
+  {
+    "id": "mskbz4mxt82hu",
+    "name": "PvrPlay",
+    "url": "https://pvrplay.online",
+    "domain": "PvrPlay",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "NO ADS, SMOOTH STREAMING",
+    "addedAt": 1786190953785,
+    "order": 7,
+    "faviconUrl": "/logos/pvrplay_online.png"
+  },
+  {
+    "id": "mslv1yszv725f",
+    "name": "WATCH ANIMEx",
+    "url": "https://watchanimez.me/",
+    "domain": "https://watchanimez.me/",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1786283465075,
+    "order": 12,
+    "faviconUrl": "/logos/watchanimez_me.png"
+  },
+  {
+    "id": "mssqu1xlcfcll",
+    "name": "Cinemove - Watch Movies and TV Shows Online Streaming",
+    "url": "https://cinemove.cc/",
+    "domain": "cinemove.cc",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
+    "addedAt": 1786699640649,
+    "order": 20
+  },
+  {
+    "id": "msuj7f7yxawwt",
+    "name": "Vuflix",
+    "url": "https://vuflix.co/",
+    "domain": "vuflix.co",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "So basically anywhere, trying to make my site more popular, any help is welcome.",
+    "addedAt": 1786807759822,
+    "order": 21
+  },
+  {
+    "id": "msuj9c8k8b6mg",
+    "name": "7reels",
+    "url": "https://7reels.cc/",
+    "domain": "7reels.cc",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on 7reels.",
+    "addedAt": 1786807849268,
+    "order": 22
+  },
+  {
+    "id": "mt1lfg9hm25kc",
+    "name": "Ani waves",
+    "url": "https://aniwaves.ru/home",
+    "domain": "aniwaves.ru",
+    "category": "Anime",
+    "regions": [
+      "IN"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "its one of the best anime website , you should  list it",
+    "addedAt": 1787234756885,
+    "order": 13
+  },
+  {
+    "id": "mt1lgmav1n7xt",
+    "name": "Pixel Flix",
+    "url": "https://pixelflix.cc/",
+    "domain": "pixelflix.cc",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global",
+      "IN",
+      "FR"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "free movies series and anime without ads",
+    "addedAt": 1787234811367,
+    "order": 23
+  },
+  {
+    "id": "mt1li8g02200i",
+    "name": "Anicine",
+    "url": "https://anicine.xyz/",
+    "domain": "anicine.xyz",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
+    "addedAt": 1787234886720,
+    "order": 24
+  },
+  {
+    "id": "mt1lk076av0z8",
+    "name": "Manga reader",
+    "url": "https://anireads.cc/",
+    "domain": "anireads.cc",
+    "category": "Manga",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Best ui least adds with a great reader experience and live tracking of manga",
+    "addedAt": 1787234969346,
+    "order": 6
+  },
+  {
+    "id": "mt1lk9re60o47",
+    "name": "Multi movies streaming site",
+    "url": "https://flixhub.aniflix.uno/",
+    "domain": "flixhub.aniflix.uno",
+    "category": "Movies & Shows",
+    "regions": [
+      "IN"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "The best ui and the largest library",
+    "addedAt": 1787234981738,
+    "order": 25
+  },
+  {
+    "id": "mt1ll4r0eiiiz",
+    "name": "Anime streaming site in all language along with official hindi",
+    "url": "https://aniflix.uno/",
+    "domain": "aniflix.uno",
+    "category": "Anime",
+    "regions": [
+      "US",
+      "IN"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Large library, multiple server, latest anime and lots of customisation along with watch2gather like awesome features",
+    "addedAt": 1787235021900,
+    "order": 14
+  },
+  {
+    "id": "mt1lpwjhlmfrf",
+    "name": "NIPPLEFLIX",
+    "url": "https://nippleflix.org/",
+    "domain": "nippleflix.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "BEST & ADS FREE",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=nippleflix.org&sz=256",
+    "addedAt": 1787235244541,
+    "order": 6
+  },
+  {
+    "id": "mtbo1c3t14d8c",
+    "name": "animerulz",
+    "url": "https://animerulz.co.in/",
+    "domain": "animerulz.co.in",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on animerulz.",
+    "addedAt": 1787843798921,
+    "order": 15
+  },
+  {
+    "id": "mtbo3zw6xgpx0",
+    "name": "cinehd",
+    "url": "https://cinehd.vc/",
+    "domain": "cinehd.vc",
+    "category": "Movies & Shows",
+    "regions": [
+      "US"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
+    "addedAt": 1787843923062,
+    "order": 26
+  },
+  {
+    "id": "mtbo4ns1kut2n",
+    "name": "AllFlix",
+    "url": "https://allflix.org/",
+    "domain": "allflix.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
+    "addedAt": 1787843954017,
+    "order": 27
+  },
+  {
+    "id": "mtbo4ywp7dhp1",
+    "name": "Anime Play",
+    "url": "https://dub.animeplay.icu/",
+    "domain": "dub.animeplay.icu",
+    "category": "Anime",
+    "regions": [
+      "IN"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
+    "addedAt": 1787843968441,
+    "order": 16
+  }
 ];
-
-// Ranking is scoped per category (that's how sites are grouped for display),
-// so the initial `order` is just each site's position within its own category
-// block above — preserving the original hand-curated ordering.
-export const SITES: Site[] = (() => {
-  const counters: Record<string, number> = {};
-  return RAW_SITES.map(site => {
-    const order = counters[site.category] ?? 0;
-    counters[site.category] = order + 1;
-    return { ...site, order };
-  });
-})();
-
-export function getSitesByCategory(sites: Site[]): Record<string, Site[]> {
-  return CATEGORIES.reduce((acc, cat) => {
-    acc[cat.name] = sites
-      .filter(s => s.category === cat.name)
-      .sort((a, b) => a.order - b.order);
-    return acc;
-  }, {} as Record<string, Site[]>);
-}
 
 export function filterSites(
   sites: Site[],
@@ -344,21 +1468,34 @@ export function filterSites(
   region: string,
   category: string,
 ): Site[] {
-  let result = sites;
-  if (category && category !== 'all') {
-    result = result.filter(s => s.category === category);
-  }
-  if (region) {
-    // Global-tagged sites appear in every region filter
-    result = result.filter(s => s.regions.includes(region) || s.regions.includes('Global'));
-  }
-  if (search.trim()) {
-    const q = search.toLowerCase();
-    result = result.filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      s.description.toLowerCase().includes(q) ||
-      s.domain.toLowerCase().includes(q)
-    );
-  }
-  return result;
+  return sites
+    .filter(site => {
+      // Category filter
+      if (category !== 'all' && site.category !== category) return false;
+
+      // Region filter
+      if (region !== 'Global' && !site.regions.includes('Global') && !site.regions.includes(region)) return false;
+
+      // Search query filter
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        const matchesName = site.name.toLowerCase().includes(q);
+        const matchesDomain = site.domain.toLowerCase().includes(q);
+        const matchesCat = site.category.toLowerCase().includes(q);
+        const matchesDesc = site.description.toLowerCase().includes(q);
+        const matchesTags = site.tags.some(t => t.toLowerCase().includes(q));
+        if (!matchesName && !matchesDomain && !matchesCat && !matchesDesc && !matchesTags) return false;
+      }
+
+      return true;
+    })
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
+
+export function getSitesByCategory(sites: Site[]): Record<string, Site[]> {
+  return sites.reduce((acc, site) => {
+    if (!acc[site.category]) acc[site.category] = [];
+    acc[site.category].push(site);
+    return acc;
+  }, {} as Record<string, Site[]>);
 }

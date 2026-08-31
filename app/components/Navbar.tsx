@@ -127,8 +127,8 @@ export default function Navbar({
           {/* 🎨 Theme Option in Top Navigation */}
           <ThemeNavOption />
 
-          {/* 🌍 Region selector */}
-          <div className="nav-region-wrap">
+          {/* 🌍 Region selector — hidden on phone view, visible on sm+ screens */}
+          <div className="nav-region-wrap hidden sm:block">
             <select
               value={activeRegion}
               onChange={e => onRegionChange(e.target.value)}

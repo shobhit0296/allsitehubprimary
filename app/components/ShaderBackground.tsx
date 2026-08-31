@@ -18,25 +18,25 @@ uniform vec3 u_accent2_color;
 void main() {
     vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
 
-    // Dynamic background color from theme
+    // Deep matte black base color from theme
     vec3 color = u_bg_color;
 
-    // Ultra-smooth lightweight nebula waves (2-step loop for ultra-high FPS)
+    // Ultra-smooth lightweight silk waves with gentle matte diffusion
     for (float i = 1.0; i <= 2.0; i++) {
-        p.x += (0.35 / i) * sin(i * 2.5 * p.y + u_time * 0.25);
-        p.y += (0.35 / i) * cos(i * 2.5 * p.x + u_time * 0.25);
+        p.x += (0.32 / i) * sin(i * 2.2 * p.y + u_time * 0.20);
+        p.y += (0.32 / i) * cos(i * 2.2 * p.x + u_time * 0.20);
 
         float dist = length(p);
-        float glow = 0.032 / max(dist, 0.05);
+        float glow = 0.020 / max(dist, 0.06);
 
-        vec3 accent = mix(u_accent_color, u_accent2_color, sin(u_time * 0.2 + i * 1.5) * 0.5 + 0.5) * glow;
-        color += accent * (1.0 / i);
+        vec3 accent = mix(u_accent_color, u_accent2_color, sin(u_time * 0.18 + i * 1.5) * 0.5 + 0.5) * glow;
+        color += accent * (0.65 / i);
     }
 
-    // Subtle grid ambient texture
-    vec2 grid = fract(gl_FragCoord.xy / min(u_resolution.x, u_resolution.y) * 32.0);
-    float line = step(0.98, grid.x) + step(0.98, grid.y);
-    color += line * u_accent_color * 0.04;
+    // Ultra-subtle matte ambient micro-texture
+    vec2 grid = fract(gl_FragCoord.xy / min(u_resolution.x, u_resolution.y) * 36.0);
+    float line = step(0.985, grid.x) + step(0.985, grid.y);
+    color += line * u_accent_color * 0.015;
 
     gl_FragColor = vec4(color, 1.0);
 }`;
