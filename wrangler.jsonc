@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "allsitehub",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "ADMIN_PANEL_PATH": "shobhitadmin",
+    "ADMIN_PASSWORD": "shobhitallsitehubadmin8115591448",
+    "ADMIN_SESSION_SECRET": "a15301313959f1cba07e6b5ee7e46b229aa55d31a0f3b6ab523c839f538c9f36",
+    "TELEGRAM_BOT_TOKEN": "8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg",
+    "TELEGRAM_BOT_ID": "8741338089",
+    "KV_REST_API_URL": "https://tight-katydid-177010.upstash.io",
+    "KV_REST_API_TOKEN": "gQAAAAAAArNyAAIgcDI4NzA1NzRjMTUzMDI0MzRlYTgyZWJlMjhiNDk1NzAxNQ"
+  }
+}
