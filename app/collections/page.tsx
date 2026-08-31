@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
+import { COLLECTIONS } from '@/lib/collections';
 
 const BASE_URL = 'https://allsitehub.site';
 
@@ -17,37 +18,6 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/collections`,
   },
 };
-
-export const COLLECTIONS = [
-  {
-    slug: 'best-ai-websites',
-    title: 'Best AI Websites & Tools',
-    description: 'Hand-picked artificial intelligence tools for writing, coding, art generation, and workflow automation.',
-    icon: '🤖',
-    category: 'AI Tools',
-  },
-  {
-    slug: 'best-developer-websites',
-    title: 'Best Websites for Developers',
-    description: 'Essential developer tools, code repositories, documentation centers, and hosting platforms.',
-    icon: '💻',
-    category: 'Developer Tools',
-  },
-  {
-    slug: 'best-productivity-websites',
-    title: 'Best Productivity Websites',
-    description: 'Top note-taking apps, diagramming whiteboards, task managers, and workflow utilities.',
-    icon: '⚡',
-    category: 'Productivity',
-  },
-  {
-    slug: 'useful-websites',
-    title: 'Useful Websites Everyone Should Know',
-    description: 'A curated selection of remarkably useful web tools, learning platforms, and utilities across categories.',
-    icon: '✨',
-    category: 'Utilities',
-  },
-];
 
 export default function CollectionsIndexPage() {
   const breadcrumbLd = {

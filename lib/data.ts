@@ -1066,7 +1066,7 @@ export const SITES: Site[] = [
   },
   {
     "id": "ms3e3lwsl5u80",
-    "name": "STREAM EAST",
+    "name": "STREAM EAST NOW",
     "url": "https://streameastnow.net/",
     "domain": "streameastnow.net",
     "category": "Live TV & Sports",
@@ -1081,24 +1081,6 @@ export const SITES: Site[] = [
     "addedAt": 1785166597036,
     "order": 6,
     "faviconUrl": "/logos/streameastnow_net.png"
-  },
-  {
-    "id": "ms93a7zgrjq7v",
-    "name": "FLIXHUB",
-    "url": "https://flixhub.studio/",
-    "domain": "flixhub.studio",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785511226860,
-    "order": 19,
-    "faviconUrl": "/logos/flixhub_studio.png"
   },
   {
     "id": "mse7lfl71u1ak",

@@ -127,6 +127,13 @@ export async function readDB(): Promise<DB> {
     return memoryCache.data;
   }
 
+  // During static build / prerender, use fast bundled dataset to enable clean SSG
+  if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.npm_lifecycle_event === 'build') {
+    const staticData = getBundledData();
+    ensureOrder(staticData);
+    return staticData;
+  }
+
   let data: DB | null = null;
   if (redis && now >= redisDisabledUntil) {
     data = await readDBRedis();

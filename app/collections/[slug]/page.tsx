@@ -5,7 +5,7 @@ import { readDB } from '@/lib/db';
 import PageHeader from '../../components/PageHeader';
 import PageFooter from '../../components/PageFooter';
 import SiteCard from '../../components/SiteCard';
-import { COLLECTIONS } from '../page';
+import { COLLECTIONS } from '@/lib/collections';
 
 interface Props {
   params: Promise<{ slug: string }>;

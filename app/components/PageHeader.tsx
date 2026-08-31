@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import ThemeNavOption from './ThemeNavOption';
 
 const NAV_LINKS = [
@@ -18,7 +17,6 @@ type ActivePage = string;
 
 export default function PageHeader({ active }: { active?: ActivePage }) {
   const [scrolled, setScrolled] = useState(false);
-  const onlineCount = useLiveOnlineCounter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -75,18 +73,16 @@ export default function PageHeader({ active }: { active?: ActivePage }) {
 
         <div className="flex-1 min-w-0" />
 
-        {/* ── Right cluster — always visible with Live Online Counter & Theme Option ── */}
+        {/* ── Right cluster — always visible with Live Directory Status & Theme Option ── */}
         <div className="nav-right-cluster">
-          {/* 🟢 Online counter pill */}
+          {/* 🟢 Live directory status pill */}
           <div
             className="nav-online-pill"
-            title={`${onlineCount.toLocaleString()} visitors online`}
+            title="AllSiteHub Live Directory — Verified & Continuously Updated"
           >
             <span className="nav-online-dot" />
-            <span className="nav-online-count" suppressHydrationWarning>
-              {onlineCount.toLocaleString()}
-            </span>
-            <span className="nav-online-label">online</span>
+            <span className="nav-online-count">Live</span>
+            <span className="nav-online-label">Directory</span>
           </div>
 
           {/* 🎨 Theme Option in Top Navigation */}

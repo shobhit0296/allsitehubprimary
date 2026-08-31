@@ -2,19 +2,16 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { readDB } from '@/lib/db';
+import { siteConfig, slugify, shouldIndexWebsitePage } from '@/lib/siteConfig';
 import PageHeader from '../../components/PageHeader';
 import PageFooter from '../../components/PageFooter';
 import SiteCard from '../../components/SiteCard';
 import SiteIcon from '../../components/SiteIcon';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import JsonLd from '../../components/JsonLd';
 
 interface Props {
   params: Promise<{ id: string }>;
-}
-
-const BASE_URL = 'https://allsitehub.site';
-
-function slugify(name: string): string {
-  return name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase();
 }
 
 export async function generateStaticParams() {
@@ -30,9 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const site = db.sites.find(s => slugify(s.name) === id);
   if (!site) return { title: 'Site Not Found' };
 
-  const title = `${site.name} — Features, Details & Alternatives | AllSiteHub`;
-  const description = `${site.description || `${site.name} streaming directory details.`} Learn more about ${site.name} (${site.domain}), explore supported regions, categories, and similar alternatives on AllSiteHub.`;
-  const canonicalUrl = `${BASE_URL}/site/${id}`;
+  const isIndexable = shouldIndexWebsitePage(site);
+  const title = `${site.name} — Details, Features & Alternatives | AllSiteHub`;
+  const description = site.description && site.description.length >= 20
+    ? site.description
+    : `Explore ${site.name} on AllSiteHub, including category (${site.category}), website domain (${site.domain}), supported regions, and related alternatives.`;
+  const canonicalUrl = `${siteConfig.url}/site/${id}`;
 
   return {
     title,
@@ -45,12 +45,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: canonicalUrl,
       type: 'website',
+      siteName: siteConfig.name,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
     },
+    robots: isIndexable
+      ? { index: true, follow: true }
+      : { index: false, follow: true },
   };
 }
 
@@ -66,48 +70,22 @@ export default async function SiteDetailPage({ params }: Props) {
 
   const catSlug = slugify(site.category);
 
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: BASE_URL,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: site.category,
-        item: `${BASE_URL}/category/${catSlug}`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: site.name,
-        item: `${BASE_URL}/site/${id}`,
-      },
-    ],
-  };
-
-  const softwareLd = {
+  const webPageLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: site.name,
-    url: `${BASE_URL}/site/${id}`,
-    description: site.description,
+    name: `${site.name} — AllSiteHub Directory`,
+    url: `${siteConfig.url}/site/${id}`,
+    description: site.description || `${site.name} in ${site.category}`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
     mainEntity: {
-      '@type': 'SoftwareApplication',
+      '@type': 'WebSite',
       name: site.name,
-      operatingSystem: 'All',
-      applicationCategory: 'EntertainmentApplication',
       url: site.url,
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-      },
+      description: site.description || undefined,
     },
   };
 
@@ -115,16 +93,15 @@ export default async function SiteDetailPage({ params }: Props) {
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
       <PageHeader active={site.category} />
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareLd) }}
+      <Breadcrumbs
+        items={[
+          { label: 'Categories', href: '/#categories' },
+          { label: site.category, href: `/category/${catSlug}` },
+          { label: site.name },
+        ]}
       />
 
+      <JsonLd schema={webPageLd} />
       <section className="relative overflow-hidden px-4 pt-10 pb-12 sm:pt-14 sm:pb-16">
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           <div className="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[70%] h-[70%] bg-blue-500/10 blur-[120px] rounded-full" />
@@ -132,14 +109,6 @@ export default async function SiteDetailPage({ params }: Props) {
         </div>
 
         <div className="relative z-10 max-w-[960px] mx-auto w-full">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-lux mb-8 border border-white/10 text-xs text-[var(--text-muted)]">
-            <Link href="/" className="hover:text-[var(--text-primary)] transition-colors">Home</Link>
-            <span>/</span>
-            <Link href={`/category/${catSlug}`} className="hover:text-[var(--text-primary)] transition-colors">{site.category}</Link>
-            <span>/</span>
-            <span className="text-blue-400 font-semibold">{site.name}</span>
-          </nav>
 
           {/* Main Detail Header Card */}
           <div className="glass-lux border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">

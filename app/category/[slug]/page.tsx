@@ -3,19 +3,16 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { readDB } from '@/lib/db';
 import { CATEGORIES } from '@/lib/data';
+import { siteConfig, slugify } from '@/lib/siteConfig';
 import PageHeader from '../../components/PageHeader';
 import PageFooter from '../../components/PageFooter';
 import CategoryIcon from '../../components/CategoryIcon';
 import CategorySiteGrid from '../../components/CategorySiteGrid';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import JsonLd from '../../components/JsonLd';
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-const BASE_URL = 'https://allsitehub.site';
-
-function slugify(name: string): string {
-  return name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase();
 }
 
 function findCategoryBySlug(slug: string) {
@@ -33,16 +30,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = findCategoryBySlug(slug);
   if (!cat) return { title: 'Category Not Found' };
 
-  const title = `Best ${cat.name} Websites & Tools | AllSiteHub`;
-  const description = `Explore curated ${cat.name} websites on AllSiteHub. ${cat.description} Discover top platforms, verified links, and region filters.`;
-  const canonicalUrl = `${BASE_URL}/category/${slug}`;
+  const title = `Best ${cat.name} Websites & Online Resources | AllSiteHub`;
+  const description = `Explore curated ${cat.name} websites and online resources. Compare available sites, discover useful options and explore related resources on AllSiteHub.`;
+  const canonicalUrl = `${siteConfig.url}/category/${slug}`;
 
   return {
     title,
     description,
     alternates: { canonical: canonicalUrl },
-    openGraph: { title, description, url: canonicalUrl, type: 'website' },
-    twitter: { card: 'summary_large_image', title, description },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      siteName: siteConfig.name,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
   };
 }
 
@@ -59,11 +66,11 @@ export default async function CategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: `Best ${cat.name} Websites & Tools | AllSiteHub`,
     description: `Explore curated ${cat.name} websites on AllSiteHub. ${cat.description}`,
-    url: `${BASE_URL}/category/${slug}`,
+    url: `${siteConfig.url}/category/${slug}`,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'AllSiteHub',
-      url: BASE_URL,
+      name: siteConfig.name,
+      url: siteConfig.url,
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -74,34 +81,19 @@ export default async function CategoryPage({ params }: Props) {
         '@type': 'ListItem',
         position: idx + 1,
         name: site.name,
-        url: `${BASE_URL}/site/${slugify(site.name)}`,
+        url: `${siteConfig.url}/site/${slugify(site.name)}`,
         ...(site.description ? { description: site.description } : {}),
       })),
     },
-  };
-
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: cat.name, item: `${BASE_URL}/category/${slug}` },
-    ],
   };
 
   return (
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
       <PageHeader active={cat.name} />
+      <Breadcrumbs items={[{ label: 'Categories', href: '/#categories' }, { label: cat.name }]} />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
+      <JsonLd schema={collectionPageLd} />
 
       {/* ── Hero Header ──────────────────────────────── */}
       <section className="relative overflow-hidden text-center px-4 pt-12 pb-10 sm:pt-16 sm:pb-14">

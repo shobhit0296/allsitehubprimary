@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import ShaderBackground from './components/ShaderBackground';
 import CommunityModal from './components/CommunityModal';
+import { siteConfig } from '@/lib/siteConfig';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -11,16 +12,13 @@ export const viewport: Viewport = {
   themeColor: '#0a0a12',
 };
 
-const BASE_URL = 'https://allsitehub.site';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'AllSiteHub — Discover & Search Useful Websites',
+    default: siteConfig.title,
     template: '%s | AllSiteHub',
   },
-  description:
-    'Discover useful websites with AllSiteHub. Search, explore and refine streaming platforms, anime, manga, live TV, sports, and web tools across regions.',
+  description: siteConfig.description,
   keywords: [
     'AllSiteHub',
     'All Site Hub',
@@ -36,10 +34,11 @@ export const metadata: Metadata = {
     'live TV',
     'sports streaming',
     'useful websites',
+    'web tools',
   ],
-  authors: [{ name: 'AllSiteHub Team', url: BASE_URL }],
-  creator: 'AllSiteHub',
-  publisher: 'AllSiteHub',
+  authors: [{ name: `${siteConfig.name} Editorial Team`, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   formatDetection: {
     email: false,
     address: false,
@@ -59,17 +58,17 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'AllSiteHub — Discover & Search Useful Websites',
-    description: 'Discover useful websites with AllSiteHub. Search, explore and refine streaming platforms across categories and regions.',
-    url: BASE_URL,
-    siteName: 'AllSiteHub',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AllSiteHub — Discover & Search Useful Websites',
-    description: 'Discover useful websites with AllSiteHub. Search, explore and refine websites across categories.',
+    title: siteConfig.title,
+    description: siteConfig.description,
   },
   robots: {
     index: true,
@@ -87,42 +86,93 @@ export const metadata: Metadata = {
 const jsonLdWebsite = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'AllSiteHub',
-  alternateName: ['All Site Hub', 'AllSite Hub', 'AllSiteHub Search'],
-  url: BASE_URL,
+  name: siteConfig.name,
+  alternateName: [
+    'AllSiteHub',
+    'Allsite',
+    'AllSite',
+    'All Site',
+    'All Site Hub',
+    'AllSite Hub',
+    'AllSiteHub Search',
+    'AllSite Directory',
+  ],
+  url: siteConfig.url,
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: `${BASE_URL}/?q={search_term_string}`,
+      urlTemplate: `${siteConfig.url}/?q={search_term_string}`,
     },
     'query-input': 'required name=search_term_string',
   },
 };
 
+const jsonLdSiteNavigation = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'AllSiteHub Top Categories & Directory Sections',
+  itemListElement: [
+    {
+      '@type': 'SiteNavigationElement',
+      position: 1,
+      name: 'Movies & TV Shows',
+      description: 'Stream movies and TV series across verified platforms.',
+      url: `${siteConfig.url}/category/movies-and-shows`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 2,
+      name: 'Anime',
+      description: 'Watch anime online and discover top streaming platforms.',
+      url: `${siteConfig.url}/category/anime`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 3,
+      name: 'Live TV & Sports',
+      description: 'Stream live sports, football, cricket, and global TV channels.',
+      url: `${siteConfig.url}/category/live-tv-and-sports`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 4,
+      name: 'Manga',
+      description: 'Read manga and comics online.',
+      url: `${siteConfig.url}/category/manga`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 5,
+      name: 'Collections',
+      description: 'Curated lists of top AI, developer, and productivity tools.',
+      url: `${siteConfig.url}/collections`,
+    },
+  ],
+};
+
 const jsonLdOrganization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'AllSiteHub',
-  alternateName: ['All Site Hub', 'AllSite Hub'],
-  url: BASE_URL,
-  logo: `${BASE_URL}/icon.png`,
-  description:
-    'Curated directory of the best streaming sites and useful web tools across movies, anime, manga, live TV, sports, and web applications.',
+  name: siteConfig.name,
+  alternateName: ['AllSiteHub', 'Allsite', 'All Site Hub', 'AllSite Hub'],
+  url: siteConfig.url,
+  logo: `${siteConfig.url}/icon.png`,
+  description: siteConfig.description,
   founder: {
     '@type': 'Person',
-    name: 'Shobhit Verma',
-    jobTitle: 'Founder & Lead Curator',
+    name: siteConfig.founder.name,
+    jobTitle: siteConfig.founder.role,
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'allsitehubsupport@gmail.com',
+    email: siteConfig.contact.email,
     contactType: 'customer support',
   },
   sameAs: [
-    'https://discord.gg/ZEMSvP2HX',
-    'https://t.me/+gWOCVAqtcXxkZDk9',
-    'https://www.reddit.com/user/allsitehub/',
+    siteConfig.social.discord,
+    siteConfig.social.telegram,
+    siteConfig.social.reddit,
   ],
 };
 
@@ -148,6 +198,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSiteNavigation) }}
         />
         <script
           type="application/ld+json"
