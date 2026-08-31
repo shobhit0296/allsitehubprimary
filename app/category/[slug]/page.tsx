@@ -54,6 +54,32 @@ export default async function CategoryPage({ params }: Props) {
   const db = await readDB();
   const categorySites = db.sites.filter(s => s.category === cat.name);
 
+  const collectionPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `Best ${cat.name} Websites & Tools | AllSiteHub`,
+    description: `Explore curated ${cat.name} websites on AllSiteHub. ${cat.description}`,
+    url: `${BASE_URL}/category/${slug}`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'AllSiteHub',
+      url: BASE_URL,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      name: `Best ${cat.name} Websites`,
+      description: cat.description,
+      numberOfItems: categorySites.length,
+      itemListElement: categorySites.map((site, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: site.name,
+        url: `${BASE_URL}/site/${slugify(site.name)}`,
+        ...(site.description ? { description: site.description } : {}),
+      })),
+    },
+  };
+
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -63,20 +89,6 @@ export default async function CategoryPage({ params }: Props) {
     ],
   };
 
-  const itemListLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `Best ${cat.name} Websites`,
-    description: cat.description,
-    numberOfItems: categorySites.length,
-    itemListElement: categorySites.map((site, idx) => ({
-      '@type': 'ListItem',
-      position: idx + 1,
-      name: site.name,
-      url: `${BASE_URL}/site/${slugify(site.name)}`,
-    })),
-  };
-
   return (
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
@@ -84,11 +96,11 @@ export default async function CategoryPage({ params }: Props) {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       {/* ── Hero Header ──────────────────────────────── */}

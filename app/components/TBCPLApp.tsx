@@ -34,6 +34,17 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   const [totalUsers, setTotalUsers] = useState<number>(() => calculateAllTimeActiveUsers());
 
   useEffect(() => {
+    // Check if ?q= search parameter is present in URL
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q');
+      if (q) {
+        setSearch(q);
+      }
+    } catch {
+      // ignore
+    }
+
     fetch('/api/stats/visitors')
       .then(res => res.json())
       .then(data => {

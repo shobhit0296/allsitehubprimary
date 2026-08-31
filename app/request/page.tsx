@@ -62,10 +62,34 @@ export default function RequestPage() {
     finally { setSubmitting(false); }
   };
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://allsitehub.site',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Request a Site',
+        item: 'https://allsitehub.site/request',
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
       <PageHeader active="Request" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden text-center px-4 pt-10 pb-2 sm:pt-12">

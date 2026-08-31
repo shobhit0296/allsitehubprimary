@@ -1,7 +1,32 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SITES, CATEGORIES, REGIONS } from '@/lib/data';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
+
+const BASE_URL = 'https://allsitehub.site';
+
+export const metadata: Metadata = {
+  title: 'About AllSiteHub — Free Curated Website Directory & Streaming Hub',
+  description:
+    'Learn about AllSiteHub, the free curated directory of verified streaming sites and web tools, our founder Shobhit Verma, our mission, and quality standards.',
+  alternates: {
+    canonical: `${BASE_URL}/about`,
+  },
+  openGraph: {
+    title: 'About AllSiteHub — Free Curated Website Directory',
+    description:
+      'Discover the story, mission, founder, and verification standards behind AllSiteHub.',
+    url: `${BASE_URL}/about`,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About AllSiteHub — Curated Streaming & Web Directory',
+    description:
+      'Learn about AllSiteHub, our founder Shobhit Verma, mission, and curation standards.',
+  },
+};
 
 const STATS = [
   { value: SITES.length,      label: 'Sites Listed', icon: '📡', color: 'text-blue-400' },
@@ -28,10 +53,70 @@ const FAQS = [
 ];
 
 export default function AboutPage() {
+  const aboutPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'About AllSiteHub — The Streaming & Web Discovery Directory',
+    url: `${BASE_URL}/about`,
+    description:
+      'AllSiteHub is a free, curated directory of the best streaming sites on the internet — movies, anime, manga, live TV, sports, and web tools.',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'AllSiteHub',
+      alternateName: ['All Site Hub', 'AllSite Hub'],
+      url: BASE_URL,
+      logo: `${BASE_URL}/icon.png`,
+      founder: {
+        '@type': 'Person',
+        name: 'Shobhit Verma',
+        jobTitle: 'Founder & Lead Curator',
+        email: 'allsitehubsupport@gmail.com',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: 'allsitehubsupport@gmail.com',
+        contactType: 'customer support',
+      },
+      sameAs: [
+        'https://discord.gg/ZEMSvP2HX',
+        'https://t.me/+gWOCVAqtcXxkZDk9',
+        'https://www.reddit.com/user/allsitehub/',
+      ],
+    },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: BASE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'About',
+        item: `${BASE_URL}/about`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
       <PageHeader active="About" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden text-center px-4 py-16 sm:py-20">

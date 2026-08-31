@@ -1,5 +1,21 @@
+import type { Metadata } from 'next';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
+
+const BASE_URL = 'https://allsitehub.site';
+
+export const metadata: Metadata = {
+  title: 'DMCA Policy & Copyright Takedown Notice | AllSiteHub',
+  description: 'Digital Millennium Copyright Act (DMCA) notice and copyright policy for AllSiteHub. Learn how to submit copyright takedown requests.',
+  alternates: {
+    canonical: `${BASE_URL}/dmca`,
+  },
+  openGraph: {
+    title: 'DMCA Policy | AllSiteHub',
+    description: 'DMCA and copyright takedown policy for AllSiteHub.',
+    url: `${BASE_URL}/dmca`,
+  },
+};
 
 const STEPS = [
   { n: 1, title: 'Review',  desc: 'We review all valid DMCA requests submitted via email.' },
@@ -19,10 +35,34 @@ const REQUIREMENTS = [
 ];
 
 export default function DmcaPage() {
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: BASE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'DMCA Policy',
+        item: `${BASE_URL}/dmca`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative page-offset">
       <div className="noise-overlay" />
       <PageHeader active="DMCA" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden text-center px-4 py-14 sm:py-16">

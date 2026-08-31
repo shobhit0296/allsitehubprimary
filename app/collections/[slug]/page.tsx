@@ -81,18 +81,30 @@ export default async function CollectionDetailPage({ params }: Props) {
     ],
   };
 
-  const itemListLd = {
+  const collectionPageLd = {
     '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: col.title,
+    '@type': 'CollectionPage',
+    name: `${col.title} | AllSiteHub`,
     description: col.description,
-    numberOfItems: sites.length,
-    itemListElement: sites.map((site, idx) => ({
-      '@type': 'ListItem',
-      position: idx + 1,
-      name: site.name,
-      url: `${BASE_URL}/site/${site.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`,
-    })),
+    url: `${BASE_URL}/collections/${slug}`,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'AllSiteHub',
+      url: BASE_URL,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      name: col.title,
+      description: col.description,
+      numberOfItems: sites.length,
+      itemListElement: sites.map((site, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: site.name,
+        url: `${BASE_URL}/site/${site.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`,
+        ...(site.description ? { description: site.description } : {}),
+      })),
+    },
   };
 
   return (
@@ -102,11 +114,11 @@ export default async function CollectionDetailPage({ params }: Props) {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       <section className="relative overflow-hidden text-center px-4 pt-12 pb-8 sm:pt-16 sm:pb-12">

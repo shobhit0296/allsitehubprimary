@@ -104,14 +104,26 @@ const jsonLdOrganization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'AllSiteHub',
-  alternateName: 'All Site Hub',
+  alternateName: ['All Site Hub', 'AllSite Hub'],
   url: BASE_URL,
   logo: `${BASE_URL}/icon.png`,
+  description:
+    'Curated directory of the best streaming sites and useful web tools across movies, anime, manga, live TV, sports, and web applications.',
+  founder: {
+    '@type': 'Person',
+    name: 'Shobhit Verma',
+    jobTitle: 'Founder & Lead Curator',
+  },
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'allsitehubsupport@gmail.com',
     contactType: 'customer support',
   },
+  sameAs: [
+    'https://discord.gg/ZEMSvP2HX',
+    'https://t.me/+gWOCVAqtcXxkZDk9',
+    'https://www.reddit.com/user/allsitehub/',
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
