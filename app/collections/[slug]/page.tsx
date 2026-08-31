@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const col = COLLECTIONS.find(c => c.slug === slug);
   if (!col) return { title: 'Collection Not Found' };
 
-  const title = `${col.title} | AllSiteHub`;
+  const title = col.title;
   const description = `${col.description} Discover verified web tools, links, and resources on AllSiteHub.`;
   const canonicalUrl = `${BASE_URL}/collections/${slug}`;
 

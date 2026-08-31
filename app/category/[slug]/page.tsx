@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cat = findCategoryBySlug(slug);
   if (!cat) return { title: 'Category Not Found' };
 
-  const title = `Best ${cat.name} Websites & Online Resources | AllSiteHub`;
+  const title = `Best ${cat.name} Websites & Online Resources`;
   const description = `Explore curated ${cat.name} websites and online resources. Compare available sites, discover useful options and explore related resources on AllSiteHub.`;
   const canonicalUrl = `${siteConfig.url}/category/${slug}`;
 

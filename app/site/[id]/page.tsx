@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!site) return { title: 'Site Not Found' };
 
   const isIndexable = shouldIndexWebsitePage(site);
-  const title = `${site.name} — Details, Features & Alternatives | AllSiteHub`;
+  const title = `${site.name} — Details, Features & Alternatives`;
   const description = site.description && site.description.length >= 20
     ? site.description
     : `Explore ${site.name} on AllSiteHub, including category (${site.category}), website domain (${site.domain}), supported regions, and related alternatives.`;

@@ -7,7 +7,7 @@ import { COLLECTIONS } from '@/lib/collections';
 const BASE_URL = 'https://allsitehub.site';
 
 export const metadata: Metadata = {
-  title: 'Curated Website Collections & Guides — AllSiteHub',
+  title: 'Curated Website Collections & Guides',
   description: 'Explore hand-picked website collections on AllSiteHub. Discover the best AI tools, developer websites, productivity tools, and useful web resources.',
   alternates: {
     canonical: `${BASE_URL}/collections`,
