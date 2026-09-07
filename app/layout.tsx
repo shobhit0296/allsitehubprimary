@@ -257,6 +257,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           src="/js/popunder.js"
           strategy="afterInteractive"
         />
+        {/* HilltopAds In-Page Push / Secondary High-CPM Zone */}
+        <Script id="hilltopads-inpage-push" strategy="afterInteractive">
+          {`
+            (function(blk){
+              var d = document,
+                  s = d.createElement('script'),
+                  l = d.currentScript || d.scripts[d.scripts.length - 1];
+              s.settings = blk || {};
+              s.src = "//truthful-game.com/bHXoVqs.dPGBl-0fYiWicT/keDmC9Vu/ZaUjlckhPDT/c/zDOWTCUUyWNuTKc/t/NgzxMp5VNtTlIb2WMOQe";
+              s.async = true;
+              s.referrerPolicy = 'no-referrer-when-downgrade';
+              if (l && l.parentNode) {
+                l.parentNode.insertBefore(s, l);
+              } else {
+                (d.head || d.body).appendChild(s);
+              }
+            })({});
+          `}
+        </Script>
       </head>
       <body className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
