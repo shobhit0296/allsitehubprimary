@@ -9,6 +9,7 @@ import SiteCard from '../../components/SiteCard';
 import SiteIcon from '../../components/SiteIcon';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
+import VpnCallout from '../../components/VpnCallout';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -181,6 +182,11 @@ export default async function SiteDetailPage({ params }: Props) {
               </p>
             </div>
 
+            {/* VPN Callout — shown between description and regions for max intent */}
+            <div className="py-5 border-b border-white/[0.08]">
+              <VpnCallout />
+            </div>
+
             {/* Target Regions */}
             <div className="pt-6 flex items-center gap-3 flex-wrap">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Supported Regions:</span>
@@ -195,6 +201,7 @@ export default async function SiteDetailPage({ params }: Props) {
           {/* Related Sites */}
           {relatedSites.length > 0 && (
             <div className="mt-16">
+
               <h3 className="font-headline text-xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
                 <span>✦</span>
                 <span>Similar {site.category} Sites & Alternatives</span>

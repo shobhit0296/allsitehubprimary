@@ -10,6 +10,7 @@ import CategoryIcon from '../../components/CategoryIcon';
 import CategorySiteGrid from '../../components/CategorySiteGrid';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
+import VpnCallout from '../../components/VpnCallout';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -162,6 +163,11 @@ export default async function CategoryPage({ params }: Props) {
           <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400">
             {categorySites.length} Sites
           </span>
+        </div>
+
+        {/* VPN Callout — compact pill, high conversion on streaming categories */}
+        <div className="mb-8">
+          <VpnCallout variant="compact" />
         </div>
 
         <CategorySiteGrid sites={categorySites} />
