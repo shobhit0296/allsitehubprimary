@@ -3,9 +3,21 @@ import path from "path";
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://*.googletagmanager.com https://adservice.google.com https://*.hilltopads.net https://*.hilltopads.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval'
+    https://pagead2.googlesyndication.com
+    https://www.googletagmanager.com
+    https://*.googletagmanager.com
+    https://adservice.google.com
+    https://*.hilltopads.net
+    https://*.hilltopads.com
+    https://insignificantpotential.com
+    https://*.insignificantpotential.com
+    https://ptekuwiny.pro
+    https://*.ptekuwiny.pro
+    https://ashamed-employer.com
+    https://*.ashamed-employer.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  img-src 'self' data: blob:
+  img-src 'self' data: blob: https:
     https://www.google.com
     https://t0.gstatic.com
     https://t1.gstatic.com
@@ -15,8 +27,17 @@ const ContentSecurityPolicy = `
     https://icon.horse
     https://pagead2.googlesyndication.com;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net https://pagead2.googlesyndication.com https://*.upstash.io;
-  frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;
+  connect-src 'self' https:
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://stats.g.doubleclick.net
+    https://pagead2.googlesyndication.com
+    https://*.upstash.io;
+  frame-src 'self' https:
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
@@ -61,11 +82,11 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
-      // ─── Static assets: long-lived cache ───
+      // ─── Popunder & client ad scripts: 24h Edge cache ───
       {
-        source: "/_next/static/:path*",
+        source: "/js/:path*",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
         ],
       },
       // ─── All SSG pages: served from Vercel Edge CDN, never hits serverless ───

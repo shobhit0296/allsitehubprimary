@@ -195,6 +195,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://insignificantpotential.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <script
           dangerouslySetInnerHTML={{
@@ -248,6 +249,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             });
           `}
         </Script>
+        {/* HilltopAds Anti-AdBlock Popunder (High CPM Zone #7393625) */}
+        <Script
+          id="hilltopads-popunder"
+          src="/js/popunder.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
