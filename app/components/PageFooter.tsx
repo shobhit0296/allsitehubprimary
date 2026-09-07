@@ -14,10 +14,13 @@ export default function PageFooter() {
 
           <nav aria-label="Footer" className="flex items-center gap-4 sm:gap-6 flex-wrap text-xs text-[var(--text-muted)]">
             <Link href="/" className="hover:text-[var(--text-primary)] transition-colors">Home</Link>
+            <Link href="/recent" className="hover:text-[var(--text-primary)] transition-colors">Recently Added</Link>
             <Link href="/collections" className="hover:text-[var(--text-primary)] transition-colors">Collections</Link>
             <Link href="/how-we-review-websites" className="hover:text-[var(--text-primary)] transition-colors">Review Methodology</Link>
             <Link href="/about" className="hover:text-[var(--text-primary)] transition-colors">About</Link>
             <Link href="/request" className="hover:text-[var(--text-primary)] transition-colors">Request a Site</Link>
+            <Link href="/privacy" className="hover:text-[var(--text-primary)] transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-[var(--text-primary)] transition-colors">Terms</Link>
             <Link href="/dmca" className="hover:text-[var(--text-primary)] transition-colors">DMCA</Link>
           </nav>
         </div>

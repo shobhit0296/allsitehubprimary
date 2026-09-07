@@ -367,15 +367,19 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
             <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Directory</h5>
             <ul className="space-y-3.5">
               <li><a href="/" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Home</a></li>
-              <li><a href="#directory" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Categories</a></li>
+              <li><a href="/recent" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Recently Added</a></li>
+              <li><a href="/collections" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Collections</a></li>
+              <li><a href="/how-we-review-websites" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Review Methodology</a></li>
               <li><a href="/request" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Request Site</a></li>
             </ul>
           </div>
           <div>
-            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Legal</h5>
+            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Legal & Trust</h5>
             <ul className="space-y-3.5">
-              <li><a href="/about" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About</a></li>
-              <li><a href="/dmca" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">DMCA</a></li>
+              <li><a href="/about" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About AllSiteHub</a></li>
+              <li><a href="/privacy" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Terms of Service</a></li>
+              <li><a href="/dmca" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">DMCA Policy</a></li>
             </ul>
           </div>
         </div>

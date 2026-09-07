@@ -9,9 +9,9 @@ export const siteConfig = {
   tagline: 'Discover the Best Websites, Tools & Online Resources',
   description:
     'Discover useful websites, online tools, entertainment platforms and resources with AllSiteHub. Search and explore curated websites by category, region and purpose.',
-  url: 'https://allsitehub.site',
-  canonicalUrl: 'https://allsitehub.site',
-  ogImage: 'https://allsitehub.site/icon.png',
+  url: 'https://www.allsitehub.site',
+  canonicalUrl: 'https://www.allsitehub.site',
+  ogImage: 'https://www.allsitehub.site/icon.png',
   founder: {
     name: 'Shobhit Verma',
     role: 'Founder & Lead Curator',

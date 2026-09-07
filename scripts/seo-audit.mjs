@@ -17,7 +17,7 @@ const checks = [
   {
     name: 'Centralized Site Configuration',
     file: 'lib/siteConfig.ts',
-    test: (content) => content.includes('https://allsitehub.site') && content.includes('slugify') && content.includes('shouldIndexWebsitePage'),
+    test: (content) => content.includes('allsitehub.site') && content.includes('slugify') && content.includes('shouldIndexWebsitePage'),
   },
   {
     name: 'Layout Metadata & Canonical base',
@@ -43,6 +43,21 @@ const checks = [
     name: 'Robots.txt Crawl Directives',
     file: 'app/robots.ts',
     test: (content) => content.includes('sitemap.xml') && content.includes('userAgent'),
+  },
+  {
+    name: 'Privacy Policy (AdSense & Legal Compliance)',
+    file: 'app/privacy/page.tsx',
+    test: (content) => content.includes('Privacy Policy') && content.includes('AdSense') && content.includes('siteConfig.url'),
+  },
+  {
+    name: 'Terms of Service (Legal Protection & Trust)',
+    file: 'app/terms/page.tsx',
+    test: (content) => content.includes('Terms of Service') && content.includes('siteConfig.url'),
+  },
+  {
+    name: 'Recently Added Directory Page',
+    file: 'app/recent/page.tsx',
+    test: (content) => content.includes('Recently Added') && content.includes('addedAt'),
   },
 ];
 

@@ -11,10 +11,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static core pages
   const staticPages: MetadataRoute.Sitemap = [
     { url: siteConfig.url, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
+    { url: `${siteConfig.url}/recent`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${siteConfig.url}/collections`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${siteConfig.url}/how-we-review-websites`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${siteConfig.url}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${siteConfig.url}/request`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${siteConfig.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
+    { url: `${siteConfig.url}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
     { url: `${siteConfig.url}/dmca`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ];
 

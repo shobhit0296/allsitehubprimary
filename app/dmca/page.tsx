@@ -1,19 +1,18 @@
 import type { Metadata } from 'next';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
-
-const BASE_URL = 'https://allsitehub.site';
+import { siteConfig } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'DMCA Policy & Copyright Takedown Notice | AllSiteHub',
   description: 'Digital Millennium Copyright Act (DMCA) notice and copyright policy for AllSiteHub. Learn how to submit copyright takedown requests.',
   alternates: {
-    canonical: `${BASE_URL}/dmca`,
+    canonical: `${siteConfig.url}/dmca`,
   },
   openGraph: {
     title: 'DMCA Policy | AllSiteHub',
     description: 'DMCA and copyright takedown policy for AllSiteHub.',
-    url: `${BASE_URL}/dmca`,
+    url: `${siteConfig.url}/dmca`,
   },
 };
 
@@ -43,13 +42,13 @@ export default function DmcaPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'DMCA Policy',
-        item: `${BASE_URL}/dmca`,
+        item: `${siteConfig.url}/dmca`,
       },
     ],
   };

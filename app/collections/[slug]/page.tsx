@@ -6,12 +6,11 @@ import PageHeader from '../../components/PageHeader';
 import PageFooter from '../../components/PageFooter';
 import SiteCard from '../../components/SiteCard';
 import { COLLECTIONS } from '@/lib/collections';
+import { siteConfig } from '@/lib/siteConfig';
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
-
-const BASE_URL = 'https://allsitehub.site';
 
 export async function generateStaticParams() {
   return COLLECTIONS.map(c => ({
@@ -26,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = col.title;
   const description = `${col.description} Discover verified web tools, links, and resources on AllSiteHub.`;
-  const canonicalUrl = `${BASE_URL}/collections/${slug}`;
+  const canonicalUrl = `${siteConfig.url}/collections/${slug}`;
 
   return {
     title,
@@ -64,19 +63,19 @@ export default async function CollectionDetailPage({ params }: Props) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Collections',
-        item: `${BASE_URL}/collections`,
+        item: `${siteConfig.url}/collections`,
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: col.title,
-        item: `${BASE_URL}/collections/${slug}`,
+        item: `${siteConfig.url}/collections/${slug}`,
       },
     ],
   };
@@ -86,11 +85,11 @@ export default async function CollectionDetailPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: `${col.title} | AllSiteHub`,
     description: col.description,
-    url: `${BASE_URL}/collections/${slug}`,
+    url: `${siteConfig.url}/collections/${slug}`,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'AllSiteHub',
-      url: BASE_URL,
+      name: siteConfig.name,
+      url: siteConfig.url,
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -101,7 +100,7 @@ export default async function CollectionDetailPage({ params }: Props) {
         '@type': 'ListItem',
         position: idx + 1,
         name: site.name,
-        url: `${BASE_URL}/site/${site.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`,
+        url: `${siteConfig.url}/site/${site.name.replace(/\s+/g, '-').replace(/&/g, 'and').toLowerCase()}`,
         ...(site.description ? { description: site.description } : {}),
       })),
     },

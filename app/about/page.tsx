@@ -3,21 +3,20 @@ import Link from 'next/link';
 import { SITES, CATEGORIES, REGIONS } from '@/lib/data';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
-
-const BASE_URL = 'https://allsitehub.site';
+import { siteConfig } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'About AllSiteHub — Free Curated Website Directory & Streaming Hub',
   description:
     'Learn about AllSiteHub, the free curated directory of verified streaming sites and web tools, our founder Shobhit Verma, our mission, and quality standards.',
   alternates: {
-    canonical: `${BASE_URL}/about`,
+    canonical: `${siteConfig.url}/about`,
   },
   openGraph: {
     title: 'About AllSiteHub — Free Curated Website Directory',
     description:
       'Discover the story, mission, founder, and verification standards behind AllSiteHub.',
-    url: `${BASE_URL}/about`,
+    url: `${siteConfig.url}/about`,
     type: 'website',
   },
   twitter: {
@@ -45,7 +44,7 @@ const VALUES = [
 ];
 
 const FAQS = [
-  { q: 'Is Allsitehub free?', a: 'Yes, completely free. No sign-up, no subscription, no ads.' },
+  { q: 'Is Allsitehub free?', a: 'Yes, completely free to browse and search. No sign-up, registration, or subscription required.' },
   { q: 'Do you host movies or shows?', a: 'No. Allsitehub is a directory — we only link to third-party streaming sites. We do not host, store, or control any content.' },
   { q: 'How do I suggest a site?', a: 'Go to our Request page and fill in the form. We review all submissions and add sites that meet our quality standards.' },
   { q: 'How are sites marked as "Trusted"?', a: 'Trusted sites are well-established platforms with a clean track record, good content libraries, and minimal intrusive ads or malware.' },
@@ -57,30 +56,30 @@ export default function AboutPage() {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
     name: 'About AllSiteHub — The Streaming & Web Discovery Directory',
-    url: `${BASE_URL}/about`,
+    url: `${siteConfig.url}/about`,
     description:
       'AllSiteHub is a free, curated directory of the best streaming sites on the internet — movies, anime, manga, live TV, sports, and web tools.',
     mainEntity: {
       '@type': 'Organization',
-      name: 'AllSiteHub',
+      name: siteConfig.name,
       alternateName: ['All Site Hub', 'AllSite Hub'],
-      url: BASE_URL,
-      logo: `${BASE_URL}/icon.png`,
+      url: siteConfig.url,
+      logo: `${siteConfig.url}/icon.png`,
       founder: {
         '@type': 'Person',
-        name: 'Shobhit Verma',
-        jobTitle: 'Founder & Lead Curator',
-        email: 'allsitehubsupport@gmail.com',
+        name: siteConfig.founder.name,
+        jobTitle: siteConfig.founder.role,
+        email: siteConfig.contact.email,
       },
       contactPoint: {
         '@type': 'ContactPoint',
-        email: 'allsitehubsupport@gmail.com',
+        email: siteConfig.contact.email,
         contactType: 'customer support',
       },
       sameAs: [
-        'https://discord.gg/ZEMSvP2HX',
-        'https://t.me/+gWOCVAqtcXxkZDk9',
-        'https://www.reddit.com/user/allsitehub/',
+        siteConfig.social.discord,
+        siteConfig.social.telegram,
+        siteConfig.social.reddit,
       ],
     },
   };
@@ -93,13 +92,13 @@ export default function AboutPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'About',
-        item: `${BASE_URL}/about`,
+        item: `${siteConfig.url}/about`,
       },
     ],
   };

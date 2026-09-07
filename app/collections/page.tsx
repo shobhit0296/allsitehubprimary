@@ -3,19 +3,18 @@ import Link from 'next/link';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
 import { COLLECTIONS } from '@/lib/collections';
-
-const BASE_URL = 'https://allsitehub.site';
+import { siteConfig } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Curated Website Collections & Guides',
   description: 'Explore hand-picked website collections on AllSiteHub. Discover the best AI tools, developer websites, productivity tools, and useful web resources.',
   alternates: {
-    canonical: `${BASE_URL}/collections`,
+    canonical: `${siteConfig.url}/collections`,
   },
   openGraph: {
     title: 'Curated Website Collections & Guides — AllSiteHub',
     description: 'Explore hand-picked website collections on AllSiteHub. Discover top tools, software, and web resources.',
-    url: `${BASE_URL}/collections`,
+    url: `${siteConfig.url}/collections`,
   },
 };
 
@@ -28,13 +27,13 @@ export default function CollectionsIndexPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Collections',
-        item: `${BASE_URL}/collections`,
+        item: `${siteConfig.url}/collections`,
       },
     ],
   };

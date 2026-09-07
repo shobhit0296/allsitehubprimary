@@ -1,6 +1,6 @@
 export const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 export const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_SECRET_TOKEN || '';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allsitehub.site';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allsitehub.site';
 export const MOVIESNET_URL = 'https://moviesnet.site';
 export const DISCORD_URL = 'https://discord.gg/ZEMSvP2HX';
 export const TELEGRAM_GROUP_URL = 'https://t.me/+gWOCVAqtcXxkZDk9';

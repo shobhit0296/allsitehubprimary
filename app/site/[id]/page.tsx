@@ -14,6 +14,24 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+function getSiteOverview(site: { name: string; domain: string; category: string; description?: string; isTrusted?: boolean; regions?: string[] }): string {
+  if (site.description && site.description.trim().length >= 20) {
+    return site.description;
+  }
+  const categoryTerms: Record<string, string> = {
+    'Movies & Shows': 'movie and TV series streaming platform',
+    'Anime': 'anime streaming and discovery resource',
+    'Manga': 'online manga and comics reader platform',
+    'Live TV & Sports': 'live television and sports streaming portal',
+    'Paid': 'premium subscription streaming service',
+    'Apps': 'media player and streaming application',
+  };
+  const typeDesc = categoryTerms[site.category] || 'curated online resource';
+  const trustDesc = site.isTrusted ? ' It has been verified under the AllSiteHub Quality Standard for uptime and security protocols.' : '';
+  const regionDesc = site.regions && site.regions.length > 0 ? ` Accessible across ${site.regions.join(', ')}.` : '';
+  return `${site.name} (${site.domain}) is a curated ${typeDesc} listed in the ${site.category} section on AllSiteHub.${trustDesc}${regionDesc}`;
+}
+
 export async function generateStaticParams() {
   const db = await readDB();
   return db.sites.map(s => ({
@@ -29,9 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const isIndexable = shouldIndexWebsitePage(site);
   const title = `${site.name} — Details, Features & Alternatives`;
-  const description = site.description && site.description.length >= 20
-    ? site.description
-    : `Explore ${site.name} on AllSiteHub, including category (${site.category}), website domain (${site.domain}), supported regions, and related alternatives.`;
+  const description = getSiteOverview(site);
   const canonicalUrl = `${siteConfig.url}/site/${id}`;
 
   return {
@@ -161,7 +177,7 @@ export default async function SiteDetailPage({ params }: Props) {
             <div className="py-7 border-b border-white/[0.08]">
               <h2 className="font-headline text-base font-bold text-[var(--text-primary)] mb-3">About {site.name}</h2>
               <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
-                {site.description || `${site.name} is a streaming website in the ${site.category} category.`}
+                {getSiteOverview(site)}
               </p>
             </div>
 

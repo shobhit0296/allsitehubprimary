@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-const BASE_URL = 'https://allsitehub.site';
+const BASE_URL = 'https://www.allsitehub.site';
 const dbPath = path.join(rootDir, 'data', 'db.json');
 
 console.log('🗺️ Validating AllSiteHub Sitemap Architecture...\n');
@@ -44,10 +44,13 @@ function shouldIndexWebsite(site) {
 
 const staticRoutes = [
   '/',
+  '/recent',
   '/collections',
   '/how-we-review-websites',
   '/about',
   '/request',
+  '/privacy',
+  '/terms',
   '/dmca',
 ];
 

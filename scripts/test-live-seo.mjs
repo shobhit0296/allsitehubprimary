@@ -1,8 +1,13 @@
 import https from 'https';
 
-function fetchText(url) {
+function fetchText(url, redirects = 0) {
+  if (redirects > 5) return Promise.resolve('');
   return new Promise((resolve) => {
-    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
+    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)' } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        const nextUrl = new URL(res.headers.location, url).toString();
+        return resolve(fetchText(nextUrl, redirects + 1));
+      }
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(data));
@@ -29,7 +34,7 @@ async function auditPage(name, url) {
 
   console.log(`=== ${name} (${url}) ===`);
   console.log(`Title:       ${title}`);
-  console.log(`Description: ${desc}`);
+  console.log(`Description: ${desc.slice(0, 90)}${desc.length > 90 ? '...' : ''}`);
   console.log(`Canonical:   ${canonical}`);
   console.log(`Schema Count:${schemas.length}`);
   schemas.forEach((s, idx) => {
@@ -39,15 +44,19 @@ async function auditPage(name, url) {
 }
 
 async function run() {
-  await auditPage('Home Page', 'https://allsitehub.site');
-  await auditPage('Category Page', 'https://allsitehub.site/category/movies-and-shows');
-  await auditPage('Collections Directory', 'https://allsitehub.site/collections');
-  await auditPage('Collection Article', 'https://allsitehub.site/collections/best-ai-websites');
-  await auditPage('Site Detail Page', 'https://allsitehub.site/site/pantyflix');
+  const BASE = 'https://www.allsitehub.site';
+  await auditPage('Home Page', `${BASE}/`);
+  await auditPage('Recently Added', `${BASE}/recent`);
+  await auditPage('Category Page', `${BASE}/category/movies-and-shows`);
+  await auditPage('Collections Directory', `${BASE}/collections`);
+  await auditPage('Collection Article', `${BASE}/collections/best-ai-websites`);
+  await auditPage('Site Detail Page', `${BASE}/site/pantyflix`);
+  await auditPage('Privacy Policy', `${BASE}/privacy`);
+  await auditPage('Terms of Service', `${BASE}/terms`);
 
   console.log('=== Sitemap & Robots ===');
-  const robots = await fetchText('https://allsitehub.site/robots.txt');
-  const sitemap = await fetchText('https://allsitehub.site/sitemap.xml');
+  const robots = await fetchText(`${BASE}/robots.txt`);
+  const sitemap = await fetchText(`${BASE}/sitemap.xml`);
   console.log('Robots.txt contains Sitemap link:', robots.includes('sitemap.xml'));
   console.log('Sitemap URLs total count:', (sitemap.match(/<url>/g) || []).length);
 }

@@ -73,7 +73,7 @@ const nextConfig: NextConfig = {
       // stale-while-revalidate=604800 → Serves stale while refreshing in background.
       // Result: 0 serverless invocations for repeated page visits → quota never drains.
       {
-        source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|about|dmca|request|how-we-review-websites|robots.txt|sitemap.xml)",
+        source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|recent|about|dmca|request|how-we-review-websites|privacy|terms|robots.txt|sitemap.xml)",
         headers: [
           { key: "Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=604800" },
         ],
@@ -105,6 +105,18 @@ const nextConfig: NextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
         ],
       },
+    ];
+  },
+  // ── Permanent SEO Redirects ──
+  async redirects() {
+    return [
+      { source: '/guides', destination: '/collections', permanent: true },
+      { source: '/editorial-policy', destination: '/how-we-review-websites', permanent: true },
+      { source: '/contact', destination: '/request', permanent: true },
+      { source: '/request-site', destination: '/request', permanent: true },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true },
+      { source: '/terms-of-service', destination: '/terms', permanent: true },
+      { source: '/terms-and-conditions', destination: '/terms', permanent: true },
     ];
   },
 };

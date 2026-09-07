@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { CATEGORIES, REGIONS } from '@/lib/data';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
+import { siteConfig } from '@/lib/siteConfig';
 
 interface Target { region: string; category: string; }
 
@@ -70,13 +71,13 @@ export default function RequestPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://allsitehub.site',
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Request a Site',
-        item: 'https://allsitehub.site/request',
+        item: `${siteConfig.url}/request`,
       },
     ],
   };

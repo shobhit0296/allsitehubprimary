@@ -2,19 +2,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
-
-const BASE_URL = 'https://allsitehub.site';
+import { siteConfig } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'How We Review Websites — AllSiteHub Quality & Verification Standard',
   description: 'Learn about the AllSiteHub Website Review Methodology. We inspect website security, uptime, ad intrusion limits, content quality, and mobile UX before listing.',
   alternates: {
-    canonical: `${BASE_URL}/how-we-review-websites`,
+    canonical: `${siteConfig.url}/how-we-review-websites`,
   },
   openGraph: {
     title: 'How We Review Websites — AllSiteHub Quality Standard',
     description: 'Our transparent 5-step methodology for evaluating and verifying websites listed on AllSiteHub.',
-    url: `${BASE_URL}/how-we-review-websites`,
+    url: `${siteConfig.url}/how-we-review-websites`,
   },
 };
 
@@ -55,13 +54,13 @@ export default function ReviewMethodologyPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: BASE_URL,
+        item: siteConfig.url,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'How We Review Websites',
-        item: `${BASE_URL}/how-we-review-websites`,
+        item: `${siteConfig.url}/how-we-review-websites`,
       },
     ],
   };
