@@ -208,7 +208,22 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
+      {/* ── AdSense Banner Ad — between Hero and directory (highest CTR placement) ── */}
+      <div
+        className="w-full max-w-[1600px] mx-auto px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 my-3 sm:my-4"
+        aria-label="Advertisement"
+      >
+        <ins
+          className="adsbygoogle"
+          style={{ display: 'block' }}
+          data-ad-client="ca-pub-1348117799300846"
+          data-ad-slot="auto"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      </div>
       {/* Directory Content Section */}
+
       <section
         id="directory"
         className="max-w-[1600px] mx-auto px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-12 mb-12 sm:mb-16 scroll-mt-20"

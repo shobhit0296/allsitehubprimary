@@ -214,6 +214,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        {/* AdSense Auto Ads — Google picks best placements automatically */}
+        <Script id="adsense-auto-ads" strategy="afterInteractive">
+          {`
+            (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-1348117799300846",
+              enable_page_level_ads: true
+            });
+          `}
+        </Script>
         {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-3ZSN0JXGJK"
