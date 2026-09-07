@@ -15,9 +15,7 @@ const ContentSecurityPolicy = `
     https://ptekuwiny.pro
     https://*.ptekuwiny.pro
     https://ashamed-employer.com
-    https://*.ashamed-employer.com
-    https://truthful-game.com
-    https://*.truthful-game.com;
+    https://*.ashamed-employer.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
