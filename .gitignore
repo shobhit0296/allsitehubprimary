@@ -49,3 +49,8 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Deployment scripts with credentials
+scripts/vercel-*.mjs
+docs/DEPLOYMENT_AND_ACCOUNT_INFO.md
+

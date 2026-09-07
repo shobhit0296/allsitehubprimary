@@ -60,7 +60,7 @@ export async function GET() {
     totalUsers,
     propertyId: '546801810',
   }, {
-    headers: { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=60' }
+    headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' }
   });
 }
 

@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
   if (cached && Date.now() - cached.at < MEM_TTL_MS) {
     return NextResponse.json(
       { success: true, logo: cached.logo, source: cached.source, cached: true },
-      { headers: { 'Cache-Control': 'public, max-age=3600' } },
+      { headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400' } },
     );
   }
 
@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
     memCache.set(domain, { ...result, at: Date.now() });
     return NextResponse.json(
       { success: true, ...result },
-      { headers: { 'Cache-Control': 'public, max-age=3600' } },
+      { headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400' } },
     );
   }
 
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
       memCache.set(domain, { ...result, at: Date.now() });
       return NextResponse.json(
         { success: true, ...result },
-        { headers: { 'Cache-Control': 'public, max-age=3600' } },
+        { headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400' } },
       );
     }
   } catch {
@@ -85,6 +85,6 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json(
     { success: true, ...fallbackResult },
-    { headers: { 'Cache-Control': 'public, max-age=1800' } },
+    { headers: { 'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400' } },
   );
 }
