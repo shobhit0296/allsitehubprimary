@@ -30,38 +30,27 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   // ── Scheduled time-of-day live online users (changes every 15-20s) ──
   const liveOnlineCount = useLiveOnlineCounter();
 
-  // ── All-time total users / visitors (GA4 Property 546801810 with daily ~25k growth) ──
+  // ── All-time total users / visitors — purely client-side, zero serverless calls ──
+  // calculateAllTimeActiveUsers() computes the counter from elapsed time since anchor date.
+  // No POST/GET to any backend, so Vercel free-tier quota is never drained.
   const [totalUsers, setTotalUsers] = useState<number>(() => calculateAllTimeActiveUsers());
 
   useEffect(() => {
-    // Check if ?q= search parameter is present in URL
+    // Update counter once per minute so it ticks forward smoothly
+    const interval = setInterval(() => {
+      setTotalUsers(calculateAllTimeActiveUsers());
+    }, 60_000);
+
+    // Read ?q= search param from URL
     try {
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
-      if (q) {
-        setSearch(q);
-      }
+      if (q) setSearch(q);
     } catch {
       // ignore
     }
 
-    fetch('/api/stats/visitors')
-      .then(res => res.json())
-      .then(data => {
-        if (data.totalUsers) setTotalUsers(data.totalUsers);
-      })
-      .catch(() => {});
-
-    // Increment visitor count once per session
-    if (!sessionStorage.getItem('ash_visited')) {
-      sessionStorage.setItem('ash_visited', '1');
-      fetch('/api/stats/visitors', { method: 'POST' })
-        .then(res => res.json())
-        .then(data => {
-          if (data.totalUsers) setTotalUsers(data.totalUsers);
-        })
-        .catch(() => {});
-    }
+    return () => clearInterval(interval);
   }, []);
 
   const toggleBookmark = useCallback((id: string) => {

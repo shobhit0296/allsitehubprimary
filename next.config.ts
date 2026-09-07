@@ -3,7 +3,7 @@ import path from "path";
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://*.googletagmanager.com https://adservice.google.com;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://www.googletagmanager.com https://*.googletagmanager.com https://adservice.google.com https://*.hilltopads.net https://*.hilltopads.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob:
     https://www.google.com
@@ -15,7 +15,7 @@ const ContentSecurityPolicy = `
     https://icon.horse
     https://pagead2.googlesyndication.com;
   font-src 'self' https://fonts.gstatic.com;
-  connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net https://pagead2.googlesyndication.com;
+  connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net https://pagead2.googlesyndication.com https://*.upstash.io;
   frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com;
   frame-ancestors 'none';
   object-src 'none';
@@ -54,46 +54,55 @@ const nextConfig: NextConfig = {
   // ── Security & Cache Headers ──
   async headers() {
     return [
+      // ─── Logos: immutable 1-year cache ───
       {
         source: "/logos/:path*",
         headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      // ─── Static assets: long-lived cache ───
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      // ─── All SSG pages: served from Vercel Edge CDN, never hits serverless ───
+      // s-maxage=86400 → Edge caches the page 24 hours.
+      // stale-while-revalidate=604800 → Serves stale while refreshing in background.
+      // Result: 0 serverless invocations for repeated page visits → quota never drains.
+      {
+        source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|about|dmca|request|how-we-review-websites|robots.txt|sitemap.xml)",
+        headers: [
+          { key: "Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=604800" },
+        ],
+      },
+      // ─── Logo API: 7-day Edge CDN cache ───
+      {
+        source: "/api/logo",
+        headers: [
+          { key: "Cache-Control", value: "public, s-maxage=604800, stale-while-revalidate=86400" },
+        ],
+      },
+      // ─── Visitor stats API: 5-min Edge cache ───
+      {
+        source: "/api/stats/visitors",
+        headers: [
+          { key: "Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
+        ],
+      },
+      // ─── Security headers for all routes ───
       {
         source: "/(.*)",
         headers: [
-          {
-            key: "Content-Security-Policy",
-            value: ContentSecurityPolicy,
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=(), payment=()",
-          },
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=31536000; includeSubDomains; preload",
-          },
+          { key: "Content-Security-Policy", value: ContentSecurityPolicy },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
         ],
       },
     ];
