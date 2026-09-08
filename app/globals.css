@@ -1424,7 +1424,7 @@ h1, h2, h3, .font-display {
   justify-content: center;
   flex: 1;
   min-height: 0;
-  padding: 6px 10px 2px;
+  padding: 4px 8px 2px;
   overflow: hidden;
   width: 100%;
 }
@@ -1436,10 +1436,10 @@ h1, h2, h3, .font-display {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-size: clamp(1.04rem, 2.8cqw, 1.42rem);
+  font-size: clamp(1.18rem, 3.2cqw, 1.62rem);
   font-weight: 850;
   text-align: center;
-  line-height: 1.16;
+  line-height: 1.14;
   letter-spacing: -0.025em;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
   transition: transform 180ms ease, filter 180ms ease;
@@ -1477,10 +1477,11 @@ h1, h2, h3, .font-display {
 
 /* ── Mobile ── */
 @media (max-width: 479px) {
-  .sc-card   { aspect-ratio: 16 / 9.5; border-radius: 12px; padding: 7px 9px 8px; }
-  .sc-badge  { font-size: 7.5px; padding: 1.5px 5px; }
-  .sc-name   { font-size: clamp(0.95rem, 4.2vw, 1.15rem); }
-  .sc-domain { font-size: 9.5px; }
+  .sc-card        { aspect-ratio: 16 / 9.5; border-radius: 12px; padding: 7px 9px 8px; }
+  .sc-badge       { font-size: 7.5px; padding: 1.5px 5px; }
+  .sc-center-wrap { padding: 3px 6px 1px; }
+  .sc-name        { font-size: clamp(1.08rem, 4.8vw, 1.34rem); }
+  .sc-domain      { font-size: 9.5px; }
 }
 
 
