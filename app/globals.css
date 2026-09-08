@@ -1330,8 +1330,11 @@ h1, h2, h3, .font-display {
 .sc-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9.5;
+  aspect-ratio: 16 / 10;
+  min-height: 106px;
   height: auto;
+  box-sizing: border-box;
+  container-type: inline-size;
   background: linear-gradient(180deg, #16161e 0%, #111116 100%);
   border: 1px solid rgba(115, 95, 175, 0.24);
   border-radius: 14px;
@@ -1346,7 +1349,7 @@ h1, h2, h3, .font-display {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 9px 12px 9px;
+  padding: 8px 10px 8px;
   /* GPU compositing */
   transform: translateZ(0);
   will-change: transform;
@@ -1383,6 +1386,7 @@ h1, h2, h3, .font-display {
   justify-content: space-between;
   min-height: 16px;
   flex-shrink: 0;
+  width: 100%;
 }
 
 /* ── Badge pill — matches screenshot purple outlined pill ── */
@@ -1390,14 +1394,15 @@ h1, h2, h3, .font-display {
   font-family: 'Outfit', 'Inter', sans-serif;
   font-size: 8.5px;
   font-weight: 800;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   border: 1px solid;          /* colour set inline */
   border-radius: 999px;
-  padding: 2px 7px;
-  line-height: 1.4;
+  padding: 1.5px 6.5px;
+  line-height: 1.3;
   white-space: nowrap;
   background: transparent;
+  flex-shrink: 0;
 }
 
 /* ── Bookmark star ── */
@@ -1407,7 +1412,7 @@ h1, h2, h3, .font-display {
   padding: 0;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.20);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1;
   transition: color 150ms ease;
   flex-shrink: 0;
@@ -1424,9 +1429,10 @@ h1, h2, h3, .font-display {
   justify-content: center;
   flex: 1;
   min-height: 0;
-  padding: 4px 8px 2px;
+  padding: 2px 4px;
   overflow: hidden;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Site name — prominent, bold brand typography matching the exact website design */
@@ -1436,20 +1442,34 @@ h1, h2, h3, .font-display {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-size: clamp(1.18rem, 3.2cqw, 1.62rem);
+  font-size: clamp(1.14rem, 7.8cqw, 1.48rem);
   font-weight: 850;
   text-align: center;
-  line-height: 1.14;
-  letter-spacing: -0.025em;
+  line-height: 1.15;
+  letter-spacing: -0.022em;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
   transition: transform 180ms ease, filter 180ms ease;
   user-select: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
+.sc-name--long {
+  font-size: clamp(1.0rem, 6.2cqw, 1.25rem);
+  letter-spacing: -0.015em;
+  line-height: 1.16;
+}
+.sc-name--xlong {
+  font-size: clamp(0.88rem, 5.0cqw, 1.08rem);
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+}
+
 .sc-card:hover .sc-name {
-  transform: scale(1.06);
-  filter: brightness(1.22);
+  transform: scale(1.03);
+  filter: brightness(1.20);
 }
 
 /* ── Row 3 — domain URL ── */
@@ -1463,6 +1483,8 @@ h1, h2, h3, .font-display {
   font-weight: 400;
   overflow: hidden;
   flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
   transition: color 150ms ease;
   user-select: none;
 }
@@ -1473,15 +1495,24 @@ h1, h2, h3, .font-display {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: calc(100% - 15px);
 }
 
 /* ── Mobile ── */
 @media (max-width: 479px) {
-  .sc-card        { aspect-ratio: 16 / 9.5; border-radius: 12px; padding: 7px 9px 8px; }
-  .sc-badge       { font-size: 7.5px; padding: 1.5px 5px; }
-  .sc-center-wrap { padding: 3px 6px 1px; }
-  .sc-name        { font-size: clamp(1.08rem, 4.8vw, 1.34rem); }
-  .sc-domain      { font-size: 9.5px; }
+  .sc-card {
+    aspect-ratio: 16 / 10;
+    min-height: 96px;
+    border-radius: 12px;
+    padding: 7px 8px 7px;
+  }
+  .sc-badge       { font-size: 7.5px; padding: 1px 5px; }
+  .sc-star        { font-size: 13px; }
+  .sc-center-wrap { padding: 2px 2px; }
+  .sc-name        { font-size: clamp(1.04rem, 4.4vw, 1.25rem); }
+  .sc-name--long  { font-size: clamp(0.92rem, 3.8vw, 1.10rem); }
+  .sc-name--xlong { font-size: clamp(0.82rem, 3.3vw, 0.98rem); }
+  .sc-domain      { font-size: 9px; }
 }
 
 

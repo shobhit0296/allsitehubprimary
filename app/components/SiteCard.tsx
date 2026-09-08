@@ -158,6 +158,9 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
     .split('/')[0];
 
   const brand = getSiteBrand(domain, site.name);
+  const isLong = brand.displayName.length > 10;
+  const isVeryLong = brand.displayName.length > 14;
+  const nameClass = `sc-name${isVeryLong ? ' sc-name--xlong' : isLong ? ' sc-name--long' : ''}`;
 
   return (
     <a
@@ -198,10 +201,11 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
       {/* ── Row 2: Exact website name in exact original color and bold size (NO logo image) ── */}
       <div className="sc-center-wrap">
         <span
-          className="sc-name"
+          className={nameClass}
+          title={brand.displayName}
           style={{
             color: brand.color,
-            letterSpacing: brand.letterSpacing || '-0.015em',
+            letterSpacing: brand.letterSpacing || (isVeryLong ? '-0.01em' : isLong ? '-0.018em' : '-0.025em'),
             textTransform: brand.uppercase ? 'uppercase' : 'none',
           }}
         >
