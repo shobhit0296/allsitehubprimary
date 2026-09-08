@@ -329,19 +329,19 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         <div className="max-w-[1740px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center gap-3">
           {/* Line 1: Quick Links */}
           <nav aria-label="Quick links" className="flex items-center justify-center flex-wrap gap-x-5 gap-y-2 text-[13px] font-medium text-[#9ca3af]">
-            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            <Link href="/about" prefetch={false} className="hover:text-white transition-colors">About</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/request" className="hover:text-white transition-colors">Request</Link>
+            <Link href="/request" prefetch={false} className="hover:text-white transition-colors">Request</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/dmca" className="hover:text-white transition-colors">DMCA</Link>
+            <Link href="/dmca" prefetch={false} className="hover:text-white transition-colors">DMCA</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/privacy" prefetch={false} className="hover:text-white transition-colors">Privacy</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link href="/terms" prefetch={false} className="hover:text-white transition-colors">Terms</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/recent" className="hover:text-white transition-colors">Recent</Link>
+            <Link href="/recent" prefetch={false} className="hover:text-white transition-colors">Recent</Link>
             <span className="text-[#3f3f46]">·</span>
-            <Link href="/collections" className="hover:text-white transition-colors">Collections</Link>
+            <Link href="/collections" prefetch={false} className="hover:text-white transition-colors">Collections</Link>
           </nav>
 
           {/* Line 2: Disclaimer & Copyright */}

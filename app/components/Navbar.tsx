@@ -77,6 +77,7 @@ export default function Navbar({
               <Link
                 key={link}
                 href={href}
+                prefetch={false}
                 className={`nav-pill-link${isActive ? ' is-active' : ''}`}
               >
                 {link}
