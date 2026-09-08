@@ -1330,17 +1330,17 @@ h1, h2, h3, .font-display {
 .sc-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  min-height: 106px;
+  aspect-ratio: 16 / 11;
+  min-height: 122px;
   height: auto;
   box-sizing: border-box;
   container-type: inline-size;
   background: linear-gradient(180deg, #16161e 0%, #111116 100%);
-  border: 1px solid rgba(115, 95, 175, 0.24);
+  border: 1px solid rgba(115, 95, 175, 0.26);
   border-radius: 14px;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 4px 18px rgba(0, 0, 0, 0.40);
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 4px 20px rgba(0, 0, 0, 0.42);
   overflow: hidden;
   cursor: pointer;
   outline: none;
@@ -1349,7 +1349,7 @@ h1, h2, h3, .font-display {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 8px 10px 8px;
+  padding: 10px 12px 10px;
   /* GPU compositing */
   transform: translateZ(0);
   will-change: transform;
@@ -1363,9 +1363,9 @@ h1, h2, h3, .font-display {
 }
 .sc-card:hover {
   transform: translateY(-3px) translateZ(0);
-  border-color: rgba(145, 115, 220, 0.48);
+  border-color: rgba(145, 115, 220, 0.50);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 10px 28px rgba(0, 0, 0, 0.55);
 }
 .sc-card:active {
@@ -1379,75 +1379,75 @@ h1, h2, h3, .font-display {
   outline-offset: 2px;
 }
 
-/* ── Row 1 — badge + bookmark star ── */
+/* ── Row 1 — badge + bookmark star (Crisp & Prominent) ── */
 .sc-toprow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 16px;
+  min-height: 20px;
   flex-shrink: 0;
   width: 100%;
 }
 
-/* ── Badge pill — matches screenshot purple outlined pill ── */
+/* ── Badge pill — bold, clean outline ── */
 .sc-badge {
   font-family: 'Outfit', 'Inter', sans-serif;
-  font-size: 8.5px;
+  font-size: 9.5px;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.7px;
   text-transform: uppercase;
   border: 1px solid;          /* colour set inline */
   border-radius: 999px;
-  padding: 1.5px 6.5px;
-  line-height: 1.3;
+  padding: 2.5px 8px;
+  line-height: 1.35;
   white-space: nowrap;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   flex-shrink: 0;
 }
 
-/* ── Bookmark star ── */
+/* ── Bookmark star — large & easily tapable ── */
 .sc-star {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.20);
-  font-size: 14px;
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 17px;
   line-height: 1;
-  transition: color 150ms ease;
+  transition: color 150ms ease, transform 150ms ease;
   flex-shrink: 0;
 }
 .sc-star:hover,
-.sc-card:hover .sc-star { color: rgba(255, 255, 255, 0.45); }
+.sc-card:hover .sc-star { color: rgba(255, 255, 255, 0.50); }
 .sc-star--on             { color: #fbbf24 !important; }
 .sc-star:focus-visible   { outline: none; }
 
-/* ── Row 2 — site name centred (Exact Name, Colour & Size) ── */
+/* ── Row 2 — site name centred (BIG, BOLD, VIBRANT BRAND TYPOGRAPHY) ── */
 .sc-center-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
   min-height: 0;
-  padding: 2px 4px;
+  padding: 2px 2px;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Site name — prominent, bold brand typography matching the exact website design */
+/* Site name — big, impactful typography that fills the card cleanly */
 .sc-name {
   font-family: 'Outfit', 'Plus Jakarta Sans', 'Sora', sans-serif;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-size: clamp(1.14rem, 7.8cqw, 1.48rem);
-  font-weight: 850;
+  font-size: clamp(1.28rem, 8.8cqw, 1.68rem);
+  font-weight: 900;
   text-align: center;
-  line-height: 1.15;
-  letter-spacing: -0.022em;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
   transition: transform 180ms ease, filter 180ms ease;
   user-select: none;
   text-rendering: optimizeLegibility;
@@ -1457,30 +1457,30 @@ h1, h2, h3, .font-display {
   overflow-wrap: break-word;
 }
 .sc-name--long {
-  font-size: clamp(1.0rem, 6.2cqw, 1.25rem);
-  letter-spacing: -0.015em;
-  line-height: 1.16;
+  font-size: clamp(1.14rem, 7.4cqw, 1.40rem);
+  letter-spacing: -0.018em;
+  line-height: 1.14;
 }
 .sc-name--xlong {
-  font-size: clamp(0.88rem, 5.0cqw, 1.08rem);
-  letter-spacing: -0.01em;
-  line-height: 1.18;
+  font-size: clamp(1.02rem, 6.2cqw, 1.22rem);
+  letter-spacing: -0.012em;
+  line-height: 1.16;
 }
 
 .sc-card:hover .sc-name {
-  transform: scale(1.03);
-  filter: brightness(1.20);
+  transform: scale(1.04);
+  filter: brightness(1.25) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15));
 }
 
-/* ── Row 3 — domain URL ── */
+/* ── Row 3 — domain URL (Crisp, Clear, Prominent) ── */
 .sc-domain {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  color: #6b6b7a;
-  font-size: 10.5px;
-  font-weight: 400;
+  gap: 5px;
+  color: #7c7c8f;
+  font-size: 11.5px;
+  font-weight: 500;
   overflow: hidden;
   flex-shrink: 0;
   width: 100%;
@@ -1489,30 +1489,30 @@ h1, h2, h3, .font-display {
   user-select: none;
 }
 .sc-card:hover .sc-domain {
-  color: #9d9dae;
+  color: #a8a8bd;
 }
 .sc-domain span {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  max-width: calc(100% - 15px);
+  max-width: calc(100% - 18px);
 }
 
 /* ── Mobile ── */
 @media (max-width: 479px) {
   .sc-card {
-    aspect-ratio: 16 / 10;
-    min-height: 96px;
-    border-radius: 12px;
-    padding: 7px 8px 7px;
+    aspect-ratio: 16 / 11;
+    min-height: 108px;
+    border-radius: 13px;
+    padding: 8px 10px 8px;
   }
-  .sc-badge       { font-size: 7.5px; padding: 1px 5px; }
-  .sc-star        { font-size: 13px; }
+  .sc-badge       { font-size: 8.5px; padding: 2px 7px; }
+  .sc-star        { font-size: 15.5px; }
   .sc-center-wrap { padding: 2px 2px; }
-  .sc-name        { font-size: clamp(1.04rem, 4.4vw, 1.25rem); }
-  .sc-name--long  { font-size: clamp(0.92rem, 3.8vw, 1.10rem); }
-  .sc-name--xlong { font-size: clamp(0.82rem, 3.3vw, 0.98rem); }
-  .sc-domain      { font-size: 9px; }
+  .sc-name        { font-size: clamp(1.16rem, 5.0vw, 1.40rem); font-weight: 900; }
+  .sc-name--long  { font-size: clamp(1.04rem, 4.4vw, 1.24rem); }
+  .sc-name--xlong { font-size: clamp(0.92rem, 3.8vw, 1.08rem); }
+  .sc-domain      { font-size: 10px; gap: 4px; }
 }
 
 

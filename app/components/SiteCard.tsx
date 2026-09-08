@@ -158,8 +158,8 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
     .split('/')[0];
 
   const brand = getSiteBrand(domain, site.name);
-  const isLong = brand.displayName.length > 10;
-  const isVeryLong = brand.displayName.length > 14;
+  const isLong = brand.displayName.length > 11;
+  const isVeryLong = brand.displayName.length > 15;
   const nameClass = `sc-name${isVeryLong ? ' sc-name--xlong' : isLong ? ' sc-name--long' : ''}`;
 
   return (
@@ -215,7 +215,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
 
       {/* ── Row 3: domain URL ── */}
       <div className="sc-domain">
-        <svg width="10.5" height="10.5" viewBox="0 0 24 24" fill="none"
+        <svg width="11.5" height="11.5" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"
           aria-hidden="true" style={{ flexShrink: 0 }}>
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
