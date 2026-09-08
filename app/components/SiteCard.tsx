@@ -152,8 +152,6 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
     ?? (site.isTrusted ? 'trusted' : site.isFeatured ? 'featured' : site.isNew ? 'new' : null);
   const tag = tagKey ? TAG_MAP[tagKey] : null;
 
-  const openSite = () => window.open(site.url, '_blank', 'noopener,noreferrer');
-
   const domain = (site.domain || site.url)
     .replace(/^https?:\/\//, '')
     .replace(/^www\./, '')
@@ -162,12 +160,11 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
   const brand = getSiteBrand(domain, site.name);
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <a
+      href={site.url}
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label={`Visit ${brand.displayName}`}
-      onClick={openSite}
-      onKeyDown={e => e.key === 'Enter' && openSite()}
       className="sc-card"
     >
       {/* ── Row 1: badge + star ── */}
@@ -182,9 +179,14 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
 
         {onToggleBookmark ? (
           <button
+            type="button"
             className={`sc-star${isBookmarked ? ' sc-star--on' : ''}`}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Save site'}
-            onClick={e => { e.stopPropagation(); onToggleBookmark(site.id); }}
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleBookmark(site.id);
+            }}
           >
             {isBookmarked ? '★' : '☆'}
           </button>
@@ -218,7 +220,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
         </svg>
         <span>{domain}</span>
       </div>
-    </div>
+    </a>
   );
 }
 

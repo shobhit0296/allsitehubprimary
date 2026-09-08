@@ -41,11 +41,20 @@ void main() {
     gl_FragColor = vec4(color, 1.0);
 }`;
 
-function compileShader(gl: WebGLRenderingContext, type: number, src: string): WebGLShader {
-  const shader = gl.createShader(type)!;
-  gl.shaderSource(shader, src);
-  gl.compileShader(shader);
-  return shader;
+function compileShader(gl: WebGLRenderingContext, type: number, src: string): WebGLShader | null {
+  try {
+    const shader = gl.createShader(type);
+    if (!shader) return null;
+    gl.shaderSource(shader, src);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  } catch {
+    return null;
+  }
 }
 
 function lerp(a: number, b: number, t: number) {
@@ -56,127 +65,164 @@ export default function ShaderBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    try {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
 
-    const gl = canvas.getContext('webgl', {
-      alpha: false,
-      antialias: false,
-      depth: false,
-      stencil: false,
-      preserveDrawingBuffer: false,
-      powerPreference: 'low-power',
-    }) || canvas.getContext('experimental-webgl');
-    if (!gl || !(gl instanceof WebGLRenderingContext)) return;
+      const gl = canvas.getContext('webgl', {
+        alpha: false,
+        antialias: false,
+        depth: false,
+        stencil: false,
+        preserveDrawingBuffer: false,
+        powerPreference: 'low-power',
+      }) || (canvas.getContext('experimental-webgl') as WebGLRenderingContext | null);
 
-    // Render at optimized downscaled buffer resolution (max 720x450).
-    // This reduces GPU fill rate load by over 80%, guaranteeing fluid 120fps scrolling!
-    const syncSize = () => {
-      const clientW = canvas.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1280);
-      const clientH = canvas.clientHeight || (typeof window !== 'undefined' ? window.innerHeight : 720);
-      const scale = Math.min(0.5, 720 / Math.max(clientW, 1));
-      const w = Math.max(320, Math.floor(clientW * scale));
-      const h = Math.max(180, Math.floor(clientH * scale));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-    };
+      if (!gl || !(gl instanceof WebGLRenderingContext)) return;
 
-    let ro: ResizeObserver | undefined;
-    if (typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(syncSize);
-      ro.observe(canvas);
-    }
-    syncSize();
-
-    const program = gl.createProgram()!;
-    gl.attachShader(program, compileShader(gl, gl.VERTEX_SHADER, VERTEX_SRC));
-    gl.attachShader(program, compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SRC));
-    gl.linkProgram(program);
-    gl.useProgram(program);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    const posLoc = gl.getAttribLocation(program, 'a_position');
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const uTime = gl.getUniformLocation(program, 'u_time');
-    const uRes = gl.getUniformLocation(program, 'u_resolution');
-    const uBg = gl.getUniformLocation(program, 'u_bg_color');
-    const uAccent = gl.getUniformLocation(program, 'u_accent_color');
-    const uAccent2 = gl.getUniformLocation(program, 'u_accent2_color');
-
-    // Theme color management with smooth interpolation
-    const getThemeColors = (themeId: string) => {
-      const found = THEMES.find(t => t.id === themeId) || THEMES[0];
-      return {
-        bg: [...found.bgRgb] as [number, number, number],
-        accent: [...found.accentRgb] as [number, number, number],
-        accent2: [...found.accent2Rgb] as [number, number, number],
+      // Handle WebGL context loss gracefully (common in mobile Safari on tab switch)
+      const onContextLost = (e: Event) => {
+        e.preventDefault();
       };
-    };
+      canvas.addEventListener('webglcontextlost', onContextLost, false);
 
-    const initialTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
-    let current = getThemeColors(initialTheme);
-    let target = getThemeColors(initialTheme);
+      const syncSize = () => {
+        try {
+          const clientW = canvas.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1280);
+          const clientH = canvas.clientHeight || (typeof window !== 'undefined' ? window.innerHeight : 720);
+          const scale = Math.min(0.5, 720 / Math.max(clientW, 1));
+          const w = Math.max(320, Math.floor(clientW * scale));
+          const h = Math.max(180, Math.floor(clientH * scale));
+          if (canvas.width !== w || canvas.height !== h) {
+            canvas.width = w;
+            canvas.height = h;
+          }
+        } catch {
+          // ignore
+        }
+      };
 
-    // Watch for data-theme changes on documentElement
-    const observer = new MutationObserver(() => {
-      const nextTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
-      target = getThemeColors(nextTheme);
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
-
-    let raf = 0;
-    let isVisible = true;
-
-    const onVisibilityChange = () => {
-      isVisible = !document.hidden;
-      if (isVisible && !raf) {
-        raf = requestAnimationFrame(render);
+      let ro: ResizeObserver | undefined;
+      if (typeof ResizeObserver !== 'undefined') {
+        try {
+          ro = new ResizeObserver(syncSize);
+          ro.observe(canvas);
+        } catch {
+          // ignore
+        }
       }
-    };
-    document.addEventListener('visibilitychange', onVisibilityChange);
+      syncSize();
 
-    const render = (t: number) => {
-      if (!isVisible) {
-        raf = 0;
+      const vertShader = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SRC);
+      const fragShader = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SRC);
+      if (!vertShader || !fragShader) return;
+
+      const program = gl.createProgram();
+      if (!program) return;
+
+      gl.attachShader(program, vertShader);
+      gl.attachShader(program, fragShader);
+      gl.linkProgram(program);
+
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        gl.deleteProgram(program);
         return;
       }
-      if (!ro) syncSize();
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.useProgram(program);
 
-      // Smooth color lerp towards target theme
-      const speed = 0.08;
-      for (let i = 0; i < 3; i++) {
-        current.bg[i] = lerp(current.bg[i], target.bg[i], speed);
-        current.accent[i] = lerp(current.accent[i], target.accent[i], speed);
-        current.accent2[i] = lerp(current.accent2[i], target.accent2[i], speed);
-      }
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+      const posLoc = gl.getAttribLocation(program, 'a_position');
+      gl.enableVertexAttribArray(posLoc);
+      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-      gl.uniform1f(uTime, t * 0.001);
-      gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform3fv(uBg, current.bg);
-      gl.uniform3fv(uAccent, current.accent);
-      gl.uniform3fv(uAccent2, current.accent2);
+      const uTime = gl.getUniformLocation(program, 'u_time');
+      const uRes = gl.getUniformLocation(program, 'u_resolution');
+      const uBg = gl.getUniformLocation(program, 'u_bg_color');
+      const uAccent = gl.getUniformLocation(program, 'u_accent_color');
+      const uAccent2 = gl.getUniformLocation(program, 'u_accent2_color');
 
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      // Theme color management with smooth interpolation
+      const getThemeColors = (themeId: string) => {
+        const found = THEMES.find(t => t.id === themeId) || THEMES[0];
+        return {
+          bg: [...found.bgRgb] as [number, number, number],
+          accent: [...found.accentRgb] as [number, number, number],
+          accent2: [...found.accent2Rgb] as [number, number, number],
+        };
+      };
+
+      const initialTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
+      let current = getThemeColors(initialTheme);
+      let target = getThemeColors(initialTheme);
+
+      // Watch for data-theme changes on documentElement
+      const observer = new MutationObserver(() => {
+        const nextTheme = document.documentElement.getAttribute('data-theme') || 'cosmic';
+        target = getThemeColors(nextTheme);
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      let raf = 0;
+      let isVisible = true;
+
+      const onVisibilityChange = () => {
+        isVisible = !document.hidden;
+        if (isVisible && !raf) {
+          raf = requestAnimationFrame(render);
+        }
+      };
+      document.addEventListener('visibilitychange', onVisibilityChange);
+
+      const render = (t: number) => {
+        try {
+          if (!isVisible || gl.isContextLost()) {
+            raf = 0;
+            return;
+          }
+          if (!ro) syncSize();
+          gl.viewport(0, 0, canvas.width, canvas.height);
+
+          // Smooth color lerp towards target theme
+          const speed = 0.08;
+          for (let i = 0; i < 3; i++) {
+            current.bg[i] = lerp(current.bg[i], target.bg[i], speed);
+            current.accent[i] = lerp(current.accent[i], target.accent[i], speed);
+            current.accent2[i] = lerp(current.accent2[i], target.accent2[i], speed);
+          }
+
+          gl.uniform1f(uTime, t * 0.001);
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+          gl.uniform3fv(uBg, current.bg);
+          gl.uniform3fv(uAccent, current.accent);
+          gl.uniform3fv(uAccent2, current.accent2);
+
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+          raf = requestAnimationFrame(render);
+        } catch {
+          raf = 0;
+        }
+      };
       raf = requestAnimationFrame(render);
-    };
-    raf = requestAnimationFrame(render);
 
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      observer.disconnect();
-      ro?.disconnect();
-    };
+      return () => {
+        try {
+          if (raf) cancelAnimationFrame(raf);
+          document.removeEventListener('visibilitychange', onVisibilityChange);
+          canvas.removeEventListener('webglcontextlost', onContextLost);
+          observer.disconnect();
+          ro?.disconnect();
+        } catch {
+          // ignore
+        }
+      };
+    } catch {
+      // If WebGL is completely disabled or unsupported, fail silently to CSS background
+    }
   }, []);
 
   return (
