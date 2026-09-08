@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&family=Sora:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 @import 'tailwindcss';
 
 /* ── Custom Breakpoints ─────────────────────── */
@@ -968,7 +968,7 @@ h1, h2, h3, .font-display {
   border-left-color: var(--text-accent);
 }
 
-/* ── Brand utilities (consistent blue/violet theme) ── */
+/* ── Site Header (Neutral Dark Matte — remains consistent across all themes) ── */
 .site-header {
   position: fixed;
   top: 0;
@@ -978,75 +978,24 @@ h1, h2, h3, .font-display {
   height: auto;
   min-height: var(--nav-h);
   max-width: 100vw;
-  /* Slide in from top on every page load */
   animation: nav-slide-down 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  background:
-    linear-gradient(
-      165deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      var(--glow) 40%,
-      transparent 100%
-    ),
-    var(--header-bg);
-  border-bottom: 1px solid var(--border);
-  box-shadow:
-    inset 0 1px 0 var(--glass-nav-highlight),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-    0 10px 36px rgba(0, 0, 0, 0.45),
-    0 1px 0 var(--border);
-  backdrop-filter: blur(48px) saturate(200%);
-  -webkit-backdrop-filter: blur(48px) saturate(200%);
-  transition:
-    background 0.35s var(--ease-soft),
-    border-color 0.35s var(--ease-soft),
-    box-shadow 0.35s var(--ease-soft),
-    backdrop-filter 0.35s var(--ease-soft);
+  background: rgba(11, 11, 16, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.site-header::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--primary) 30%,
-    rgba(255, 255, 255, 0.7) 50%,
-    var(--secondary) 70%,
-    transparent 100%
-  );
-  opacity: 0.85;
-  pointer-events: none;
-  z-index: 1;
-}
+.site-header::before,
 .site-header::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  background:
-    radial-gradient(120% 80% at 12% -20%, var(--glow), transparent 45%),
-    radial-gradient(90% 70% at 88% -30%, var(--glow), transparent 45%);
-  opacity: 0.85;
+  display: none !important;
 }
 .site-header.is-scrolled {
-  background:
-    linear-gradient(
-      165deg,
-      rgba(255, 255, 255, 0.12) 0%,
-      var(--glow) 50%,
-      transparent 100%
-    ),
-    var(--header-bg-scrolled);
-  border-bottom-color: var(--border-accent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
-    0 16px 48px rgba(0, 0, 0, 0.6),
-    0 0 0 1px var(--border);
-  backdrop-filter: blur(64px) saturate(220%);
-  -webkit-backdrop-filter: blur(64px) saturate(220%);
+  background: rgba(8, 8, 12, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 }
 .site-header > * {
   position: relative;
@@ -1358,19 +1307,178 @@ h1, h2, h3, .font-display {
   flex-shrink: 0;
 }
 
-/* ── Mobile & Desktop Super Smooth High-Performance Utilities ── */
-.site-card-item {
+/* ══════════════════════════════════════════════════════════════
+   SITES GRID  —  responsive card grid
+══════════════════════════════════════════════════════════════ */
+.sites-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+@media (min-width: 480px)  { .sites-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; } }
+@media (min-width: 768px)  { .sites-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+@media (min-width: 1024px) { .sites-grid { grid-template-columns: repeat(5, 1fr); gap: 17px; } }
+@media (min-width: 1280px) { .sites-grid { grid-template-columns: repeat(6, 1fr); gap: 17px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   PREMIUM MATTE SITE CARD
+   Deep velvety dark surface, subtle top bevel, 14px radius, flat matte
+══════════════════════════════════════════════════════════════ */
+.sc-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  height: auto;
+  background: linear-gradient(180deg, #16161e 0%, #111116 100%);
+  border: 1px solid rgba(115, 95, 175, 0.24);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 18px rgba(0, 0, 0, 0.40);
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 9px 12px 9px;
+  /* GPU compositing */
   transform: translateZ(0);
   will-change: transform;
   backface-visibility: hidden;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  contain: layout style;
+  transition:
+    transform    180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease,
+    box-shadow   180ms ease;
 }
-.site-card-item:hover {
-  border-color: var(--border-accent) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+.sc-card:hover {
+  transform: translateY(-3px) translateZ(0);
+  border-color: rgba(145, 115, 220, 0.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 10px 28px rgba(0, 0, 0, 0.55);
 }
+.sc-card:active {
+  transform: translateY(0) translateZ(0);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 3px 10px rgba(0, 0, 0, 0.35);
+}
+.sc-card:focus-visible {
+  outline: 2px solid rgba(140, 110, 230, 0.70);
+  outline-offset: 2px;
+}
+
+/* ── Row 1 — badge + bookmark star ── */
+.sc-toprow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 16px;
+  flex-shrink: 0;
+}
+
+/* ── Badge pill — matches screenshot purple outlined pill ── */
+.sc-badge {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  border: 1px solid;          /* colour set inline */
+  border-radius: 999px;
+  padding: 2px 7px;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: transparent;
+}
+
+/* ── Bookmark star ── */
+.sc-star {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.20);
+  font-size: 15px;
+  line-height: 1;
+  transition: color 150ms ease;
+  flex-shrink: 0;
+}
+.sc-star:hover,
+.sc-card:hover .sc-star { color: rgba(255, 255, 255, 0.45); }
+.sc-star--on             { color: #fbbf24 !important; }
+.sc-star:focus-visible   { outline: none; }
+
+/* ── Row 2 — site name centred (Exact Name, Colour & Size) ── */
+.sc-center-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  padding: 6px 10px 2px;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Site name — prominent, bold brand typography matching the exact website design */
+.sc-name {
+  font-family: 'Outfit', 'Plus Jakarta Sans', 'Sora', sans-serif;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: clamp(1.04rem, 2.8cqw, 1.42rem);
+  font-weight: 850;
+  text-align: center;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+  transition: transform 180ms ease, filter 180ms ease;
+  user-select: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+.sc-card:hover .sc-name {
+  transform: scale(1.06);
+  filter: brightness(1.22);
+}
+
+/* ── Row 3 — domain URL ── */
+.sc-domain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #6b6b7a;
+  font-size: 10.5px;
+  font-weight: 400;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: color 150ms ease;
+  user-select: none;
+}
+.sc-card:hover .sc-domain {
+  color: #9d9dae;
+}
+.sc-domain span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── Mobile ── */
+@media (max-width: 479px) {
+  .sc-card   { aspect-ratio: 16 / 9.5; border-radius: 12px; padding: 7px 9px 8px; }
+  .sc-badge  { font-size: 7.5px; padding: 1.5px 5px; }
+  .sc-name   { font-size: clamp(0.95rem, 4.2vw, 1.15rem); }
+  .sc-domain { font-size: 9.5px; }
+}
+
 
 /* ── Mobile Category Chips ── */
 .chip {

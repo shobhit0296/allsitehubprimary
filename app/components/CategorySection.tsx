@@ -56,8 +56,8 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
         </div>
       </div>
 
-      {/* ── Sites Grid: 2 on phone, 3 on 7"+ small tablet (540px+), 4 on tablet (768px+), 3 on laptop with sidebar, 4 on desktop ── */}
-      <div className="grid grid-cols-2 min-[540px]:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3.5 md:gap-4 w-full">
+      {/* ── Sites Grid: 1 xs / 2 sm / 3 tablet / 4 md / 5 lg / 6 xl ── */}
+      <div className="sites-grid">
         {sites.map(site => (
           <SiteCard
             key={site.id}

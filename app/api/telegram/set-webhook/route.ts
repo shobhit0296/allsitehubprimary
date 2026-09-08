@@ -49,12 +49,14 @@ export async function GET(req: NextRequest) {
   }
 
   // Action: Set webhook
-  const webhookUrl = customUrl || `${SITE_URL}/api/telegram/webhook`;
+  let webhookUrl = customUrl || `${SITE_URL}/api/telegram/webhook`;
+  // Ensure we don't accidentally set apex domain that redirects with 308
+  webhookUrl = webhookUrl.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
 
   try {
     const payload: Record<string, any> = {
       url: webhookUrl,
-      allowed_updates: ['message', 'callback_query'],
+      allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member'],
       drop_pending_updates: true,
     };
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import type { Site, Category } from '@/lib/data';
 import { REGION_FLAGS, filterSites, getSitesByCategory } from '@/lib/data';
 import Navbar from './Navbar';
@@ -226,11 +227,11 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
 
       <section
         id="directory"
-        className="max-w-[1600px] mx-auto px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 xl:gap-12 mb-12 sm:mb-16 scroll-mt-20"
+        className="max-w-[1740px] mx-auto px-3 sm:px-5 md:px-6 lg:px-5 xl:px-6 w-full grid grid-cols-1 lg:grid-cols-[225px_1fr] xl:grid-cols-[245px_1fr] gap-5 lg:gap-6 xl:gap-7 mb-12 sm:mb-16 scroll-mt-20"
       >
         {/* Sticky Desktop Left Category Sidebar */}
         <aside
-          className="hidden lg:block lg:col-span-4 xl:col-span-3 self-start sticky top-[84px] z-30"
+          className="hidden lg:block w-full self-start sticky top-[84px] z-30"
           style={{ position: 'sticky', top: '84px', alignSelf: 'flex-start' }}
         >
           <div className="max-h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-1">
@@ -243,7 +244,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
           </div>
         </aside>
 
-        <div className="lg:col-span-8 xl:col-span-9 min-w-0 w-full">
+        <div className="min-w-0 w-full">
           {/* Mobile only (< lg): sticky horizontal category scroll */}
           <div
             ref={mobileCatContainerRef}
@@ -323,99 +324,38 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         </button>
       )}
 
-      {/* Footer */}
-      <footer className="bg-transparent w-full py-10 sm:py-14 lg:py-20 border-t border-white/[0.06] mt-auto">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10">
-          <div className="col-span-2">
-            <span className="font-headline text-lg sm:text-xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] mb-3 sm:mb-5 inline-block">
-              All<span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">site</span>hub
-            </span>
-            <p className="text-[12.5px] sm:text-[13.5px] text-[var(--text-muted)] max-w-[260px] mb-4 sm:mb-6 leading-relaxed">
-              Curated streaming directory for movies, anime, manga, live TV and sports. We do not host any content.
-            </p>
-            <div className="flex items-center gap-2 sm:gap-3">
-              <a
-                href="https://discord.gg/ZEMSvP2HX"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Discord Server"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#5865F2]/50 hover:bg-[#5865F2]/20 transition-all inline-flex touch-manipulation active:scale-95"
-              >
-                <DiscordIcon />
-              </a>
-              <a
-                href="https://t.me/+gWOCVAqtcXxkZDk9"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Telegram Group"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#229ED9]/50 hover:bg-[#229ED9]/20 transition-all inline-flex touch-manipulation active:scale-95"
-              >
-                <TelegramIcon />
-              </a>
-              <a
-                href="https://www.reddit.com/user/allsitehub/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Reddit Community"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl glass-lux border border-white/[0.07] flex items-center justify-center text-[var(--text-secondary)] hover:text-white hover:border-[#FF4500]/50 hover:bg-[#FF4500]/20 transition-all inline-flex touch-manipulation active:scale-95"
-              >
-                <RedditIcon />
-              </a>
-            </div>
-          </div>
-          <div>
-            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Directory</h5>
-            <ul className="space-y-3.5">
-              <li><a href="/" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Home</a></li>
-              <li><a href="/recent" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Recently Added</a></li>
-              <li><a href="/collections" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Collections</a></li>
-              <li><a href="/how-we-review-websites" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Review Methodology</a></li>
-              <li><a href="/request" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Request Site</a></li>
-            </ul>
-          </div>
-          <div>
-            <h5 className="text-[11px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)] mb-5">Legal & Trust</h5>
-            <ul className="space-y-3.5">
-              <li><a href="/about" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">About AllSiteHub</a></li>
-              <li><a href="/privacy" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">Terms of Service</a></li>
-              <li><a href="/dmca" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors">DMCA Policy</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-16 mt-10 sm:mt-14 pt-5 sm:pt-7 border-t border-white/[0.05] flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-[12px] text-[var(--text-muted)]">
-            © {new Date().getFullYear()} <span className="text-blue-400 font-semibold">AllSiteHub</span> · Founded & Curated by <span className="text-[var(--text-primary)] font-medium">Shobhit Verma</span>.
+      {/* ── Compact 2-3 line footer with separator line ── */}
+      <footer className="w-full mt-14 sm:mt-20 border-t border-white/[0.08] pt-8 pb-12">
+        <div className="max-w-[1740px] mx-auto px-4 sm:px-6 flex flex-col items-center text-center gap-3">
+          {/* Line 1: Quick Links */}
+          <nav aria-label="Quick links" className="flex items-center justify-center flex-wrap gap-x-5 gap-y-2 text-[13px] font-medium text-[#9ca3af]">
+            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/request" className="hover:text-white transition-colors">Request</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/dmca" className="hover:text-white transition-colors">DMCA</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/recent" className="hover:text-white transition-colors">Recent</Link>
+            <span className="text-[#3f3f46]">·</span>
+            <Link href="/collections" className="hover:text-white transition-colors">Collections</Link>
+          </nav>
+
+          {/* Line 2: Disclaimer & Copyright */}
+          <p className="text-[12px] text-[#71717a] max-w-xl leading-relaxed">
+            © {new Date().getFullYear()} <span className="text-blue-400 font-semibold">AllSiteHub</span> · Curated streaming & web directory. We do not host any media files.
           </p>
-          <span className="flex items-center gap-2 text-[12px] text-[var(--text-muted)]">
-            <span className="pulse-dot w-2 h-2 rounded-full bg-emerald-500" /> Systems Operational
-          </span>
+
+          {/* Line 3: System Operational status */}
+          <div className="flex items-center justify-center gap-2 text-[11.5px] text-[#52525b]">
+            <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+            <span>Systems Operational</span>
+          </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-function DiscordIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.078.078 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.955 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.211 0 2.176 1.096 2.157 2.419 0 1.333-.946 2.419-2.157 2.419z"/>
-    </svg>
-  );
-}
-
-function TelegramIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.894-1.232 5.344-1.782 7.74-.233 1.014-.607 1.353-.969 1.386-.787.072-1.385-.52-2.148-1.02-.194-.128-1.89-1.225-2.073-1.378-.507-.423-.083-.655.124-.87.054-.057 2.47-2.395 2.518-2.6.006-.026.012-.123-.047-.176s-.138-.035-.198-.021c-.084.02-1.428.908-4.032 2.668-.381.263-.727.391-1.036.384-.34-.007-.996-.192-1.484-.351-.598-.194-1.074-.297-1.033-.626.022-.172.26-.348.716-.53 2.798-1.218 4.664-2.022 5.597-2.411 2.662-1.109 3.216-1.301 3.577-1.307.079-.001.257.018.372.112.097.079.124.186.134.263.01.078.02.257.01.37z"/>
-    </svg>
-  );
-}
-
-function RedditIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.82 14.15c.036.244.055.492.055.744 0 3.019-3.517 5.47-7.856 5.47-4.34 0-7.857-2.451-7.857-5.47 0-.252.02-.5.055-.744-.542-.246-.92-.79-.92-1.424 0-.86.698-1.558 1.558-1.558.42 0 .8.166 1.08.437 1.062-.766 2.53-1.253 4.16-1.31l.848-3.99a.32.32 0 0 1 .38-.246l2.813.598a1.076 1.076 0 1 1-.086.512l-2.518-.535-.756 3.556c1.61.065 3.056.552 4.11 1.31.28-.27.66-.437 1.08-.437.86 0 1.558.698 1.558 1.558 0 .636-.38 1.183-.926 1.428zM8.16 14.06c-.68 0-1.24-.55-1.24-1.235 0-.686.56-1.246 1.24-1.246.686 0 1.245.56 1.245 1.246 0 .686-.56 1.235-1.245 1.235zm7.68 0c-.68 0-1.24-.55-1.24-1.235 0-.686.56-1.246 1.24-1.246.686 0 1.245.56 1.245 1.246 0 .686-.56 1.235-1.245 1.235zm-6.1 2.02c-.15-.15-.15-.393 0-.543a.386.386 0 0 1 .543 0c.686.686 2.033.75 2.42.75.386 0 1.75-.064 2.42-.75a.386.386 0 0 1 .543 0c.15.15.15.393 0 .543-.75.75-2.11.943-2.963.943-.85 0-2.21-.193-2.963-.943z"/>
-    </svg>
   );
 }

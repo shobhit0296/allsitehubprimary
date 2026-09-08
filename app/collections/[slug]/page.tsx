@@ -146,11 +146,9 @@ export default async function CollectionDetailPage({ params }: Props) {
       </section>
 
       <main className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-12 w-full mb-20">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-3.5 md:gap-4 w-full">
+        <div className="sites-grid">
           {sites.map(site => (
-            <div key={site.id} className="flex flex-col gap-2">
-              <SiteCard site={site} />
-            </div>
+            <SiteCard key={site.id} site={site} />
           ))}
         </div>
       </main>
