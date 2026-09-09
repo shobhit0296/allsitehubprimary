@@ -8,14 +8,12 @@ const ContentSecurityPolicy = `
     https://www.googletagmanager.com
     https://*.googletagmanager.com
     https://adservice.google.com
-    https://*.hilltopads.net
-    https://*.hilltopads.com
-    https://insignificantpotential.com
-    https://*.insignificantpotential.com
-    https://ptekuwiny.pro
-    https://*.ptekuwiny.pro
-    https://ashamed-employer.com
-    https://*.ashamed-employer.com;
+    https://bibleearthquake.com
+    https://*.bibleearthquake.com
+    https://*.profitableratecpmnetwork.com
+    https://*.highcpmgate.com
+    https://*.effectivegate.com
+    https://*.highperformancegate.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com

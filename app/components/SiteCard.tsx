@@ -198,7 +198,7 @@ export default function SiteCard({ site, isBookmarked = false, onToggleBookmark 
         )}
       </div>
 
-      {/* ── Row 2: Exact website name in exact original color and bold size (NO logo image) ── */}
+      {/* ── Row 2: Exact website name in text form (NO logo images) ── */}
       <div className="sc-center-wrap">
         <span
           className={nameClass}

@@ -19,7 +19,7 @@ A complete technical, programmatic, and data-integrity SEO foundation has been i
 ### B. Structured Data & UI Components
 - **[`app/components/JsonLd.tsx`](file:///t:/ash%20main%20project/app/components/JsonLd.tsx)**: Reusable type-safe JSON-LD script injector.
 - **[`app/components/Breadcrumbs.tsx`](file:///t:/ash%20main%20project/app/components/Breadcrumbs.tsx)**: Dual-layer breadcrumb navigation providing semantic HTML and Schema.org `BreadcrumbList` microdata.
-- **[`app/layout.tsx`](file:///t:/ash%20main%20project/app/layout.tsx)**: Centralized `WebSite` and `Organization` schemas; normalized canonical URL root, HilltopAds meta tag, Google AdSense Auto Ads.
+- **[`app/layout.tsx`](file:///t:/ash%20main%20project/app/layout.tsx)**: Centralized `WebSite` and `Organization` schemas; normalized canonical URL root, Google AdSense Auto Ads.
 - **[`app/category/[slug]/page.tsx`](file:///t:/ash%20main%20project/app/category/[slug]/page.tsx)**: Unique metadata, `BreadcrumbList`, and `CollectionPage` structured schema.
 - **[`app/site/[id]/page.tsx`](file:///t:/ash%20main%20project/app/site/[id]/page.tsx)**: Category-aware site overview helper, quality-gated `robots: { index, follow }`, `Breadcrumbs`, and `WebPage` structured data.
 - **[`app/recent/page.tsx`](file:///t:/ash%20main%20project/app/recent/page.tsx)**: Section 29 recently added website directory ordered by genuine database timestamps.

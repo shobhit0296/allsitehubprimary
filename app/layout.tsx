@@ -201,15 +201,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <meta name="f9c6a038f517a66c5ed68088ba0f8b3a8cb52026" content="f9c6a038f517a66c5ed68088ba0f8b3a8cb52026" />
-        {/* HilltopAds: send referrer on HTTPS→HTTPS navigation to maximise CPM attribution */}
+        {/* Maximum CPM attribution: send referrer on HTTPS navigation so Adsterra/AdSense attribute premium tier rates */}
         <meta name="referrer" content="no-referrer-when-downgrade" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pl31253047.profitableratecpmnetwork.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://bibleearthquake.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://insignificantpotential.com" />
+        <link rel="dns-prefetch" href="https://google-analytics.com" />
+        <link rel="dns-prefetch" href="https://pl31253047.profitableratecpmnetwork.com" />
+        <link rel="dns-prefetch" href="https://bibleearthquake.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <script
           dangerouslySetInnerHTML={{
@@ -263,10 +265,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             });
           `}
         </Script>
-        {/* HilltopAds Anti-AdBlock Popunder (High CPM Zone #7393625) */}
+        {/* Adsterra Social Bar */}
         <Script
-          id="hilltopads-popunder"
-          src="/js/popunder.js"
+          id="adsterra-social-bar"
+          src="https://pl31253047.profitableratecpmnetwork.com/cf/09/69/cf09691eee1a394e996784f3aa7b4021.js"
+          strategy="afterInteractive"
+        />
+        {/* Adsterra Anti-AdBlock Popunder */}
+        <Script
+          id="adsterra-popunder"
+          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
           strategy="afterInteractive"
         />
       </head>
