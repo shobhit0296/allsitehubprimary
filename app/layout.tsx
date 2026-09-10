@@ -234,13 +234,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
+      </head>
+      <body className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
+        <ShaderBackground />
+        <div className="relative z-10 flex flex-col flex-1 w-full">
+          {children}
+        </div>
+        <CommunityModal />
+
+        {/* AdSense Auto Ads */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-        {/* AdSense Auto Ads — Google picks best placements automatically */}
         <Script id="adsense-auto-ads" strategy="afterInteractive">
           {`
             (adsbygoogle = window.adsbygoogle || []).push({
@@ -249,6 +257,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             });
           `}
         </Script>
+
         {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-3ZSN0JXGJK"
@@ -265,25 +274,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             });
           `}
         </Script>
+
         {/* Adsterra Social Bar */}
         <Script
           id="adsterra-social-bar"
           src="https://pl31253047.profitableratecpmnetwork.com/cf/09/69/cf09691eee1a394e996784f3aa7b4021.js"
           strategy="afterInteractive"
         />
+
         {/* Adsterra Anti-AdBlock Popunder */}
         <Script
           id="adsterra-popunder"
           src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
           strategy="afterInteractive"
         />
-      </head>
-      <body className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
-        <ShaderBackground />
-        <div className="relative z-10 flex flex-col flex-1 w-full">
-          {children}
-        </div>
-        <CommunityModal />
       </body>
     </html>
   );
