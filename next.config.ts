@@ -87,7 +87,21 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
         ],
       },
-      // ─── All SSG pages: served from Vercel Edge CDN, never hits serverless ───
+      // ─── Next.js Static Chunks & CSS/JS Bundles: 1-year immutable cache ───
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      // ─── Root Static Icons & Assets: 30-day edge cache ───
+      {
+        source: "/(favicon.ico|apple-touch-icon.png|icon.png|icon.svg|next.svg|vercel.svg|globe.svg|file.svg|window.svg|logo.png|logo-512.png)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
+        ],
+      },
+      // ─── All SSG pages: served from Edge CDN, never hits serverless ───
       // s-maxage=86400 → Edge caches the page 24 hours.
       // stale-while-revalidate=604800 → Serves stale while refreshing in background.
       // Result: 0 serverless invocations for repeated page visits → quota never drains.
