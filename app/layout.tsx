@@ -176,7 +176,7 @@ const jsonLdOrganization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: siteConfig.name,
-  alternateName: ['AllSiteHub', 'Allsite', 'All Site Hub', 'AllSite Hub'],
+  alternateName: ['allsitehub', 'allsitehub.site', 'www.allsitehub.site', 'AllSiteHub', 'Allsitehub', 'Allsite', 'All Site Hub', 'AllSite Hub'],
   url: siteConfig.url,
   logo: `${siteConfig.url}/icon.png`,
   description: siteConfig.description,

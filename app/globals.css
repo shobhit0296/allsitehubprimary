@@ -905,7 +905,11 @@ h1, h2, h3, .font-display {
 /* ── STREAMLUX-style homepage decor ──────────────
    Blue/violet accent system used only on the homepage
    hero/search/featured/footer sections. ─────────── */
-.font-headline { font-family: var(--font-display), 'Sora', var(--font-inter), sans-serif; letter-spacing: -0.01em; }
+.font-headline {
+  font-family: 'Outfit', 'Plus Jakarta Sans', var(--font-display), 'Sora', var(--font-inter), -apple-system, sans-serif;
+  letter-spacing: -0.025em;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
 
 .noise-overlay {
   position: fixed;

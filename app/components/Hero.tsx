@@ -46,10 +46,10 @@ export default function Hero({
             </span>
           </div>
 
-          <h1 className="font-headline text-[1.9rem] xs:text-[2.2rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4.15rem] font-extrabold mb-4 sm:mb-5 leading-[1.1] tracking-[-0.03em] text-[var(--text-primary)]">
-            Discover Websites.
+          <h1 className="font-headline text-[2.2rem] xs:text-[2.5rem] sm:text-[3.3rem] md:text-[3.9rem] lg:text-[4.4rem] font-black mb-4 sm:mb-5 leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
+            Discover Websites &amp;
             <br />
-            <span className="gradient-text">Search Smarter.</span>
+            <span className="gradient-text">Search Smarter</span>
           </h1>
 
           <p className="text-[0.93rem] sm:text-[1.12rem] lg:text-[1.2rem] text-[var(--text-secondary)] mb-5 sm:mb-7 max-w-[560px] leading-[1.6]">
