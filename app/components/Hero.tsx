@@ -47,16 +47,13 @@ export default function Hero({
           </div>
 
           <h1 className="font-headline text-[1.9rem] xs:text-[2.2rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[4.15rem] font-extrabold mb-4 sm:mb-5 leading-[1.1] tracking-[-0.03em] text-[var(--text-primary)]">
-            AllSiteHub
-            <span className="text-[var(--text-accent)] text-[0.55em] font-bold block sm:inline sm:ml-3 tracking-normal">
-              (allsitehub.site)
-            </span>
+            Discover Websites.
             <br />
-            <span className="gradient-text text-[0.88em]">Discover Websites &amp; Tools</span>
+            <span className="gradient-text">Search Smarter.</span>
           </h1>
 
           <p className="text-[0.93rem] sm:text-[1.12rem] lg:text-[1.2rem] text-[var(--text-secondary)] mb-5 sm:mb-7 max-w-[560px] leading-[1.6]">
-            AllSiteHub (allsitehub) is your fast, free directory to discover verified websites across the internet. Search, explore and filter curated websites by category and purpose.
+            AllSiteHub helps you discover useful websites across the internet. Search, explore and refine websites by category to quickly find the tools, resources and online platforms you&apos;re looking for.
           </p>
 
           {/* ── Community CTAs ── */}
