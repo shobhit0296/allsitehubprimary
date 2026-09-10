@@ -5,10 +5,10 @@ import type { Site } from './data';
 
 export const siteConfig = {
   name: 'AllSiteHub',
-  title: 'AllSiteHub (allsitehub.site) — Discover Best Websites, Tools & Online Resources',
+  title: 'AllSiteHub (allsitehub / allsite) — Discover Best Websites & Search Smarter',
   tagline: 'Discover the Best Websites, Tools & Online Resources',
   description:
-    'AllSiteHub (allsitehub) is the premier directory and search engine to discover useful websites, online tools, free software, streaming sites, and internet resources.',
+    'AllSiteHub (allsitehub / allsite) is the premier directory to discover verified websites, free software, online tools, and web platforms. Search smarter across allsitehub.site.',
   url: 'https://www.allsitehub.site',
   canonicalUrl: 'https://www.allsitehub.site',
   ogImage: 'https://www.allsitehub.site/icon.png',
