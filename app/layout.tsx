@@ -113,6 +113,10 @@ const jsonLdWebsite = {
   name: siteConfig.name,
   alternateName: [
     'allsitehub',
+    'allsite',
+    'all site',
+    'all site hub',
+    'allsite hub',
     'allsitehub.site',
     'www.allsitehub.site',
     'AllSiteHub',

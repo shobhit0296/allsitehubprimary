@@ -346,7 +346,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
 
           {/* Line 2: Disclaimer & Copyright */}
           <p className="text-[12px] text-[#71717a] max-w-xl leading-relaxed">
-            © {new Date().getFullYear()} <span className="text-blue-400 font-semibold">AllSiteHub</span> · Curated streaming & web directory. We do not host any media files.
+            © {new Date().getFullYear()} <span className="text-blue-400 font-semibold">AllSiteHub</span> (allsite) · Curated streaming &amp; web directory. We do not host any media files.
           </p>
 
           {/* Line 3: System Operational status */}
