@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   sendTelegramMessage,
+  sendWelcomeAndCleanupOld,
   buildWelcomeMessage,
   buildInfoMessage,
   TELEGRAM_WEBHOOK_SECRET,
@@ -54,15 +55,8 @@ export async function POST(req: NextRequest) {
         // Skip other bots
         if (member.is_bot) continue;
 
-        const { text } = buildWelcomeMessage(member);
-        await sendTelegramMessage(
-          {
-            chat_id: chatId,
-            text,
-            reply_to_message_id: update.message.message_id,
-          },
-          botToken,
-        );
+        // Welcomes the member, eliminates second duplicate message, and deletes the previous welcome message
+        await sendWelcomeAndCleanupOld(chatId, member, update.message.message_id, botToken);
       }
 
       return NextResponse.json({ ok: true, action: 'welcome_sent' });
@@ -79,14 +73,8 @@ export async function POST(req: NextRequest) {
         const botId = process.env.TELEGRAM_BOT_ID ? Number(process.env.TELEGRAM_BOT_ID) : null;
         if (!user.is_bot || !botId || user.id !== botId) {
           if (!user.is_bot) {
-            const { text } = buildWelcomeMessage(user);
-            await sendTelegramMessage(
-              {
-                chat_id: chat.id,
-                text,
-              },
-              botToken,
-            );
+            // Welcomes the member, eliminates second duplicate message, and deletes the previous welcome message
+            await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
             return NextResponse.json({ ok: true, action: 'chat_member_welcome_sent' });
           }
         }

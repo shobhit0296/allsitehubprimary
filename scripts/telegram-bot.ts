@@ -34,6 +34,7 @@ try {
 
 import {
   sendTelegramMessage,
+  sendWelcomeAndCleanupOld,
   buildWelcomeMessage,
   buildInfoMessage,
   SITE_URL,
@@ -81,15 +82,7 @@ async function pollUpdates() {
             for (const member of update.message.new_chat_members) {
               if (member.is_bot) continue;
               console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (message): ${member.username ? '@' + member.username : member.first_name}`);
-              const { text } = buildWelcomeMessage(member);
-              await sendTelegramMessage(
-                {
-                  chat_id: update.message.chat.id,
-                  text,
-                  reply_to_message_id: update.message.message_id,
-                },
-                token,
-              );
+              await sendWelcomeAndCleanupOld(update.message.chat.id, member, update.message.message_id, token);
             }
           }
 
@@ -101,14 +94,7 @@ async function pollUpdates() {
             if (!wasMember && isNowMember && new_chat_member?.user && !new_chat_member.user.is_bot) {
               const u = new_chat_member.user;
               console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (supergroup): ${u.username ? '@' + u.username : u.first_name}`);
-              const { text } = buildWelcomeMessage(u);
-              await sendTelegramMessage(
-                {
-                  chat_id: chat.id,
-                  text,
-                },
-                token,
-              );
+              await sendWelcomeAndCleanupOld(chat.id, u, undefined, token);
             }
           }
 
