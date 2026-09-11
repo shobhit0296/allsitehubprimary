@@ -73,6 +73,23 @@ const nextConfig: NextConfig = {
   // ── Security & Cache Headers ──
   async headers() {
     return [
+      // ─── Admin panel routes: Never cache at Edge or Cloudflare CDN ───
+      {
+        source: "/(adminshobhit|shobhitadmin)/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+        ],
+      },
+      {
+        source: "/(adminshobhit|shobhitadmin)",
+        headers: [
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+        ],
+      },
       // ─── Logos: immutable 1-year cache ───
       {
         source: "/logos/:path*",
