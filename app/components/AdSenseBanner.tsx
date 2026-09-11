@@ -40,15 +40,15 @@ export default function AdSenseBanner({
 
   return (
     <div
-      className={`w-full max-w-[1600px] mx-auto my-3 sm:my-5 px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 flex flex-col items-center justify-center ${className}`}
+      className={`w-full max-w-[1600px] mx-auto my-4 sm:my-6 px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 flex flex-col items-center justify-center ${className}`}
       aria-label="Advertisement"
     >
-      <div className="w-full flex items-center justify-between mb-1.5 px-1">
-        <span className="text-[10.5px] uppercase tracking-[0.12em] font-semibold text-white/30">
+      <div className="w-full flex items-center justify-between mb-1.5 px-1 max-w-[1280px]">
+        <span className="text-[10px] uppercase tracking-[0.14em] font-medium text-[var(--text-muted)] opacity-60">
           Advertisement
         </span>
       </div>
-      <div className="w-full flex justify-center items-center min-h-[90px] sm:min-h-[105px] rounded-2xl bg-white/[0.02] border border-white/[0.06] p-2 overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+      <div className="w-full max-w-[1280px] flex justify-center items-center min-h-[90px] sm:min-h-[105px] rounded-2xl bg-white/[0.02] border border-white/[0.08] p-2 overflow-hidden shadow-sm">
         <ins
           ref={adRef}
           className="adsbygoogle"

@@ -10,6 +10,7 @@ import SiteIcon from '../../components/SiteIcon';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
 import VpnCallout from '../../components/VpnCallout';
+import AdSenseBanner from '../../components/AdSenseBanner';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -199,6 +200,11 @@ export default async function SiteDetailPage({ params }: Props) {
                 </span>
               ))}
             </div>
+          </div>
+
+          {/* ── Fixed Position AdSense Banner ── */}
+          <div className="my-8">
+            <AdSenseBanner />
           </div>
 
           {/* Related Sites */}

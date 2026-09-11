@@ -11,6 +11,7 @@ import CategorySiteGrid from '../../components/CategorySiteGrid';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
 import VpnCallout from '../../components/VpnCallout';
+import AdSenseBanner from '../../components/AdSenseBanner';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -156,6 +157,9 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         </div>
       </section>
+      
+      {/* ── Fixed Position AdSense Banner ── */}
+      <AdSenseBanner />
 
       {/* ── Sites Grid ────────────────────────────────── */}
       <main className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 w-full mb-20">

@@ -8,12 +8,8 @@ const ContentSecurityPolicy = `
     https://www.googletagmanager.com
     https://*.googletagmanager.com
     https://adservice.google.com
-    https://bibleearthquake.com
-    https://*.bibleearthquake.com
-    https://*.profitableratecpmnetwork.com
-    https://*.highcpmgate.com
-    https://*.effectivegate.com
-    https://*.highperformancegate.com;
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -97,13 +93,7 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
-      // ─── Popunder & client ad scripts: 24h Edge cache ───
-      {
-        source: "/js/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
-        ],
-      },
+
       // ─── Next.js Static Chunks & CSS/JS Bundles: 1-year immutable cache ───
       {
         source: "/_next/static/:path*",
