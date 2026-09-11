@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { Site, Category } from '@/lib/data';
 import { REGION_FLAGS, filterSites, getSitesByCategory } from '@/lib/data';
@@ -9,6 +9,7 @@ import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
 import AdSenseBanner from './AdSenseBanner';
+import AdsterraNativeBanner from './AdsterraNativeBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
@@ -319,14 +320,16 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
               </button>
             </div>
           ) : (
-            visibleCategories.map(cat => (
-              <CategorySection
-                key={cat.name}
-                category={cat}
-                sites={grouped[cat.name] ?? []}
-                bookmarks={bookmarks}
-                onToggleBookmark={toggleBookmark}
-              />
+            visibleCategories.map((cat, index) => (
+              <React.Fragment key={cat.name}>
+                <CategorySection
+                  category={cat}
+                  sites={grouped[cat.name] ?? []}
+                  bookmarks={bookmarks}
+                  onToggleBookmark={toggleBookmark}
+                />
+                {index === 0 && <AdsterraNativeBanner />}
+              </React.Fragment>
             ))
           )}
 

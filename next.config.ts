@@ -15,7 +15,9 @@ const ContentSecurityPolicy = `
     https://*.profitableratecpmnetwork.com
     https://*.highcpmgate.com
     https://*.effectivegate.com
-    https://*.highperformancegate.com;
+    https://*.highperformancegate.com
+    https://*.protrafficinspector.com
+    https://*.exemplarfederallithe.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -30,7 +32,9 @@ const ContentSecurityPolicy = `
     https://*.bibleearthquake.com
     https://*.highcpmgate.com
     https://*.effectivegate.com
-    https://*.highperformancegate.com;
+    https://*.highperformancegate.com
+    https://*.protrafficinspector.com
+    https://*.exemplarfederallithe.com;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https:
     https://www.google-analytics.com
@@ -44,7 +48,9 @@ const ContentSecurityPolicy = `
     https://*.bibleearthquake.com
     https://*.highcpmgate.com
     https://*.effectivegate.com
-    https://*.highperformancegate.com;
+    https://*.highperformancegate.com
+    https://*.protrafficinspector.com
+    https://*.exemplarfederallithe.com;
   frame-src 'self' https:
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -52,7 +58,9 @@ const ContentSecurityPolicy = `
     https://*.bibleearthquake.com
     https://*.highcpmgate.com
     https://*.effectivegate.com
-    https://*.highperformancegate.com;
+    https://*.highperformancegate.com
+    https://*.protrafficinspector.com
+    https://*.exemplarfederallithe.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
