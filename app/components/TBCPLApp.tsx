@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
+import AdSenseBanner from './AdSenseBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
@@ -209,20 +210,8 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
-      {/* ── AdSense Banner Ad — between Hero and directory (highest CTR placement) ── */}
-      <div
-        className="w-full max-w-[1600px] mx-auto px-3 sm:px-5 md:px-8 lg:px-10 xl:px-16 my-3 sm:my-4"
-        aria-label="Advertisement"
-      >
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block' }}
-          data-ad-client="ca-pub-1348117799300846"
-          data-ad-slot="auto"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      </div>
+      {/* ── Fixed Position AdSense Banner — between Hero and Directory ── */}
+      <AdSenseBanner client="ca-pub-1348117799300846" />
       {/* Directory Content Section */}
 
       <section
