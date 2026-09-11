@@ -9,7 +9,6 @@ import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
 import AdSenseBanner from './AdSenseBanner';
-import AdsterraNativeBanner from './AdsterraNativeBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
@@ -320,16 +319,14 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
               </button>
             </div>
           ) : (
-            visibleCategories.map((cat, index) => (
-              <React.Fragment key={cat.name}>
-                <CategorySection
-                  category={cat}
-                  sites={grouped[cat.name] ?? []}
-                  bookmarks={bookmarks}
-                  onToggleBookmark={toggleBookmark}
-                />
-                {index === 0 && <AdsterraNativeBanner />}
-              </React.Fragment>
+            visibleCategories.map(cat => (
+              <CategorySection
+                key={cat.name}
+                category={cat}
+                sites={grouped[cat.name] ?? []}
+                bookmarks={bookmarks}
+                onToggleBookmark={toggleBookmark}
+              />
             ))
           )}
 
