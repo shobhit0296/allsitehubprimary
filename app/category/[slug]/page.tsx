@@ -20,7 +20,8 @@ function findCategoryBySlug(slug: string) {
   return CATEGORIES.find(c => slugify(c.name) === slug);
 }
 
-export const revalidate = 60; // 60s background ISR revalidation
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   return CATEGORIES.map(c => ({
@@ -62,7 +63,9 @@ export default async function CategoryPage({ params }: Props) {
   if (!cat) notFound();
 
   const db = await readDB();
-  const categorySites = db.sites.filter(s => s.category === cat.name);
+  const categorySites = db.sites
+    .filter(s => s.category === cat.name)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   const collectionPageLd = {
     '@context': 'https://schema.org',

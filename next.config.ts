@@ -118,14 +118,13 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
         ],
       },
-      // ─── All content pages: 60s Edge cache with stale-while-revalidate ───
-      // Edge caches for 60s, then revalidates in background. Fast 0ms delivery + admin updates go live within 60s.
+      // ─── All content pages: No CDN caching so admin changes are immediately live ───
       {
-        source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|recent|about|dmca|request|how-we-review-websites|privacy|terms|robots.txt|sitemap.xml)",
+        source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|recent|about|dmca|request|how-we-review-websites|privacy|terms)",
         headers: [
-          { key: "Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=86400" },
-          { key: "CDN-Cache-Control", value: "max-age=60, stale-while-revalidate=86400" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "max-age=60, stale-while-revalidate=86400" },
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-cache" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-cache" },
         ],
       },
       // ─── Logo API: 7-day Edge CDN cache ───

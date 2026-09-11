@@ -85,6 +85,9 @@ async function readDBRedis(): Promise<DB | null> {
     if (!Array.isArray(data.requests)) data.requests = [];
     return data;
   } catch (err: unknown) {
+    if ((err as { digest?: string })?.digest === 'DYNAMIC_SERVER_USAGE' || String(err).includes('DYNAMIC_SERVER_USAGE')) {
+      throw err;
+    }
     const errMsg = String(err);
     if (errMsg.includes('limit exceeded') || errMsg.includes('ERR max requests')) {
       console.warn('[DB] Upstash request limit reached, using static bundle cache for 10 minutes.');
@@ -122,6 +125,7 @@ function ensureOrder(data: DB): boolean {
       counters[site.category] = Math.max(counters[site.category] ?? 0, site.order + 1);
     }
   }
+  data.sites.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   return changed;
 }
 
@@ -129,13 +133,6 @@ export async function readDB(): Promise<DB> {
   const now = Date.now();
   if (memoryCache && (now - memoryCache.timestamp < CACHE_TTL_MS)) {
     return memoryCache.data;
-  }
-
-  // During static build / prerender, use fast bundled dataset to enable clean SSG
-  if (process.env.NEXT_PHASE === 'phase-production-build' || process.env.npm_lifecycle_event === 'build') {
-    const staticData = getBundledData();
-    ensureOrder(staticData);
-    return staticData;
   }
 
   let data: DB | null = null;
@@ -153,12 +150,14 @@ export async function readDB(): Promise<DB> {
 }
 
 export async function writeDB(data: DB): Promise<void> {
+  ensureOrder(data);
   memoryCache = { data, timestamp: Date.now() };
   if (redis && Date.now() >= redisDisabledUntil) {
     await writeDBRedis(data);
   }
   try {
     revalidatePath('/', 'layout');
+    revalidatePath('/');
   } catch {
     // Ignore when called outside Next.js request context
   }

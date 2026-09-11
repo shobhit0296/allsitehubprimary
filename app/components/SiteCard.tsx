@@ -123,10 +123,12 @@ const VIBRANT_PALETTE = [
 
 function getSiteBrand(domain: string, rawName: string): { displayName: string; color: string; letterSpacing?: string; uppercase?: boolean } {
   const cleanDomain = domain.toLowerCase();
+  const trimmedName = rawName.trim();
+
   for (const [key, cfg] of Object.entries(BRAND_CONFIGS)) {
     if (cleanDomain.includes(key) || key.includes(cleanDomain)) {
       return {
-        displayName: cfg.displayName || rawName,
+        displayName: trimmedName || cfg.displayName || domain,
         color: cfg.color,
         letterSpacing: cfg.letterSpacing,
         uppercase: cfg.uppercase,
@@ -134,17 +136,12 @@ function getSiteBrand(domain: string, rawName: string): { displayName: string; c
     }
   }
 
-  // Fallback clean name
-  let cleanName = rawName.trim();
-  if (cleanName.includes('-')) cleanName = cleanName.split('-')[0].trim();
-  if (cleanName.length > 20) cleanName = cleanName.slice(0, 18).trim();
-
   let hash = 0;
   const str = domain || rawName;
   for (let i = 0; i < str.length; i++) hash += str.charCodeAt(i);
   const color = VIBRANT_PALETTE[Math.abs(hash) % VIBRANT_PALETTE.length];
 
-  return { displayName: cleanName, color };
+  return { displayName: trimmedName || domain, color };
 }
 
 export default function SiteCard({ site, isBookmarked = false, onToggleBookmark }: SiteCardProps) {

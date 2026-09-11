@@ -2,7 +2,8 @@ import { readDB } from '@/lib/db';
 import { CATEGORIES, REGIONS } from '@/lib/data';
 import AllsitehubApp from './components/TBCPLApp';
 
-export const revalidate = 60; // 60s background ISR revalidation
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home() {
   const db = await readDB();

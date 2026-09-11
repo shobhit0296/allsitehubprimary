@@ -25,7 +25,8 @@ export default function CategorySiteGrid({ sites, category }: Props) {
         if (res.ok) {
           const data = await res.json();
           if (mounted && Array.isArray(data.sites)) {
-            const relevant = category ? data.sites.filter((s: Site) => s.category === category) : data.sites;
+            const relevant = (category ? data.sites.filter((s: Site) => s.category === category) : data.sites)
+              .sort((a: Site, b: Site) => (a.order ?? 0) - (b.order ?? 0));
             if (relevant.length > 0) setLiveSites(relevant);
           }
         }
