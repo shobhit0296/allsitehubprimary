@@ -4,6 +4,8 @@ import type { Site } from '@/lib/data';
 import { isAdminRequest, isPanelSegment } from '@/lib/admin-auth';
 import { autoFetch4KLogo } from '@/lib/logo-fetcher';
 
+export const dynamic = 'force-dynamic';
+
 const NOT_FOUND = () => new NextResponse(null, { status: 404 });
 const UNAUTHORIZED = () => NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

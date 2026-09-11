@@ -10,6 +10,7 @@ import {
   requestIp,
 } from '@/lib/admin-auth';
 
+export const dynamic = 'force-dynamic';
 const MAX_AGE = 60 * 60 * 24; // 24h, matches SESSION_TTL_MS in lib/admin-auth
 const NOT_FOUND = () => new NextResponse(null, { status: 404 });
 
