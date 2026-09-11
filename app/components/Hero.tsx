@@ -42,18 +42,17 @@ export default function Hero({
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full glass-lux mb-4 sm:mb-6 border border-white/10 max-w-full">
             <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-[var(--primary)] shrink-0" />
             <span className="text-[10px] sm:text-[11.5px] font-bold tracking-[0.08em] sm:tracking-[0.1em] uppercase text-[var(--text-accent)] truncate">
-              AllSiteHub · allsite · Website Discovery Platform
+              Website Discovery Platform
             </span>
           </div>
 
-          <h1 className="font-headline text-[2.2rem] xs:text-[2.5rem] sm:text-[3.3rem] md:text-[3.9rem] lg:text-[4.4rem] font-black mb-4 sm:mb-5 leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
-            Discover Websites &amp;
-            <br />
-            <span className="gradient-text">Search Smarter</span>
+          <h1 className="font-headline text-[2.2rem] xs:text-[2.6rem] sm:text-[3.4rem] md:text-[4rem] lg:text-[4.5rem] font-black mb-4 sm:mb-5 leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
+            Discover Websites.{' '}
+            <span className="gradient-text">Search Smarter.</span>
           </h1>
 
-          <p className="text-[0.93rem] sm:text-[1.12rem] lg:text-[1.2rem] text-[var(--text-secondary)] mb-5 sm:mb-7 max-w-[560px] leading-[1.6]">
-            AllSiteHub (allsitehub / allsite) helps you discover useful websites across the internet. Search, explore and filter curated tools, platforms, and online resources.
+          <p className="text-[0.95rem] sm:text-[1.15rem] lg:text-[1.22rem] text-[var(--text-secondary)] mb-5 sm:mb-7 max-w-[560px] leading-[1.6]">
+            AllSiteHub helps you discover useful websites across the internet. Search, explore and refine websites by category to quickly find the tools, resources and online platforms you&apos;re looking for.
           </p>
 
           {/* ── Community CTAs ── */}
