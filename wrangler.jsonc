@@ -11,7 +11,7 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "ADMIN_PANEL_PATH": "shobhitadmin",
+    "ADMIN_PANEL_PATH": "adminshobhit",
     "ADMIN_PASSWORD": "shobhitallsitehubadmin8115591448",
     "ADMIN_SESSION_SECRET": "a15301313959f1cba07e6b5ee7e46b229aa55d31a0f3b6ab523c839f538c9f36",
     "TELEGRAM_BOT_TOKEN": "8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg",
