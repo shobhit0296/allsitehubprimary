@@ -9,7 +9,13 @@ const ContentSecurityPolicy = `
     https://*.googletagmanager.com
     https://adservice.google.com
     https://googleads.g.doubleclick.net
-    https://tpc.googlesyndication.com;
+    https://tpc.googlesyndication.com
+    https://bibleearthquake.com
+    https://*.bibleearthquake.com
+    https://*.profitableratecpmnetwork.com
+    https://*.highcpmgate.com
+    https://*.effectivegate.com
+    https://*.highperformancegate.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -19,7 +25,12 @@ const ContentSecurityPolicy = `
     https://t3.gstatic.com
     https://icons.duckduckgo.com
     https://icon.horse
-    https://pagead2.googlesyndication.com;
+    https://pagead2.googlesyndication.com
+    https://*.profitableratecpmnetwork.com
+    https://*.bibleearthquake.com
+    https://*.highcpmgate.com
+    https://*.effectivegate.com
+    https://*.highperformancegate.com;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https:
     https://www.google-analytics.com
@@ -28,10 +39,20 @@ const ContentSecurityPolicy = `
     https://*.googletagmanager.com
     https://stats.g.doubleclick.net
     https://pagead2.googlesyndication.com
-    https://*.upstash.io;
+    https://*.upstash.io
+    https://*.profitableratecpmnetwork.com
+    https://*.bibleearthquake.com
+    https://*.highcpmgate.com
+    https://*.effectivegate.com
+    https://*.highperformancegate.com;
   frame-src 'self' https:
     https://googleads.g.doubleclick.net
-    https://tpc.googlesyndication.com;
+    https://tpc.googlesyndication.com
+    https://*.profitableratecpmnetwork.com
+    https://*.bibleearthquake.com
+    https://*.highcpmgate.com
+    https://*.effectivegate.com
+    https://*.highperformancegate.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
