@@ -118,14 +118,14 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
         ],
       },
-      // ─── All SSG pages: served from Edge CDN, never hits serverless ───
-      // s-maxage=86400 → Edge caches the page 24 hours.
-      // stale-while-revalidate=604800 → Serves stale while refreshing in background.
-      // Result: 0 serverless invocations for repeated page visits → quota never drains.
+      // ─── All content pages: 60s Edge cache with stale-while-revalidate ───
+      // Edge caches for 60s, then revalidates in background. Fast 0ms delivery + admin updates go live within 60s.
       {
         source: "/(|category/:slug*|site/:id*|collections|collections/:slug*|recent|about|dmca|request|how-we-review-websites|privacy|terms|robots.txt|sitemap.xml)",
         headers: [
-          { key: "Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=604800" },
+          { key: "Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=86400" },
+          { key: "CDN-Cache-Control", value: "max-age=60, stale-while-revalidate=86400" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "max-age=60, stale-while-revalidate=86400" },
         ],
       },
       // ─── Logo API: 7-day Edge CDN cache ───

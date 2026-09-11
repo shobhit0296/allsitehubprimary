@@ -20,6 +20,8 @@ function findCategoryBySlug(slug: string) {
   return CATEGORIES.find(c => slugify(c.name) === slug);
 }
 
+export const revalidate = 60; // 60s background ISR revalidation
+
 export async function generateStaticParams() {
   return CATEGORIES.map(c => ({
     slug: slugify(c.name),

@@ -1143,7 +1143,7 @@
     },
     {
       "id": "mssqu1xlcfcll",
-      "name": "Cinemove - Watch Movies and TV Shows Online Streaming",
+      "name": "Cinemove — Watch Movies and TV Shows Online Streaming",
       "url": "https://cinemove.cc/",
       "domain": "cinemove.cc",
       "category": "Movies & Shows",
@@ -1477,7 +1477,7 @@
           "category": "Movies & Shows"
         }
       ],
-      "reason": "Tv shows and movies ??",
+      "reason": "Tv shows and movies 🎬",
       "status": "approved",
       "submittedAt": 1785127375645
     },
@@ -1697,7 +1697,7 @@
           "category": "Anime"
         }
       ],
-      "reason": "?? Complete Anime Experience\n?? Discord Login - Easy and secure sign-in\n?? Personal Profiles - Users can create and customize their own profile\n?? Comments & Discussions - Interact with other anime fans\n?? Manga Section - Dedicated manga reading experience\n?? Easy Navigation - Simple and user-friendly interface\n? Fast & Mobile-Friendly - Smooth experience across devices\n??? Nostalgic Experience - Bringing back the classic feeling of watching anime\n?? Modern UI - Clean, premium, and anime-focused design\n?? Community Focused - Built around interaction and discovering anime together\n?? All-in-One Platform - Streaming, manga, profiles, comments, and community features in one pla",
+      "reason": "🎬 Complete Anime Experience\n🔐 Discord Login – Easy and secure sign-in\n👤 Personal Profiles – Users can create and customize their own profile\n💬 Comments & Discussions – Interact with other anime fans\n📚 Manga Section – Dedicated manga reading experience\n🧭 Easy Navigation – Simple and user-friendly interface\n⚡ Fast & Mobile-Friendly – Smooth experience across devices\n🎞️ Nostalgic Experience – Bringing back the classic feeling of watching anime\n🎨 Modern UI – Clean, premium, and anime-focused design\n🤝 Community Focused – Built around interaction and discovering anime together\n🌟 All-in-One Platform – Streaming, manga, profiles, comments, and community features in one pla",
       "status": "approved",
       "submittedAt": 1785821349984
     },
@@ -2105,7 +2105,7 @@
     },
     {
       "id": "msmjd48k0j1mt",
-      "siteName": "Cinemove - Watch Movies and TV Shows Online Streaming",
+      "siteName": "Cinemove — Watch Movies and TV Shows Online Streaming",
       "siteUrl": "https://cinemove.cc/",
       "targets": [
         {
@@ -2866,6 +2866,298 @@
       "reason": "",
       "status": "pending",
       "submittedAt": 1787850374189
+    },
+    {
+      "id": "mtjvhjol7yqp6",
+      "siteName": "OnlineTVcast",
+      "siteUrl": "https://onlinetvcast.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "Combines live TV channels, movies, series, and regional streaming-access guides in one mobile-friendly entertainment site.",
+      "status": "pending",
+      "submittedAt": 1788340041958
+    },
+    {
+      "id": "mtldts7746vwb",
+      "siteName": "Primeshows",
+      "siteUrl": "https://primeshows.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788431312131
+    },
+    {
+      "id": "mtldu0qzxwq1u",
+      "siteName": "Netshows",
+      "siteUrl": "https://netshows.xyz/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788431323211
+    },
+    {
+      "id": "mtldua7ib9noi",
+      "siteName": "Youshows",
+      "siteUrl": "https://youshows.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788431335470
+    },
+    {
+      "id": "mtlgw8ccx1607",
+      "siteName": "Hitman absolution",
+      "siteUrl": "https://m.taptap.io/app/hitman-absolution-33898888?share_id=2ce9ab64372b&utm_medium=share&utm_source=copylink",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788436465212
+    },
+    {
+      "id": "mtmqexatvl0sj",
+      "siteName": "OTANOX",
+      "siteUrl": "https://otanox.online/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788512920085
+    },
+    {
+      "id": "mtmxox3r07aa7",
+      "siteName": "Apex-Type Elite",
+      "siteUrl": "https://skingdom.great-site.net/apextype-elite/index.html",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Paid"
+        }
+      ],
+      "reason": "Keyboard Typing preparation website",
+      "status": "pending",
+      "submittedAt": 1788525143703
+    },
+    {
+      "id": "mtmy0pfjpte0a",
+      "siteName": "Hardware-Lock Chat Web",
+      "siteUrl": "https://skingdom.great-site.net/index.html",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "Online Chating Website , Only for two People,\nUser A can copy link and send User B , and User B just that open that link , bingo , both will connected and Chat Screen will opened, and just enjoy encrypted P2P Chat Web...",
+      "status": "pending",
+      "submittedAt": 1788525693631
+    },
+    {
+      "id": "mtn17ryu2qbs1",
+      "siteName": "OlaMovies",
+      "siteUrl": "https://olamovies.dad/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "this is best website it provides 4k quality and amazing. I think this website is No.1 in quality movies and anime",
+      "status": "pending",
+      "submittedAt": 1788531062358
+    },
+    {
+      "id": "mtn19837vddqd",
+      "siteName": "Toon World4all",
+      "siteUrl": "https://toonworld4all.me/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        },
+        {
+          "region": "US",
+          "category": "Anime"
+        },
+        {
+          "region": "UK",
+          "category": "Anime"
+        }
+      ],
+      "reason": "This is No.1 Anime website and best quality",
+      "status": "pending",
+      "submittedAt": 1788531129907
+    },
+    {
+      "id": "mtn1cnktmri06",
+      "siteName": "KatmovieHD",
+      "siteUrl": "https://katmovieshd.net/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "US",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "UK",
+          "category": "Movies & Shows"
+        },
+        {
+          "region": "IN",
+          "category": "Anime"
+        }
+      ],
+      "reason": "This is best Movie website specially for Hollywood+ hindi",
+      "status": "pending",
+      "submittedAt": 1788531289949
+    },
+    {
+      "id": "mtr4sbn16s8j7",
+      "siteName": "Brazzers",
+      "siteUrl": "https://www.brazzers.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Paid"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788778924525
+    },
+    {
+      "id": "mtsagsxg29tvx",
+      "siteName": "HiAnime",
+      "siteUrl": "https://hianime.at/home",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Anime"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788848930932
+    },
+    {
+      "id": "mtsqy32gbffip",
+      "siteName": "Dextro Play",
+      "siteUrl": "https://dextro-app.vercel.app/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Live TV & Sports"
+        }
+      ],
+      "reason": "Dextro Play is a fast and mobile-friendly sports platform for discovering upcoming, live, and completed matches across multiple sports. It features organized schedules, sports categories, tournament information, and a simple user-friendly interface. We would appreciate having Dextro Play listed on your platform so sports fans can easily discover our app.",
+      "status": "pending",
+      "submittedAt": 1788876611080
+    },
+    {
+      "id": "mtt0iub7iq8ti",
+      "siteName": "Youtube",
+      "siteUrl": "https://www.youtube.com/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Apps"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788892696051
+    },
+    {
+      "id": "mtt0jp6ozdnr8",
+      "siteName": "Full4Movies",
+      "siteUrl": "https://www.1full4movies.org/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788892736064
+    },
+    {
+      "id": "mtt0kcnf9oep4",
+      "siteName": "HDHub4U",
+      "siteUrl": "https://hdhub4u.bi/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788892766475
+    },
+    {
+      "id": "mtt0lqj2wcy0a",
+      "siteName": "Movie Rulz",
+      "siteUrl": "https://www.5movierulz.ventures/",
+      "targets": [
+        {
+          "region": "Global",
+          "category": "Movies & Shows"
+        }
+      ],
+      "reason": "",
+      "status": "pending",
+      "submittedAt": 1788892831118
     }
   ]
 }

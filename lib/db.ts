@@ -2,6 +2,7 @@
  * lib/db.ts — persistence layer with in-memory caching & rate-limit resilience
  */
 import { Redis } from '@upstash/redis';
+import { revalidatePath } from 'next/cache';
 import type { Site } from './data';
 import { SITES, CATEGORIES, REGIONS } from './data';
 import bundledDbJson from '@/data/db.json';
@@ -9,9 +10,12 @@ import bundledDbJson from '@/data/db.json';
 const REDIS_KEY = 'allsitehub:db';
 const LEGACY_REDIS_KEY = 'tbcpl-app:db';
 
-const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-const redis = redisUrl && redisToken ? new Redis({ url: redisUrl, token: redisToken }) : null;
+const DEFAULT_KV_URL = "https://tight-katydid-177010.upstash.io";
+const DEFAULT_KV_TOKEN = "gQAAAAAAArNyAAIgcDI4NzA1NzRjMTUzMDI0MzRlYTgyZWJlMjhiNDk1NzAxNQ";
+
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || DEFAULT_KV_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || DEFAULT_KV_TOKEN;
+const redis = new Redis({ url: redisUrl, token: redisToken });
 
 // Circuit breaker: if Upstash hits monthly request limit or errors out,
 // skip Redis for 5 minutes so workers don't exceed CPU limits with failing network calls.
@@ -19,7 +23,7 @@ let redisDisabledUntil = 0;
 
 // In-memory cache for ultra-fast SSR execution (0ms) on workers/serverless
 let memoryCache: { data: DB; timestamp: number } | null = null;
-const CACHE_TTL_MS = 60_000; // 60s memory cache
+const CACHE_TTL_MS = 5_000; // 5s memory cache for fast live updates
 
 export interface SiteRequest {
   id: string;
@@ -152,6 +156,11 @@ export async function writeDB(data: DB): Promise<void> {
   memoryCache = { data, timestamp: Date.now() };
   if (redis && Date.now() >= redisDisabledUntil) {
     await writeDBRedis(data);
+  }
+  try {
+    revalidatePath('/', 'layout');
+  } catch {
+    // Ignore when called outside Next.js request context
   }
 }
 

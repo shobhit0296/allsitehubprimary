@@ -1192,7 +1192,7 @@ export const SITES: Site[] = [
   },
   {
     "id": "mssqu1xlcfcll",
-    "name": "Cinemove - Watch Movies and TV Shows Online Streaming",
+    "name": "Cinemove — Watch Movies and TV Shows Online Streaming",
     "url": "https://cinemove.cc/",
     "domain": "cinemove.cc",
     "category": "Movies & Shows",
