@@ -172,7 +172,7 @@ export default async function CategoryPage({ params }: Props) {
           <VpnCallout variant="compact" />
         </div>
 
-        <CategorySiteGrid sites={categorySites} />
+        <CategorySiteGrid sites={categorySites} category={cat.name} />
 
         {/* Other Categories */}
         <div className="mt-20 pt-10 border-t border-white/[0.08]">

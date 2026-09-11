@@ -1,15 +1,48 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Site } from '@/lib/data';
 import SiteCard from './SiteCard';
 
 interface Props {
   sites: Site[];
+  category?: string;
 }
 
-export default function CategorySiteGrid({ sites }: Props) {
+export default function CategorySiteGrid({ sites, category }: Props) {
+  const [liveSites, setLiveSites] = useState<Site[]>(sites);
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setLiveSites(sites);
+  }, [sites]);
+
+  useEffect(() => {
+    let mounted = true;
+    async function sync() {
+      try {
+        const res = await fetch('/api/sites', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (mounted && Array.isArray(data.sites)) {
+            const relevant = category ? data.sites.filter((s: Site) => s.category === category) : data.sites;
+            if (relevant.length > 0) setLiveSites(relevant);
+          }
+        }
+      } catch {
+        // fallback
+      }
+    }
+    sync();
+    const onFocus = () => sync();
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('visibilitychange', onFocus);
+    return () => {
+      mounted = false;
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('visibilitychange', onFocus);
+    };
+  }, [category]);
 
   const toggleBookmark = useCallback((id: string) => {
     setBookmarks(prev => {
@@ -19,7 +52,7 @@ export default function CategorySiteGrid({ sites }: Props) {
     });
   }, []);
 
-  if (sites.length === 0) {
+  if (liveSites.length === 0) {
     return (
       <div className="text-center py-20 text-[var(--text-muted)]">
         <p className="text-lg font-semibold">No sites in this category yet.</p>
@@ -30,7 +63,7 @@ export default function CategorySiteGrid({ sites }: Props) {
 
   return (
     <div className="sites-grid">
-      {sites.map(site => (
+      {liveSites.map(site => (
         <SiteCard
           key={site.id}
           site={site}

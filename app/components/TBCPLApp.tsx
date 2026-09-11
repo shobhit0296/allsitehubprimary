@@ -24,10 +24,46 @@ interface AllsitehubAppProps {
 }
 
 export default function AllsitehubApp({ sites, categories, regions }: AllsitehubAppProps) {
+  const [liveSites, setLiveSites] = useState<Site[]>(sites);
   const [search, setSearch] = useState('');
   const [activeRegion, setActiveRegion] = useState('US');
   const [activeCategory, setActiveCategory] = useState(categories[0]?.name ?? 'Movies & Shows');
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
+
+  // Keep local state in sync when server props revalidate
+  useEffect(() => {
+    setLiveSites(sites);
+  }, [sites]);
+
+  // Background sync from /api/sites so admin edits reflect immediately without hard-refresh
+  useEffect(() => {
+    let mounted = true;
+    async function syncSites() {
+      try {
+        const res = await fetch('/api/sites', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (mounted && Array.isArray(data.sites) && data.sites.length > 0) {
+            setLiveSites(data.sites);
+          }
+        }
+      } catch {
+        // keep fallback SSR sites
+      }
+    }
+    syncSites();
+
+    // Instant update when switching tabs back to the site after editing in admin panel
+    const onFocus = () => syncSites();
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('visibilitychange', onFocus);
+
+    return () => {
+      mounted = false;
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('visibilitychange', onFocus);
+    };
+  }, []);
 
   // ── Scheduled time-of-day live online users (changes every 15-20s) ──
   const liveOnlineCount = useLiveOnlineCounter();
@@ -64,17 +100,17 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   }, []);
 
   const filteredSites = useMemo(
-    () => filterSites(sites, search, activeRegion, 'all'),
-    [sites, search, activeRegion],
+    () => filterSites(liveSites, search, activeRegion, 'all'),
+    [liveSites, search, activeRegion],
   );
 
   const categoryCounts = useMemo(() => {
-    const base = filterSites(sites, '', activeRegion, 'all');
+    const base = filterSites(liveSites, '', activeRegion, 'all');
     return categories.reduce((acc, cat) => {
       acc[cat.name] = base.filter(s => s.category === cat.name).length;
       return acc;
     }, {} as Record<string, number>);
-  }, [sites, activeRegion, categories]);
+  }, [liveSites, activeRegion, categories]);
 
   const grouped = useMemo(() => getSitesByCategory(filteredSites), [filteredSites]);
 
