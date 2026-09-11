@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import ShaderBackground from './components/ShaderBackground';
 import CommunityModal from './components/CommunityModal';
+import AdsterraPopunderManager from './components/AdsterraPopunderManager';
 import { siteConfig } from '@/lib/siteConfig';
 import './globals.css';
 
@@ -285,12 +286,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
         />
 
-        {/* Adsterra Anti-AdBlock Popunder */}
-        <Script
-          id="adsterra-popunder"
-          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
-          strategy="afterInteractive"
-        />
+        {/* Adsterra Anti-AdBlock Popunder with 40s Reset Frequency Manager */}
+        <AdsterraPopunderManager />
       </body>
     </html>
   );
