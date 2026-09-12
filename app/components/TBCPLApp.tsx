@@ -319,13 +319,14 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
               </button>
             </div>
           ) : (
-            visibleCategories.map(cat => (
+            visibleCategories.map((cat, index) => (
               <CategorySection
                 key={cat.name}
                 category={cat}
                 sites={grouped[cat.name] ?? []}
                 bookmarks={bookmarks}
                 onToggleBookmark={toggleBookmark}
+                showAdCard={index === 0}
               />
             ))
           )}

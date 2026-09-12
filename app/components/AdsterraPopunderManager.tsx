@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { isAdminRoute } from '@/lib/is-admin-route';
 
 const ADSTERRA_SRC = 'https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js';
 const RESET_INTERVAL_MS = 40 * 1000; // 40-second reset frequency
@@ -9,17 +11,32 @@ const RESET_INTERVAL_MS = 40 * 1000; // 40-second reset frequency
  * AdsterraPopunderManager — Enforces an aggressive 40-second reset frequency.
  * Clears ad cookies, resets ad-tracking localStorage, and re-arms the popunder
  * event listener every 40 seconds so clicks trigger new popunder impressions.
+ * Never runs on the admin panel.
  */
 export default function AdsterraPopunderManager() {
+  const pathname = usePathname();
+  const isAdmin = isAdminRoute(pathname);
+
   useEffect(() => {
+    if (isAdmin) {
+      const existing = document.getElementById('adsterra-popunder-dynamic');
+      if (existing) existing.remove();
+      return;
+    }
+
     function purgeAdTracking() {
-      // 1. Clear ad cookies while preserving essential site cookies
+      // 1. Clear ad cookies while preserving essential site and admin session cookies
       try {
         const cookies = document.cookie.split(';');
         for (const cookie of cookies) {
           const eqPos = cookie.indexOf('=');
           const name = (eqPos > -1 ? cookie.substring(0, eqPos) : cookie).trim();
-          if (name && name !== 'admin_session' && name !== 'allSiteHub_theme') {
+          if (
+            name &&
+            name !== 'ash_admin' &&
+            name !== 'admin_session' &&
+            name !== 'allSiteHub_theme'
+          ) {
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname.replace(/^www\./, '')}`;
@@ -79,7 +96,9 @@ export default function AdsterraPopunderManager() {
       const existing = document.getElementById('adsterra-popunder-dynamic');
       if (existing) existing.remove();
     };
-  }, []);
+  }, [isAdmin]);
+
+  if (isAdmin) return null;
 
   return null;
 }

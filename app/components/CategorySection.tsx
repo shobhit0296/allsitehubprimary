@@ -1,16 +1,19 @@
+import React from 'react';
 import type { Site, Category } from '@/lib/data';
 import { categoryAccent } from '@/lib/theme';
 import SiteCard from './SiteCard';
 import CategoryIcon from './CategoryIcon';
+import NativeAdCard from './NativeAdCard';
 
 interface CategorySectionProps {
   category: Category;
   sites: Site[];
   bookmarks: Set<string>;
   onToggleBookmark: (id: string) => void;
+  showAdCard?: boolean;
 }
 
-export default function CategorySection({ category, sites, bookmarks, onToggleBookmark }: CategorySectionProps) {
+export default function CategorySection({ category, sites, bookmarks, onToggleBookmark, showAdCard = false }: CategorySectionProps) {
   if (sites.length === 0) return null;
 
   const accent = categoryAccent(category.name);
@@ -58,13 +61,15 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
 
       {/* ── Sites Grid: 1 xs / 2 sm / 3 tablet / 4 md / 5 lg / 6 xl ── */}
       <div className="sites-grid">
-        {sites.map(site => (
-          <SiteCard
-            key={site.id}
-            site={site}
-            isBookmarked={bookmarks.has(site.id)}
-            onToggleBookmark={onToggleBookmark}
-          />
+        {sites.map((site, index) => (
+          <React.Fragment key={site.id}>
+            <SiteCard
+              site={site}
+              isBookmarked={bookmarks.has(site.id)}
+              onToggleBookmark={onToggleBookmark}
+            />
+            {showAdCard && index === 4 && <NativeAdCard />}
+          </React.Fragment>
         ))}
       </div>
     </section>

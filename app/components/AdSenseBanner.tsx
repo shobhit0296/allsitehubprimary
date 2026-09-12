@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import { isAdminRoute } from '@/lib/is-admin-route';
 
 interface AdSenseBannerProps {
   client?: string;
@@ -15,6 +17,7 @@ interface AdSenseBannerProps {
  * AdSenseBanner — Renders Google AdSense in exact designated positions.
  * Safely handles Next.js hydration, prevents duplicate push errors,
  * and maintains layout stability (min-height) to prevent layout shifts.
+ * Never renders on admin panel.
  */
 export default function AdSenseBanner({
   client = 'ca-pub-1348117799300846',
@@ -24,9 +27,11 @@ export default function AdSenseBanner({
   className = '',
   style,
 }: AdSenseBannerProps) {
+  const pathname = usePathname();
   const adRef = useRef<HTMLModElement | null>(null);
 
   useEffect(() => {
+    if (isAdminRoute(pathname)) return;
     try {
       const el = adRef.current;
       if (el && !el.getAttribute('data-adsbygoogle-status')) {
@@ -36,7 +41,9 @@ export default function AdSenseBanner({
     } catch {
       // Gracefully handle ad-blockers and repeated fast-refresh calls
     }
-  }, []);
+  }, [pathname]);
+
+  if (isAdminRoute(pathname)) return null;
 
   return (
     <div

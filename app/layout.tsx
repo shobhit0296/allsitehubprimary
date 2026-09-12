@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import ShaderBackground from './components/ShaderBackground';
 import CommunityModal from './components/CommunityModal';
-import AdsterraPopunderManager from './components/AdsterraPopunderManager';
+import SiteAds from './components/SiteAds';
 import { siteConfig } from '@/lib/siteConfig';
 import './globals.css';
 
@@ -254,14 +254,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <CommunityModal />
 
-        {/* AdSense Auto Ads */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-
         {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-3ZSN0JXGJK"
@@ -279,15 +271,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* Adsterra Social Bar */}
-        <Script
-          id="adsterra-social-bar"
-          src="https://pl31253047.profitableratecpmnetwork.com/cf/09/69/cf09691eee1a394e996784f3aa7b4021.js"
-          strategy="afterInteractive"
-        />
-
-        {/* Adsterra Anti-AdBlock Popunder with 40s Reset Frequency Manager */}
-        <AdsterraPopunderManager />
+        {/* Network & Display Advertisements (Never loaded or shown on Admin Panel) */}
+        <SiteAds />
       </body>
     </html>
   );

@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import { isAdminRoute } from '@/lib/is-admin-route';
 
 const SCRIPT_SRC = 'https://bibleearthquake.com/36a34e7c2d7095493196dd10bc56ad23/invoke.js';
 const CONTAINER_ID = 'container-36a34e7c2d7095493196dd10bc56ad23';
@@ -12,11 +14,15 @@ interface AdsterraNativeBannerProps {
 /**
  * AdsterraNativeBanner — Official Native Banner Widget
  * Injects Adsterra multi-card native ads with high CTR and CPM.
+ * Never renders on admin panel.
  */
 export default function AdsterraNativeBanner({ className = '' }: AdsterraNativeBannerProps) {
+  const pathname = usePathname();
+  const isAdmin = isAdminRoute(pathname);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isAdmin) return;
     // Check if script is already added
     let script = document.querySelector(`script[src="${SCRIPT_SRC}"]`) as HTMLScriptElement | null;
 
@@ -34,7 +40,9 @@ export default function AdsterraNativeBanner({ className = '' }: AdsterraNativeB
         window.dispatchEvent(new Event('popstate'));
       }
     }
-  }, []);
+  }, [isAdmin]);
+
+  if (isAdmin) return null;
 
   return (
     <div className={`w-full my-6 sm:my-8 px-1 sm:px-2 ${className}`}>

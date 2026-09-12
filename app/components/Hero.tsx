@@ -46,12 +46,13 @@ export default function Hero({
             </span>
           </div>
 
-          <h1 className="font-headline text-[2.2rem] xs:text-[2.6rem] sm:text-[3.4rem] md:text-[4rem] lg:text-[4.5rem] font-black mb-4 sm:mb-5 leading-[1.08] tracking-[-0.03em] text-[var(--text-primary)]">
-            Discover Websites.{' '}
+          <h1 className="hero-title">
+            Discover Websites.
+            <br />
             <span className="gradient-text">Search Smarter.</span>
           </h1>
 
-          <p className="text-[0.95rem] sm:text-[1.15rem] lg:text-[1.22rem] text-[var(--text-secondary)] mb-5 sm:mb-7 max-w-[560px] leading-[1.6]">
+          <p className="hero-subtitle">
             AllSiteHub helps you discover useful websites across the internet. Search, explore and refine websites by category to quickly find the tools, resources and online platforms you&apos;re looking for.
           </p>
 

@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import type { Site } from '@/lib/data';
 import SiteCard from './SiteCard';
+import NativeAdCard from './NativeAdCard';
 
 interface Props {
   sites: Site[];
   category?: string;
+  showAdCard?: boolean;
 }
 
-export default function CategorySiteGrid({ sites, category }: Props) {
+export default function CategorySiteGrid({ sites, category, showAdCard = true }: Props) {
   const [liveSites, setLiveSites] = useState<Site[]>(sites);
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
 
@@ -64,13 +66,16 @@ export default function CategorySiteGrid({ sites, category }: Props) {
 
   return (
     <div className="sites-grid">
-      {liveSites.map(site => (
-        <SiteCard
-          key={site.id}
-          site={site}
-          isBookmarked={bookmarks.has(site.id)}
-          onToggleBookmark={toggleBookmark}
-        />
+      {liveSites.map((site, index) => (
+        <React.Fragment key={site.id}>
+          <SiteCard
+            key={site.id}
+            site={site}
+            isBookmarked={bookmarks.has(site.id)}
+            onToggleBookmark={toggleBookmark}
+          />
+          {showAdCard && index === 4 && <NativeAdCard />}
+        </React.Fragment>
       ))}
     </div>
   );

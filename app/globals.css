@@ -816,6 +816,36 @@ h1, h2, h3, .font-display {
   .modal-grid-2 { grid-template-columns: 1fr; }
 }
 
+/* ── Admin Ad Suppression ── */
+[data-admin-panel="true"] .adsbygoogle,
+[data-admin-panel="true"] ins.adsbygoogle,
+[data-admin-panel="true"] [id*="adsterra"],
+[data-admin-panel="true"] [class*="adsterra"],
+html[data-admin-panel="true"] ins.adsbygoogle,
+html[data-admin-panel="true"] iframe[id^="aswift_"],
+html[data-admin-panel="true"] iframe[id^="google_ads_"],
+html[data-admin-panel="true"] div[id^="google_ads_"],
+html[data-admin-panel="true"] #adsterra-social-bar,
+html[data-admin-panel="true"] #adsterra-popunder-dynamic,
+html[data-admin-panel="true"] [class*="adsterra"],
+html[data-admin-panel="true"] [id*="adsterra"],
+body.is-admin-route ins.adsbygoogle,
+body.is-admin-route iframe[id^="aswift_"],
+body.is-admin-route iframe[id^="google_ads_"],
+body.is-admin-route div[id^="google_ads_"],
+body.is-admin-route #adsterra-social-bar,
+body.is-admin-route #adsterra-popunder-dynamic,
+body.is-admin-route [class*="adsterra"],
+body.is-admin-route [id*="adsterra"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+}
+
 /* ── Mobile ───────────────────────────────────── */
 
 /* iOS Safari zooms into inputs with font-size < 16px */
@@ -909,6 +939,24 @@ h1, h2, h3, .font-display {
   font-family: 'Outfit', 'Plus Jakarta Sans', var(--font-display), 'Sora', var(--font-inter), -apple-system, sans-serif;
   letter-spacing: -0.025em;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+.hero-title {
+  font-family: 'Outfit', 'Plus Jakarta Sans', var(--font-display), 'Sora', var(--font-inter), -apple-system, sans-serif !important;
+  font-size: clamp(2.4rem, 5.2vw, 4.4rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 1.3vw, 1.2rem) !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.6 !important;
+  max-width: 560px !important;
+  margin-bottom: 1.75rem !important;
 }
 
 .noise-overlay {
