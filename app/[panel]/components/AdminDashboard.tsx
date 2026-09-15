@@ -34,6 +34,40 @@ const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }>
   rejected: { bg: 'rgba(244,63,94,0.1)',  color: '#f43f5e', label: '❌ Rejected' },
 };
 
+function cleanDomain(input: string): string {
+  if (!input) return '';
+  let str = input.trim().toLowerCase();
+  str = str.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '');
+  str = str.split('/')[0].split('?')[0].split('#')[0];
+  return str.trim();
+}
+
+function findMatchingSite(req: SiteRequest, siteList: Site[]): Site | undefined {
+  const reqDom = cleanDomain(req.siteUrl);
+  const reqName = req.siteName.trim().toLowerCase();
+  const reqUrlClean = req.siteUrl.trim().toLowerCase().replace(/\/+$/, '');
+
+  return siteList.find(s => {
+    const sDom = cleanDomain(s.domain || s.url);
+    const sUrlClean = s.url.trim().toLowerCase().replace(/\/+$/, '');
+    const sName = s.name.trim().toLowerCase();
+
+    // 1. Exact domain match
+    if (reqDom && sDom && (reqDom === sDom || reqDom.endsWith('.' + sDom) || sDom.endsWith('.' + reqDom))) {
+      return true;
+    }
+    // 2. Exact URL match
+    if (reqUrlClean && sUrlClean && reqUrlClean === sUrlClean) {
+      return true;
+    }
+    // 3. Exact site name match
+    if (reqName && sName && reqName === sName) {
+      return true;
+    }
+    return false;
+  });
+}
+
 export default function AdminDashboard({ panel, initialSites, initialRequests, categories, regions }: Props) {
   const router = useRouter();
   const apiSites = `/api/${panel}/sites`;
@@ -58,6 +92,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   const [requests, setRequests] = useState<SiteRequest[]>(initialRequests);
   const [reqSearch, setReqSearch] = useState('');
   const [reqFilter, setReqFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+  const [reqListingFilter, setReqListingFilter] = useState<'all' | 'listed' | 'not-listed'>('all');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   /* ── Stats ── */
@@ -68,6 +103,20 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     featured: sites.filter(s => s.isFeatured).length,
   }), [sites]);
   const pendingCount = useMemo(() => requests.filter(r => r.status === 'pending').length, [requests]);
+
+  /* ── Request listing stats ── */
+  const requestListingStats = useMemo(() => {
+    let listed = 0;
+    let notListed = 0;
+    requests.forEach(r => {
+      if (findMatchingSite(r, sites)) {
+        listed++;
+      } else {
+        notListed++;
+      }
+    });
+    return { listed, notListed, total: requests.length };
+  }, [requests, sites]);
 
   /* ── Filtered sites ── */
   const filteredSites = useMemo(() => {
@@ -80,12 +129,21 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   const filteredReqs = useMemo(() => {
     let list = requests;
     if (reqFilter !== 'all') list = list.filter(r => r.status === reqFilter);
+    if (reqListingFilter === 'listed') {
+      list = list.filter(r => Boolean(findMatchingSite(r, sites)));
+    } else if (reqListingFilter === 'not-listed') {
+      list = list.filter(r => !findMatchingSite(r, sites));
+    }
     if (reqSearch.trim()) {
       const q = reqSearch.toLowerCase();
-      list = list.filter(r => r.siteName.toLowerCase().includes(q) || r.siteUrl.toLowerCase().includes(q));
+      list = list.filter(r => 
+        r.siteName.toLowerCase().includes(q) || 
+        r.siteUrl.toLowerCase().includes(q) ||
+        (r.reason && r.reason.toLowerCase().includes(q))
+      );
     }
     return list;
-  }, [requests, reqFilter, reqSearch]);
+  }, [requests, reqFilter, reqListingFilter, reqSearch, sites]);
 
   /* ── Refresh ── */
   const refreshSites = useCallback(async () => {
@@ -366,17 +424,41 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
           <>
             {/* Filters */}
             <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-              <div style={{ position: 'relative', flex: '1 1 200px', maxWidth: 340 }}>
+              <div style={{ position: 'relative', flex: '1 1 200px', maxWidth: 300 }}>
                 <svg style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 <input type="text" placeholder="Search requests..." value={reqSearch} onChange={e => setReqSearch(e.target.value)} style={{ width: '100%', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 9, padding: '8px 12px 8px 30px', color: 'var(--text-primary)', fontSize: 13, outline: 'none' }} onFocus={e => { e.currentTarget.style.borderColor = 'var(--text-accent)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--glow)'; }} onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }} />
               </div>
-              <div style={{ display: 'flex', gap: 5 }}>
+
+              {/* Request Status Filter */}
+              <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.02)', padding: '3px', borderRadius: 8, border: '1px solid var(--border)' }}>
                 {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
                   <button key={f} onClick={() => setReqFilter(f)}
-                    style={{ padding: '6px 13px', borderRadius: 7, border: '1px solid', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', textTransform: 'capitalize', borderColor: reqFilter === f ? 'var(--border-accent)' : 'var(--border)', background: reqFilter === f ? 'rgba(139,92,246,0.12)' : 'transparent', color: reqFilter === f ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                    style={{ padding: '5px 11px', borderRadius: 6, border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', textTransform: 'capitalize', background: reqFilter === f ? 'rgba(139,92,246,0.2)' : 'transparent', color: reqFilter === f ? 'var(--text-primary)' : 'var(--text-muted)' }}
                   >{f}</button>
                 ))}
               </div>
+
+              {/* Live Directory Listing Filter */}
+              <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.02)', padding: '3px', borderRadius: 8, border: '1px solid var(--border)' }}>
+                <button onClick={() => setReqListingFilter('all')}
+                  style={{ padding: '5px 11px', borderRadius: 6, border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: reqListingFilter === 'all' ? 'rgba(139,92,246,0.2)' : 'transparent', color: reqListingFilter === 'all' ? 'var(--text-primary)' : 'var(--text-muted)' }}
+                >All ({requestListingStats.total})</button>
+
+                <button onClick={() => setReqListingFilter('listed')}
+                  style={{ padding: '5px 11px', borderRadius: 6, border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: reqListingFilter === 'listed' ? 'rgba(16,185,129,0.2)' : 'transparent', color: reqListingFilter === 'listed' ? '#34d399' : 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: 5 }}
+                >
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }}></span>
+                  Listed on Website ({requestListingStats.listed})
+                </button>
+
+                <button onClick={() => setReqListingFilter('not-listed')}
+                  style={{ padding: '5px 11px', borderRadius: 6, border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: reqListingFilter === 'not-listed' ? 'rgba(239,68,68,0.2)' : 'transparent', color: reqListingFilter === 'not-listed' ? '#f87171' : 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: 5 }}
+                >
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444' }}></span>
+                  Not on Website ({requestListingStats.notListed})
+                </button>
+              </div>
+
               <button onClick={refreshRequests} title="Refresh" style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 10px', color: 'var(--text-muted)', fontSize: 14, cursor: 'pointer' }}>↻</button>
             </div>
 
@@ -385,13 +467,16 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
             {filteredReqs.length === 0 ? (
               <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
                 <div style={{ fontSize: 32, marginBottom: 10 }}>📬</div>
-                <p>Koi request nahi mili.</p>
+                <p>No matching requests found.</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {filteredReqs.map(req => {
                   const st = STATUS_STYLE[req.status];
                   const busy = updatingId === req.id;
+                  const matchingSite = findMatchingSite(req, sites);
+                  const isListed = Boolean(matchingSite);
+
                   return (
                     <div key={req.id} style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '18px 20px', display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
                       {/* Left: info */}
@@ -399,6 +484,17 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, flexWrap: 'wrap' }}>
                           <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--text-primary)' }}>{req.siteName}</span>
                           <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: st.bg, color: st.color }}>{st.label}</span>
+                          
+                          {/* Live Listed Indicator */}
+                          {isListed ? (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)', display: 'inline-flex', alignItems: 'center', gap: 4 }} title={`Listed as "${matchingSite?.name}" in ${matchingSite?.category}`}>
+                              <span>✓</span> Listed on Website ({matchingSite?.category})
+                            </span>
+                          ) : (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <span>✕</span> Not on Website
+                            </span>
+                          )}
                         </div>
                         <a href={req.siteUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)', fontSize: 12, textDecoration: 'none', display: 'block', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                           onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-accent)')}
@@ -424,24 +520,27 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
                       </div>
                       {/* Right: actions */}
                       <div style={{ display: 'flex', gap: 7, flexShrink: 0, flexWrap: 'wrap', alignItems: 'center' }}>
-                        {req.status === 'approved' && (
-                          <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 6, background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                            ⚡ Live on Website
-                          </span>
+                        {isListed && matchingSite && (
+                          <button onClick={() => openEdit(matchingSite)}
+                            style={{ padding: '7px 12px', background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.3)', borderRadius: 8, color: 'var(--text-accent)', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s' }}
+                            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.22)'}
+                            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.12)'}
+                            title="Edit this site directly in the site directory"
+                          >✎ Edit Listed Site</button>
                         )}
-                        {req.status !== 'approved' && (
+                        {!isListed && req.status !== 'approved' && (
                           <button disabled={busy} onClick={() => updateReqStatus(req.id, 'approved')}
                             style={{ padding: '7px 14px', background: 'rgba(16,185,129,0.14)', border: '1px solid rgba(16,185,129,0.35)', borderRadius: 8, color: '#10b981', fontSize: 12, fontWeight: 700, cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.5 : 1, transition: 'all 0.15s' }}
                             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(16,185,129,0.25)'}
                             onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(16,185,129,0.14)'}
                           >✓ Approve & Publish Live</button>
                         )}
-                        {req.status !== 'approved' && (
+                        {!isListed && (
                           <button disabled={busy} onClick={() => approveAndEdit(req)}
                             style={{ padding: '7px 12px', background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.3)', borderRadius: 8, color: '#60a5fa', fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s' }}
                             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(59,130,246,0.22)'}
                             onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(59,130,246,0.12)'}
-                          >✏️ Edit & Publish</button>
+                          >{req.status === 'approved' ? '+ Re-Publish to Website' : '✏️ Edit & Publish'}</button>
                         )}
                         {req.status !== 'rejected' && (
                           <button disabled={busy} onClick={() => updateReqStatus(req.id, 'rejected')}
