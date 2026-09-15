@@ -1855,3 +1855,31 @@ body.is-admin-route .sc-card--native-ad {
   .vpn-headline { font-size: 12px; white-space: normal; }
 }
 
+/* ═══════════════════════════════════════════════════
+   SUPPRESS ADSENSE AD INTENTS & INLINE CHIPS/BADGES
+   ("Watch Premium Videos", Related Search Pills, etc.)
+═══════════════════════════════════════════════════ */
+.google-anno-skip .google-anno-term,
+.google-anno-skip .google-anno-chip,
+.google-anno-skip [class*="google-anno"],
+.google-anno-term,
+.google-anno-chip,
+[class*="google-anno"],
+[id*="google-anno"],
+[data-google-ad-intent],
+[data-google-anno],
+a[data-google-query-id],
+a[data-google-interstitial],
+a[href*="googleads.g.doubleclick.net/pagead/ads?client="],
+.google-auto-placed,
+ins.adsbygoogle[data-ad-format="autorelaxed"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+

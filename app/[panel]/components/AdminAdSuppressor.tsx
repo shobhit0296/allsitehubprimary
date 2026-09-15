@@ -25,6 +25,10 @@ const AD_SELECTORS = [
   'div[id^="google_ads_"]',
   'div[id^="container-36a34e7c2d7095493196dd10bc56ad23"]',
   '.google-auto-placed',
+  '.google-anno-term',
+  '.google-anno-chip',
+  '[class*="google-anno"]',
+  '[id*="google-anno"]',
   '.adsbygoogle',
 ];
 

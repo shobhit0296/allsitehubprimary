@@ -39,7 +39,7 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
               boxShadow: `0 0 14px ${accent}55`,
             }}
           />
-          <div>
+          <div className="google-anno-skip">
             <div className="flex items-center gap-2 sm:gap-3 mb-0.5 sm:mb-1">
               <CategoryIcon name={category.name} size={22} className="shrink-0 transition-transform duration-300 group-hover:scale-110" />
               <h2 className="font-headline text-[1.1rem] sm:text-[1.55rem] font-bold tracking-[-0.02em] text-[var(--text-primary)]">
@@ -52,7 +52,7 @@ export default function CategorySection({ category, sites, bookmarks, onToggleBo
                 {sites.length}
               </span>
             </div>
-            <p className="text-[12px] sm:text-[14px] text-[var(--text-muted)] leading-snug line-clamp-1 sm:line-clamp-none">
+            <p className="text-[12px] sm:text-[14px] text-[var(--text-muted)] leading-snug line-clamp-1 sm:line-clamp-none google-anno-skip">
               {category.description}
             </p>
           </div>

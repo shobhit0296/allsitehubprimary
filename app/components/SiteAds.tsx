@@ -15,23 +15,47 @@ export default function SiteAds() {
   const isAdmin = isAdminRoute(pathname);
 
   useEffect(() => {
-    // 1. Purge annoying floating in-page push / social bar notification boxes
-    const floatingBarSelectors = [
+    // 1. Purge annoying floating in-page push, social bars, and injected ad-intent chips ("Watch Premium Videos", etc.)
+    const inlineAdChipSelectors = [
       '#adsterra-social-bar',
       '[id*="adsterra-social-bar"]',
       '[class*="adsterra-social-bar"]',
       'div[class*="inpage-push"]',
       'div[id*="inpage-push"]',
+      '.google-anno-term',
+      '.google-anno-chip',
+      '[class*="google-anno"]',
+      '[id*="google-anno"]',
+      '[data-google-ad-intent]',
+      '[data-google-anno]',
+      'a[data-google-ad-intent]',
+      'a[data-google-query-id]',
+      'a[data-google-interstitial]',
     ];
 
-    floatingBarSelectors.forEach(sel => {
-      try {
-        const els = document.querySelectorAll(sel);
-        els.forEach(el => el.remove());
-      } catch {
-        // ignore
-      }
-    });
+    function purgeChips() {
+      inlineAdChipSelectors.forEach(sel => {
+        try {
+          const els = document.querySelectorAll(sel);
+          els.forEach(el => el.remove());
+        } catch {
+          // ignore
+        }
+      });
+    }
+
+    purgeChips();
+
+    // Observe asynchronous injections from AdSense Auto Ads
+    let observer: MutationObserver | null = null;
+    try {
+      observer = new MutationObserver(() => {
+        purgeChips();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    } catch {
+      // ignore
+    }
 
     // 2. If on admin route, purge ALL ad networks, banners, redirection scripts, and iframes
     if (isAdmin) {
@@ -59,6 +83,12 @@ export default function SiteAds() {
         }
       });
     }
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+    };
   }, [isAdmin, pathname]);
 
   if (isAdmin) {
