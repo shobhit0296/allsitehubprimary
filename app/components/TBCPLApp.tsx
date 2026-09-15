@@ -9,6 +9,7 @@ import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
 import AdSenseBanner from './AdSenseBanner';
+import AdsterraNativeBanner from './AdsterraNativeBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
@@ -341,8 +342,13 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
                   sites={getSitesForCategory(cat.name)}
                   bookmarks={bookmarks}
                   onToggleBookmark={toggleBookmark}
-                  showAdCard={index === 0}
+                  showAdCard={false}
                 />
+                {index === 0 && (
+                  <div className="my-6">
+                    <AdsterraNativeBanner />
+                  </div>
+                )}
                 {(index === 1 || index === 4) && (
                   <div className="my-6">
                     <AdSenseBanner />

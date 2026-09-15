@@ -11,6 +11,7 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
 import VpnCallout from '../../components/VpnCallout';
 import AdSenseBanner from '../../components/AdSenseBanner';
+import AdsterraNativeBanner from '../../components/AdsterraNativeBanner';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -208,8 +209,13 @@ export default async function SiteDetailPage({ params }: Props) {
             </div>
           </div>
 
+          {/* Sponsored Recommendations Adsterra Widget */}
+          <div className="my-8">
+            <AdsterraNativeBanner />
+          </div>
+
           {/* Advertisement Banner */}
-          <div className="my-10">
+          <div className="my-8">
             <AdSenseBanner />
           </div>
 

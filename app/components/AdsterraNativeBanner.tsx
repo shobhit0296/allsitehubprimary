@@ -23,32 +23,31 @@ export default function AdsterraNativeBanner({ className = '' }: AdsterraNativeB
 
   useEffect(() => {
     if (isAdmin) return;
-    // Check if script is already added
-    let script = document.querySelector(`script[src="${SCRIPT_SRC}"]`) as HTMLScriptElement | null;
 
-    if (!script) {
-      script = document.createElement('script');
+    // Give DOM a microtask to ensure container is fully in layout
+    const timer = setTimeout(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      // Remove existing script tag if any to force re-execution
+      const existing = document.querySelector(`script[src*="36a34e7c2d7095493196dd10bc56ad23"]`);
+      if (existing) {
+        existing.remove();
+      }
+
+      const script = document.createElement('script');
       script.src = SCRIPT_SRC;
       script.async = true;
       script.setAttribute('data-cfasync', 'false');
       document.body.appendChild(script);
-    } else {
-      // If script was already loaded, re-trigger invocation if container is empty
-      const container = document.getElementById(CONTAINER_ID);
-      if (container && container.childNodes.length === 0) {
-        window.dispatchEvent(new Event('popstate'));
-      }
-    }
+    }, 50);
 
     return () => {
-      setTimeout(() => {
-        if (!document.getElementById(CONTAINER_ID)) {
-          const s = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
-          if (s) s.remove();
-        }
-      }, 100);
+      clearTimeout(timer);
+      const s = document.querySelector(`script[src*="36a34e7c2d7095493196dd10bc56ad23"]`);
+      if (s) s.remove();
     };
-  }, [isAdmin]);
+  }, [isAdmin, pathname]);
 
   if (isAdmin) return null;
 

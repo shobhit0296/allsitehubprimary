@@ -4,9 +4,6 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { isAdminRoute } from '@/lib/is-admin-route';
 
-import Script from 'next/script';
-import AdsterraPopunderManager from './AdsterraPopunderManager';
-
 /**
  * SiteAds — Master Controller for all network and display advertisements.
  * 1. ADS ARE NEVER LOADED OR RENDERED ON ANY ADMIN PANEL ROUTE.
@@ -68,23 +65,5 @@ export default function SiteAds() {
     return null;
   }
 
-  return (
-    <>
-      {/* Google AdSense Auto Ads */}
-      <Script
-        id="adsbygoogle-init"
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
-
-      {/* Adsterra Anti-AdBlock Popunder / Redirection Script */}
-      <Script
-        id="adsterra-popunder"
-        src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
-        strategy="afterInteractive"
-      />
-    </>
-  );
+  return null;
 }

@@ -268,7 +268,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* Network & Display Advertisements (Never loaded or shown on Admin Panel) */}
+        {/* Google AdSense Auto Ads */}
+        <Script
+          id="adsbygoogle-init"
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
+        {/* Adsterra Anti-AdBlock Popunder / Redirection Script */}
+        <Script
+          id="adsterra-popunder"
+          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
+          strategy="afterInteractive"
+        />
+
+        {/* Network & Display Advertisements Controller (Purges popups and shields Admin) */}
         <SiteAds />
       </body>
     </html>
