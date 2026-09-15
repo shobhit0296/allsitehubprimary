@@ -179,6 +179,11 @@ export default async function CategoryPage({ params }: Props) {
 
         <CategorySiteGrid sites={categorySites} category={cat.name} />
 
+        {/* Category Advertisement Banner */}
+        <div className="my-10">
+          <AdSenseBanner />
+        </div>
+
         {/* Other Categories */}
         <div className="mt-20 pt-10 border-t border-white/[0.08]">
           <h3 className="font-headline text-lg font-bold text-[var(--text-primary)] mb-5">

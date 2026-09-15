@@ -208,6 +208,10 @@ export default async function SiteDetailPage({ params }: Props) {
             </div>
           </div>
 
+          {/* Advertisement Banner */}
+          <div className="my-10">
+            <AdSenseBanner />
+          </div>
 
           {/* Related Sites */}
           {relatedSites.length > 0 && (

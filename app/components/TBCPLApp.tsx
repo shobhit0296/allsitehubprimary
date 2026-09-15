@@ -335,14 +335,20 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
             </div>
           ) : (
             visibleCategories.map((cat, index) => (
-              <CategorySection
-                key={cat.name}
-                category={cat}
-                sites={getSitesForCategory(cat.name)}
-                bookmarks={bookmarks}
-                onToggleBookmark={toggleBookmark}
-                showAdCard={index === 0}
-              />
+              <React.Fragment key={cat.name}>
+                <CategorySection
+                  category={cat}
+                  sites={getSitesForCategory(cat.name)}
+                  bookmarks={bookmarks}
+                  onToggleBookmark={toggleBookmark}
+                  showAdCard={index === 0}
+                />
+                {(index === 1 || index === 4) && (
+                  <div className="my-6">
+                    <AdSenseBanner />
+                  </div>
+                )}
+              </React.Fragment>
             ))
           )}
 
