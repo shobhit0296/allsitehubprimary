@@ -36,10 +36,18 @@ export default function AdsterraNativeBanner({ className = '' }: AdsterraNativeB
       // If script was already loaded, re-trigger invocation if container is empty
       const container = document.getElementById(CONTAINER_ID);
       if (container && container.childNodes.length === 0) {
-        // Trigger a fake popstate/pushstate or script re-load so Adsterra populates the container
         window.dispatchEvent(new Event('popstate'));
       }
     }
+
+    return () => {
+      setTimeout(() => {
+        if (!document.getElementById(CONTAINER_ID)) {
+          const s = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
+          if (s) s.remove();
+        }
+      }, 100);
+    };
   }, [isAdmin]);
 
   if (isAdmin) return null;

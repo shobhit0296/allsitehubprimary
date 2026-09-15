@@ -217,12 +217,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="referrer" content="no-referrer-when-downgrade" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://pl31253047.profitableratecpmnetwork.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://bibleearthquake.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://google-analytics.com" />
-        <link rel="dns-prefetch" href="https://pl31253047.profitableratecpmnetwork.com" />
         <link rel="dns-prefetch" href="https://bibleearthquake.com" />
         <link rel="preconnect" href="https://www.google.com" />
         <script

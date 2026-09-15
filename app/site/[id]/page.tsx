@@ -202,10 +202,6 @@ export default async function SiteDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* ── Fixed Position AdSense Banner ── */}
-          <div className="my-8">
-            <AdSenseBanner />
-          </div>
 
           {/* Related Sites */}
           {relatedSites.length > 0 && (

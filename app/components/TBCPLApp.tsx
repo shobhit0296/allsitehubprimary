@@ -246,8 +246,6 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
-      {/* ── Fixed Position AdSense Banner — between Hero and Directory ── */}
-      <AdSenseBanner client="ca-pub-1348117799300846" />
       {/* Directory Content Section */}
 
       <section

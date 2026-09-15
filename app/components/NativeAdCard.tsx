@@ -31,6 +31,16 @@ export default function NativeAdCard() {
         window.dispatchEvent(new Event('popstate'));
       }
     }
+
+    return () => {
+      // Cleanup when unmounting or navigating away
+      setTimeout(() => {
+        if (!document.getElementById(CONTAINER_ID)) {
+          const s = document.querySelector(`script[src="${SCRIPT_SRC}"]`);
+          if (s) s.remove();
+        }
+      }, 100);
+    };
   }, [isAdmin]);
 
   if (isAdmin) return null;

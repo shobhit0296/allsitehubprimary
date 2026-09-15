@@ -1,37 +1,57 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Script from 'next/script';
 import { useEffect } from 'react';
 import { isAdminRoute } from '@/lib/is-admin-route';
-import AdsterraPopunderManager from './AdsterraPopunderManager';
 
 /**
  * SiteAds — Master Controller for all network and display advertisements.
  * Ensures strict compliance with advertising policies and pristine UX:
  * 1. ADS ARE NEVER LOADED OR RENDERED ON ANY ADMIN PANEL ROUTE.
- * 2. If navigating to an admin route from a public page, cleans up any existing ad elements.
+ * 2. Pop-up ads, social bars, and aggressive popunders are PERMANENTLY REMOVED.
+ * 3. Cleans up any lingering pop-up or ad elements.
  */
 export default function SiteAds() {
   const pathname = usePathname();
   const isAdmin = isAdminRoute(pathname);
 
   useEffect(() => {
+    // 1. Always purge pop-up ads, social bars, and popunders site-wide
+    const popupSelectors = [
+      '#adsterra-social-bar',
+      '#adsterra-popunder-dynamic',
+      'script[src*="af43a8a497a35fa461a277ea55d8898a"]',
+      '[id*="adsterra-social-bar"]',
+      '[class*="adsterra-social-bar"]',
+      'div[class*="inpage-push"]',
+      'div[id*="inpage-push"]',
+    ];
+
+    popupSelectors.forEach(sel => {
+      try {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => el.remove());
+      } catch {
+        // ignore
+      }
+    });
+
+    // 2. If on admin route, purge ALL ad networks, banners, and iframes
     if (isAdmin) {
-      // Purge any lingering ad containers or iframes if transitioning to admin panel
-      const selectors = [
-        '#adsterra-social-bar',
-        '#adsterra-popunder-dynamic',
+      const adminPurgeSelectors = [
         'script[src*="profitableratecpmnetwork.com"]',
         'script[src*="bibleearthquake.com"]',
         'script[src*="pagead2.googlesyndication.com"]',
+        'script[src*="highcpmgate.com"]',
         'ins.adsbygoogle',
         'iframe[id^="aswift_"]',
         'iframe[id^="google_ads_"]',
         'div[id^="google_ads_"]',
+        'div[id^="container-36a34e7c2d7095493196dd10bc56ad23"]',
+        '.google-auto-placed',
         '.adsbygoogle',
       ];
-      selectors.forEach(sel => {
+      adminPurgeSelectors.forEach(sel => {
         try {
           const els = document.querySelectorAll(sel);
           els.forEach(el => el.remove());
@@ -40,31 +60,8 @@ export default function SiteAds() {
         }
       });
     }
-  }, [isAdmin]);
+  }, [isAdmin, pathname]);
 
-  if (isAdmin) {
-    return null;
-  }
-
-  return (
-    <>
-      {/* AdSense Auto Ads */}
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-      />
-
-      {/* Adsterra Social Bar */}
-      <Script
-        id="adsterra-social-bar"
-        src="https://pl31253047.profitableratecpmnetwork.com/cf/09/69/cf09691eee1a394e996784f3aa7b4021.js"
-        strategy="afterInteractive"
-      />
-
-      {/* Adsterra Anti-AdBlock Popunder with 40s Reset Frequency Manager */}
-      <AdsterraPopunderManager />
-    </>
-  );
+  // Pop-up ads & admin ads are completely suppressed
+  return null;
 }

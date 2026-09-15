@@ -7,7 +7,8 @@ export function isAdminRoute(pathname?: string | null): boolean {
     if (
       (window as unknown as { __IS_ADMIN_PANEL?: boolean }).__IS_ADMIN_PANEL ||
       document.documentElement.getAttribute('data-admin-panel') === 'true' ||
-      document.body?.classList?.contains('is-admin-route')
+      document.body?.classList?.contains('is-admin-route') ||
+      document.querySelector('[data-admin-panel="true"]') !== null
     ) {
       return true;
     }
@@ -40,8 +41,12 @@ export function isAdminRoute(pathname?: string | null): boolean {
     return true;
   }
 
-  const envPath = (process.env.NEXT_PUBLIC_ADMIN_PANEL_PATH || '').toLowerCase().trim();
-  if (envPath && first === envPath) {
+  const envPublic = (process.env.NEXT_PUBLIC_ADMIN_PANEL_PATH || '').toLowerCase().trim();
+  const envPrivate = (process.env.ADMIN_PANEL_PATH || '').toLowerCase().trim();
+  if (envPublic && (first === envPublic || segments.includes(envPublic))) {
+    return true;
+  }
+  if (envPrivate && (first === envPrivate || segments.includes(envPrivate))) {
     return true;
   }
 
