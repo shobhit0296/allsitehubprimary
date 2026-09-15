@@ -702,7 +702,7 @@ function SitesTable({ sites, categories, searchActive, apiReorder, onEdit, onDel
   }
 
   const groups = categories
-    .map(category => ({ category, items: sites.filter(s => s.category === category).sort((a, b) => a.order - b.order) }))
+    .map(category => ({ category, items: sites.filter(s => s.category?.toLowerCase() === category?.toLowerCase()).sort((a, b) => a.order - b.order) }))
     .filter(g => g.items.length > 0);
 
   return (

@@ -6,10 +6,19 @@ export const CATEGORY_ACCENTS: Record<string, string> = {
   'Live TV & Sports': '#10b981',
   Paid: '#f43f5e',
   Apps: '#06b6d4',
+  'K Drama': '#ec4899',
+  'K DRAMA': '#ec4899',
+  Download: '#10b981',
+  DOWNLOAD: '#10b981',
+  Games: '#f97316',
+  GAMES: '#f97316',
 };
 
 export function categoryAccent(name: string): string {
-  return CATEGORY_ACCENTS[name] ?? '#3b82f6';
+  if (!name) return '#3b82f6';
+  return CATEGORY_ACCENTS[name] ||
+    CATEGORY_ACCENTS[Object.keys(CATEGORY_ACCENTS).find(k => k.toLowerCase() === name.toLowerCase()) || ''] ||
+    '#3b82f6';
 }
 
 export interface ThemeOption {

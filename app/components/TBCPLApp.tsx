@@ -107,16 +107,22 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
   const categoryCounts = useMemo(() => {
     const base = filterSites(liveSites, '', activeRegion, 'all');
     return categories.reduce((acc, cat) => {
-      acc[cat.name] = base.filter(s => s.category === cat.name).length;
+      acc[cat.name] = base.filter(s => s.category?.toLowerCase() === cat.name?.toLowerCase()).length;
       return acc;
     }, {} as Record<string, number>);
   }, [liveSites, activeRegion, categories]);
 
   const grouped = useMemo(() => getSitesByCategory(filteredSites), [filteredSites]);
 
+  const getSitesForCategory = useCallback((catName: string) => {
+    if (grouped[catName] && grouped[catName].length > 0) return grouped[catName];
+    const match = Object.keys(grouped).find(k => k.toLowerCase() === catName.toLowerCase());
+    return match ? (grouped[match] ?? []) : [];
+  }, [grouped]);
+
   const visibleCategories = useMemo(
-    () => categories.filter(c => (grouped[c.name]?.length ?? 0) > 0),
-    [categories, grouped],
+    () => categories.filter(c => getSitesForCategory(c.name).length > 0),
+    [categories, getSitesForCategory],
   );
 
   // ── Scroll spy — highlight sidebar category as sections scroll into view ──
@@ -321,7 +327,7 @@ export default function AllsitehubApp({ sites, categories, regions }: Allsitehub
               <CategorySection
                 key={cat.name}
                 category={cat}
-                sites={grouped[cat.name] ?? []}
+                sites={getSitesForCategory(cat.name)}
                 bookmarks={bookmarks}
                 onToggleBookmark={toggleBookmark}
                 showAdCard={index === 0}

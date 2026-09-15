@@ -110,6 +110,18 @@ function ensureOrder(data: DB): boolean {
 
 export async function readDB(): Promise<DB> {
   const data = redis ? await readDBRedis() : readDBFs();
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { CATEGORIES } = require('./data') as typeof import('./data');
+  const defaultCats = CATEGORIES.map((c: { name: string }) => c.name);
+  if (!Array.isArray(data.categories)) {
+    data.categories = defaultCats;
+  } else {
+    for (const cat of defaultCats) {
+      if (!data.categories.some(c => c.toLowerCase() === cat.toLowerCase())) {
+        data.categories.push(cat);
+      }
+    }
+  }
   if (ensureOrder(data)) await writeDB(data);
   return data;
 }

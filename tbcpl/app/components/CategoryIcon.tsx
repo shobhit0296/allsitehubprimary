@@ -167,6 +167,55 @@ export default function CategoryIcon({ name, className = 'w-6 h-6', size = 28 }:
     );
   }
 
+  if (norm.includes('k drama') || norm.includes('kdrama') || norm.includes('drama')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className={className}>
+        <defs>
+          <linearGradient id="kdramaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ec4899" />
+            <stop offset="100%" stopColor="#f43f5e" />
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#kdramaGrad)" fillOpacity="0.18" stroke="url(#kdramaGrad)" strokeWidth="2" />
+        <path d="M22 13.5C22 10.5 19 8.5 16 11.5C13 8.5 10 10.5 10 13.5C10 18 16 22 16 22C16 22 22 18 22 13.5Z" fill="url(#kdramaGrad)" />
+      </svg>
+    );
+  }
+
+  if (norm.includes('download')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className={className}>
+        <defs>
+          <linearGradient id="dlGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10b981" />
+            <stop offset="100%" stopColor="#059669" />
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#dlGrad)" fillOpacity="0.18" stroke="url(#dlGrad)" strokeWidth="2" />
+        <path d="M16 9V19M16 19L12 15M16 19L20 15" stroke="url(#dlGrad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M9 22H23" stroke="url(#dlGrad)" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (norm.includes('game')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className={className}>
+        <defs>
+          <linearGradient id="gameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f97316" />
+            <stop offset="100%" stopColor="#ef4444" />
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#gameGrad)" fillOpacity="0.18" stroke="url(#gameGrad)" strokeWidth="2" />
+        <rect x="7" y="11" width="18" height="11" rx="4" stroke="url(#gameGrad)" strokeWidth="2" />
+        <path d="M11 14V19M8.5 16.5H13.5" stroke="url(#gameGrad)" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="19" cy="15" r="1" fill="url(#gameGrad)" />
+        <circle cx="21.5" cy="17.5" r="1" fill="url(#gameGrad)" />
+      </svg>
+    );
+  }
+
   // Fallback Category Icon
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" className={className}>

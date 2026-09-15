@@ -142,6 +142,32 @@ export async function readDB(): Promise<DB> {
 
   if (!data) {
     data = getBundledData();
+  } else {
+    // Ensure all configured default categories exist in data.categories
+    const defaultCats = CATEGORIES.map(c => c.name);
+    if (!Array.isArray(data.categories)) {
+      data.categories = defaultCats;
+    } else {
+      for (const cat of defaultCats) {
+        if (!data.categories.some(c => c.toLowerCase() === cat.toLowerCase())) {
+          data.categories.push(cat);
+        }
+      }
+    }
+
+    // Ensure any category with zero sites gets its bundled starter sites
+    const bundled = getBundledData();
+    for (const cat of defaultCats) {
+      const hasSites = data.sites.some(s => s.category.toLowerCase() === cat.toLowerCase());
+      if (!hasSites) {
+        const starterSitesForCat = bundled.sites.filter(s => s.category.toLowerCase() === cat.toLowerCase());
+        for (const s of starterSitesForCat) {
+          if (!data.sites.some(existing => existing.id === s.id || existing.domain === s.domain)) {
+            data.sites.push(s);
+          }
+        }
+      }
+    }
   }
 
   ensureOrder(data);

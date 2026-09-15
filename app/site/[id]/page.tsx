@@ -27,6 +27,12 @@ function getSiteOverview(site: { name: string; domain: string; category: string;
     'Live TV & Sports': 'live television and sports streaming portal',
     'Paid': 'premium subscription streaming service',
     'Apps': 'media player and streaming application',
+    'K Drama': 'Korean drama and Asian cinema streaming platform',
+    'K DRAMA': 'Korean drama and Asian cinema streaming platform',
+    'Download': 'direct download and media repository portal',
+    'DOWNLOAD': 'direct download and media repository portal',
+    'Games': 'gaming hub and browser gaming platform',
+    'GAMES': 'gaming hub and browser gaming platform',
   };
   const typeDesc = categoryTerms[site.category] || 'curated online resource';
   const trustDesc = site.isTrusted ? ' It has been verified under the AllSiteHub Quality Standard for uptime and security protocols.' : '';

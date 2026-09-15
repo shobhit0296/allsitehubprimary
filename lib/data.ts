@@ -28,6 +28,9 @@ export const CATEGORIES: Category[] = [
   { name: 'Live TV & Sports', icon: '📺', description: 'Live TV channels and sports streaming.' },
   { name: 'Paid',           icon: '💳', description: 'Premium paid streaming services.' },
   { name: 'Apps',           icon: '📱', description: 'Media players and streaming apps.' },
+  { name: 'K Drama',        icon: '🎭', description: 'Watch Korean dramas, series, and Asian shows online.' },
+  { name: 'Download',       icon: '📥', description: 'Direct download sites for movies, software, and media.' },
+  { name: 'Games',          icon: '🎮', description: 'Discover, play, and download free and PC games online.' },
 ];
 
 export const REGIONS = [
