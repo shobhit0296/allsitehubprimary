@@ -141,7 +141,7 @@ const nextConfig: NextConfig = {
       {
         source: "/",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store, no-cache, must-revalidate, max-age=0" },
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store, no-cache, must-revalidate, max-age=0" },
         ],
@@ -149,7 +149,7 @@ const nextConfig: NextConfig = {
       {
         source: "/:path(category.*|site.*|collections.*|recent|about|dmca|request|how-we-review-websites|privacy|terms)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store, no-cache, must-revalidate, max-age=0" },
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store, no-cache, must-revalidate, max-age=0" },
         ],
