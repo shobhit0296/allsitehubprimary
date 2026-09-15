@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { Site, Category } from '@/lib/data';
-import { REGION_FLAGS, filterSites, getSitesByCategory } from '@/lib/data';
+import { REGION_FLAGS, filterSites, getSitesByCategory, CATEGORIES as DEFAULT_CATEGORIES } from '@/lib/data';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
@@ -23,7 +23,18 @@ interface AllsitehubAppProps {
   regions: string[];
 }
 
-export default function AllsitehubApp({ sites, categories, regions }: AllsitehubAppProps) {
+export default function AllsitehubApp({ sites, categories: initialCategories, regions }: AllsitehubAppProps) {
+  // Merge default categories so new categories render immediately even if edge/proxy caches serve older HTML props
+  const categories = useMemo(() => {
+    const list = Array.isArray(initialCategories) ? [...initialCategories] : [];
+    for (const def of DEFAULT_CATEGORIES) {
+      if (!list.some(c => c.name.toLowerCase() === def.name.toLowerCase())) {
+        list.push(def);
+      }
+    }
+    return list;
+  }, [initialCategories]);
+
   const [liveSites, setLiveSites] = useState<Site[]>(sites);
   const [search, setSearch] = useState('');
   const [activeRegion, setActiveRegion] = useState('US');

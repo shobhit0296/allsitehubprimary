@@ -53,6 +53,186 @@ export const REGION_FLAGS: Record<string, string> = {
 
 export const SITES: Site[] = [
   {
+  "id": "kdrama-dramacool",
+  "name": "DRAMACOOL",
+  "url": "https://dramacool.city/",
+  "domain": "dramacool.city",
+  "category": "K Drama",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "featured",
+    "trusted"
+  ],
+  "isTrusted": true,
+  "isNew": true,
+  "isFeatured": true,
+  "description": "Stream and watch popular Korean dramas, Asian series, and movies with English subtitles.",
+  "addedAt": 1789445000000,
+  "order": 0,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=dramacool.city&sz=128"
+},
+  {
+  "id": "kdrama-kissasian",
+  "name": "KISSASIAN",
+  "url": "https://kissasian.lu/",
+  "domain": "kissasian.lu",
+  "category": "K Drama",
+  "regions": [
+    "Global"
+  ],
+  "tags": [],
+  "isTrusted": false,
+  "isNew": true,
+  "isFeatured": false,
+  "description": "Popular Asian drama streaming portal with extensive library of ongoing and completed Korean series.",
+  "addedAt": 1789445000000,
+  "order": 1,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=kissasian.lu&sz=128"
+},
+  {
+  "id": "kdrama-kocowa",
+  "name": "KOCOWA+",
+  "url": "https://www.kocowa.com/",
+  "domain": "kocowa.com",
+  "category": "K Drama",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted"
+  ],
+  "isTrusted": true,
+  "isNew": false,
+  "isFeatured": false,
+  "description": "Official Korean entertainment streaming destination with K-Dramas, variety shows, and K-Pop.",
+  "addedAt": 1789445000000,
+  "order": 2,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=kocowa.com&sz=128"
+},
+  {
+  "id": "dl-archive",
+  "name": "INTERNET ARCHIVE",
+  "url": "https://archive.org/",
+  "domain": "archive.org",
+  "category": "Download",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted",
+    "featured"
+  ],
+  "isTrusted": true,
+  "isNew": false,
+  "isFeatured": true,
+  "description": "Non-profit digital library offering millions of free downloadable books, movies, software, and public domain media.",
+  "addedAt": 1789445000000,
+  "order": 0,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=archive.org&sz=128"
+},
+  {
+  "id": "dl-1337x",
+  "name": "1337x",
+  "url": "https://1337x.to/",
+  "domain": "1337x.to",
+  "category": "Download",
+  "regions": [
+    "Global"
+  ],
+  "tags": [],
+  "isTrusted": false,
+  "isNew": false,
+  "isFeatured": false,
+  "description": "Popular directory providing verified magnet and torrent downloads for movies, software, games, and series.",
+  "addedAt": 1789445000000,
+  "order": 1,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=1337x.to&sz=128"
+},
+  {
+  "id": "dl-fitgirl",
+  "name": "FITGIRL REPACKS",
+  "url": "https://fitgirl-repacks.site/",
+  "domain": "fitgirl-repacks.site",
+  "category": "Download",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted"
+  ],
+  "isTrusted": true,
+  "isNew": false,
+  "isFeatured": false,
+  "description": "The official, highly trusted source for ultra-compressed PC repack downloads and software.",
+  "addedAt": 1789445000000,
+  "order": 2,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=fitgirl-repacks.site&sz=128"
+},
+  {
+  "id": "game-steam",
+  "name": "STEAM",
+  "url": "https://store.steampowered.com/",
+  "domain": "store.steampowered.com",
+  "category": "Games",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted",
+    "featured"
+  ],
+  "isTrusted": true,
+  "isNew": false,
+  "isFeatured": true,
+  "description": "The ultimate digital entertainment platform to play, connect, create, and download games.",
+  "addedAt": 1789445000000,
+  "order": 0,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=128"
+},
+  {
+  "id": "game-epic",
+  "name": "EPIC GAMES",
+  "url": "https://store.epicgames.com/",
+  "domain": "store.epicgames.com",
+  "category": "Games",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted"
+  ],
+  "isTrusted": true,
+  "isNew": false,
+  "isFeatured": false,
+  "description": "Curated PC gaming platform offering weekly free games, exclusives, and major titles.",
+  "addedAt": 1789445000000,
+  "order": 1,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=store.epicgames.com&sz=128"
+},
+  {
+  "id": "game-crazygames",
+  "name": "CRAZYGAMES",
+  "url": "https://www.crazygames.com/",
+  "domain": "crazygames.com",
+  "category": "Games",
+  "regions": [
+    "Global"
+  ],
+  "tags": [
+    "trusted"
+  ],
+  "isTrusted": true,
+  "isNew": true,
+  "isFeatured": false,
+  "description": "Instant-play browser games with thousands of free online single and multiplayer games.",
+  "addedAt": 1789445000000,
+  "order": 2,
+  "faviconUrl": "https://www.google.com/s2/favicons?domain=crazygames.com&sz=128"
+},
+
+  {
     "id": "ms2tg2e2jw8vg",
     "name": "ENMA",
     "url": "https://www.enma.lol/home",

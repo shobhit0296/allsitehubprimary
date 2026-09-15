@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Site, Category } from '@/lib/data';
-import { REGION_FLAGS, filterSites, getSitesByCategory } from '@/lib/data';
+import { REGION_FLAGS, filterSites, getSitesByCategory, CATEGORIES as DEFAULT_CATEGORIES } from '@/lib/data';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
@@ -21,7 +21,17 @@ interface AllsitehubAppProps {
   regions: string[];
 }
 
-export default function AllsitehubApp({ sites, categories, regions }: AllsitehubAppProps) {
+export default function AllsitehubApp({ sites, categories: initialCategories, regions }: AllsitehubAppProps) {
+  const categories = useMemo(() => {
+    const list = Array.isArray(initialCategories) ? [...initialCategories] : [];
+    for (const def of DEFAULT_CATEGORIES) {
+      if (!list.some(c => c.name.toLowerCase() === def.name.toLowerCase())) {
+        list.push(def);
+      }
+    }
+    return list;
+  }, [initialCategories]);
+
   const [search, setSearch] = useState('');
   const [activeRegion, setActiveRegion] = useState('US');
   const [activeCategory, setActiveCategory] = useState(categories[0]?.name ?? 'Movies & Shows');
