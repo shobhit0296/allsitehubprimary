@@ -4,30 +4,30 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { isAdminRoute } from '@/lib/is-admin-route';
 
+import Script from 'next/script';
+import AdsterraPopunderManager from './AdsterraPopunderManager';
+
 /**
  * SiteAds — Master Controller for all network and display advertisements.
- * Ensures strict compliance with advertising policies and pristine UX:
  * 1. ADS ARE NEVER LOADED OR RENDERED ON ANY ADMIN PANEL ROUTE.
- * 2. Pop-up ads, social bars, and aggressive popunders are PERMANENTLY REMOVED.
- * 3. Cleans up any lingering pop-up or ad elements.
+ * 2. Redirection ads (Popunder) and Google AdSense are active on public website routes.
+ * 3. Pop-up notification boxes and floating social bars are suppressed for a clean UI.
  */
 export default function SiteAds() {
   const pathname = usePathname();
   const isAdmin = isAdminRoute(pathname);
 
   useEffect(() => {
-    // 1. Always purge pop-up ads, social bars, and popunders site-wide
-    const popupSelectors = [
+    // 1. Purge annoying floating in-page push / social bar notification boxes
+    const floatingBarSelectors = [
       '#adsterra-social-bar',
-      '#adsterra-popunder-dynamic',
-      'script[src*="af43a8a497a35fa461a277ea55d8898a"]',
       '[id*="adsterra-social-bar"]',
       '[class*="adsterra-social-bar"]',
       'div[class*="inpage-push"]',
       'div[id*="inpage-push"]',
     ];
 
-    popupSelectors.forEach(sel => {
+    floatingBarSelectors.forEach(sel => {
       try {
         const els = document.querySelectorAll(sel);
         els.forEach(el => el.remove());
@@ -36,9 +36,11 @@ export default function SiteAds() {
       }
     });
 
-    // 2. If on admin route, purge ALL ad networks, banners, and iframes
+    // 2. If on admin route, purge ALL ad networks, banners, redirection scripts, and iframes
     if (isAdmin) {
       const adminPurgeSelectors = [
+        '#adsterra-popunder-dynamic',
+        'script[src*="af43a8a497a35fa461a277ea55d8898a"]',
         'script[src*="profitableratecpmnetwork.com"]',
         'script[src*="bibleearthquake.com"]',
         'script[src*="pagead2.googlesyndication.com"]',
@@ -62,6 +64,22 @@ export default function SiteAds() {
     }
   }, [isAdmin, pathname]);
 
-  // Pop-up ads & admin ads are completely suppressed
-  return null;
+  if (isAdmin) {
+    return null;
+  }
+
+  return (
+    <>
+      {/* Google AdSense Auto Ads */}
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+
+      {/* Redirection / Popunder Ads */}
+      <AdsterraPopunderManager />
+    </>
+  );
 }

@@ -1,23 +1,105 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { isAdminRoute } from '@/lib/is-admin-route';
+
+const ADSTERRA_SRC = 'https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js';
+const RESET_INTERVAL_MS = 40 * 1000; // 40-second reset frequency
 
 /**
- * AdsterraPopunderManager — Neutralized.
- * Pop-up ads, social bars, and popunders have been permanently disabled.
+ * AdsterraPopunderManager — Enforces redirection / popunder ads on public pages.
+ * Clears ad cookies, resets ad-tracking localStorage, and re-arms the popunder
+ * event listener every 40 seconds so clicks trigger redirection ads.
+ * Never runs on the admin panel.
  */
 export default function AdsterraPopunderManager() {
+  const pathname = usePathname();
+  const isAdmin = isAdminRoute(pathname);
+
   useEffect(() => {
-    // Ensure any previously injected popunder or social-bar scripts are purged
-    const dynamic = document.getElementById('adsterra-popunder-dynamic');
-    if (dynamic) dynamic.remove();
+    if (isAdmin) {
+      const existing = document.getElementById('adsterra-popunder-dynamic');
+      if (existing) existing.remove();
+      return;
+    }
 
-    const socialBar = document.getElementById('adsterra-social-bar');
-    if (socialBar) socialBar.remove();
+    function purgeAdTracking() {
+      // 1. Clear ad cookies while preserving essential site and admin session cookies
+      try {
+        const cookies = document.cookie.split(';');
+        for (const cookie of cookies) {
+          const eqPos = cookie.indexOf('=');
+          const name = (eqPos > -1 ? cookie.substring(0, eqPos) : cookie).trim();
+          if (
+            name &&
+            name !== 'ash_admin' &&
+            name !== 'admin_session' &&
+            name !== 'allSiteHub_theme'
+          ) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname.replace(/^www\./, '')}`;
+          }
+        }
+      } catch {
+        // Ignore
+      }
 
-    const badScripts = document.querySelectorAll('script[src*="af43a8a497a35fa461a277ea55d8898a"]');
-    badScripts.forEach(s => s.remove());
-  }, []);
+      // 2. Clear third-party / ad-related localStorage entries
+      try {
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && !key.startsWith('allSiteHub') && !key.startsWith('tbcpl')) {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch {
+        // Ignore
+      }
+
+      // 3. Clear sessionStorage
+      try {
+        sessionStorage.clear();
+      } catch {
+        // Ignore
+      }
+    }
+
+    function rearmPopunder() {
+      if (isAdminRoute(window.location.pathname)) return;
+      purgeAdTracking();
+
+      // Remove previous script instance to force re-run
+      const existing = document.getElementById('adsterra-popunder-dynamic');
+      if (existing) {
+        existing.remove();
+      }
+
+      // Re-inject the Adsterra redirection script
+      const script = document.createElement('script');
+      script.id = 'adsterra-popunder-dynamic';
+      script.src = `${ADSTERRA_SRC}?_t=${Date.now()}`;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // Initial trigger on mount
+    rearmPopunder();
+
+    // Re-arm every 40 seconds continuously
+    const interval = setInterval(() => {
+      rearmPopunder();
+    }, RESET_INTERVAL_MS);
+
+    return () => {
+      clearInterval(interval);
+      const existing = document.getElementById('adsterra-popunder-dynamic');
+      if (existing) existing.remove();
+    };
+  }, [isAdmin, pathname]);
+
+  if (isAdmin) return null;
 
   return null;
 }
