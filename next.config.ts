@@ -23,7 +23,10 @@ const ContentSecurityPolicy = `
     https://5gvci.com
     https://*.5gvci.com
     https://quge5.com
-    https://*.quge5.com;
+    https://*.quge5.com
+    https://*.e2ertt.com
+    https://*.6opo.com
+    https://*.vaimucuvikuwu.net;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -85,7 +88,7 @@ const ContentSecurityPolicy = `
     https://*.5gvci.com
     https://quge5.com
     https://*.quge5.com;
-  worker-src 'self' blob: https://5gvci.com https://*.5gvci.com https://quge5.com https://*.quge5.com;
+  worker-src 'self' blob: https://5gvci.com https://*.5gvci.com https://quge5.com https://*.quge5.com https://*.e2ertt.com https://*.6opo.com https://*.vaimucuvikuwu.net;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
