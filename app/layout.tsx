@@ -249,6 +249,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
+        {/* Stake AdsCoreLoader Script (Head) */}
+        <script
+          data-cfasync="false"
+          type="text/javascript"
+          id="AdsCoreLoader106969"
+          src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
+        />
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
@@ -293,13 +300,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
         />
 
-        {/* Stake AdsCoreLoader Script */}
-        <Script
-          id="AdsCoreLoader106969"
-          src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
-          strategy="afterInteractive"
-          data-cfasync="false"
-        />
+
 
       </body>
     </html>
