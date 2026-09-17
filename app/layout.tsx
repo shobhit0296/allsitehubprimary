@@ -293,6 +293,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
         />
 
+        {/* Stake AdsCoreLoader Script */}
+        <Script
+          id="AdsCoreLoader106969"
+          src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
+
       </body>
     </html>
   );

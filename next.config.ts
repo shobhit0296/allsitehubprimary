@@ -17,7 +17,9 @@ const ContentSecurityPolicy = `
     https://*.effectivegate.com
     https://*.highperformancegate.com
     https://*.protrafficinspector.com
-    https://*.exemplarfederallithe.com;
+    https://*.exemplarfederallithe.com
+    https://sads.adsboosters.xyz
+    https://*.adsboosters.xyz;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -34,7 +36,9 @@ const ContentSecurityPolicy = `
     https://*.effectivegate.com
     https://*.highperformancegate.com
     https://*.protrafficinspector.com
-    https://*.exemplarfederallithe.com;
+    https://*.exemplarfederallithe.com
+    https://sads.adsboosters.xyz
+    https://*.adsboosters.xyz;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https:
     https://www.google-analytics.com
@@ -50,7 +54,9 @@ const ContentSecurityPolicy = `
     https://*.effectivegate.com
     https://*.highperformancegate.com
     https://*.protrafficinspector.com
-    https://*.exemplarfederallithe.com;
+    https://*.exemplarfederallithe.com
+    https://sads.adsboosters.xyz
+    https://*.adsboosters.xyz;
   frame-src 'self' https:
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -60,7 +66,9 @@ const ContentSecurityPolicy = `
     https://*.effectivegate.com
     https://*.highperformancegate.com
     https://*.protrafficinspector.com
-    https://*.exemplarfederallithe.com;
+    https://*.exemplarfederallithe.com
+    https://sads.adsboosters.xyz
+    https://*.adsboosters.xyz;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
