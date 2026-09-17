@@ -46,7 +46,7 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
     setLiveSites(sites);
   }, [sites]);
 
-  // Background sync from /api/sites when returning to the tab after admin editing
+  // Real-time sync from /api/sites to ensure admin edits are immediately live
   useEffect(() => {
     let mounted = true;
     async function syncSites() {
@@ -56,12 +56,24 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
           const data = await res.json();
           if (mounted && Array.isArray(data.sites) && data.sites.length > 0) {
             setLiveSites(prev => {
-              if (
-                prev.length === data.sites.length &&
-                prev[0]?.id === data.sites[0]?.id &&
-                prev[prev.length - 1]?.id === data.sites[data.sites.length - 1]?.id
-              ) {
-                return prev; // Preserve array identity to prevent redundant re-renders
+              if (prev.length === data.sites.length) {
+                const hasChange = data.sites.some((site: Site, idx: number) => {
+                  const p = prev[idx];
+                  return (
+                    !p ||
+                    site.id !== p.id ||
+                    site.name !== p.name ||
+                    site.url !== p.url ||
+                    site.category !== p.category ||
+                    site.order !== p.order ||
+                    site.isTrusted !== p.isTrusted ||
+                    site.isNew !== p.isNew ||
+                    site.isFeatured !== p.isFeatured ||
+                    site.faviconUrl !== p.faviconUrl ||
+                    site.description !== p.description
+                  );
+                });
+                if (!hasChange) return prev; // Preserve array identity if no actual changes
               }
               return data.sites;
             });
@@ -72,7 +84,10 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
       }
     }
 
-    // Only sync when switching back to this tab (not on initial mount, SSR already provided sites)
+    // Immediately sync on mount to ensure fresh data even if CDN/SSR served a cached snapshot
+    syncSites();
+
+    // Also sync whenever user switches back to this tab after editing in admin panel
     const onFocus = () => syncSites();
     window.addEventListener('focus', onFocus);
     window.addEventListener('visibilitychange', onFocus);

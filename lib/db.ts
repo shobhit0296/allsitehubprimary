@@ -175,6 +175,25 @@ export async function readDB(): Promise<DB> {
   return data;
 }
 
+export async function purgeCloudflareCache(): Promise<void> {
+  const token = process.env.CLOUDFLARE_API_TOKEN;
+  const zoneId = process.env.CLOUDFLARE_ZONE_ID || 'cd22aaa61fd8b649cb501d06c9ac1fc3';
+  if (!token || !zoneId) return;
+
+  try {
+    await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ purge_everything: true }),
+    });
+  } catch (e) {
+    console.warn('[Cloudflare] Cache purge failed:', e);
+  }
+}
+
 export async function writeDB(data: DB): Promise<void> {
   ensureOrder(data);
   memoryCache = { data, timestamp: Date.now() };
@@ -184,9 +203,14 @@ export async function writeDB(data: DB): Promise<void> {
   try {
     revalidatePath('/', 'layout');
     revalidatePath('/');
+    revalidatePath('/recent');
+    revalidatePath('/category/[slug]', 'page');
   } catch {
     // Ignore when called outside Next.js request context
   }
+
+  // Automatically trigger Cloudflare cache purge in background so edits are immediately live
+  purgeCloudflareCache().catch(() => {});
 }
 
 export function generateId(): string {
