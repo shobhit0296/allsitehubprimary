@@ -48,8 +48,8 @@ export default function AdminAdSuppressor() {
           .google-auto-placed,
           .google-anno-term,
           .google-anno-chip,
-          [class*="google-anno"],
-          [id*="google-anno"],
+          [id*="google-anno-term"],
+          [id*="google-anno-chip"],
           .adsbygoogle {
             display: none !important;
             visibility: hidden !important;

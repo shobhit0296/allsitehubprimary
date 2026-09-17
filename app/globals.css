@@ -1859,13 +1859,10 @@ body.is-admin-route .sc-card--native-ad {
    SUPPRESS ADSENSE AD INTENTS & INLINE CHIPS/BADGES
    ("Watch Premium Videos", Related Search Pills, etc.)
 ═══════════════════════════════════════════════════ */
-.google-anno-skip .google-anno-term,
-.google-anno-skip .google-anno-chip,
-.google-anno-skip [class*="google-anno"],
 .google-anno-term,
 .google-anno-chip,
-[class*="google-anno"],
-[id*="google-anno"],
+[id*="google-anno-term"],
+[id*="google-anno-chip"],
 [data-google-ad-intent],
 [data-google-anno],
 a[data-google-query-id],

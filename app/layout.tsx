@@ -250,7 +250,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
       </head>
-      <body suppressHydrationWarning className="min-h-screen flex flex-col relative google-anno-skip" style={{ backgroundColor: 'var(--bg-base)' }}>
+      <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
         <div className="relative z-10 flex flex-col flex-1 w-full">
           {children}
