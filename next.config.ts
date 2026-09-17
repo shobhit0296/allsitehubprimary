@@ -21,7 +21,9 @@ const ContentSecurityPolicy = `
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
     https://5gvci.com
-    https://*.5gvci.com;
+    https://*.5gvci.com
+    https://quge5.com
+    https://*.quge5.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -42,7 +44,9 @@ const ContentSecurityPolicy = `
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
     https://5gvci.com
-    https://*.5gvci.com;
+    https://*.5gvci.com
+    https://quge5.com
+    https://*.quge5.com;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https:
     https://www.google-analytics.com
@@ -62,7 +66,9 @@ const ContentSecurityPolicy = `
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
     https://5gvci.com
-    https://*.5gvci.com;
+    https://*.5gvci.com
+    https://quge5.com
+    https://*.quge5.com;
   frame-src 'self' https:
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -76,8 +82,10 @@ const ContentSecurityPolicy = `
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
     https://5gvci.com
-    https://*.5gvci.com;
-  worker-src 'self' blob: https://5gvci.com https://*.5gvci.com;
+    https://*.5gvci.com
+    https://quge5.com
+    https://*.quge5.com;
+  worker-src 'self' blob: https://5gvci.com https://*.5gvci.com https://quge5.com https://*.quge5.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';

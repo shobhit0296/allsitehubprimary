@@ -256,6 +256,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="AdsCoreLoader106969"
           src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
         />
+        {/* Monetag Tag (Head) */}
+        <script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="282088"
+          async
+          data-cfasync="false"
+        />
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
