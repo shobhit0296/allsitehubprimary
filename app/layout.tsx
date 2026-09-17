@@ -293,12 +293,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
         />
 
-        {/* Adsterra Anti-AdBlock Popunder */}
-        <Script
-          id="adsterra-popunder"
-          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
-          strategy="afterInteractive"
-        />
+
 
 
 
