@@ -21,22 +21,6 @@ export default function SiteAds() {
     <style
       dangerouslySetInnerHTML={{
         __html: `
-          /* Non-destructive suppression of intrusive third-party social bars & overlays */
-          #adsterra-social-bar,
-          [id*="adsterra-social-bar"],
-          [class*="adsterra-social-bar"],
-          div[class*="inpage-push"],
-          div[id*="inpage-push"],
-          .inpage-push,
-          .inpage-push-wrapper {
-            display: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            width: 0 !important;
-          }
-
           ${
             isAdmin
               ? `
@@ -46,6 +30,9 @@ export default function SiteAds() {
             iframe[id^="google_ads_"],
             div[id^="google_ads_"],
             div[id*="container-36a34e7c2d7095493196dd10bc56ad23"],
+            #adsterra-social-bar,
+            [id*="adsterra"],
+            [class*="adsterra"],
             .google-auto-placed,
             .adsbygoogle {
               display: none !important;

@@ -352,9 +352,9 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
                   sites={getSitesForCategory(cat.name)}
                   bookmarks={bookmarks}
                   onToggleBookmark={toggleBookmark}
-                  showAdCard={false}
+                  showAdCard={true}
                 />
-                {index === 0 && (
+                {(index === 0 || (index > 0 && index % 2 === 0)) && (
                   <div className="my-6">
                     <AdsterraNativeBanner />
                   </div>
