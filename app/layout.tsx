@@ -217,12 +217,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="referrer" content="no-referrer-when-downgrade" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://bibleearthquake.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://google-analytics.com" />
-        <link rel="dns-prefetch" href="https://bibleearthquake.com" />
         <link rel="preconnect" href="https://www.google.com" />
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('allSiteHub_theme')||'cosmic';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
@@ -231,61 +231,54 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
-        <script
+        <Script
+          id="ld-website"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite) }}
         />
-        <script
+        <Script
+          id="ld-navigation"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSiteNavigation) }}
         />
-        <script
+        <Script
+          id="ld-organization"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col relative google-anno-skip" style={{ backgroundColor: 'var(--bg-base)' }}>
+      <body suppressHydrationWarning className="min-h-screen flex flex-col relative google-anno-skip" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
         <div className="relative z-10 flex flex-col flex-1 w-full">
           {children}
+          <CommunityModal />
+          <SiteAds />
         </div>
-        <CommunityModal />
 
-        {/* Google Analytics GA4 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-3ZSN0JXGJK"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+        {/* Google Analytics GA4 — production only */}
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-3ZSN0JXGJK"
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
 
-            gtag('config', 'G-3ZSN0JXGJK', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
+                gtag('config', 'G-3ZSN0JXGJK', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
 
-        {/* Google AdSense Auto Ads */}
-        <Script
-          id="adsbygoogle-init"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1348117799300846"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-
-        {/* Adsterra Anti-AdBlock Popunder / Redirection Script */}
-        <Script
-          id="adsterra-popunder"
-          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
-          strategy="afterInteractive"
-        />
-
-        {/* Network & Display Advertisements Controller (Purges popups and shields Admin) */}
-        <SiteAds />
       </body>
     </html>
   );

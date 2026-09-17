@@ -22,13 +22,14 @@ export default function CommunityModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // 1. Auto-show popup 1.5s after mount if not previously dismissed in this session
+    // 1. Auto-show popup 5s after mount in production if not previously dismissed in this session
     try {
+      if (process.env.NODE_ENV === 'development') return; // Don't interrupt local development
       const isDismissed = sessionStorage.getItem(STORAGE_KEY);
       if (!isDismissed) {
         const timer = setTimeout(() => {
           setIsOpen(true);
-        }, 1500);
+        }, 5000);
         return () => clearTimeout(timer);
       }
     } catch {
@@ -45,11 +46,13 @@ export default function CommunityModal() {
 
   // Lock body scroll while modal is open to preserve backdrop position
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && typeof document !== 'undefined' && document.body) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
       document.body.style.overflow = 'hidden';
       return () => {
-        document.body.style.overflow = originalStyle;
+        if (typeof document !== 'undefined' && document.body) {
+          document.body.style.overflow = originalStyle;
+        }
       };
     }
   }, [isOpen]);

@@ -10,7 +10,6 @@ import SiteIcon from '../../components/SiteIcon';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
 import VpnCallout from '../../components/VpnCallout';
-import AdSenseBanner from '../../components/AdSenseBanner';
 import AdsterraNativeBanner from '../../components/AdsterraNativeBanner';
 
 interface Props {
@@ -212,11 +211,6 @@ export default async function SiteDetailPage({ params }: Props) {
           {/* Sponsored Recommendations Adsterra Widget */}
           <div className="my-8">
             <AdsterraNativeBanner />
-          </div>
-
-          {/* Advertisement Banner */}
-          <div className="my-8">
-            <AdSenseBanner />
           </div>
 
           {/* Related Sites */}

@@ -8,7 +8,6 @@ import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
-import AdSenseBanner from './AdSenseBanner';
 import AdsterraNativeBanner from './AdsterraNativeBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
@@ -47,7 +46,7 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
     setLiveSites(sites);
   }, [sites]);
 
-  // Background sync from /api/sites so admin edits reflect immediately without hard-refresh
+  // Background sync from /api/sites when returning to the tab after admin editing
   useEffect(() => {
     let mounted = true;
     async function syncSites() {
@@ -56,16 +55,24 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
         if (res.ok) {
           const data = await res.json();
           if (mounted && Array.isArray(data.sites) && data.sites.length > 0) {
-            setLiveSites(data.sites);
+            setLiveSites(prev => {
+              if (
+                prev.length === data.sites.length &&
+                prev[0]?.id === data.sites[0]?.id &&
+                prev[prev.length - 1]?.id === data.sites[data.sites.length - 1]?.id
+              ) {
+                return prev; // Preserve array identity to prevent redundant re-renders
+              }
+              return data.sites;
+            });
           }
         }
       } catch {
         // keep fallback SSR sites
       }
     }
-    syncSites();
 
-    // Instant update when switching tabs back to the site after editing in admin panel
+    // Only sync when switching back to this tab (not on initial mount, SSR already provided sites)
     const onFocus = () => syncSites();
     window.addEventListener('focus', onFocus);
     window.addEventListener('visibilitychange', onFocus);
@@ -83,9 +90,12 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
   // ── All-time total users / visitors — purely client-side, zero serverless calls ──
   // calculateAllTimeActiveUsers() computes the counter from elapsed time since anchor date.
   // No POST/GET to any backend, so Vercel free-tier quota is never drained.
-  const [totalUsers, setTotalUsers] = useState<number>(() => calculateAllTimeActiveUsers());
+  const [totalUsers, setTotalUsers] = useState<number>(185000);
 
   useEffect(() => {
+    // Populate client-calculated dynamic value after hydration to prevent mismatch
+    setTotalUsers(calculateAllTimeActiveUsers());
+
     // Update counter once per minute so it ticks forward smoothly
     const interval = setInterval(() => {
       setTotalUsers(calculateAllTimeActiveUsers());
@@ -347,11 +357,6 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
                 {index === 0 && (
                   <div className="my-6">
                     <AdsterraNativeBanner />
-                  </div>
-                )}
-                {(index === 1 || index === 4) && (
-                  <div className="my-6">
-                    <AdSenseBanner />
                   </div>
                 )}
               </React.Fragment>
