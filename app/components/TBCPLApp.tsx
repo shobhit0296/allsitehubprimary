@@ -8,7 +8,6 @@ import Navbar from './Navbar';
 import Hero from './Hero';
 import Sidebar from './Sidebar';
 import CategorySection from './CategorySection';
-import AdsterraNativeBanner from './AdsterraNativeBanner';
 
 import { useLiveOnlineCounter } from '@/lib/useLiveOnlineCounter';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
@@ -360,21 +359,15 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
               </button>
             </div>
           ) : (
-            visibleCategories.map((cat, index) => (
-              <React.Fragment key={cat.name}>
-                <CategorySection
-                  category={cat}
-                  sites={getSitesForCategory(cat.name)}
-                  bookmarks={bookmarks}
-                  onToggleBookmark={toggleBookmark}
-                  showAdCard={true}
-                />
-                {(index === 0 || (index > 0 && index % 2 === 0)) && (
-                  <div className="my-6">
-                    <AdsterraNativeBanner />
-                  </div>
-                )}
-              </React.Fragment>
+            visibleCategories.map((cat) => (
+              <CategorySection
+                key={cat.name}
+                category={cat}
+                sites={getSitesForCategory(cat.name)}
+                bookmarks={bookmarks}
+                onToggleBookmark={toggleBookmark}
+                showAdCard={true}
+              />
             ))
           )}
 

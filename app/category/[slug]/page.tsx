@@ -11,7 +11,6 @@ import CategorySiteGrid from '../../components/CategorySiteGrid';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import JsonLd from '../../components/JsonLd';
 import VpnCallout from '../../components/VpnCallout';
-import AdsterraNativeBanner from '../../components/AdsterraNativeBanner';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -178,11 +177,6 @@ export default async function CategoryPage({ params }: Props) {
         </div>
 
         <CategorySiteGrid sites={categorySites} category={cat.name} />
-
-        {/* Sponsored Recommendations Adsterra Widget */}
-        <div className="my-8">
-          <AdsterraNativeBanner />
-        </div>
 
         {/* Other Categories */}
         <div className="mt-20 pt-10 border-t border-white/[0.08]">
