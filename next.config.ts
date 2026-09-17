@@ -19,7 +19,9 @@ const ContentSecurityPolicy = `
     https://*.protrafficinspector.com
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
-    https://*.adsboosters.xyz;
+    https://*.adsboosters.xyz
+    https://5gvci.com
+    https://*.5gvci.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   img-src 'self' data: blob: https:
     https://www.google.com
@@ -38,7 +40,9 @@ const ContentSecurityPolicy = `
     https://*.protrafficinspector.com
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
-    https://*.adsboosters.xyz;
+    https://*.adsboosters.xyz
+    https://5gvci.com
+    https://*.5gvci.com;
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https:
     https://www.google-analytics.com
@@ -56,7 +60,9 @@ const ContentSecurityPolicy = `
     https://*.protrafficinspector.com
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
-    https://*.adsboosters.xyz;
+    https://*.adsboosters.xyz
+    https://5gvci.com
+    https://*.5gvci.com;
   frame-src 'self' https:
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -68,7 +74,10 @@ const ContentSecurityPolicy = `
     https://*.protrafficinspector.com
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
-    https://*.adsboosters.xyz;
+    https://*.adsboosters.xyz
+    https://5gvci.com
+    https://*.5gvci.com;
+  worker-src 'self' blob: https://5gvci.com https://*.5gvci.com;
   frame-ancestors 'none';
   object-src 'none';
   base-uri 'self';
