@@ -21,6 +21,26 @@ export default function SiteAds() {
     <style
       dangerouslySetInnerHTML={{
         __html: `
+          /* Permanent suppression of intrusive mid-screen popups, social bars & floating overlays */
+          #adsterra-social-bar,
+          #adsterra-popunder-dynamic,
+          [id*="adsterra-social-bar"],
+          [class*="adsterra-social-bar"],
+          [class*="social-bar"],
+          [id*="social-bar"],
+          div[class*="inpage-push"],
+          div[id*="inpage-push"],
+          .inpage-push,
+          .inpage-push-wrapper {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+          }
+
           ${
             isAdmin
               ? `

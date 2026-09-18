@@ -263,12 +263,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           async
           data-cfasync="false"
         />
-        {/* Adsterra Social Bar (Head) */}
-        <script
-          type="text/javascript"
-          src="https://pl31253047.profitableratecpmnetwork.com/cf/09/69/cf09691eee1a394e996784f3aa7b4021.js"
-          data-cfasync="false"
-        />
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
