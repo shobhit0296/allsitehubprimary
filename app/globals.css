@@ -834,6 +834,32 @@ div[id*="inpage-push"] {
   overflow: hidden !important;
 }
 
+/* ── Permanent Stake & CleverCore Display Banner & TopScroll Styling ── */
+.ads-core-ads,
+.clever-core-ads {
+  display: block !important;
+  width: 100% !important;
+  min-height: 90px !important;
+  max-width: 970px !important;
+  margin: 16px auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+div[id^="ads-1069"],
+div[id^="clever-"],
+div[class*="ads-core-ads"],
+div[class*="clever-core-ads"],
+iframe[id*="top-scroll"],
+iframe[id*="CleverCore"],
+iframe[id*="AdsCore"] {
+  z-index: 99999 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 /* ── Admin Complete Ad Suppression (Zero Ads on Admin) ── */
 [data-admin-panel="true"] .adsbygoogle,
 [data-admin-panel="true"] ins.adsbygoogle,

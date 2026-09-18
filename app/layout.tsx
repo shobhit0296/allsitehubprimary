@@ -294,8 +294,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* ========================================================================= */}
 
         {/* Stake Banner Container Tags */}
-        <div className="ads-core-ads" style={{ minHeight: '0px' }} />
-        <div className="clever-core-ads" style={{ minHeight: '0px' }} />
+        <div className="ads-core-ads" />
+        <div className="clever-core-ads" />
 
         {/* Stake Indian Script */}
         <Script
