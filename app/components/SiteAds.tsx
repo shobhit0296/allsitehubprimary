@@ -13,9 +13,11 @@ import { isAdminRoute } from '@/lib/is-admin-route';
  * 
  * Intrusive overlays, social bars, and admin ads are suppressed purely via CSS.
  * 
- * PROTECTED ASSETS — NEVER SUPPRESS UNDER ANY CIRCUMSTANCES:
+ * PROTECTED ASSETS — NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCES:
  * 1. Stake Indian script & banner: #AdsCoreLoader106969, .ads-core-ads
  * 2. Stake Global script & banner: #clever-core, #CleverCoreLoader106970, .clever-core-ads
+ * 3. Monetag Tag & Monetization: #monetag-guard, #monetag-tag, zone 282088 (OnClick, Push, Vignette)
+ * 4. Adsterra Native Cards & Popunder: NativeAdCard, #adsterra-popunder
  */
 export default function SiteAds() {
   const pathname = usePathname();

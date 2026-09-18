@@ -249,7 +249,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
-        {/* Monetag Tag (Modified: Preserves OnClick, Push & Vignette, strictly blocks In-Page Push Modal) */}
+        {/* ========================================================================= */}
+        {/* PERMANENT MONETAG MULTITAG (NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCE) */}
+        {/* Preserves OnClick (Popunder), Push Notifications, and Vignettes           */}
+        {/* Strictly filters out only the mid-screen In-Page Push Modal                */}
+        {/* ========================================================================= */}
         <Script
           id="monetag-guard"
           strategy="beforeInteractive"
@@ -411,12 +415,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-
-
-
-
-
-
+        {/* ========================================================================= */}
+        {/* ADSTERRA ANTI-ADBLOCK POPUNDER / REDIRECTION SCRIPT                       */}
+        {/* ========================================================================= */}
+        <Script
+          id="adsterra-popunder"
+          src="https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
       </body>
     </html>
   );
