@@ -374,6 +374,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           id="monetag-tag"
           src="https://quge5.com/88/tag.min.js"
           data-zone="282088"
+          async
           strategy="afterInteractive"
           data-cfasync="false"
         />
