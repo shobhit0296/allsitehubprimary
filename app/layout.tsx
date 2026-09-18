@@ -254,8 +254,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preserves OnClick (Popunder), Push Notifications, and Vignettes           */}
         {/* Strictly filters out only the mid-screen In-Page Push Modal                */}
         {/* ========================================================================= */}
-        <script
+        <Script
           id="monetag-guard"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
