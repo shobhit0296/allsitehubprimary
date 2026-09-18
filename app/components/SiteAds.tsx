@@ -38,13 +38,14 @@ export default function SiteAds() {
           [class*="pushLineContainer"],
           [class*="fakepush"],
           [id*="fakepush"],
-          div[class*="inpage-push"],
-          div[id*="inpage-push"],
+          [class*="inpage-push"],
+          [id*="inpage-push"],
           .inpage-push,
           .inpage-push-wrapper,
-          div[class*="bigImageContainer"],
-          div[class*="buttonsContainer"],
-          div[class*="adLabel"] {
+          [class*="bigImageContainer"],
+          [class*="buttonsContainer"],
+          [class*="adLabel"],
+          [class*="imageContainer"] {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;

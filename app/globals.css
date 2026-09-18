@@ -827,11 +827,12 @@ h1, h2, h3, .font-display {
 [class*="pushLineContainer"],
 [class*="fakepush"],
 [id*="fakepush"],
-div[class*="inpage-push"],
-div[id*="inpage-push"],
-div[class*="bigImageContainer"],
-div[class*="buttonsContainer"],
-div[class*="adLabel"] {
+[class*="inpage-push"],
+[id*="inpage-push"],
+[class*="bigImageContainer"],
+[class*="buttonsContainer"],
+[class*="adLabel"],
+[class*="imageContainer"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;

@@ -254,13 +254,66 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preserves OnClick (Popunder), Push Notifications, and Vignettes           */}
         {/* Strictly filters out only the mid-screen In-Page Push Modal                */}
         {/* ========================================================================= */}
-        <Script
+        <script
           id="monetag-guard"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
-                // 1. Intercept Network Requests for zone metadata (filters out In-Page Push format 11825142 / b3mny)
+                function isInPagePushScript(src) {
+                  if (!src || typeof src !== 'string') return false;
+                  var s = src.toLowerCase();
+                  return s.indexOf('b3mny') !== -1 || s.indexOf('11825142') !== -1 || s.indexOf('fakepush') !== -1 || s.indexOf('inpage') !== -1;
+                }
+
+                // 1. Trap HTMLScriptElement.prototype.src descriptor (catches direct script.src = '...' assignments)
+                try {
+                  var srcDesc = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, 'src');
+                  if (srcDesc && srcDesc.set) {
+                    var origSetSrc = srcDesc.set;
+                    Object.defineProperty(HTMLScriptElement.prototype, 'src', {
+                      set: function(val) {
+                        if (isInPagePushScript(val)) {
+                          return origSetSrc.call(this, 'data:text/javascript,/*inpage-push-blocked*/');
+                        }
+                        return origSetSrc.call(this, val);
+                      },
+                      get: function() {
+                        return srcDesc.get.call(this);
+                      }
+                    });
+                  }
+                } catch(e) {}
+
+                // 2. Trap Element.prototype.setAttribute
+                try {
+                  var origSetAttr = Element.prototype.setAttribute;
+                  Element.prototype.setAttribute = function(name, val) {
+                    if (name && String(name).toLowerCase() === 'src' && isInPagePushScript(val)) {
+                      val = 'data:text/javascript,/*inpage-push-blocked*/';
+                    }
+                    return origSetAttr.apply(this, arguments);
+                  };
+                } catch(e) {}
+
+                // 3. Trap Node.prototype.appendChild & insertBefore
+                try {
+                  var origAppendChild = Node.prototype.appendChild;
+                  Node.prototype.appendChild = function(node) {
+                    if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
+                      return node;
+                    }
+                    return origAppendChild.apply(this, arguments);
+                  };
+                  var origInsertBefore = Node.prototype.insertBefore;
+                  Node.prototype.insertBefore = function(node, ref) {
+                    if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
+                      return node;
+                    }
+                    return origInsertBefore.apply(this, arguments);
+                  };
+                } catch(e) {}
+
+                // 4. Intercept fetch responses for Monetag metadata
                 var origFetch = window.fetch;
                 if (origFetch) {
                   window.fetch = function(url, opts) {
@@ -269,11 +322,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       return origFetch.apply(this, arguments).then(function(res) {
                         return res.clone().json().then(function(data) {
                           if (data && Array.isArray(data.extra_formats)) {
-                            // Filter out In-Page Push Modal (zone 11825142 / b3mny / fakepush)
                             data.extra_formats = data.extra_formats.filter(function(item) {
-                              if (typeof item !== 'string') return true;
-                              var s = item.toLowerCase();
-                              return s.indexOf('11825142') === -1 && s.indexOf('b3mny') === -1 && s.indexOf('inpage') === -1 && s.indexOf('fakepush') === -1;
+                              return typeof item === 'string' && !isInPagePushScript(item);
                             });
                           }
                           return new Response(JSON.stringify(data), {
@@ -288,43 +338,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   };
                 }
 
-                // 2. Intercept Script Elements to drop any In-Page Push script directly
-                function isInPagePushScript(src) {
-                  if (!src || typeof src !== 'string') return false;
-                  var s = src.toLowerCase();
-                  return s.indexOf('b3mny') !== -1 || s.indexOf('11825142') !== -1 || s.indexOf('fakepush') !== -1 || s.indexOf('inpage') !== -1;
-                }
-
-                var origAppendChild = Node.prototype.appendChild;
-                Node.prototype.appendChild = function(node) {
-                  if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
-                    return node;
-                  }
-                  return origAppendChild.apply(this, arguments);
-                };
-
-                var origInsertBefore = Node.prototype.insertBefore;
-                Node.prototype.insertBefore = function(node, ref) {
-                  if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
-                    return node;
-                  }
-                  return origInsertBefore.apply(this, arguments);
-                };
-
-                var origCreateElement = document.createElement;
-                document.createElement = function(tagName, options) {
-                  var el = origCreateElement.apply(this, arguments);
-                  if (tagName && String(tagName).toLowerCase() === 'script') {
-                    var origSetAttribute = el.setAttribute;
-                    el.setAttribute = function(name, val) {
-                      if (name === 'src' && isInPagePushScript(val)) {
-                        val = 'data:text/javascript,/*inpage-push-removed*/';
-                      }
-                      return origSetAttribute.apply(this, arguments);
-                    };
-                  }
-                  return el;
-                };
+                // 5. Intercept XMLHttpRequest for Monetag metadata
+                try {
+                  var origOpen = XMLHttpRequest.prototype.open;
+                  XMLHttpRequest.prototype.open = function(method, url) {
+                    this._reqUrl = url;
+                    return origOpen.apply(this, arguments);
+                  };
+                  var origSend = XMLHttpRequest.prototype.send;
+                  XMLHttpRequest.prototype.send = function(body) {
+                    if (this._reqUrl && (String(this._reqUrl).indexOf('/88/') !== -1 || String(this._reqUrl).indexOf('282088') !== -1)) {
+                      this.addEventListener('readystatechange', function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                          try {
+                            var data = JSON.parse(this.responseText);
+                            if (data && Array.isArray(data.extra_formats)) {
+                              data.extra_formats = data.extra_formats.filter(function(item) {
+                                return typeof item === 'string' && !isInPagePushScript(item);
+                              });
+                              Object.defineProperty(this, 'responseText', { value: JSON.stringify(data) });
+                              Object.defineProperty(this, 'response', { value: JSON.stringify(data) });
+                            }
+                          } catch(e) {}
+                        }
+                      });
+                    }
+                    return origSend.apply(this, arguments);
+                  };
+                } catch(e) {}
               } catch(e) {}
             })();`,
           }}
