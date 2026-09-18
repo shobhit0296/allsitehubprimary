@@ -249,14 +249,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
-        {/* Monetag Tag (Head) */}
-        <Script
-          id="monetag-tag"
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="282088"
-          strategy="afterInteractive"
-          data-cfasync="false"
-        />
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
