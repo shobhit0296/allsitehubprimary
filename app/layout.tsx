@@ -249,6 +249,47 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
+        {/* Monetag Tag (Modified: Preserves OnClick, Push & Vignette, filters out mid-screen In-Page Push popups) */}
+        <Script
+          id="monetag-guard"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function() {
+              try {
+                var origFetch = window.fetch;
+                if (origFetch) {
+                  window.fetch = function(url, opts) {
+                    if (typeof url === 'string' && (url.indexOf('/88/282088') !== -1 || url.indexOf('quge5.com') !== -1 || url.indexOf('vaimucuvikuwu.net') !== -1)) {
+                      return origFetch.apply(this, arguments).then(function(res) {
+                        return res.clone().json().then(function(data) {
+                          if (data && Array.isArray(data.extra_formats)) {
+                            // Filter out In-Page Push mid-screen popups (b3mny / 11825142) while preserving all other Monetag monetization
+                            data.extra_formats = data.extra_formats.filter(function(u) {
+                              return typeof u === 'string' && u.indexOf('11825142') === -1 && u.indexOf('b3mny') === -1;
+                            });
+                          }
+                          return new Response(JSON.stringify(data), {
+                            status: res.status,
+                            statusText: res.statusText,
+                            headers: res.headers
+                          });
+                        }).catch(function() { return res; });
+                      });
+                    }
+                    return origFetch.apply(this, arguments);
+                  };
+                }
+              } catch(e) {}
+            })();`,
+          }}
+        />
+        <Script
+          id="monetag-tag"
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="282088"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
       </head>
       <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <ShaderBackground />
