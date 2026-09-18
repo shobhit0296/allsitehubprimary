@@ -12,6 +12,10 @@ import { isAdminRoute } from '@/lib/is-admin-route';
  * nodes causes "Cannot read properties of null (reading 'removeChild')" crashes.
  * 
  * Intrusive overlays, social bars, and admin ads are suppressed purely via CSS.
+ * 
+ * PROTECTED ASSETS — NEVER SUPPRESS UNDER ANY CIRCUMSTANCES:
+ * 1. Stake Indian script & banner: #AdsCoreLoader106969, .ads-core-ads
+ * 2. Stake Global script & banner: #clever-core, #CleverCoreLoader106970, .clever-core-ads
  */
 export default function SiteAds() {
   const pathname = usePathname();

@@ -359,15 +359,22 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
               </button>
             </div>
           ) : (
-            visibleCategories.map((cat) => (
-              <CategorySection
-                key={cat.name}
-                category={cat}
-                sites={getSitesForCategory(cat.name)}
-                bookmarks={bookmarks}
-                onToggleBookmark={toggleBookmark}
-                showAdCard={true}
-              />
+            visibleCategories.map((cat, idx) => (
+              <div key={cat.name}>
+                <CategorySection
+                  category={cat}
+                  sites={getSitesForCategory(cat.name)}
+                  bookmarks={bookmarks}
+                  onToggleBookmark={toggleBookmark}
+                  showAdCard={true}
+                />
+                {idx === 0 && (
+                  <div className="w-full my-6 flex flex-col items-center justify-center overflow-hidden">
+                    <div className="ads-core-ads" />
+                    <div className="clever-core-ads" />
+                  </div>
+                )}
+              </div>
             ))
           )}
 

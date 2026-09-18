@@ -98,7 +98,7 @@ export default function NativeAdCard() {
             title="Sponsored Ad"
             className="w-full flex-1 border-0 overflow-hidden"
             style={{ minHeight: '75px', width: '100%' }}
-            sandbox="allow-scripts allow-popups allow-forms"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
             loading="lazy"
           />
         )}

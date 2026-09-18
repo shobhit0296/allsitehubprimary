@@ -20,6 +20,11 @@ const ContentSecurityPolicy = `
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
+    https://scripts.cleverwebserver.com
+    https://*.cleverwebserver.com
+    https://*.clvrads.com
+    https://cleveradvertising.com
+    https://*.cleveradvertising.com
     https://5gvci.com
     https://*.5gvci.com
     https://quge5.com
@@ -46,6 +51,9 @@ const ContentSecurityPolicy = `
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
+    https://*.cleverwebserver.com
+    https://*.clvrads.com
+    https://*.cleveradvertising.com
     https://5gvci.com
     https://*.5gvci.com
     https://quge5.com
@@ -68,6 +76,9 @@ const ContentSecurityPolicy = `
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
+    https://*.cleverwebserver.com
+    https://*.clvrads.com
+    https://*.cleveradvertising.com
     https://5gvci.com
     https://*.5gvci.com
     https://quge5.com
@@ -84,6 +95,9 @@ const ContentSecurityPolicy = `
     https://*.exemplarfederallithe.com
     https://sads.adsboosters.xyz
     https://*.adsboosters.xyz
+    https://*.cleverwebserver.com
+    https://*.clvrads.com
+    https://*.cleveradvertising.com
     https://5gvci.com
     https://*.5gvci.com
     https://quge5.com

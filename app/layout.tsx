@@ -249,13 +249,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
-        {/* Stake AdsCoreLoader Script (Head) */}
-        <script
-          data-cfasync="false"
-          type="text/javascript"
-          id="AdsCoreLoader106969"
-          src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
-        />
         {/* Monetag Tag (Head) */}
         <script
           src="https://quge5.com/88/tag.min.js"
@@ -292,6 +285,55 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Script>
           </>
         )}
+
+        {/* ========================================================================= */}
+        {/* PERMANENT STAKE AD SCRIPTS & BANNER TAGS - NEVER REMOVE UNDER ANY CIRCUMSTANCE */}
+        {/* 1. Indian Tag (AdsCoreLoader106969)                                       */}
+        {/* 2. Global Tag (CleverCoreLoader106970)                                    */}
+        {/* ========================================================================= */}
+
+        {/* Stake Banner Container Tags */}
+        <div className="ads-core-ads" style={{ minHeight: '0px' }} />
+        <div className="clever-core-ads" style={{ minHeight: '0px' }} />
+
+        {/* Stake Indian Script */}
+        <script
+          data-cfasync="false"
+          type="text/javascript"
+          id="AdsCoreLoader106969"
+          src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
+        />
+
+        {/* Stake Global / All Countries Script */}
+        <script
+          data-cfasync="false"
+          type="text/javascript"
+          id="clever-core"
+          dangerouslySetInnerHTML={{
+            __html: `(function (document, window) {
+              var a, c = document.createElement("script"), f = window.frameElement;
+
+              c.id = "CleverCoreLoader106970";
+              c.src = "https://scripts.cleverwebserver.com/77d8d82dadf46681086f15ed2ce5ab08.js";
+
+              c.async = !0;
+              c.type = "text/javascript";
+              c.setAttribute("data-target", window.name || (f && f.getAttribute("id")));
+              c.setAttribute("data-callback", "put-your-callback-function-here");
+              c.setAttribute("data-callback-url-click", "put-your-click-macro-here");
+              c.setAttribute("data-callback-url-view", "put-your-view-macro-here");
+
+              try {
+                  a = parent.document.getElementsByTagName("script")[0] || document.getElementsByTagName("script")[0];
+              } catch (e) {
+                  a = !1;
+              }
+
+              a || (a = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]);
+              a.parentNode.insertBefore(c, a);
+          })(document, window);`,
+          }}
+        />
 
 
 
