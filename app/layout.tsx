@@ -374,10 +374,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     if (el.classList && (el.classList.contains('ads-core-ads') || el.classList.contains('clever-core-ads'))) return;
                     if (el.closest && (el.closest('.ads-core-ads') || el.closest('.clever-core-ads'))) return;
                     var txt = (el.textContent || '').toLowerCase();
+                    var id = (el.id || '').toLowerCase();
+                    var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
                     var isModal = (
                       (txt.indexOf('continue') !== -1 && txt.indexOf('close') !== -1) ||
-                      (el.matches && el.matches('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="inpage"]')) ||
-                      (el.querySelector && el.querySelector('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="adLabel"]'))
+                      id.indexOf('push-frame') !== -1 ||
+                      id.indexOf('interstitial') !== -1 ||
+                      id.indexOf('-overlay') !== -1 ||
+                      cls.indexOf('push-frame') !== -1 ||
+                      cls.indexOf('interstitial') !== -1 ||
+                      (el.matches && el.matches('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="inpage"], [id*="push-frame"], [id*="interstitial"]')) ||
+                      (el.querySelector && el.querySelector('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="adLabel"], [id*="push-frame"], [id*="interstitial"]'))
                     );
                     if (isModal) {
                       el.style.setProperty('display', 'none', 'important');

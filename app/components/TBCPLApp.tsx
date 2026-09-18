@@ -288,6 +288,13 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
+
+      {/* Stake Display Banners (Visible Placement) */}
+      <div className="w-full max-w-[970px] mx-auto my-4 px-3 sm:px-5">
+        <div className="ads-core-ads" style={{ minHeight: '90px', width: '100%' }} />
+        <div className="clever-core-ads" style={{ minHeight: '90px', width: '100%' }} />
+      </div>
+
       {/* Directory Content Section */}
 
       <section
