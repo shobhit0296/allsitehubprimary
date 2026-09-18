@@ -366,6 +366,47 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     return origSend.apply(this, arguments);
                   };
                 } catch(e) {}
+
+                // 6. Active MutationObserver to suppress any In-Page Push modal instantly without removing nodes
+                try {
+                  var hideNode = function(el) {
+                    if (!el || el.nodeType !== 1) return;
+                    if (el.classList && (el.classList.contains('ads-core-ads') || el.classList.contains('clever-core-ads'))) return;
+                    if (el.closest && (el.closest('.ads-core-ads') || el.closest('.clever-core-ads'))) return;
+                    var txt = (el.textContent || '').toLowerCase();
+                    var isModal = (
+                      (txt.indexOf('continue') !== -1 && txt.indexOf('close') !== -1) ||
+                      (el.matches && el.matches('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="inpage"]')) ||
+                      (el.querySelector && el.querySelector('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="adLabel"]'))
+                    );
+                    if (isModal) {
+                      el.style.setProperty('display', 'none', 'important');
+                      el.style.setProperty('visibility', 'hidden', 'important');
+                      el.style.setProperty('opacity', '0', 'important');
+                      el.style.setProperty('pointer-events', 'none', 'important');
+                      el.style.setProperty('height', '0', 'important');
+                      el.style.setProperty('width', '0', 'important');
+                      el.style.setProperty('overflow', 'hidden', 'important');
+                    }
+                  };
+
+                  var mo = new MutationObserver(function(mutations) {
+                    for (var m = 0; m < mutations.length; m++) {
+                      var nodes = mutations[m].addedNodes;
+                      for (var n = 0; n < nodes.length; n++) {
+                        hideNode(nodes[n]);
+                      }
+                    }
+                  });
+
+                  if (document.documentElement) {
+                    mo.observe(document.documentElement, { childList: true, subtree: true });
+                  } else {
+                    document.addEventListener('DOMContentLoaded', function() {
+                      mo.observe(document.documentElement, { childList: true, subtree: true });
+                    });
+                  }
+                } catch(e) {}
               } catch(e) {}
             })();`,
           }}
