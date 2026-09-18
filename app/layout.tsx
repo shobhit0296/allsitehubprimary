@@ -249,23 +249,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
-        {/* Monetag Tag (Modified: Preserves OnClick, Push & Vignette, filters out mid-screen In-Page Push popups) */}
+        {/* Monetag Tag (Modified: Preserves OnClick, Push & Vignette, strictly blocks In-Page Push Modal) */}
         <Script
           id="monetag-guard"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
+                // 1. Intercept Network Requests for zone metadata (filters out In-Page Push format 11825142 / b3mny)
                 var origFetch = window.fetch;
                 if (origFetch) {
                   window.fetch = function(url, opts) {
-                    if (typeof url === 'string' && (url.indexOf('/88/282088') !== -1 || url.indexOf('quge5.com') !== -1 || url.indexOf('vaimucuvikuwu.net') !== -1)) {
+                    var u = typeof url === 'string' ? url : (url && url.url ? url.url : (url && url.href ? url.href : String(url || '')));
+                    if (u && (u.indexOf('/88/') !== -1 || u.indexOf('282088') !== -1 || u.indexOf('quge5') !== -1 || u.indexOf('6opo') !== -1 || u.indexOf('vaimucuvikuwu') !== -1)) {
                       return origFetch.apply(this, arguments).then(function(res) {
                         return res.clone().json().then(function(data) {
                           if (data && Array.isArray(data.extra_formats)) {
-                            // Filter out In-Page Push mid-screen popups (b3mny / 11825142) while preserving all other Monetag monetization
-                            data.extra_formats = data.extra_formats.filter(function(u) {
-                              return typeof u === 'string' && u.indexOf('11825142') === -1 && u.indexOf('b3mny') === -1;
+                            // Filter out In-Page Push Modal (zone 11825142 / b3mny / fakepush)
+                            data.extra_formats = data.extra_formats.filter(function(item) {
+                              if (typeof item !== 'string') return true;
+                              var s = item.toLowerCase();
+                              return s.indexOf('11825142') === -1 && s.indexOf('b3mny') === -1 && s.indexOf('inpage') === -1 && s.indexOf('fakepush') === -1;
                             });
                           }
                           return new Response(JSON.stringify(data), {
@@ -279,6 +283,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     return origFetch.apply(this, arguments);
                   };
                 }
+
+                // 2. Intercept Script Elements to drop any In-Page Push script directly
+                function isInPagePushScript(src) {
+                  if (!src || typeof src !== 'string') return false;
+                  var s = src.toLowerCase();
+                  return s.indexOf('b3mny') !== -1 || s.indexOf('11825142') !== -1 || s.indexOf('fakepush') !== -1 || s.indexOf('inpage') !== -1;
+                }
+
+                var origAppendChild = Node.prototype.appendChild;
+                Node.prototype.appendChild = function(node) {
+                  if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
+                    return node;
+                  }
+                  return origAppendChild.apply(this, arguments);
+                };
+
+                var origInsertBefore = Node.prototype.insertBefore;
+                Node.prototype.insertBefore = function(node, ref) {
+                  if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
+                    return node;
+                  }
+                  return origInsertBefore.apply(this, arguments);
+                };
+
+                var origCreateElement = document.createElement;
+                document.createElement = function(tagName, options) {
+                  var el = origCreateElement.apply(this, arguments);
+                  if (tagName && String(tagName).toLowerCase() === 'script') {
+                    var origSetAttribute = el.setAttribute;
+                    el.setAttribute = function(name, val) {
+                      if (name === 'src' && isInPagePushScript(val)) {
+                        val = 'data:text/javascript,/*inpage-push-removed*/';
+                      }
+                      return origSetAttribute.apply(this, arguments);
+                    };
+                  }
+                  return el;
+                };
               } catch(e) {}
             })();`,
           }}

@@ -25,17 +25,24 @@ export default function SiteAds() {
     <style
       dangerouslySetInnerHTML={{
         __html: `
-          /* Permanent suppression of intrusive mid-screen popups, social bars & floating overlays */
+          /* Permanent suppression of intrusive mid-screen popups, social bars, in-page push modals & floating overlays */
           #adsterra-social-bar,
           #adsterra-popunder-dynamic,
           [id*="adsterra-social-bar"],
           [class*="adsterra-social-bar"],
           [class*="social-bar"],
           [id*="social-bar"],
+          [class*="pushContainer"],
+          [class*="pushLineContainer"],
+          [class*="fakepush"],
+          [id*="fakepush"],
           div[class*="inpage-push"],
           div[id*="inpage-push"],
           .inpage-push,
-          .inpage-push-wrapper {
+          .inpage-push-wrapper,
+          div[class*="bigImageContainer"],
+          div[class*="buttonsContainer"],
+          div[class*="adLabel"] {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
