@@ -250,10 +250,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
         />
         {/* Monetag Tag (Head) */}
-        <script
+        <Script
+          id="monetag-tag"
           src="https://quge5.com/88/tag.min.js"
           data-zone="282088"
-          async
+          strategy="afterInteractive"
           data-cfasync="false"
         />
       </head>
@@ -297,18 +298,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="clever-core-ads" style={{ minHeight: '0px' }} />
 
         {/* Stake Indian Script */}
-        <script
-          data-cfasync="false"
-          type="text/javascript"
+        <Script
           id="AdsCoreLoader106969"
           src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
+          strategy="afterInteractive"
+          data-cfasync="false"
         />
 
         {/* Stake Global / All Countries Script */}
-        <script
-          data-cfasync="false"
-          type="text/javascript"
+        <Script
           id="clever-core"
+          strategy="afterInteractive"
+          data-cfasync="false"
           dangerouslySetInnerHTML={{
             __html: `(function (document, window) {
               var a, c = document.createElement("script"), f = window.frameElement;
