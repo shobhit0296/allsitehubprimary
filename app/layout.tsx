@@ -323,8 +323,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         {/* ========================================================================= */}
         {/* PERMANENT MONETAG MULTITAG (NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCE) */}
-        {/* Preserves OnClick (Popunder), Push Notifications, and Vignettes           */}
-        {/* Docks In-Page Push to bottom-right corner for maximum impressions         */}
+        {/* Preserves OnClick (Popunder), Push Opt-in Subscriptions, and Vignettes    */}
+        {/* Stops In-Page Push prompts as requested by user                           */}
         {/* ========================================================================= */}
         <Script
           id="monetag-guard"
@@ -332,22 +332,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
-                // Ensure Monetag In-Page Push displays as a sleek bottom-right toast for maximum impressions
-                var dockPushNode = function(el) {
+                var hideInPagePushNode = function(el) {
                   if (!el || el.nodeType !== 1) return;
                   var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
                   var id = (el.id || '').toLowerCase();
-                  if (cls.indexOf('pushcontainer') !== -1 || cls.indexOf('inpage') !== -1 || id.indexOf('push-frame') !== -1 || cls.indexOf('fakepush') !== -1) {
-                    el.style.setProperty('position', 'fixed', 'important');
-                    el.style.setProperty('bottom', '16px', 'important');
-                    el.style.setProperty('right', '16px', 'important');
-                    el.style.setProperty('top', 'auto', 'important');
-                    el.style.setProperty('left', 'auto', 'important');
-                    el.style.setProperty('max-width', '340px', 'important');
-                    el.style.setProperty('z-index', '99999', 'important');
-                    el.style.setProperty('display', 'block', 'important');
-                    el.style.setProperty('visibility', 'visible', 'important');
-                    el.style.setProperty('opacity', '1', 'important');
+                  if (cls.indexOf('pushcontainer') !== -1 || cls.indexOf('inpage') !== -1 || id.indexOf('push-frame') !== -1 || cls.indexOf('fakepush') !== -1 || id.indexOf('fakepush') !== -1) {
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('opacity', '0', 'important');
+                    el.style.setProperty('pointer-events', 'none', 'important');
+                    el.style.setProperty('height', '0', 'important');
+                    el.style.setProperty('width', '0', 'important');
+                    el.style.setProperty('overflow', 'hidden', 'important');
                   }
                 };
 
@@ -355,7 +351,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   for (var m = 0; m < mutations.length; m++) {
                     var nodes = mutations[m].addedNodes;
                     for (var n = 0; n < nodes.length; n++) {
-                      dockPushNode(nodes[n]);
+                      hideInPagePushNode(nodes[n]);
                     }
                   }
                 });
