@@ -374,7 +374,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   var hideNode = function(el) {
                     if (!el || el.nodeType !== 1) return;
                     if (el.classList && (el.classList.contains('ads-core-ads') || el.classList.contains('clever-core-ads'))) return;
-                    if (el.closest && (el.closest('.ads-core-ads') || el.closest('.clever-core-ads'))) return;
+                    if (el.closest && el.closest('[id*="ads-"], [id*="clever-"], [class*="ads-core-ads"], [class*="clever-core-ads"], [id*="AdsCore"], [id*="CleverCore"]')) return;
                     var txt = (el.textContent || '').toLowerCase();
                     var id = (el.id || '').toLowerCase();
                     var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
