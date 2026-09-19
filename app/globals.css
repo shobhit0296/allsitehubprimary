@@ -850,7 +850,7 @@ iframe[class*="push-frame"] {
   overflow: hidden !important;
 }
 
-/* ── Permanent Stake & CleverCore Display Banner & TopScroll Styling ── */
+/* ── Permanent Stake & CleverCore Display Banner Styling ── */
 .ads-core-ads,
 .clever-core-ads {
   display: block !important;
@@ -868,12 +868,79 @@ div[id^="ads-1069"],
 div[id^="clever-"],
 div[class*="ads-core-ads"],
 div[class*="clever-core-ads"],
-iframe[id*="top-scroll"],
 iframe[id*="CleverCore"],
 iframe[id*="AdsCore"] {
-  z-index: 99999 !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+/* ── Stake & CleverCore Top-Scroll Ad (Positioned under Top Navigation, Full Edge-to-Edge Background) ── */
+div[id$="-top-scroll"],
+div[id$="-topscroll"],
+div[id^="ads-"][id*="scroll"]:not([id*="-shadow"]),
+div[id^="clever-"][id*="scroll"]:not([id*="-shadow"]) {
+  position: fixed !important;
+  top: var(--nav-h, 64px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  z-index: 99990 !important; /* Below site-header (z-index 1000000), above page content */
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+iframe[id*="top-scroll"],
+iframe[id*="topscroll"] {
+  position: fixed !important;
+  top: var(--nav-h, 64px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  z-index: 99991 !important;
+  border: none !important;
+}
+
+/* Close button - sits neatly in the top-right corner of the ad, below the navbar */
+img[id*="topscroll-close"],
+img[id*="top-scroll-close"],
+[id*="ads-"][id*="-close"],
+[id*="clever-"][id*="-close"] {
+  position: fixed !important;
+  top: calc(var(--nav-h, 64px) + 8px) !important;
+  right: 14px !important;
+  z-index: 99995 !important;
+  cursor: pointer !important;
+}
+
+/* Clickable shadow layer - strictly transparent so creative is visible */
+div[id*="top-scroll"] > div[id*="-shadow"],
+div[id*="topscroll"] > div[id*="-shadow"],
+div[id*="-top-scroll-shadow"],
+div[id*="-topscroll-shadow"] {
+  position: fixed !important;
+  top: var(--nav-h, 64px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  opacity: 0 !important;
+  z-index: 99992 !important;
+  cursor: pointer !important;
 }
 
 /* ── Admin Complete Ad Suppression (Zero Ads on Admin) ── */
@@ -1099,12 +1166,12 @@ body.is-admin-route .sc-card--native-ad {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 1000000 !important;
   height: auto;
   min-height: var(--nav-h);
   max-width: 100vw;
   animation: nav-slide-down 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  background: rgba(11, 11, 16, 0.88);
+  background: rgba(11, 11, 16, 0.94);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(24px);
