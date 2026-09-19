@@ -379,7 +379,7 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
                   sites={getSitesForCategory(cat.name)}
                   bookmarks={bookmarks}
                   onToggleBookmark={toggleBookmark}
-                  showAdCard={true}
+                  showAdCard={idx % 2 === 0}
                 />
                 {idx === 0 && (
                   <div className="w-full flex flex-col items-center justify-center overflow-hidden [&:has(.ads-core-ads:not(:empty))]:my-6 [&:has(.clever-core-ads:not(:empty))]:my-6">

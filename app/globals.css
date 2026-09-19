@@ -816,31 +816,13 @@ h1, h2, h3, .font-display {
   .modal-grid-2 { grid-template-columns: 1fr; }
 }
 
-/* ── Global Pop-Up, Social Bar & In-Page Push Modal Ad Suppression ── */
+/* ── Adsterra Social Bar Suppression (keeping Native Cards & Popunder active) ── */
 #adsterra-social-bar,
 #adsterra-popunder-dynamic,
 [id*="adsterra-social-bar"],
 [class*="adsterra-social-bar"],
 [class*="social-bar"],
-[id*="social-bar"],
-[class*="pushContainer"],
-[class*="pushLineContainer"],
-[class*="fakepush"],
-[id*="fakepush"],
-[class*="inpage-push"],
-[id*="inpage-push"],
-[class*="bigImageContainer"],
-[class*="buttonsContainer"],
-[class*="adLabel"],
-[class*="imageContainer"],
-[id*="push-frame"],
-[class*="push-frame"],
-[id*="interstitial"],
-[class*="interstitial"],
-[id*="ads-"][id*="-overlay"],
-[id*="clever-"][id*="-overlay"],
-iframe[id*="push-frame"],
-iframe[class*="push-frame"] {
+[id*="social-bar"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -848,6 +830,27 @@ iframe[class*="push-frame"] {
   height: 0 !important;
   width: 0 !important;
   overflow: hidden !important;
+}
+
+/* ── Monetag In-Page Push Notifications & Vignettes (Docked to bottom-right corner for maximum impressions) ── */
+iframe[id*="push-frame"],
+iframe[class*="push-frame"],
+div[class*="pushContainer"],
+div[class*="inpage"],
+div[class*="fakepush"],
+div[id*="inpage"],
+div[id*="push-frame"] {
+  position: fixed !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  top: auto !important;
+  left: auto !important;
+  max-width: 360px !important;
+  z-index: 99999 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  border-radius: 12px !important;
 }
 
 /* ── Permanent Stake & CleverCore Display Banner Styling ── */

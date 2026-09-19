@@ -324,7 +324,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* ========================================================================= */}
         {/* PERMANENT MONETAG MULTITAG (NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCE) */}
         {/* Preserves OnClick (Popunder), Push Notifications, and Vignettes           */}
-        {/* Strictly filters out only the mid-screen In-Page Push Modal                */}
+        {/* Docks In-Page Push to bottom-right corner for maximum impressions         */}
         {/* ========================================================================= */}
         <Script
           id="monetag-guard"
@@ -332,163 +332,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
-                function isInPagePushScript(src) {
-                  if (!src || typeof src !== 'string') return false;
-                  var s = src.toLowerCase();
-                  return s.indexOf('b3mny') !== -1 || s.indexOf('11825142') !== -1 || s.indexOf('fakepush') !== -1 || s.indexOf('inpage') !== -1;
-                }
-
-                // 1. Trap HTMLScriptElement.prototype.src descriptor (catches direct script.src = '...' assignments)
-                try {
-                  var srcDesc = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, 'src');
-                  if (srcDesc && srcDesc.set) {
-                    var origSetSrc = srcDesc.set;
-                    Object.defineProperty(HTMLScriptElement.prototype, 'src', {
-                      set: function(val) {
-                        if (isInPagePushScript(val)) {
-                          return origSetSrc.call(this, 'data:text/javascript,/*inpage-push-blocked*/');
-                        }
-                        return origSetSrc.call(this, val);
-                      },
-                      get: function() {
-                        return srcDesc.get.call(this);
-                      }
-                    });
+                // Ensure Monetag In-Page Push displays as a sleek bottom-right toast for maximum impressions
+                var dockPushNode = function(el) {
+                  if (!el || el.nodeType !== 1) return;
+                  var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
+                  var id = (el.id || '').toLowerCase();
+                  if (cls.indexOf('pushcontainer') !== -1 || cls.indexOf('inpage') !== -1 || id.indexOf('push-frame') !== -1 || cls.indexOf('fakepush') !== -1) {
+                    el.style.setProperty('position', 'fixed', 'important');
+                    el.style.setProperty('bottom', '16px', 'important');
+                    el.style.setProperty('right', '16px', 'important');
+                    el.style.setProperty('top', 'auto', 'important');
+                    el.style.setProperty('left', 'auto', 'important');
+                    el.style.setProperty('max-width', '340px', 'important');
+                    el.style.setProperty('z-index', '99999', 'important');
+                    el.style.setProperty('display', 'block', 'important');
+                    el.style.setProperty('visibility', 'visible', 'important');
+                    el.style.setProperty('opacity', '1', 'important');
                   }
-                } catch(e) {}
+                };
 
-                // 2. Trap Element.prototype.setAttribute
-                try {
-                  var origSetAttr = Element.prototype.setAttribute;
-                  Element.prototype.setAttribute = function(name, val) {
-                    if (name && String(name).toLowerCase() === 'src' && isInPagePushScript(val)) {
-                      val = 'data:text/javascript,/*inpage-push-blocked*/';
+                var mo = new MutationObserver(function(mutations) {
+                  for (var m = 0; m < mutations.length; m++) {
+                    var nodes = mutations[m].addedNodes;
+                    for (var n = 0; n < nodes.length; n++) {
+                      dockPushNode(nodes[n]);
                     }
-                    return origSetAttr.apply(this, arguments);
-                  };
-                } catch(e) {}
+                  }
+                });
 
-                // 3. Trap Node.prototype.appendChild & insertBefore
-                try {
-                  var origAppendChild = Node.prototype.appendChild;
-                  Node.prototype.appendChild = function(node) {
-                    if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
-                      return node;
-                    }
-                    return origAppendChild.apply(this, arguments);
-                  };
-                  var origInsertBefore = Node.prototype.insertBefore;
-                  Node.prototype.insertBefore = function(node, ref) {
-                    if (node && node.nodeName === 'SCRIPT' && isInPagePushScript(node.src)) {
-                      return node;
-                    }
-                    return origInsertBefore.apply(this, arguments);
-                  };
-                } catch(e) {}
-
-                // 4. Intercept fetch responses for Monetag metadata
-                var origFetch = window.fetch;
-                if (origFetch) {
-                  window.fetch = function(url, opts) {
-                    var u = typeof url === 'string' ? url : (url && url.url ? url.url : (url && url.href ? url.href : String(url || '')));
-                    if (u && (u.indexOf('/88/') !== -1 || u.indexOf('282088') !== -1 || u.indexOf('quge5') !== -1 || u.indexOf('6opo') !== -1 || u.indexOf('vaimucuvikuwu') !== -1)) {
-                      return origFetch.apply(this, arguments).then(function(res) {
-                        return res.clone().json().then(function(data) {
-                          if (data && Array.isArray(data.extra_formats)) {
-                            data.extra_formats = data.extra_formats.filter(function(item) {
-                              return typeof item === 'string' && !isInPagePushScript(item);
-                            });
-                          }
-                          return new Response(JSON.stringify(data), {
-                            status: res.status,
-                            statusText: res.statusText,
-                            headers: res.headers
-                          });
-                        }).catch(function() { return res; });
-                      });
-                    }
-                    return origFetch.apply(this, arguments);
-                  };
-                }
-
-                // 5. Intercept XMLHttpRequest for Monetag metadata
-                try {
-                  var origOpen = XMLHttpRequest.prototype.open;
-                  XMLHttpRequest.prototype.open = function(method, url) {
-                    this._reqUrl = url;
-                    return origOpen.apply(this, arguments);
-                  };
-                  var origSend = XMLHttpRequest.prototype.send;
-                  XMLHttpRequest.prototype.send = function(body) {
-                    if (this._reqUrl && (String(this._reqUrl).indexOf('/88/') !== -1 || String(this._reqUrl).indexOf('282088') !== -1)) {
-                      this.addEventListener('readystatechange', function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                          try {
-                            var data = JSON.parse(this.responseText);
-                            if (data && Array.isArray(data.extra_formats)) {
-                              data.extra_formats = data.extra_formats.filter(function(item) {
-                                return typeof item === 'string' && !isInPagePushScript(item);
-                              });
-                              Object.defineProperty(this, 'responseText', { value: JSON.stringify(data) });
-                              Object.defineProperty(this, 'response', { value: JSON.stringify(data) });
-                            }
-                          } catch(e) {}
-                        }
-                      });
-                    }
-                    return origSend.apply(this, arguments);
-                  };
-                } catch(e) {}
-
-                // 6. Active MutationObserver to suppress any In-Page Push modal instantly without removing nodes
-                try {
-                  var hideNode = function(el) {
-                    if (!el || el.nodeType !== 1) return;
-                    if (el.classList && (el.classList.contains('ads-core-ads') || el.classList.contains('clever-core-ads'))) return;
-                    if (el.closest && el.closest('[id*="ads-"], [id*="clever-"], [class*="ads-core-ads"], [class*="clever-core-ads"], [id*="AdsCore"], [id*="CleverCore"]')) return;
-                    var txt = (el.textContent || '').toLowerCase();
-                    var id = (el.id || '').toLowerCase();
-                    var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
-                    if (id.indexOf('ads-') !== -1 || id.indexOf('clever-') !== -1 || id.indexOf('adscore') !== -1 || id.indexOf('clevercore') !== -1) return;
-                    if (cls.indexOf('ads-') !== -1 || cls.indexOf('clever-') !== -1 || cls.indexOf('adscore') !== -1 || cls.indexOf('clevercore') !== -1) return;
-                    var isModal = (
-                      (txt.indexOf('continue') !== -1 && txt.indexOf('close') !== -1) ||
-                      id.indexOf('push-frame') !== -1 ||
-                      id.indexOf('interstitial') !== -1 ||
-                      id.indexOf('-overlay') !== -1 ||
-                      cls.indexOf('push-frame') !== -1 ||
-                      cls.indexOf('interstitial') !== -1 ||
-                      (el.matches && el.matches('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="inpage"], [id*="push-frame"], [id*="interstitial"]')) ||
-                      (el.querySelector && el.querySelector('[class*="pushContainer"], [class*="fakepush"], [id*="fakepush"], [class*="adLabel"], [id*="push-frame"], [id*="interstitial"]'))
-                    );
-                    if (isModal) {
-                      el.style.setProperty('display', 'none', 'important');
-                      el.style.setProperty('visibility', 'hidden', 'important');
-                      el.style.setProperty('opacity', '0', 'important');
-                      el.style.setProperty('pointer-events', 'none', 'important');
-                      el.style.setProperty('height', '0', 'important');
-                      el.style.setProperty('width', '0', 'important');
-                      el.style.setProperty('overflow', 'hidden', 'important');
-                    }
-                  };
-
-                  var mo = new MutationObserver(function(mutations) {
-                    for (var m = 0; m < mutations.length; m++) {
-                      var nodes = mutations[m].addedNodes;
-                      for (var n = 0; n < nodes.length; n++) {
-                        hideNode(nodes[n]);
-                      }
-                    }
-                  });
-
-                  if (document.documentElement) {
+                if (document.documentElement) {
+                  mo.observe(document.documentElement, { childList: true, subtree: true });
+                } else {
+                  document.addEventListener('DOMContentLoaded', function() {
                     mo.observe(document.documentElement, { childList: true, subtree: true });
-                  } else {
-                    document.addEventListener('DOMContentLoaded', function() {
-                      mo.observe(document.documentElement, { childList: true, subtree: true });
-                    });
-                  }
-                } catch(e) {}
+                  });
+                }
               } catch(e) {}
             })();`,
           }}
