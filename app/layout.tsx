@@ -324,7 +324,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* ========================================================================= */}
         {/* PERMANENT MONETAG MULTITAG (NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCE) */}
         {/* Preserves OnClick (Popunder), Push Opt-in Subscriptions, and Vignettes    */}
-        {/* Stops In-Page Push prompts as requested by user                           */}
+        {/* In-Page Push enabled with strict 1-2 display frequency cap per user      */}
         {/* ========================================================================= */}
         <Script
           id="monetag-guard"
@@ -332,11 +332,40 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
-                var hideInPagePushNode = function(el) {
-                  if (!el || el.nodeType !== 1) return;
+                var STORAGE_KEY = 'monetag_ipp_count';
+                var MAX_DISPLAYS = 2;
+
+                var getCount = function() {
+                  try {
+                    return parseInt(sessionStorage.getItem(STORAGE_KEY) || '0', 10);
+                  } catch(e) { return 0; }
+                };
+
+                var incrementCount = function() {
+                  try {
+                    var current = getCount();
+                    sessionStorage.setItem(STORAGE_KEY, String(current + 1));
+                  } catch(e) {}
+                };
+
+                var isPushNode = function(el) {
+                  if (!el || el.nodeType !== 1) return false;
                   var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
                   var id = (el.id || '').toLowerCase();
-                  if (cls.indexOf('pushcontainer') !== -1 || cls.indexOf('inpage') !== -1 || id.indexOf('push-frame') !== -1 || cls.indexOf('fakepush') !== -1 || id.indexOf('fakepush') !== -1) {
+                  return (
+                    cls.indexOf('pushcontainer') !== -1 ||
+                    cls.indexOf('inpage') !== -1 ||
+                    id.indexOf('push-frame') !== -1 ||
+                    cls.indexOf('fakepush') !== -1 ||
+                    id.indexOf('fakepush') !== -1
+                  );
+                };
+
+                var handleInPagePushNode = function(el) {
+                  if (!isPushNode(el)) return;
+                  var count = getCount();
+                  if (count >= MAX_DISPLAYS) {
+                    el.setAttribute('data-ipp-capped', 'true');
                     el.style.setProperty('display', 'none', 'important');
                     el.style.setProperty('visibility', 'hidden', 'important');
                     el.style.setProperty('opacity', '0', 'important');
@@ -344,6 +373,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     el.style.setProperty('height', '0', 'important');
                     el.style.setProperty('width', '0', 'important');
                     el.style.setProperty('overflow', 'hidden', 'important');
+                  } else {
+                    if (!el._hasCounted) {
+                      el._hasCounted = true;
+                      incrementCount();
+                    }
+                    el.style.setProperty('position', 'fixed', 'important');
+                    el.style.setProperty('bottom', '16px', 'important');
+                    el.style.setProperty('right', '16px', 'important');
+                    el.style.setProperty('top', 'auto', 'important');
+                    el.style.setProperty('left', 'auto', 'important');
+                    el.style.setProperty('max-width', '350px', 'important');
+                    el.style.setProperty('z-index', '99999', 'important');
+                    el.style.setProperty('display', 'block', 'important');
+                    el.style.setProperty('visibility', 'visible', 'important');
+                    el.style.setProperty('opacity', '1', 'important');
                   }
                 };
 
@@ -351,7 +395,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   for (var m = 0; m < mutations.length; m++) {
                     var nodes = mutations[m].addedNodes;
                     for (var n = 0; n < nodes.length; n++) {
-                      hideInPagePushNode(nodes[n]);
+                      handleInPagePushNode(nodes[n]);
                     }
                   }
                 });
