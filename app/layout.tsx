@@ -284,66 +284,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   });
                 }
 
-                // Stake Top-Scroll: sits below top navigation at scroll 0, and scrolls off naturally with page scroll
-                var updateTopScrollPos = function() {
+                // Mount Stake Scrolling Banner into #stake-top-banner-slot (directly below Navbar, above Front Page Content)
+                var mountStakeTopBanner = function() {
                   try {
+                    var slot = document.getElementById('stake-top-banner-slot');
                     var container = document.querySelector('div[id$="-top-scroll"], div[id$="-topscroll"]');
-                    var iframe = document.querySelector('iframe[id*="top-scroll"], iframe[id*="topscroll"]');
-                    if (!iframe) return;
-
-                    var isDesktop = window.innerWidth >= 768;
-                    var navH = isDesktop ? 64 : 56;
-                    var scrollY = window.scrollY || window.pageYOffset || 0;
-                    var currentTop = navH - scrollY;
-
-                    // Set position on iframe so it scrolls naturally with the page
-                    iframe.style.top = currentTop + 'px';
-                    iframe.style.left = '0px';
-                    iframe.style.right = '0px';
-                    iframe.style.width = '100vw';
-                    iframe.style.maxWidth = '100vw';
-                    iframe.style.margin = '0px auto';
-                    iframe.style.backgroundColor = 'transparent';
-                    iframe.style.background = 'transparent';
-                    iframe.style.zIndex = '91';
-
-                    // Transparent click layer moves with scroll
-                    var shadow = document.querySelector('[id*="top-scroll-shadow"], [id*="topscroll-shadow"], div[id*="-shadow"]');
-                    if (shadow) {
-                      shadow.style.top = currentTop + 'px';
-                      shadow.style.left = '0px';
-                      shadow.style.right = '0px';
-                      shadow.style.width = '100vw';
-                      shadow.style.maxWidth = '100vw';
-                      shadow.style.background = 'transparent';
-                      shadow.style.backgroundColor = 'transparent';
-                      shadow.style.opacity = '0';
-                      shadow.style.zIndex = '92';
-                    }
-
-                    // Close button moves with scroll
-                    var closeBtn = document.querySelector('img[id*="topscroll-close"], img[id*="top-scroll-close"], [id*="ads-"][id*="-close"], [id*="clever-"][id*="-close"]');
-                    if (closeBtn) {
-                      closeBtn.style.top = (currentTop + 8) + 'px';
-                      closeBtn.style.right = '14px';
-                      closeBtn.style.zIndex = '95';
-                    }
-
-                    // Root container (covers side gaps with solid black)
-                    if (container) {
-                      container.style.width = '100vw';
-                      container.style.maxWidth = '100vw';
-                      container.style.backgroundColor = '#000000';
-                      container.style.background = '#000000';
-                      container.style.zIndex = '90';
+                    if (slot && container && container.parentElement !== slot) {
+                      slot.appendChild(container);
                     }
                   } catch(e) {}
                 };
 
-                window.addEventListener('scroll', updateTopScrollPos, { passive: true });
-                window.addEventListener('resize', updateTopScrollPos, { passive: true });
                 setInterval(clearAdCookies, 2000);
-                setInterval(updateTopScrollPos, 400);
+                setInterval(mountStakeTopBanner, 200);
               } catch(e) {}
             })();`,
           }}
