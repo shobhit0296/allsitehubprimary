@@ -284,69 +284,66 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   });
                 }
 
-                // Ensure Stake top-scroll ad sits below navbar & covers side gaps without blacking out the creative
-                var alignTopScrollAd = function() {
+                // Stake Top-Scroll: sits below top navigation at scroll 0, and scrolls off naturally with page scroll
+                var updateTopScrollPos = function() {
                   try {
+                    var container = document.querySelector('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                    var iframe = document.querySelector('iframe[id*="top-scroll"], iframe[id*="topscroll"]');
+                    if (!iframe) return;
+
                     var isDesktop = window.innerWidth >= 768;
-                    var navH = isDesktop ? '64px' : '56px';
+                    var navH = isDesktop ? 64 : 56;
+                    var scrollY = window.scrollY || window.pageYOffset || 0;
+                    var currentTop = navH - scrollY;
 
-                    // 1. Root container (fills screen width with solid black to cover side gaps)
-                    var rootContainers = document.querySelectorAll('div[id$="-top-scroll"], div[id$="-topscroll"]');
-                    for (var k = 0; k < rootContainers.length; k++) {
-                      var c = rootContainers[k];
-                      c.style.setProperty('top', navH, 'important');
-                      c.style.setProperty('left', '0px', 'important');
-                      c.style.setProperty('right', '0px', 'important');
-                      c.style.setProperty('width', '100vw', 'important');
-                      c.style.setProperty('max-width', '100vw', 'important');
-                      c.style.setProperty('margin', '0px', 'important');
-                      c.style.setProperty('background-color', '#000000', 'important');
-                      c.style.setProperty('background', '#000000', 'important');
-                      c.style.setProperty('z-index', '99990', 'important');
+                    // Set position on iframe so it scrolls naturally with the page
+                    iframe.style.top = currentTop + 'px';
+                    iframe.style.left = '0px';
+                    iframe.style.right = '0px';
+                    iframe.style.width = '100vw';
+                    iframe.style.maxWidth = '100vw';
+                    iframe.style.margin = '0px auto';
+                    iframe.style.backgroundColor = 'transparent';
+                    iframe.style.background = 'transparent';
+                    iframe.style.zIndex = '91';
+
+                    // Transparent click layer moves with scroll
+                    var shadow = document.querySelector('[id*="top-scroll-shadow"], [id*="topscroll-shadow"], div[id*="-shadow"]');
+                    if (shadow) {
+                      shadow.style.top = currentTop + 'px';
+                      shadow.style.left = '0px';
+                      shadow.style.right = '0px';
+                      shadow.style.width = '100vw';
+                      shadow.style.maxWidth = '100vw';
+                      shadow.style.background = 'transparent';
+                      shadow.style.backgroundColor = 'transparent';
+                      shadow.style.opacity = '0';
+                      shadow.style.zIndex = '92';
                     }
 
-                    // 2. Creative iframe (strictly transparent background so creative is visible)
-                    var iframes = document.querySelectorAll('iframe[id*="top-scroll"], iframe[id*="topscroll"]');
-                    for (var i = 0; i < iframes.length; i++) {
-                      var ifr = iframes[i];
-                      ifr.style.setProperty('top', navH, 'important');
-                      ifr.style.setProperty('left', '0px', 'important');
-                      ifr.style.setProperty('right', '0px', 'important');
-                      ifr.style.setProperty('width', '100vw', 'important');
-                      ifr.style.setProperty('max-width', '100vw', 'important');
-                      ifr.style.setProperty('margin', '0px auto', 'important');
-                      ifr.style.setProperty('background-color', 'transparent', 'important');
-                      ifr.style.setProperty('background', 'transparent', 'important');
-                      ifr.style.setProperty('z-index', '99991', 'important');
+                    // Close button moves with scroll
+                    var closeBtn = document.querySelector('img[id*="topscroll-close"], img[id*="top-scroll-close"], [id*="ads-"][id*="-close"], [id*="clever-"][id*="-close"]');
+                    if (closeBtn) {
+                      closeBtn.style.top = (currentTop + 8) + 'px';
+                      closeBtn.style.right = '14px';
+                      closeBtn.style.zIndex = '95';
                     }
 
-                    // 3. Shadow click layer (strictly transparent overlay)
-                    var shadows = document.querySelectorAll('[id*="top-scroll-shadow"], [id*="topscroll-shadow"], div[id*="-shadow"]');
-                    for (var s = 0; s < shadows.length; s++) {
-                      var sh = shadows[s];
-                      sh.style.setProperty('top', navH, 'important');
-                      sh.style.setProperty('left', '0px', 'important');
-                      sh.style.setProperty('right', '0px', 'important');
-                      sh.style.setProperty('width', '100vw', 'important');
-                      sh.style.setProperty('max-width', '100vw', 'important');
-                      sh.style.setProperty('background', 'transparent', 'important');
-                      sh.style.setProperty('background-color', 'transparent', 'important');
-                      sh.style.setProperty('opacity', '0', 'important');
-                      sh.style.setProperty('z-index', '99992', 'important');
-                    }
-
-                    // 4. Close button
-                    var closeBtns = document.querySelectorAll('img[id*="topscroll-close"], img[id*="top-scroll-close"], [id*="ads-"][id*="-close"], [id*="clever-"][id*="-close"]');
-                    for (var m = 0; m < closeBtns.length; m++) {
-                      closeBtns[m].style.setProperty('top', 'calc(' + navH + ' + 8px)', 'important');
-                      closeBtns[m].style.setProperty('right', '14px', 'important');
-                      closeBtns[m].style.setProperty('z-index', '99995', 'important');
+                    // Root container (covers side gaps with solid black)
+                    if (container) {
+                      container.style.width = '100vw';
+                      container.style.maxWidth = '100vw';
+                      container.style.backgroundColor = '#000000';
+                      container.style.background = '#000000';
+                      container.style.zIndex = '90';
                     }
                   } catch(e) {}
                 };
 
+                window.addEventListener('scroll', updateTopScrollPos, { passive: true });
+                window.addEventListener('resize', updateTopScrollPos, { passive: true });
                 setInterval(clearAdCookies, 2000);
-                setInterval(alignTopScrollAd, 250);
+                setInterval(updateTopScrollPos, 400);
               } catch(e) {}
             })();`,
           }}
