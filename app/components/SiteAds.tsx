@@ -50,8 +50,6 @@ export default function SiteAds() {
           [class*="push-frame"],
           [id*="interstitial"],
           [class*="interstitial"],
-          [id*="ads-"][id*="-overlay"],
-          [id*="clever-"][id*="-overlay"],
           iframe[id*="push-frame"],
           iframe[class*="push-frame"] {
             display: none !important;

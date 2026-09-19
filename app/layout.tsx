@@ -224,15 +224,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
-      </head>
-      <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
-        <Script
+        <script
           id="theme-init"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('allSiteHub_theme')||'cosmic';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
         />
+      </head>
+      <body suppressHydrationWarning className="min-h-screen flex flex-col relative" style={{ backgroundColor: 'var(--bg-base)' }}>
         <Script
           id="ld-website"
           type="application/ld+json"
@@ -379,6 +378,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     var txt = (el.textContent || '').toLowerCase();
                     var id = (el.id || '').toLowerCase();
                     var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
+                    if (id.indexOf('ads-') !== -1 || id.indexOf('clever-') !== -1 || id.indexOf('adscore') !== -1 || id.indexOf('clevercore') !== -1) return;
+                    if (cls.indexOf('ads-') !== -1 || cls.indexOf('clever-') !== -1 || cls.indexOf('adscore') !== -1 || cls.indexOf('clevercore') !== -1) return;
                     var isModal = (
                       (txt.indexOf('continue') !== -1 && txt.indexOf('close') !== -1) ||
                       id.indexOf('push-frame') !== -1 ||
