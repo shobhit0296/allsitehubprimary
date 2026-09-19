@@ -279,11 +279,14 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
         onlineCount={liveOnlineCount}
       />
 
-      {/* Stake Scrolling Banner Slot: Positioned directly below Top Navigation, above Front Page Content */}
+      {/* Stake Banner Placement: Positioned directly below Top Navigation, above Front Page Content */}
       <div
         id="stake-top-banner-slot"
-        className="w-full flex justify-center items-center overflow-hidden bg-black"
-      />
+        className="w-full max-w-[1200px] mx-auto flex flex-col justify-center items-center overflow-hidden bg-transparent [&:has(.ads-core-ads:not(:empty))]:my-3 [&:has(.clever-core-ads:not(:empty))]:my-3"
+      >
+        <div className="ads-core-ads" />
+        <div className="clever-core-ads" />
+      </div>
 
       <Hero
         totalSites={sites.length}
@@ -294,12 +297,6 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
         filteredCount={filteredSites.length}
         totalUsers={totalUsers}
       />
-
-      {/* Stake Display Banners (Visible Placement) */}
-      <div className="w-full max-w-[970px] mx-auto px-3 sm:px-5 [&:has(.ads-core-ads:not(:empty))]:my-4 [&:has(.clever-core-ads:not(:empty))]:my-4">
-        <div className="ads-core-ads" />
-        <div className="clever-core-ads" />
-      </div>
 
       {/* Directory Content Section */}
 
