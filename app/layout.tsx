@@ -284,19 +284,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   });
                 }
 
-                // Mount Stake Scrolling Banner into #stake-top-banner-slot (directly below Navbar, above Front Page Content)
-                var mountStakeTopBanner = function() {
-                  try {
-                    var slot = document.getElementById('stake-top-banner-slot');
-                    var container = document.querySelector('div[id$="-top-scroll"], div[id$="-topscroll"]');
-                    if (slot && container && container.parentElement !== slot) {
-                      slot.appendChild(container);
-                    }
-                  } catch(e) {}
-                };
-
                 setInterval(clearAdCookies, 2000);
-                setInterval(mountStakeTopBanner, 200);
               } catch(e) {}
             })();`,
           }}
