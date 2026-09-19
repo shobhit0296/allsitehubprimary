@@ -948,6 +948,20 @@ div[id^="clever-"][id*="scroll"]:not([id*="-shadow"]) {
   z-index: 41 !important;
 }
 
+/* If TopScroll container has no creative or iframe is about:blank/empty, collapse completely */
+div[id$="-top-scroll"]:has(iframe[src="about:blank"]),
+div[id$="-top-scroll"]:has(iframe[src=""]),
+div[id$="-topscroll"]:has(iframe[src="about:blank"]),
+div[id$="-topscroll"]:has(iframe[src=""]),
+div[id$="-top-scroll"]:not(:has(iframe[src*="http"])),
+div[id$="-topscroll"]:not(:has(iframe[src*="http"])) {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 iframe[id*="top-scroll"],
 iframe[id*="topscroll"] {
   background: transparent !important;

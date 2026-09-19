@@ -366,24 +366,51 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       el._hasCounted = true;
                       incrementCount();
                     }
-                    el.style.setProperty('position', 'fixed', 'important');
-                    el.style.setProperty('bottom', '16px', 'important');
-                    el.style.setProperty('right', '16px', 'important');
-                    el.style.setProperty('top', 'auto', 'important');
-                    el.style.setProperty('left', 'auto', 'important');
-                    el.style.setProperty('max-width', '350px', 'important');
-                    el.style.setProperty('z-index', '99999', 'important');
                     el.style.setProperty('display', 'block', 'important');
                     el.style.setProperty('visibility', 'visible', 'important');
                     el.style.setProperty('opacity', '1', 'important');
                   }
                 };
 
+                // Auto-collapse empty/unfilled Clever top-scroll ad containers so no black void appears
+                var collapseUnfilledTopScroll = function() {
+                  var containers = document.querySelectorAll('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                  for (var i = 0; i < containers.length; i++) {
+                    var c = containers[i];
+                    var iframe = c.querySelector('iframe');
+                    if (iframe) {
+                      var src = iframe.getAttribute('src') || '';
+                      if (!src || src === 'about:blank' || src.indexOf('http') !== 0) {
+                        c.style.setProperty('display', 'none', 'important');
+                        c.style.setProperty('height', '0', 'important');
+                        c.style.setProperty('min-height', '0', 'important');
+                        c.style.setProperty('margin', '0', 'important');
+                        c.style.setProperty('padding', '0', 'important');
+                      }
+                    }
+                  }
+                };
+                setInterval(collapseUnfilledTopScroll, 600);
+
+                // Immediate collapse when user clicks the TopScroll (X) close button
+                document.addEventListener('click', function(e) {
+                  var target = e.target;
+                  if (target && target.matches && (target.matches('[id*="topscroll-close"]') || target.matches('[id*="top-scroll-close"]'))) {
+                    var container = target.closest('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                    if (container) {
+                      container.style.setProperty('display', 'none', 'important');
+                      container.style.setProperty('height', '0', 'important');
+                      container.style.setProperty('min-height', '0', 'important');
+                    }
+                  }
+                }, true);
+
                 var mo = new MutationObserver(function(mutations) {
                   for (var m = 0; m < mutations.length; m++) {
                     var nodes = mutations[m].addedNodes;
                     for (var n = 0; n < nodes.length; n++) {
                       handleInPagePushNode(nodes[n]);
+                      collapseUnfilledTopScroll();
                     }
                   }
                 });
