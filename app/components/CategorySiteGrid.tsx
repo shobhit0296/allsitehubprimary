@@ -37,13 +37,8 @@ export default function CategorySiteGrid({ sites, category, showAdCard = true }:
       }
     }
     sync();
-    const onFocus = () => sync();
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('visibilitychange', onFocus);
     return () => {
       mounted = false;
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('visibilitychange', onFocus);
     };
   }, [category]);
 

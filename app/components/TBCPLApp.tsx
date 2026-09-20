@@ -83,18 +83,11 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
       }
     }
 
-    // Immediately sync on mount to ensure fresh data even if CDN/SSR served a cached snapshot
+    // Sync on mount if needed
     syncSites();
-
-    // Also sync whenever user switches back to this tab after editing in admin panel
-    const onFocus = () => syncSites();
-    window.addEventListener('focus', onFocus);
-    window.addEventListener('visibilitychange', onFocus);
 
     return () => {
       mounted = false;
-      window.removeEventListener('focus', onFocus);
-      window.removeEventListener('visibilitychange', onFocus);
     };
   }, []);
 
