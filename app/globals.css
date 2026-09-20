@@ -832,14 +832,14 @@ h1, h2, h3, .font-display {
   overflow: hidden !important;
 }
 
-/* ── Monetag In-Page Push Notifications (Frequency Capped: 1-2 displays per user, docked to bottom-right toast) ── */
-iframe[id*="push-frame"]:not([data-ipp-capped="true"]),
-iframe[class*="push-frame"]:not([data-ipp-capped="true"]),
-div[class*="pushContainer"]:not([data-ipp-capped="true"]),
-div[class*="inpage"]:not([data-ipp-capped="true"]),
-div[class*="fakepush"]:not([data-ipp-capped="true"]),
-div[id*="inpage"]:not([data-ipp-capped="true"]),
-div[id*="push-frame"]:not([data-ipp-capped="true"]) {
+/* ── Monetag In-Page Push Notifications (Docked to bottom-right toast) ── */
+iframe[id*="push-frame"],
+iframe[class*="push-frame"],
+div[class*="pushContainer"],
+div[class*="inpage"],
+div[class*="fakepush"],
+div[id*="inpage"],
+div[id*="push-frame"] {
   position: fixed !important;
   bottom: 16px !important;
   right: 16px !important;
@@ -851,20 +851,6 @@ div[id*="push-frame"]:not([data-ipp-capped="true"]) {
   visibility: visible !important;
   opacity: 1 !important;
   border-radius: 12px !important;
-}
-
-/* Frequency Capped or Exceeded State: Completely Hidden */
-[data-ipp-capped="true"],
-[data-ipp-capped="true"] *,
-iframe[data-ipp-capped="true"],
-div[data-ipp-capped="true"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  height: 0 !important;
-  width: 0 !important;
-  overflow: hidden !important;
 }
 
 /* ── Permanent Stake & CleverCore Display Banner Styling ── */

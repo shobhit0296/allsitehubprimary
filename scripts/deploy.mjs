@@ -42,7 +42,14 @@ async function main() {
   }
 
   // 3. Deploy directly to Vercel Production
-  run('npx vercel --prod --yes', '3/3 Deploying to Vercel Production');
+  run('npx vercel --prod --yes', '3/4 Deploying to Vercel Production');
+
+  // 4. Purge Cloudflare Edge Cache so visitors instantly see live changes
+  try {
+    run('node scripts/purge-cf-cache.mjs', '4/4 Purging Cloudflare Edge Cache');
+  } catch (cfErr) {
+    console.warn('⚠️ Cloudflare cache purge warning:', cfErr.message);
+  }
 
   console.log('\n\x1b[32m✅ LIVE DEPLOYMENT COMPLETE!\x1b[0m');
   console.log('\x1b[35m🌐 Production Domain: https://www.allsitehub.site/\x1b[0m\n');

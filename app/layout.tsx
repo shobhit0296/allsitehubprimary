@@ -319,23 +319,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
-              try {
-                var STORAGE_KEY = 'monetag_ipp_count';
-                var MAX_DISPLAYS = 2;
-
-                var getCount = function() {
-                  try {
-                    return parseInt(sessionStorage.getItem(STORAGE_KEY) || '0', 10);
-                  } catch(e) { return 0; }
-                };
-
-                var incrementCount = function() {
-                  try {
-                    var current = getCount();
-                    sessionStorage.setItem(STORAGE_KEY, String(current + 1));
-                  } catch(e) {}
-                };
-
                 var isPushNode = function(el) {
                   if (!el || el.nodeType !== 1) return false;
                   var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
@@ -351,25 +334,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
                 var handleInPagePushNode = function(el) {
                   if (!isPushNode(el)) return;
-                  var count = getCount();
-                  if (count >= MAX_DISPLAYS) {
-                    el.setAttribute('data-ipp-capped', 'true');
-                    el.style.setProperty('display', 'none', 'important');
-                    el.style.setProperty('visibility', 'hidden', 'important');
-                    el.style.setProperty('opacity', '0', 'important');
-                    el.style.setProperty('pointer-events', 'none', 'important');
-                    el.style.setProperty('height', '0', 'important');
-                    el.style.setProperty('width', '0', 'important');
-                    el.style.setProperty('overflow', 'hidden', 'important');
-                  } else {
-                    if (!el._hasCounted) {
-                      el._hasCounted = true;
-                      incrementCount();
-                    }
-                    el.style.setProperty('display', 'block', 'important');
-                    el.style.setProperty('visibility', 'visible', 'important');
-                    el.style.setProperty('opacity', '1', 'important');
-                  }
+                  el.style.setProperty('display', 'block', 'important');
+                  el.style.setProperty('visibility', 'visible', 'important');
+                  el.style.setProperty('opacity', '1', 'important');
                 };
 
                 // Auto-collapse empty/unfilled Clever top-scroll ad containers so no black void appears

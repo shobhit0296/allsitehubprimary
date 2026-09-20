@@ -29,13 +29,10 @@ export default function SiteAds() {
         __html: `
           /* Permanent suppression of intrusive mid-screen popups, social bars & floating overlays */
           #adsterra-social-bar,
-          #adsterra-popunder-dynamic,
           [id*="adsterra-social-bar"],
           [class*="adsterra-social-bar"],
           [class*="social-bar"],
-          [id*="social-bar"],
-          [data-ipp-capped="true"],
-          [data-ipp-capped="true"] * {
+          [id*="social-bar"] {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
