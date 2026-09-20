@@ -7,6 +7,7 @@
  */
 
 import { execSync } from 'child_process';
+import fs from 'fs';
 
 const customMsg = process.argv.slice(2).join(' ').trim();
 const commitMsg = customMsg || `deploy: live update ${new Date().toISOString().replace('T', ' ').slice(0, 19)}`;
@@ -42,7 +43,16 @@ async function main() {
   }
 
   // 3. Deploy directly to Vercel Production
-  run('npx vercel --prod --yes', '3/4 Deploying to Vercel Production');
+  let vercelToken = process.env.VERCEL_TOKEN;
+  if (!vercelToken) {
+    try {
+      const envLocal = fs.readFileSync('.env.local', 'utf8');
+      const m = envLocal.match(/VERCEL_TOKEN=["']?([^"'\r\n]+)/);
+      if (m) vercelToken = m[1];
+    } catch {}
+  }
+  const tokenFlag = vercelToken ? ` --token ${vercelToken}` : '';
+  run(`npx vercel --prod --yes${tokenFlag}`, '3/4 Deploying to Vercel Production');
 
   // 4. Purge Cloudflare Edge Cache so visitors instantly see live changes
   try {
