@@ -832,25 +832,15 @@ h1, h2, h3, .font-display {
   overflow: hidden !important;
 }
 
-/* ── Monetag In-Page Push Notifications (Docked to bottom-right toast) ── */
-iframe[id*="push-frame"],
-iframe[class*="push-frame"],
+/* ── Monetag In-Page Push & Modal Notifications (Allow native rendering & high visibility) ── */
 div[class*="pushContainer"],
 div[class*="inpage"],
 div[class*="fakepush"],
 div[id*="inpage"],
-div[id*="push-frame"] {
-  position: fixed !important;
-  bottom: 16px !important;
-  right: 16px !important;
-  top: auto !important;
-  left: auto !important;
-  max-width: 360px !important;
-  z-index: 99999 !important;
-  display: block !important;
+div[class*="monetag"] {
   visibility: visible !important;
   opacity: 1 !important;
-  border-radius: 12px !important;
+  z-index: 999999 !important;
 }
 
 /* ── Permanent Stake & CleverCore Display Banner Styling ── */
@@ -934,13 +924,17 @@ div[id^="clever-"][id*="scroll"]:not([id*="-shadow"]) {
   z-index: 41 !important;
 }
 
-/* If TopScroll container has no creative or iframe is about:blank/empty, collapse completely */
+/* If TopScroll container has no creative, iframe is about:blank/empty, or marked collapsed, collapse completely */
+div[id*="top-scroll"][data-ad-collapsed="true"],
+div[id*="topscroll"][data-ad-collapsed="true"],
+div[id^="ads-"][id*="scroll"][data-ad-collapsed="true"],
+div[id^="clever-"][id*="scroll"][data-ad-collapsed="true"],
 div[id$="-top-scroll"]:has(iframe[src="about:blank"]),
 div[id$="-top-scroll"]:has(iframe[src=""]),
 div[id$="-topscroll"]:has(iframe[src="about:blank"]),
 div[id$="-topscroll"]:has(iframe[src=""]),
-div[id$="-top-scroll"]:not(:has(iframe[src*="http"])),
-div[id$="-topscroll"]:not(:has(iframe[src*="http"])) {
+div[id$="-top-scroll"]:not(:has(iframe)),
+div[id$="-topscroll"]:not(:has(iframe)) {
   display: none !important;
   height: 0 !important;
   min-height: 0 !important;

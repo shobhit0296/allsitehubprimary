@@ -314,72 +314,107 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preserves OnClick (Popunder), Push Opt-in Subscriptions, and Vignettes    */}
         {/* In-Page Push enabled with strict 1-2 display frequency cap per user      */}
         {/* ========================================================================= */}
+        {/* ========================================================================= */}
+        {/* PERMANENT MONETAG MULTITAG (NEVER CHANGE OR REMOVE UNDER ANY CIRCUMSTANCE) */}
+        {/* Preserves OnClick (Popunder), Push Opt-in Subscriptions, Vignettes, and IPP */}
+        {/* ========================================================================= */}
+        <Script
+          id="monetag-tag"
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="282088"
+          strategy="beforeInteractive"
+          data-cfasync="false"
+        />
+
         <Script
           id="monetag-guard"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
-                var isPushNode = function(el) {
-                  if (!el || el.nodeType !== 1) return false;
-                  var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
-                  var id = (el.id || '').toLowerCase();
-                  return (
-                    cls.indexOf('pushcontainer') !== -1 ||
-                    cls.indexOf('inpage') !== -1 ||
-                    id.indexOf('push-frame') !== -1 ||
-                    cls.indexOf('fakepush') !== -1 ||
-                    id.indexOf('fakepush') !== -1
-                  );
-                };
-
-                var handleInPagePushNode = function(el) {
-                  if (!isPushNode(el)) return;
-                  el.style.setProperty('display', 'block', 'important');
-                  el.style.setProperty('visibility', 'visible', 'important');
-                  el.style.setProperty('opacity', '1', 'important');
-                };
-
-                // Auto-collapse empty/unfilled Clever top-scroll ad containers so no black void appears
+              try {
+                // Auto-collapse empty/unfilled Clever or AdsBoosters top-scroll ad containers so no black void appears
                 var collapseUnfilledTopScroll = function() {
-                  var containers = document.querySelectorAll('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                  var containers = document.querySelectorAll('div[id*="top-scroll"], div[id*="topscroll"], div[id^="clever-"][id*="scroll"], div[id^="ads-"][id*="scroll"]');
                   for (var i = 0; i < containers.length; i++) {
                     var c = containers[i];
+                    if (c.getAttribute('data-ad-collapsed') === 'true') continue;
+
                     var iframe = c.querySelector('iframe');
-                    if (iframe) {
-                      var src = iframe.getAttribute('src') || '';
-                      if (!src || src === 'about:blank' || src.indexOf('http') !== 0) {
+                    var src = iframe ? (iframe.getAttribute('src') || '') : '';
+
+                    // If container has no iframe or iframe is blank/empty, collapse immediately
+                    if (!iframe || !src || src === 'about:blank') {
+                      c.setAttribute('data-ad-collapsed', 'true');
+                      c.style.setProperty('display', 'none', 'important');
+                      c.style.setProperty('height', '0px', 'important');
+                      c.style.setProperty('min-height', '0px', 'important');
+                      c.style.setProperty('margin', '0px', 'important');
+                      c.style.setProperty('padding', '0px', 'important');
+                      continue;
+                    }
+
+                    // Track age of the container
+                    var ts = parseInt(c.getAttribute('data-ts') || '0', 10);
+                    if (!ts) {
+                      c.setAttribute('data-ts', String(Date.now()));
+                      iframe.addEventListener('error', function() {
+                        c.setAttribute('data-ad-collapsed', 'true');
                         c.style.setProperty('display', 'none', 'important');
-                        c.style.setProperty('height', '0', 'important');
-                        c.style.setProperty('min-height', '0', 'important');
-                        c.style.setProperty('margin', '0', 'important');
-                        c.style.setProperty('padding', '0', 'important');
+                        c.style.setProperty('height', '0px', 'important');
+                        c.style.setProperty('min-height', '0px', 'important');
+                        c.style.setProperty('margin', '0px', 'important');
+                      });
+                      continue;
+                    }
+
+                    // If container has lingered without a verified creative for over 1.8s, collapse it to prevent black screen
+                    if (Date.now() - ts > 1800 && !c.getAttribute('data-creative-loaded')) {
+                      var rect = iframe.getBoundingClientRect();
+                      if (rect.height === 0 || rect.width === 0) {
+                        c.setAttribute('data-ad-collapsed', 'true');
+                        c.style.setProperty('display', 'none', 'important');
+                        c.style.setProperty('height', '0px', 'important');
+                        c.style.setProperty('min-height', '0px', 'important');
+                        c.style.setProperty('margin', '0px', 'important');
                       }
                     }
                   }
                 };
-                setInterval(collapseUnfilledTopScroll, 600);
 
-                // Immediate collapse when user clicks the TopScroll (X) close button
+                setInterval(collapseUnfilledTopScroll, 400);
+
+                // Listen for ad creative postMessages to acknowledge active rendering
+                window.addEventListener('message', function(e) {
+                  if (!e || !e.data) return;
+                  if (typeof e.data === 'string' && (e.data.indexOf('clever') !== -1 || e.data.indexOf('ads') !== -1)) {
+                    var containers = document.querySelectorAll('div[id*="top-scroll"], div[id*="topscroll"]');
+                    for (var k = 0; k < containers.length; k++) {
+                      containers[k].setAttribute('data-creative-loaded', 'true');
+                    }
+                  }
+                }, false);
+
+                // Immediate collapse and removal when user clicks ANY close button on TopScroll ad
                 document.addEventListener('click', function(e) {
                   var target = e.target;
-                  if (target && target.matches && (target.matches('[id*="topscroll-close"]') || target.matches('[id*="top-scroll-close"]'))) {
-                    var container = target.closest('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                  if (!target) return;
+                  var closeBtn = target.closest('[id*="close"], [class*="close"], img[alt*="close"]');
+                  if (closeBtn) {
+                    var container = target.closest('div[id*="top-scroll"], div[id*="topscroll"], div[id^="clever-"], div[id^="ads-"]');
                     if (container) {
+                      container.setAttribute('data-ad-collapsed', 'true');
                       container.style.setProperty('display', 'none', 'important');
-                      container.style.setProperty('height', '0', 'important');
-                      container.style.setProperty('min-height', '0', 'important');
+                      container.style.setProperty('height', '0px', 'important');
+                      container.style.setProperty('min-height', '0px', 'important');
+                      container.style.setProperty('margin', '0px', 'important');
+                      container.style.setProperty('padding', '0px', 'important');
+                      try { container.remove(); } catch(err) {}
                     }
                   }
                 }, true);
 
                 var mo = new MutationObserver(function(mutations) {
-                  for (var m = 0; m < mutations.length; m++) {
-                    var nodes = mutations[m].addedNodes;
-                    for (var n = 0; n < nodes.length; n++) {
-                      handleInPagePushNode(nodes[n]);
-                      collapseUnfilledTopScroll();
-                    }
-                  }
+                  collapseUnfilledTopScroll();
                 });
 
                 if (document.documentElement) {
@@ -392,14 +427,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               } catch(e) {}
             })();`,
           }}
-        />
-        <Script
-          id="monetag-tag"
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="282088"
-          async
-          strategy="afterInteractive"
-          data-cfasync="false"
         />
         <ShaderBackground />
         <div className="relative z-10 flex flex-col flex-1 w-full">
