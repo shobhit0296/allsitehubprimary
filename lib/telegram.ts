@@ -1,6 +1,6 @@
 export const TELEGRAM_BOT_TOKEN =
-  process.env.TELEGRAM_BOT_TOKEN || '8973994330:AAExwIkVXfYYWyEFH-h82CEE-xMD02JB_os';
-export const TELEGRAM_BOT_ID = Number(process.env.TELEGRAM_BOT_ID || '8973994330');
+  process.env.TELEGRAM_BOT_TOKEN || '8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg';
+export const TELEGRAM_BOT_ID = Number(process.env.TELEGRAM_BOT_ID || '8741338089');
 export const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_SECRET_TOKEN || '';
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allsitehub.site').replace(
   /^https?:\/\/allsitehub\.site/i,
