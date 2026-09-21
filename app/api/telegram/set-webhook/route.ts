@@ -26,6 +26,58 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  // Action: Retrieve recent Telegram logs
+  if (action === 'logs') {
+    try {
+      const { telegramRedis } = await import('@/lib/telegram');
+      const rawLogs = await telegramRedis.lrange('telegram:logs', 0, 49);
+      const parsed = rawLogs.map(l => {
+        try {
+          return JSON.parse(l);
+        } catch {
+          return l;
+        }
+      });
+      return NextResponse.json({ total: parsed.length, logs: parsed });
+    } catch (e) {
+      return NextResponse.json({ error: String(e) }, { status: 500 });
+    }
+  }
+
+  // Action: Send test message to a chat ID
+  if (action === 'test') {
+    const testChatId = req.nextUrl.searchParams.get('chat_id');
+    if (!testChatId) {
+      return NextResponse.json(
+        { error: 'Missing chat_id parameter. E.g. /api/telegram/set-webhook?action=test&chat_id=-100xxxxxxxxxx' },
+        { status: 400 },
+      );
+    }
+    try {
+      const { sendWelcomeAndCleanupOld } = await import('@/lib/telegram');
+      const res = await sendWelcomeAndCleanupOld(
+        testChatId,
+        { id: 12345678, first_name: 'Test Member', username: 'testuser' },
+        undefined,
+        token,
+      );
+      return NextResponse.json({ testResult: res });
+    } catch (e) {
+      return NextResponse.json({ error: String(e) }, { status: 500 });
+    }
+  }
+
+  // Action: Clear logs
+  if (action === 'clear-logs') {
+    try {
+      const { telegramRedis } = await import('@/lib/telegram');
+      await telegramRedis.del('telegram:logs');
+      return NextResponse.json({ ok: true, cleared: true });
+    } catch (e) {
+      return NextResponse.json({ error: String(e) }, { status: 500 });
+    }
+  }
+
   // Action: Check webhook info
   if (action === 'info') {
     try {

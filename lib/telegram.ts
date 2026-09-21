@@ -11,6 +11,27 @@ export const MOVIESNET_URL = 'https://moviesnet.site/';
 export const DISCORD_URL = 'https://discord.gg/YERdvA6zb';
 export const TELEGRAM_GROUP_URL = 'https://t.me/+gWOCVAqtcXxkZDk9';
 
+import { Redis } from '@upstash/redis';
+
+const DEFAULT_KV_URL = "https://tight-katydid-177010.upstash.io";
+const DEFAULT_KV_TOKEN = "gQAAAAAAArNyAAIgcDI4NzA1NzRjMTUzMDI0MzRlYTgyZWJlMjhiNDk1NzAxNQ";
+const redisUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL || DEFAULT_KV_URL;
+const redisToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN || DEFAULT_KV_TOKEN;
+export const telegramRedis = new Redis({ url: redisUrl, token: redisToken });
+
+export async function logTelegramEvent(event: Record<string, any>) {
+  try {
+    const entry = JSON.stringify({
+      time: new Date().toISOString(),
+      ...event,
+    });
+    await telegramRedis.lpush('telegram:logs', entry);
+    await telegramRedis.ltrim('telegram:logs', 0, 49); // Keep latest 50 events
+  } catch (e) {
+    console.warn('[Telegram Log Error]:', e);
+  }
+}
+
 interface SendMessageOptions {
   chat_id: number | string;
   text: string;
@@ -26,6 +47,7 @@ interface SendMessageOptions {
 export async function sendTelegramMessage(options: SendMessageOptions, token = TELEGRAM_BOT_TOKEN) {
   if (!token) {
     console.warn('[Telegram] No TELEGRAM_BOT_TOKEN configured.');
+    await logTelegramEvent({ action: 'sendMessage_error', error: 'TELEGRAM_BOT_TOKEN is missing' });
     return { ok: false, description: 'TELEGRAM_BOT_TOKEN is missing' };
   }
 
@@ -34,7 +56,6 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       chat_id: options.chat_id,
       text: options.text,
       parse_mode: options.parse_mode || 'HTML',
-      disable_web_page_preview: options.disable_web_page_preview ?? true,
       link_preview_options: { is_disabled: options.disable_web_page_preview ?? true },
     };
 
@@ -42,9 +63,9 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       payload.reply_markup = options.reply_markup;
     }
 
+    // Telegram Bot API 7.0+: reply_parameters replaces reply_to_message_id.
+    // Do NOT send both or Telegram will reject the call.
     if (options.reply_to_message_id) {
-      payload.reply_to_message_id = options.reply_to_message_id;
-      payload.allow_sending_without_reply = true;
       payload.reply_parameters = {
         message_id: options.reply_to_message_id,
         allow_sending_without_reply: true,
@@ -58,12 +79,22 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
     });
 
     const data = await res.json();
+    await logTelegramEvent({
+      action: 'sendMessage',
+      chat_id: options.chat_id,
+      ok: data.ok,
+      error_code: data.error_code,
+      description: data.description,
+      message_id: data.result?.message_id,
+    });
+
     if (!res.ok) {
       console.error('[Telegram] sendMessage failed:', data);
     }
     return data;
   } catch (error) {
     console.error('[Telegram] Error sending message:', error);
+    await logTelegramEvent({ action: 'sendMessage_exception', error: String(error) });
     return { ok: false, error: String(error) };
   }
 }
@@ -90,34 +121,19 @@ export async function deleteTelegramMessage(chatId: number | string, messageId: 
   }
 }
 
-// In-memory state tracking to prevent duplicate welcomes and store last message ID per chat
-const recentWelcomes = new Map<string, number>();
-const lastWelcomeMessageByChat = new Map<string, number>();
-
 /**
- * Checks if a member was recently welcomed (within 60 seconds) to prevent double welcomes
+ * Checks if a member was recently welcomed (within 10 seconds) to prevent double welcomes
  */
-export function isUserRecentlyWelcomed(chatId: number | string, userId: number | string): boolean {
-  const key = `${chatId}:${userId}`;
-  const now = Date.now();
-  const prevTime = recentWelcomes.get(key) || 0;
-
-  if (now - prevTime < 60000) {
-    return true; // Already welcomed recently, skip duplicate!
+export async function isUserRecentlyWelcomed(chatId: number | string, userId: number | string): Promise<boolean> {
+  const key = `telegram:welcomed:${chatId}:${userId}`;
+  try {
+    const exists = await telegramRedis.get(key);
+    if (exists) return true;
+    await telegramRedis.set(key, 1, { ex: 10 }); // 10s cooldown
+    return false;
+  } catch {
+    return false;
   }
-
-  recentWelcomes.set(key, now);
-
-  // Periodic cleanup of keys older than 5 minutes
-  if (recentWelcomes.size > 200) {
-    for (const [k, time] of recentWelcomes.entries()) {
-      if (now - time > 300000) {
-        recentWelcomes.delete(k);
-      }
-    }
-  }
-
-  return false;
 }
 
 /**
@@ -131,21 +147,23 @@ export async function sendWelcomeAndCleanupOld(
   token = TELEGRAM_BOT_TOKEN
 ) {
   // 1. Drop duplicate triggers (e.g. Telegram firing both 'message.new_chat_members' & 'chat_member')
-  if (isUserRecentlyWelcomed(chatId, user.id)) {
+  const alreadyWelcomed = await isUserRecentlyWelcomed(chatId, user.id);
+  if (alreadyWelcomed) {
     console.log(`[Telegram] Skipped duplicate welcome for user ${user.id} in chat ${chatId}`);
+    await logTelegramEvent({ action: 'welcome_skipped_duplicate', chat_id: chatId, user_id: user.id });
     return { ok: true, skipped_duplicate: true };
   }
 
   // 2. Delete the old welcome message in this chat so only the newest one stays
-  const chatKey = String(chatId);
-  const oldMessageId = lastWelcomeMessageByChat.get(chatKey);
-  if (oldMessageId) {
-    try {
+  const chatKey = `telegram:last_welcome:${chatId}`;
+  try {
+    const oldMessageId = await telegramRedis.get<number>(chatKey);
+    if (oldMessageId) {
       await deleteTelegramMessage(chatId, oldMessageId, token);
       console.log(`[Telegram] Removed previous welcome message #${oldMessageId} from chat ${chatId}`);
-    } catch (err) {
-      console.warn(`[Telegram] Could not delete old welcome message #${oldMessageId}:`, err);
     }
+  } catch (err) {
+    console.warn(`[Telegram] Could not delete old welcome message:`, err);
   }
 
   // 3. Send the newest welcome message
@@ -162,7 +180,9 @@ export async function sendWelcomeAndCleanupOld(
 
   // 4. Save new message ID so it can be cleaned up when the next member arrives
   if (result?.ok && result?.result?.message_id) {
-    lastWelcomeMessageByChat.set(chatKey, result.result.message_id);
+    try {
+      await telegramRedis.set(chatKey, result.result.message_id, { ex: 86400 * 7 }); // 7-day TTL
+    } catch {}
   }
 
   return result;

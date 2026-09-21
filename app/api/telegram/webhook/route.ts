@@ -4,6 +4,7 @@ import {
   sendWelcomeAndCleanupOld,
   buildWelcomeMessage,
   buildInfoMessage,
+  logTelegramEvent,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_BOT_ID,
   TELEGRAM_WEBHOOK_SECRET,
@@ -34,6 +35,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, unhandled: true });
     }
 
+    // Log the incoming update to Redis for real-time visibility and diagnostics
+    const updateType = update.message?.new_chat_members
+      ? 'new_chat_members'
+      : update.message?.text
+      ? 'message_text'
+      : update.chat_member
+      ? 'chat_member'
+      : update.my_chat_member
+      ? 'my_chat_member'
+      : update.chat_join_request
+      ? 'chat_join_request'
+      : 'other';
+
+    const chatInfo =
+      update.message?.chat?.title ||
+      update.chat_member?.chat?.title ||
+      update.my_chat_member?.chat?.title ||
+      update.chat_join_request?.chat?.title ||
+      update.message?.chat?.id ||
+      update.chat_member?.chat?.id;
+
+    const fromUser =
+      update.message?.from?.username ||
+      update.message?.from?.first_name ||
+      update.chat_member?.from?.username ||
+      update.chat_join_request?.from?.username;
+
+    await logTelegramEvent({
+      action: 'webhook_received',
+      update_id: update.update_id,
+      type: updateType,
+      chat: chatInfo,
+      from: fromUser,
+    });
+
     const botToken =
       req.nextUrl.searchParams.get('token') ||
       process.env.TELEGRAM_BOT_TOKEN ||
@@ -62,8 +98,14 @@ export async function POST(req: NextRequest) {
         // Skip other bots
         if (member.is_bot) continue;
 
-        // Welcomes the member, eliminates second duplicate message, and deletes the previous welcome message
-        await sendWelcomeAndCleanupOld(chatId, member, update.message.message_id, botToken);
+        // Welcomes the member, eliminates duplicate message, and deletes the previous welcome message
+        const welcomeRes = await sendWelcomeAndCleanupOld(chatId, member, update.message.message_id, botToken);
+        await logTelegramEvent({
+          action: 'welcome_sent_new_chat_members',
+          chat_id: chatId,
+          user: member.username || member.first_name,
+          result: welcomeRes?.ok ? 'ok' : welcomeRes?.description || 'failed',
+        });
       }
 
       return NextResponse.json({ ok: true, action: 'welcome_sent' });
@@ -79,9 +121,14 @@ export async function POST(req: NextRequest) {
         const user = new_chat_member.user;
         if (!user.is_bot || user.id !== botId) {
           if (!user.is_bot) {
-            // Welcomes the member, eliminates second duplicate message, and deletes the previous welcome message
-            await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
-            return NextResponse.json({ ok: true, action: 'chat_member_welcome_sent' });
+            const welcomeRes = await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
+            await logTelegramEvent({
+              action: 'welcome_sent_chat_member',
+              chat_id: chat.id,
+              user: user.username || user.first_name,
+              result: welcomeRes?.ok ? 'ok' : welcomeRes?.description || 'failed',
+            });
+            return NextResponse.json({ ok: true, action: 'chat_member_welcome_sent', result: welcomeRes });
           }
         }
       }
@@ -90,16 +137,23 @@ export async function POST(req: NextRequest) {
     // ── 1c. Handle Chat Join Requests (Groups with join approval enabled) ──
     if (update.chat_join_request) {
       const { chat, from } = update.chat_join_request;
+      // Auto-approve the join request if bot is administrator
+      try {
+        await fetch(`https://api.telegram.org/bot${botToken}/approveChatJoinRequest`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chat.id, user_id: from.id }),
+        });
+      } catch {}
+
       if (from && !from.is_bot) {
-        const { text: welcomeText, reply_markup } = buildWelcomeMessage(from);
-        await sendTelegramMessage(
-          {
-            chat_id: from.id,
-            text: welcomeText,
-            reply_markup,
-          },
-          botToken,
-        );
+        const welcomeRes = await sendWelcomeAndCleanupOld(chat.id, from, undefined, botToken);
+        await logTelegramEvent({
+          action: 'welcome_sent_join_request',
+          chat_id: chat.id,
+          user: from.username || from.first_name,
+          result: welcomeRes?.ok ? 'ok' : welcomeRes?.description || 'failed',
+        });
         return NextResponse.json({ ok: true, action: 'join_request_greeted' });
       }
     }
