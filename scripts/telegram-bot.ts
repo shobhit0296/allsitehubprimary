@@ -108,17 +108,20 @@ async function pollUpdates() {
               text.startsWith('/links') ||
               text.startsWith('/sites') ||
               text.startsWith('/info') ||
+              text.startsWith('/about') ||
+              text.startsWith('/community') ||
               text.includes('@allsitehubsute_bot') ||
               text.includes('@allsitehub_bot');
 
             if (isPrivate || isBotCommand) {
               console.log(`[${new Date().toLocaleTimeString()}] 💬 Responding to command "${update.message.text}" in ${update.message.chat.type} chat (${update.message.chat.id})`);
-              const { text: replyText } = buildInfoMessage();
+              const { text: replyText, reply_markup } = buildInfoMessage();
               await sendTelegramMessage(
                 {
                   chat_id: update.message.chat.id,
                   text: replyText,
                   reply_to_message_id: update.message.message_id,
+                  reply_markup,
                 },
                 token,
               );

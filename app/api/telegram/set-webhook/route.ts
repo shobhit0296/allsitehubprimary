@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
   try {
     const payload: Record<string, any> = {
       url: webhookUrl,
-      allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member'],
+      allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
       drop_pending_updates: true,
     };
 

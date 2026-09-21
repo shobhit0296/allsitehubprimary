@@ -1,4 +1,6 @@
-export const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+export const TELEGRAM_BOT_TOKEN =
+  process.env.TELEGRAM_BOT_TOKEN || '8973994330:AAExwIkVXfYYWyEFH-h82CEE-xMD02JB_os';
+export const TELEGRAM_BOT_ID = Number(process.env.TELEGRAM_BOT_ID || '8973994330');
 export const TELEGRAM_WEBHOOK_SECRET = process.env.TELEGRAM_SECRET_TOKEN || '';
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allsitehub.site').replace(
   /^https?:\/\/allsitehub\.site/i,
@@ -15,6 +17,7 @@ interface SendMessageOptions {
   parse_mode?: 'HTML' | 'MarkdownV2' | 'Markdown';
   disable_web_page_preview?: boolean;
   reply_to_message_id?: number;
+  reply_markup?: any;
 }
 
 /**
@@ -34,6 +37,10 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       disable_web_page_preview: options.disable_web_page_preview ?? true,
       link_preview_options: { is_disabled: options.disable_web_page_preview ?? true },
     };
+
+    if (options.reply_markup) {
+      payload.reply_markup = options.reply_markup;
+    }
 
     if (options.reply_to_message_id) {
       payload.reply_to_message_id = options.reply_to_message_id;
@@ -142,12 +149,13 @@ export async function sendWelcomeAndCleanupOld(
   }
 
   // 3. Send the newest welcome message
-  const { text } = buildWelcomeMessage(user);
+  const { text, reply_markup } = buildWelcomeMessage(user);
   const result = await sendTelegramMessage(
     {
       chat_id: chatId,
       text,
       reply_to_message_id: replyToMessageId,
+      reply_markup,
     },
     token
   );
@@ -160,6 +168,26 @@ export async function sendWelcomeAndCleanupOld(
   return result;
 }
 
+/**
+ * Community inline buttons for Telegram
+ */
+export function getCommunityButtons() {
+  return {
+    inline_keyboard: [
+      [
+        { text: '🌐 AllSiteHub', url: `${SITE_URL}/` },
+        { text: '🎁 FreeWebStuff', url: FREEWEBSTUFF_URL },
+      ],
+      [
+        { text: '🎬 MoviesNet', url: MOVIESNET_URL },
+        { text: '💬 Discord Server', url: DISCORD_URL },
+      ],
+      [
+        { text: '👥 Official Telegram Group', url: TELEGRAM_GROUP_URL },
+      ],
+    ],
+  };
+}
 
 /**
  * Build welcome message for new chat members (welcomes user with @username)
@@ -183,7 +211,7 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 🚀 <i>Explore. Discover. Enjoy.</i>
 `.trim();
 
-  return { text };
+  return { text, reply_markup: getCommunityButtons() };
 }
 
 /**
@@ -204,7 +232,7 @@ export function buildInfoMessage() {
 🚀 <i>Explore. Discover. Enjoy.</i>
 `.trim();
 
-  return { text };
+  return { text, reply_markup: getCommunityButtons() };
 }
 
 /**

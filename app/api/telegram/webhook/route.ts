@@ -4,6 +4,8 @@ import {
   sendWelcomeAndCleanupOld,
   buildWelcomeMessage,
   buildInfoMessage,
+  TELEGRAM_BOT_TOKEN,
+  TELEGRAM_BOT_ID,
   TELEGRAM_WEBHOOK_SECRET,
   SITE_URL,
 } from '@/lib/telegram';
@@ -32,20 +34,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, unhandled: true });
     }
 
-    const botToken = req.nextUrl.searchParams.get('token') || process.env.TELEGRAM_BOT_TOKEN;
+    const botToken =
+      req.nextUrl.searchParams.get('token') ||
+      process.env.TELEGRAM_BOT_TOKEN ||
+      TELEGRAM_BOT_TOKEN;
+    const botId = Number(process.env.TELEGRAM_BOT_ID || 8973994330);
 
     // ── 1a. Handle New Chat Members (Welcome Message from service message) ──
     if (update.message?.new_chat_members && Array.isArray(update.message.new_chat_members)) {
       const chatId = update.message.chat.id;
-      const botId = process.env.TELEGRAM_BOT_ID ? Number(process.env.TELEGRAM_BOT_ID) : null;
 
       for (const member of update.message.new_chat_members) {
         // If the bot itself was added to the group
-        if (member.is_bot && botId && member.id === botId) {
+        if (member.is_bot && member.id === botId) {
+          const { reply_markup } = buildInfoMessage();
           await sendTelegramMessage(
             {
               chat_id: chatId,
               text: `🤖 <b>AllSiteHub Welcome Bot Activated!</b>\n\nI will welcome every new member with our official links. 🍿`,
+              reply_markup,
             },
             botToken,
           );
@@ -70,8 +77,7 @@ export async function POST(req: NextRequest) {
 
       if (!wasMember && isNowMember && new_chat_member?.user) {
         const user = new_chat_member.user;
-        const botId = process.env.TELEGRAM_BOT_ID ? Number(process.env.TELEGRAM_BOT_ID) : null;
-        if (!user.is_bot || !botId || user.id !== botId) {
+        if (!user.is_bot || user.id !== botId) {
           if (!user.is_bot) {
             // Welcomes the member, eliminates second duplicate message, and deletes the previous welcome message
             await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
@@ -81,14 +87,33 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // ── 1c. Handle Bot Added as Admin or Member (my_chat_member) ──
+    // ── 1c. Handle Chat Join Requests (Groups with join approval enabled) ──
+    if (update.chat_join_request) {
+      const { chat, from } = update.chat_join_request;
+      if (from && !from.is_bot) {
+        const { text: welcomeText, reply_markup } = buildWelcomeMessage(from);
+        await sendTelegramMessage(
+          {
+            chat_id: from.id,
+            text: welcomeText,
+            reply_markup,
+          },
+          botToken,
+        );
+        return NextResponse.json({ ok: true, action: 'join_request_greeted' });
+      }
+    }
+
+    // ── 1d. Handle Bot Added as Admin or Member (my_chat_member) ──
     if (update.my_chat_member) {
       const { chat, new_chat_member } = update.my_chat_member;
       if (['member', 'administrator'].includes(new_chat_member?.status)) {
+        const { reply_markup } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chat.id,
-            text: `🤖 <b>AllSiteHub Welcome Bot is now active in this group!</b>\n\nEvery new member joining will be greeted automatically. 🍿`,
+            text: `🤖 <b>AllSiteHub Welcome Bot is now active in this group!</b>\n\nEvery new member joining will be greeted automatically with our verified links. 🍿`,
+            reply_markup,
           },
           botToken,
         );
@@ -105,12 +130,13 @@ export async function POST(req: NextRequest) {
 
       // In Private DM, always respond with website info and direct links
       if (chatType === 'private') {
-        const { text: replyText } = buildInfoMessage();
+        const { text: replyText, reply_markup } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chatId,
             text: replyText,
             reply_to_message_id: messageId,
+            reply_markup,
           },
           botToken,
         );
@@ -124,16 +150,19 @@ export async function POST(req: NextRequest) {
         text.startsWith('/links') ||
         text.startsWith('/sites') ||
         text.startsWith('/info') ||
+        text.startsWith('/about') ||
+        text.startsWith('/community') ||
         text.includes('@allsitehubsute_bot') ||
         text.includes('@allsitehub_bot');
 
       if (isBotCommand) {
-        const { text: replyText } = buildInfoMessage();
+        const { text: replyText, reply_markup } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chatId,
             text: replyText,
             reply_to_message_id: messageId,
+            reply_markup,
           },
           botToken,
         );
