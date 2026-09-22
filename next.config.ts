@@ -160,6 +160,31 @@ const nextConfig: NextConfig = {
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
         ],
       },
+      // ─── Sites data API & Admin APIs: Never cache at Edge or Cloudflare CDN ───
+      {
+        source: "/api/sites",
+        headers: [
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+        ],
+      },
+      {
+        source: "/api/(adminshobhit|shobhitadmin)/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+        ],
+      },
+      {
+        source: "/api/(adminshobhit|shobhitadmin)",
+        headers: [
+          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+        ],
+      },
       // ─── Logos: immutable 1-year cache ───
       {
         source: "/logos/:path*",

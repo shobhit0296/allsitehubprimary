@@ -50,7 +50,7 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
     let mounted = true;
     async function syncSites() {
       try {
-        const res = await fetch('/api/sites', { cache: 'no-store' });
+        const res = await fetch(`/api/sites?t=${Date.now()}`, { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           if (mounted && Array.isArray(data.sites) && data.sites.length > 0) {
@@ -83,11 +83,16 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
       }
     }
 
-    // Sync on mount if needed
+    // Sync on mount
     syncSites();
+
+    // Re-sync on window focus (e.g. after returning from admin tab)
+    const onFocus = () => syncSites();
+    window.addEventListener('focus', onFocus);
 
     return () => {
       mounted = false;
+      window.removeEventListener('focus', onFocus);
     };
   }, []);
 

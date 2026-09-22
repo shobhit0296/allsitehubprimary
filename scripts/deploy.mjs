@@ -56,9 +56,32 @@ async function main() {
 
   // 4. Purge Cloudflare Edge Cache so visitors instantly see live changes
   try {
-    run('node scripts/purge-cf-cache.mjs', '4/4 Purging Cloudflare Edge Cache');
+    run('node scripts/purge-cf-cache.mjs', '4/5 Purging Cloudflare Edge Cache');
   } catch (cfErr) {
     console.warn('⚠️ Cloudflare cache purge warning:', cfErr.message);
+  }
+
+  // 5. Ensure Telegram Welcome Bot Webhook is connected & active
+  try {
+    console.log('\n\x1b[36m⚡ [5/5 Verifying Telegram Webhook]\x1b[0m Connecting Telegram webhook...');
+    const botToken = process.env.TELEGRAM_BOT_TOKEN || '8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg';
+    const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: 'https://www.allsitehub.site/api/telegram/webhook',
+        allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
+        drop_pending_updates: false,
+      }),
+    });
+    const tgData = await tgRes.json();
+    if (tgData.ok) {
+      console.log('\x1b[32m✅ Telegram Webhook verified and connected to https://www.allsitehub.site/api/telegram/webhook\x1b[0m');
+    } else {
+      console.warn('\x1b[33m⚠️ Telegram Webhook warning:\x1b[0m', tgData.description);
+    }
+  } catch (tgErr) {
+    console.warn('⚠️ Telegram webhook verification notice:', tgErr.message);
   }
 
   console.log('\n\x1b[32m✅ LIVE DEPLOYMENT COMPLETE!\x1b[0m');

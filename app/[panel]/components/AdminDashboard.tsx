@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type { Site } from '@/lib/data';
 import type { SiteRequest } from '@/lib/db';
+import { slugify } from '@/lib/siteConfig';
 import {
   DndContext, closestCenter, PointerSensor, KeyboardSensor, useSensor, useSensors,
 } from '@dnd-kit/core';
@@ -78,6 +79,9 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   /* ── Sites state ── */
   const [sites, setSites] = useState<Site[]>(initialSites);
   const [siteSearch, setSiteSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [syncingLive, setSyncingLive] = useState(false);
+  const [toastMsg, setToastMsg] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [modalMode, setModalMode] = useState<'add' | 'edit' | null>(null);
   const [editSite, setEditSite] = useState<Site | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -87,6 +91,69 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   const [refreshingLogoId, setRefreshingLogoId] = useState<string | null>(null);
   const [refreshAllBusy, setRefreshAllBusy] = useState(false);
   const [refreshAllResult, setRefreshAllResult] = useState<string | null>(null);
+
+  /* ── Toast notifications ── */
+  const showToast = useCallback((text: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToastMsg({ text, type });
+    setTimeout(() => {
+      setToastMsg(prev => (prev?.text === text ? null : prev));
+    }, 4500);
+  }, []);
+
+  /* ── Force Live Sync & Cloudflare Cache Purge ── */
+  const handleForceSync = async () => {
+    setSyncingLive(true);
+    try {
+      const res = await fetch(`/api/${panel}/sync`, { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        showToast(`⚡ Live sync successful! Cloudflare edge cache cleared & ${data.sitesCount} sites active.`, 'success');
+        await refreshSites();
+      } else {
+        const err = await res.json();
+        showToast(`Sync error: ${err.error || 'Check server logs'}`, 'error');
+      }
+    } catch {
+      showToast('Network error during live cache purge.', 'error');
+    } finally {
+      setSyncingLive(false);
+    }
+  };
+
+  /* ── Inline Toggle Tag (Trusted, New, Featured) ── */
+  const handleToggleTag = async (site: Site, tagKey: 'isTrusted' | 'isNew' | 'isFeatured') => {
+    const updatedVal = !site[tagKey];
+    const tags = new Set(site.tags || []);
+    const tagSlug = tagKey.replace('is', '').toLowerCase();
+    if (updatedVal) {
+      tags.add(tagSlug);
+    } else {
+      tags.delete(tagSlug);
+    }
+
+    setSites(prev => prev.map(s => s.id === site.id ? { ...s, [tagKey]: updatedVal, tags: Array.from(tags) } : s));
+
+    try {
+      const res = await fetch(apiSites, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: site.id,
+          [tagKey]: updatedVal,
+          tags: Array.from(tags),
+        }),
+      });
+      if (res.ok) {
+        showToast(`Updated "${site.name}" (${tagSlug}: ${updatedVal ? 'ON' : 'OFF'}) — live on website!`, 'success');
+      } else {
+        await refreshSites();
+        showToast('Failed to update badge on server.', 'error');
+      }
+    } catch {
+      await refreshSites();
+      showToast('Network error updating badge.', 'error');
+    }
+  };
 
   /* ── Requests state ── */
   const [requests, setRequests] = useState<SiteRequest[]>(initialRequests);
@@ -118,12 +185,18 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     return { listed, notListed, total: requests.length };
   }, [requests, sites]);
 
-  /* ── Filtered sites ── */
+  /* ── Filtered sites (by category and search) ── */
   const filteredSites = useMemo(() => {
-    if (!siteSearch.trim()) return sites;
-    const q = siteSearch.toLowerCase();
-    return sites.filter(s => s.name.toLowerCase().includes(q) || s.domain.toLowerCase().includes(q) || s.category.toLowerCase().includes(q));
-  }, [sites, siteSearch]);
+    let list = sites;
+    if (selectedCategory !== 'all') {
+      list = list.filter(s => s.category?.toLowerCase() === selectedCategory.toLowerCase());
+    }
+    if (siteSearch.trim()) {
+      const q = siteSearch.toLowerCase();
+      list = list.filter(s => s.name.toLowerCase().includes(q) || s.domain.toLowerCase().includes(q) || s.category.toLowerCase().includes(q));
+    }
+    return list;
+  }, [sites, selectedCategory, siteSearch]);
 
   /* ── Filtered requests ── */
   const filteredReqs = useMemo(() => {
@@ -163,7 +236,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   };
 
   /* ── Sites CRUD ── */
-  const openAdd = () => { setForm({ ...EMPTY_FORM, category: categories[0] ?? 'Movies & Shows' }); setEditSite(null); setFormError(''); setModalMode('add'); };
+  const openAdd = () => { setForm({ ...EMPTY_FORM, category: selectedCategory !== 'all' ? selectedCategory : (categories[0] ?? 'Movies & Shows') }); setEditSite(null); setFormError(''); setModalMode('add'); };
   const openEdit = (site: Site) => {
     setForm({ name: site.name, url: site.url, description: site.description ?? '', domain: site.domain, faviconUrl: site.faviconUrl ?? '', category: site.category, regions: site.regions, isTrusted: site.isTrusted, isNew: site.isNew, isFeatured: site.isFeatured });
     setEditSite(site); setFormError(''); setModalMode('edit');
@@ -184,7 +257,9 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         ? { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, id: editSite!.id }) }
         : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       if (!res.ok) { const err = await res.json(); setFormError(err.error ?? 'Failed'); return; }
-      await refreshSites(); setModalMode(null);
+      await refreshSites();
+      setModalMode(null);
+      showToast(modalMode === 'edit' ? `✅ "${payload.name}" updated & live on website!` : `✅ "${payload.name}" added & live on website!`, 'success');
     } catch { setFormError('Network error.'); }
     finally { setSubmitting(false); }
   };
@@ -236,8 +311,13 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   const handleDeleteSite = async (id: string, name: string) => {
     if (!confirm(`"${name}" delete karna chahte ho?`)) return;
     setDeletingId(id);
-    try { await fetch(`${apiSites}?id=${id}`, { method: 'DELETE' }); setSites(prev => prev.filter(s => s.id !== id)); }
-    finally { setDeletingId(null); }
+    try {
+      await fetch(`${apiSites}?id=${id}`, { method: 'DELETE' });
+      setSites(prev => prev.filter(s => s.id !== id));
+      showToast(`✅ "${name}" deleted & live cache purged!`, 'success');
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   /* ── Requests actions ── */
@@ -255,6 +335,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         setRequests(prev => prev.map(r => r.id === id ? updatedReq : r));
         // Instantly refresh live sites list so the newly created site shows up in Sites tab!
         await refreshSites();
+        showToast(`✅ Request ${status} & live database updated!`, 'success');
       }
     } finally { setUpdatingId(null); }
   };
@@ -286,13 +367,29 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     if (!confirm('This request delete karna chahte ho?')) return;
     await fetch(`${apiRequests}?id=${id}`, { method: 'DELETE' });
     setRequests(prev => prev.filter(r => r.id !== id));
+    showToast('✅ Request deleted', 'info');
   };
 
   const setField = (k: keyof typeof EMPTY_FORM, v: unknown) => setForm(prev => ({ ...prev, [k]: v }));
 
   /* ══════════════════ RENDER ══════════════════ */
   return (
-    <div style={{ background: 'var(--bg-base)', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg-base)', minHeight: '100vh', position: 'relative' }}>
+
+      {/* ── Toast Notifications ── */}
+      {toastMsg && (
+        <div style={{
+          position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
+          background: toastMsg.type === 'error' ? '#881337' : '#064e3b',
+          border: `1px solid ${toastMsg.type === 'error' ? '#f43f5e' : '#10b981'}`,
+          color: '#fff', padding: '12px 20px', borderRadius: 12,
+          fontSize: 13, fontWeight: 600, boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+          display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <span>{toastMsg.text}</span>
+          <button onClick={() => setToastMsg(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: 16, padding: '0 4px' }}>✕</button>
+        </div>
+      )}
 
       {/* ── Navbar ── */}
       <header style={{ background: 'rgba(7,7,14,0.95)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(16px)' }}>
@@ -303,12 +400,36 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
             </div>
             <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>Allsitehub</span>
             <span style={{ fontSize: 10, color: 'var(--text-accent)', background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 5, padding: '2px 8px', fontWeight: 700, letterSpacing: '0.06em' }}>ADMIN</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#34d399', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 6, padding: '2px 8px', fontWeight: 600 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+              Live DB Active
+            </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <Link href="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: 13, padding: '5px 12px', borderRadius: 8, border: '1px solid var(--border)', transition: 'all 0.15s', whiteSpace: 'nowrap' }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            {/* ⚡ Purge Cache & Sync Live Button */}
+            <button
+              onClick={handleForceSync}
+              disabled={syncingLive}
+              title="Instantly clear Cloudflare edge cache and revalidate all public pages"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15))',
+                border: '1px solid rgba(16,185,129,0.4)',
+                borderRadius: 8, padding: '5px 12px',
+                color: '#34d399', fontSize: 12, fontWeight: 700,
+                cursor: syncingLive ? 'not-allowed' : 'pointer',
+                transition: 'all 0.15s', whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={e => { if (!syncingLive) (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(16,185,129,0.25), rgba(6,182,212,0.25))'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15))'; }}
+            >
+              <span style={{ fontSize: 13, display: 'inline-block', animation: syncingLive ? 'spin 1s linear infinite' : 'none' }}>⚡</span>
+              {syncingLive ? 'Syncing Live…' : 'Purge Cache & Sync Live'}
+            </button>
+            <Link href="/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: 13, padding: '5px 12px', borderRadius: 8, border: '1px solid var(--border)', transition: 'all 0.15s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}
-            >← View Site</Link>
+            >← View Site ↗</Link>
             <button onClick={logout} style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '5px 12px', color: 'var(--text-secondary)', fontSize: 13, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--red)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(244,63,94,0.4)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; }}
@@ -405,14 +526,54 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
               <svg style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               <input type="text" placeholder="Search sites..." value={siteSearch} onChange={e => setSiteSearch(e.target.value)} style={{ width: '100%', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 9, padding: '8px 12px 8px 30px', color: 'var(--text-primary)', fontSize: 13, outline: 'none' }} onFocus={e => { e.currentTarget.style.borderColor = 'var(--text-accent)'; e.currentTarget.style.boxShadow = '0 0 0 3px var(--glow)'; }} onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }} />
             </div>
+
+            {/* Category Filter Pills */}
+            <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 10, marginBottom: 14 }} className="no-scrollbar">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                style={{
+                  padding: '6px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap',
+                  background: selectedCategory === 'all' ? 'var(--gradient)' : 'var(--bg-surface)',
+                  color: selectedCategory === 'all' ? '#fff' : 'var(--text-secondary)',
+                  boxShadow: selectedCategory === 'all' ? '0 4px 14px rgba(124,58,237,0.35)' : 'none',
+                  border: '1px solid ' + (selectedCategory === 'all' ? 'transparent' : 'var(--border)'),
+                  transition: 'all 0.15s',
+                }}
+              >
+                All Categories ({sites.length})
+              </button>
+              {categories.map(cat => {
+                const count = sites.filter(s => s.category?.toLowerCase() === cat.toLowerCase()).length;
+                const isSel = selectedCategory.toLowerCase() === cat.toLowerCase();
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    style={{
+                      padding: '6px 14px', borderRadius: 8, cursor: 'pointer', fontSize: 12, fontWeight: 600, whiteSpace: 'nowrap',
+                      background: isSel ? 'var(--gradient)' : 'var(--bg-surface)',
+                      color: isSel ? '#fff' : 'var(--text-secondary)',
+                      boxShadow: isSel ? '0 4px 14px rgba(124,58,237,0.35)' : 'none',
+                      border: '1px solid ' + (isSel ? 'transparent' : 'var(--border)'),
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
+
             <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 10 }}>Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredSites.length}</strong> of {sites.length} sites</p>
             <SitesTable
               sites={filteredSites}
               categories={categories}
+              selectedCategory={selectedCategory}
               searchActive={!!siteSearch.trim()}
               apiReorder={`/api/${panel}/sites/reorder`}
               onEdit={openEdit}
               onDelete={handleDeleteSite}
+              onToggleTag={handleToggleTag}
               deletingId={deletingId}
               onReorder={refreshSites}
             />
@@ -679,29 +840,35 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
  * categories together, where per-category position has no clear meaning —
  * so it falls back to a plain flat table with rank controls hidden.
  */
-function SitesTable({ sites, categories, searchActive, apiReorder, onEdit, onDelete, deletingId, onReorder }: {
+function SitesTable({ sites, categories, selectedCategory, searchActive, apiReorder, onEdit, onDelete, onToggleTag, deletingId, onReorder }: {
   sites: Site[];
   categories: string[];
+  selectedCategory: string;
   searchActive: boolean;
   apiReorder: string;
   onEdit: (s: Site) => void;
   onDelete: (id: string, name: string) => void;
+  onToggleTag: (site: Site, tagKey: 'isTrusted' | 'isNew' | 'isFeatured') => void;
   deletingId: string | null;
   onReorder: () => void;
 }) {
   if (sites.length === 0) {
     return (
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
-        No sites found
+        No sites found in this view
       </div>
     );
   }
 
   if (searchActive) {
-    return <FlatSitesTable sites={sites} onEdit={onEdit} onDelete={onDelete} deletingId={deletingId} />;
+    return <FlatSitesTable sites={sites} onEdit={onEdit} onDelete={onDelete} onToggleTag={onToggleTag} deletingId={deletingId} />;
   }
 
-  const groups = categories
+  const activeCategories = selectedCategory !== 'all'
+    ? categories.filter(c => c.toLowerCase() === selectedCategory.toLowerCase())
+    : categories;
+
+  const groups = activeCategories
     .map(category => ({ category, items: sites.filter(s => s.category?.toLowerCase() === category?.toLowerCase()).sort((a, b) => a.order - b.order) }))
     .filter(g => g.items.length > 0);
 
@@ -715,6 +882,7 @@ function SitesTable({ sites, categories, searchActive, apiReorder, onEdit, onDel
           apiReorder={apiReorder}
           onEdit={onEdit}
           onDelete={onDelete}
+          onToggleTag={onToggleTag}
           deletingId={deletingId}
           onReorder={onReorder}
         />
@@ -725,14 +893,20 @@ function SitesTable({ sites, categories, searchActive, apiReorder, onEdit, onDel
 
 const thStyle: React.CSSProperties = { textAlign: 'left', padding: '11px 16px', fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap' };
 
-function FlatSitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]; onEdit: (s: Site) => void; onDelete: (id: string, name: string) => void; deletingId: string | null }) {
+function FlatSitesTable({ sites, onEdit, onDelete, onToggleTag, deletingId }: {
+  sites: Site[];
+  onEdit: (s: Site) => void;
+  onDelete: (id: string, name: string) => void;
+  onToggleTag: (site: Site, tagKey: 'isTrusted' | 'isNew' | 'isFeatured') => void;
+  deletingId: string | null;
+}) {
   return (
     <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, overflow: 'hidden' }}>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
-              {['Site', 'Category', 'Region', 'Tags', 'Added', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
+              {['Site', 'Category', 'Region', 'Quick Badges', 'Added', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
             </tr>
           </thead>
           <tbody>
@@ -753,14 +927,69 @@ function FlatSitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]
                   </div>
                 </td>
                 <td style={{ padding: '11px 16px' }}>
-                  <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                    {site.tags.length === 0 ? <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>—</span> : site.tags.map(t => <span key={t} className={`tag tag-${t}`}>{t}</span>)}
+                  <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => onToggleTag(site, 'isTrusted')}
+                      title="Click to toggle Trusted badge"
+                      style={{
+                        padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                        background: site.isTrusted ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${site.isTrusted ? '#10b981' : 'var(--border)'}`,
+                        color: site.isTrusted ? '#34d399' : 'var(--text-muted)',
+                        transition: 'all 0.15s',
+                      }}
+                    >
+                      🛡️ {site.isTrusted ? 'Trusted' : '+ Trust'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onToggleTag(site, 'isNew')}
+                      title="Click to toggle New badge"
+                      style={{
+                        padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                        background: site.isNew ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${site.isNew ? '#3b82f6' : 'var(--border)'}`,
+                        color: site.isNew ? '#60a5fa' : 'var(--text-muted)',
+                        transition: 'all 0.15s',
+                      }}
+                    >
+                      🆕 {site.isNew ? 'New' : '+ New'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onToggleTag(site, 'isFeatured')}
+                      title="Click to toggle Featured badge"
+                      style={{
+                        padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                        background: site.isFeatured ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.03)',
+                        border: `1px solid ${site.isFeatured ? '#f59e0b' : 'var(--border)'}`,
+                        color: site.isFeatured ? '#fbbf24' : 'var(--text-muted)',
+                        transition: 'all 0.15s',
+                      }}
+                    >
+                      ⭐ {site.isFeatured ? 'Featured' : '+ Star'}
+                    </button>
                   </div>
                 </td>
                 <td style={{ padding: '11px 16px', fontSize: 11, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                   {site.addedAt ? new Date(site.addedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: '2-digit' }) : '—'}
                 </td>
                 <td style={{ padding: '11px 16px', whiteSpace: 'nowrap' }}>
+                  <a
+                    href={`/site/${slugify(site.name)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)', borderRadius: 7,
+                      padding: '5px 9px', color: 'var(--text-secondary)', fontSize: 12, textDecoration: 'none',
+                      marginRight: 6, display: 'inline-flex', alignItems: 'center', gap: 4, transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--text-accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
+                  >
+                    🌐 View
+                  </a>
                   <button onClick={() => onEdit(site)} style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 7, padding: '5px 10px', color: 'var(--text-accent)', fontSize: 12, cursor: 'pointer', marginRight: 6, transition: 'background 0.15s' }}
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.2)'} onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.1)'}
                   >✎ Edit</button>
@@ -778,12 +1007,13 @@ function FlatSitesTable({ sites, onEdit, onDelete, deletingId }: { sites: Site[]
 }
 
 /* One drag-and-drop-reorderable table, scoped to a single category. */
-function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, deletingId, onReorder }: {
+function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, onToggleTag, deletingId, onReorder }: {
   category: string;
   items: Site[];
   apiReorder: string;
   onEdit: (s: Site) => void;
   onDelete: (id: string, name: string) => void;
+  onToggleTag: (site: Site, tagKey: 'isTrusted' | 'isNew' | 'isFeatured') => void;
   deletingId: string | null;
   onReorder: () => void;
 }) {
@@ -837,7 +1067,7 @@ function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, dele
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                {['', 'Rank', 'Site', 'Region', 'Tags', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
+                {['', 'Rank', 'Site', 'Region', 'Quick Badges', 'Actions'].map(h => <th key={h} style={thStyle}>{h}</th>)}
               </tr>
             </thead>
             <tbody>
@@ -851,6 +1081,7 @@ function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, dele
                     onMove={moveTo}
                     onEdit={onEdit}
                     onDelete={onDelete}
+                    onToggleTag={onToggleTag}
                     deletingId={deletingId}
                   />
                 ))}
@@ -863,13 +1094,14 @@ function CategoryRankTable({ category, items, apiReorder, onEdit, onDelete, dele
   );
 }
 
-function SortableSiteRow({ site, index, total, onMove, onEdit, onDelete, deletingId }: {
+function SortableSiteRow({ site, index, total, onMove, onEdit, onDelete, onToggleTag, deletingId }: {
   site: Site;
   index: number;
   total: number;
   onMove: (from: number, to: number) => void;
   onEdit: (s: Site) => void;
   onDelete: (id: string, name: string) => void;
+  onToggleTag: (site: Site, tagKey: 'isTrusted' | 'isNew' | 'isFeatured') => void;
   deletingId: string | null;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: site.id });
@@ -902,11 +1134,66 @@ function SortableSiteRow({ site, index, total, onMove, onEdit, onDelete, deletin
         </div>
       </td>
       <td style={{ padding: '11px 16px' }}>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-          {site.tags.length === 0 ? <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>—</span> : site.tags.map(t => <span key={t} className={`tag tag-${t}`}>{t}</span>)}
+        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => onToggleTag(site, 'isTrusted')}
+            title="Click to toggle Trusted badge"
+            style={{
+              padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+              background: site.isTrusted ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${site.isTrusted ? '#10b981' : 'var(--border)'}`,
+              color: site.isTrusted ? '#34d399' : 'var(--text-muted)',
+              transition: 'all 0.15s',
+            }}
+          >
+            🛡️ {site.isTrusted ? 'Trusted' : '+ Trust'}
+          </button>
+          <button
+            type="button"
+            onClick={() => onToggleTag(site, 'isNew')}
+            title="Click to toggle New badge"
+            style={{
+              padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+              background: site.isNew ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${site.isNew ? '#3b82f6' : 'var(--border)'}`,
+              color: site.isNew ? '#60a5fa' : 'var(--text-muted)',
+              transition: 'all 0.15s',
+            }}
+          >
+            🆕 {site.isNew ? 'New' : '+ New'}
+          </button>
+          <button
+            type="button"
+            onClick={() => onToggleTag(site, 'isFeatured')}
+            title="Click to toggle Featured badge"
+            style={{
+              padding: '2px 7px', borderRadius: 5, fontSize: 10, fontWeight: 700, cursor: 'pointer',
+              background: site.isFeatured ? 'rgba(245,158,11,0.2)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${site.isFeatured ? '#f59e0b' : 'var(--border)'}`,
+              color: site.isFeatured ? '#fbbf24' : 'var(--text-muted)',
+              transition: 'all 0.15s',
+            }}
+          >
+            ⭐ {site.isFeatured ? 'Featured' : '+ Star'}
+          </button>
         </div>
       </td>
       <td style={{ padding: '11px 16px', whiteSpace: 'nowrap' }}>
+        <a
+          href={`/site/${slugify(site.name)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)', borderRadius: 7,
+            padding: '5px 9px', color: 'var(--text-secondary)', fontSize: 12, textDecoration: 'none',
+            marginRight: 6, display: 'inline-flex', alignItems: 'center', gap: 4, transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--text-accent)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
+        >
+          🌐 View
+        </a>
         <button onClick={() => onEdit(site)} style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 7, padding: '5px 10px', color: 'var(--text-accent)', fontSize: 12, cursor: 'pointer', marginRight: 6, transition: 'background 0.15s' }}
           onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.2)'} onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(139,92,246,0.1)'}
         >✎ Edit</button>

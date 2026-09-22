@@ -38,9 +38,10 @@ import {
   buildWelcomeMessage,
   buildInfoMessage,
   SITE_URL,
+  TELEGRAM_BOT_TOKEN,
 } from '../lib/telegram';
 
-const token = process.env.TELEGRAM_BOT_TOKEN || '8973994330:AAExwIkVXfYYWyEFH-h82CEE-xMD02JB_os';
+const token = process.env.TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN || '8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg';
 
 if (!token) {
   console.error('❌ Please set TELEGRAM_BOT_TOKEN in your environment or .env.local');
@@ -115,13 +116,12 @@ async function pollUpdates() {
 
             if (isPrivate || isBotCommand) {
               console.log(`[${new Date().toLocaleTimeString()}] 💬 Responding to command "${update.message.text}" in ${update.message.chat.type} chat (${update.message.chat.id})`);
-              const { text: replyText, reply_markup } = buildInfoMessage();
+              const { text: replyText } = buildInfoMessage();
               await sendTelegramMessage(
                 {
                   chat_id: update.message.chat.id,
                   text: replyText,
                   reply_to_message_id: update.message.message_id,
-                  reply_markup,
                 },
                 token,
               );
@@ -135,5 +135,28 @@ async function pollUpdates() {
     }
   }
 }
+
+async function restoreWebhookAndExit() {
+  console.log('\n🛑 Stopping bot and restoring production webhook...');
+  try {
+    const webhookUrl = `${SITE_URL}/api/telegram/webhook`.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
+    await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: webhookUrl,
+        allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
+        drop_pending_updates: false,
+      }),
+    });
+    console.log(`✅ Webhook restored to ${webhookUrl}`);
+  } catch (err) {
+    console.warn('⚠️ Could not restore webhook:', err);
+  }
+  process.exit(0);
+}
+
+process.on('SIGINT', restoreWebhookAndExit);
+process.on('SIGTERM', restoreWebhookAndExit);
 
 pollUpdates();

@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       req.nextUrl.searchParams.get('token') ||
       process.env.TELEGRAM_BOT_TOKEN ||
       TELEGRAM_BOT_TOKEN;
-    const botId = Number(process.env.TELEGRAM_BOT_ID || 8973994330);
+    const botId = Number(process.env.TELEGRAM_BOT_ID || TELEGRAM_BOT_ID || 8741338089);
 
     // ── 1a. Handle New Chat Members (Welcome Message from service message) ──
     if (update.message?.new_chat_members && Array.isArray(update.message.new_chat_members)) {
@@ -82,13 +82,11 @@ export async function POST(req: NextRequest) {
 
       for (const member of update.message.new_chat_members) {
         // If the bot itself was added to the group
-        if (member.is_bot && member.id === botId) {
-          const { reply_markup } = buildInfoMessage();
+        if (member.is_bot && (member.id === botId || member.username === 'allsitehub_bot')) {
           await sendTelegramMessage(
             {
               chat_id: chatId,
               text: `🤖 <b>AllSiteHub Welcome Bot Activated!</b>\n\nI will welcome every new member with our official links. 🍿`,
-              reply_markup,
             },
             botToken,
           );
@@ -98,8 +96,8 @@ export async function POST(req: NextRequest) {
         // Skip other bots
         if (member.is_bot) continue;
 
-        // Welcomes the member, eliminates duplicate message, and deletes the previous welcome message
-        const welcomeRes = await sendWelcomeAndCleanupOld(chatId, member, update.message.message_id, botToken);
+        // Welcomes the member and eliminates duplicate triggers without deleting older messages
+        const welcomeRes = await sendWelcomeAndCleanupOld(chatId, member, undefined, botToken);
         await logTelegramEvent({
           action: 'welcome_sent_new_chat_members',
           chat_id: chatId,
@@ -114,22 +112,24 @@ export async function POST(req: NextRequest) {
     // ── 1b. Handle Chat Member Updates (Supergroup joins where service messages are suppressed) ──
     if (update.chat_member) {
       const { chat, old_chat_member, new_chat_member } = update.chat_member;
-      const wasMember = ['member', 'administrator', 'creator'].includes(old_chat_member?.status);
-      const isNowMember = ['member', 'administrator', 'restricted'].includes(new_chat_member?.status);
+      const wasMember =
+        ['member', 'administrator', 'creator'].includes(old_chat_member?.status) ||
+        (old_chat_member?.status === 'restricted' && old_chat_member?.is_member !== false);
+      const isNowMember =
+        ['member', 'administrator', 'creator'].includes(new_chat_member?.status) ||
+        (new_chat_member?.status === 'restricted' && new_chat_member?.is_member !== false);
 
       if (!wasMember && isNowMember && new_chat_member?.user) {
         const user = new_chat_member.user;
-        if (!user.is_bot || user.id !== botId) {
-          if (!user.is_bot) {
-            const welcomeRes = await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
-            await logTelegramEvent({
-              action: 'welcome_sent_chat_member',
-              chat_id: chat.id,
-              user: user.username || user.first_name,
-              result: welcomeRes?.ok ? 'ok' : welcomeRes?.description || 'failed',
-            });
-            return NextResponse.json({ ok: true, action: 'chat_member_welcome_sent', result: welcomeRes });
-          }
+        if (!user.is_bot && user.id !== botId) {
+          const welcomeRes = await sendWelcomeAndCleanupOld(chat.id, user, undefined, botToken);
+          await logTelegramEvent({
+            action: 'welcome_sent_chat_member',
+            chat_id: chat.id,
+            user: user.username || user.first_name,
+            result: welcomeRes?.ok ? 'ok' : welcomeRes?.description || 'failed',
+          });
+          return NextResponse.json({ ok: true, action: 'chat_member_welcome_sent', result: welcomeRes });
         }
       }
     }
@@ -162,12 +162,10 @@ export async function POST(req: NextRequest) {
     if (update.my_chat_member) {
       const { chat, new_chat_member } = update.my_chat_member;
       if (['member', 'administrator'].includes(new_chat_member?.status)) {
-        const { reply_markup } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chat.id,
             text: `🤖 <b>AllSiteHub Welcome Bot is now active in this group!</b>\n\nEvery new member joining will be greeted automatically with our verified links. 🍿`,
-            reply_markup,
           },
           botToken,
         );
@@ -184,13 +182,12 @@ export async function POST(req: NextRequest) {
 
       // In Private DM, always respond with website info and direct links
       if (chatType === 'private') {
-        const { text: replyText, reply_markup } = buildInfoMessage();
+        const { text: replyText } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chatId,
             text: replyText,
             reply_to_message_id: messageId,
-            reply_markup,
           },
           botToken,
         );
@@ -210,13 +207,12 @@ export async function POST(req: NextRequest) {
         text.includes('@allsitehub_bot');
 
       if (isBotCommand) {
-        const { text: replyText, reply_markup } = buildInfoMessage();
+        const { text: replyText } = buildInfoMessage();
         await sendTelegramMessage(
           {
             chat_id: chatId,
             text: replyText,
             reply_to_message_id: messageId,
-            reply_markup,
           },
           botToken,
         );
@@ -231,12 +227,50 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Support GET for testing if webhook endpoint is live
+// Support GET for health checks & self-healing verification
 export async function GET() {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN;
+  let webhookInfo: any = null;
+  let autoRepaired = false;
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${botToken}/getWebhookInfo`);
+    const data = await res.json();
+    if (data.ok) {
+      webhookInfo = data.result;
+      const expectedUrl = `${SITE_URL}/api/telegram/webhook`;
+      if (!webhookInfo?.url || !webhookInfo.url.includes('/api/telegram/webhook')) {
+        // Auto-heal / register webhook if missing or pointing to the wrong URL!
+        const setRes = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: expectedUrl,
+            allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
+            drop_pending_updates: false,
+          }),
+        });
+        const setData = await setRes.json();
+        autoRepaired = setData.ok;
+        if (autoRepaired) {
+          webhookInfo.url = expectedUrl;
+          webhookInfo.auto_repaired = true;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('[Telegram Webhook Healthcheck Warning]:', err);
+  }
+
   return NextResponse.json({
     status: 'online',
     service: 'AllSiteHub Telegram Webhook Handler',
     time: new Date().toISOString(),
     site: SITE_URL,
+    bot_id: TELEGRAM_BOT_ID,
+    webhook_url: webhookInfo?.url || 'unregistered',
+    auto_repaired: autoRepaired,
+    pending_updates: webhookInfo?.pending_update_count ?? 0,
+    last_error: webhookInfo?.last_error_message || null,
   });
 }

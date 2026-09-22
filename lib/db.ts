@@ -100,16 +100,38 @@ async function readDBRedis(): Promise<DB | null> {
   }
 }
 
-async function writeDBRedis(data: DB): Promise<void> {
-  if (!redis || Date.now() < redisDisabledUntil) return;
+async function writeDBRedis(data: DB): Promise<boolean> {
+  if (!redis) return false;
   try {
-    await Promise.all([
-      redis.set(REDIS_KEY, data),
-      redis.set(LEGACY_REDIS_KEY, data),
-    ]);
-  } catch {
-    redisDisabledUntil = Date.now() + 2 * 60 * 1000;
+    await redis.set(REDIS_KEY, data);
+    redisDisabledUntil = 0; // Successfully connected, reset circuit breaker
+    try {
+      await redis.set(LEGACY_REDIS_KEY, data);
+    } catch {
+      // Ignore legacy key failures
+    }
+    return true;
+  } catch (err) {
+    console.error('[DB] Redis write failed:', err);
+    return false;
   }
+}
+
+export function tryWriteLocalDbFile(data: DB): boolean {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require('fs');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require('path');
+    const filePath = path.join(process.cwd(), 'data', 'db.json');
+    if (fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      return true;
+    }
+  } catch {
+    // Read-only filesystem in serverless environments
+  }
+  return false;
 }
 
 function ensureOrder(data: DB): boolean {
@@ -175,42 +197,62 @@ export async function readDB(): Promise<DB> {
   return data;
 }
 
-export async function purgeCloudflareCache(): Promise<void> {
+export async function purgeCloudflareCache(): Promise<{ success: boolean; error?: string }> {
   const token = process.env.CLOUDFLARE_API_TOKEN;
   const zoneId = process.env.CLOUDFLARE_ZONE_ID || 'cd22aaa61fd8b649cb501d06c9ac1fc3';
-  if (!token || !zoneId) return;
+  if (!token || !zoneId) return { success: false, error: 'Missing Cloudflare credentials' };
 
   try {
-    await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`, {
+    const res = await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ purge_everything: true }),
+      signal: AbortSignal.timeout(8000),
     });
-  } catch (e) {
-    console.warn('[Cloudflare] Cache purge failed:', e);
+    const result = await res.json() as { success?: boolean; errors?: unknown[] };
+    if (result?.success) {
+      return { success: true };
+    }
+    return { success: false, error: JSON.stringify(result?.errors ?? 'Unknown error') };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.warn('[Cloudflare] Cache purge warning:', msg);
+    return { success: false, error: msg };
   }
 }
 
 export async function writeDB(data: DB): Promise<void> {
   ensureOrder(data);
   memoryCache = { data, timestamp: Date.now() };
-  if (redis && Date.now() >= redisDisabledUntil) {
-    await writeDBRedis(data);
-  }
+
+  // 1. Write to Redis immediately
+  await writeDBRedis(data);
+
+  // 2. Persist to data/db.json on disk if filesystem is writable
+  tryWriteLocalDbFile(data);
+
+  // 3. Revalidate Next.js router paths
   try {
     revalidatePath('/', 'layout');
     revalidatePath('/');
     revalidatePath('/recent');
     revalidatePath('/category/[slug]', 'page');
+    revalidatePath('/collections/[slug]', 'page');
+    revalidatePath('/site/[id]', 'page');
+    revalidatePath('/api/sites');
   } catch {
     // Ignore when called outside Next.js request context
   }
 
-  // Automatically trigger Cloudflare cache purge in background so edits are immediately live
-  purgeCloudflareCache().catch(() => {});
+  // 4. Await Cloudflare cache purge so edge serverless lambda doesn't terminate prematurely
+  try {
+    await purgeCloudflareCache();
+  } catch (cfErr) {
+    console.warn('[DB] Cloudflare purge error in writeDB:', cfErr);
+  }
 }
 
 export function generateId(): string {

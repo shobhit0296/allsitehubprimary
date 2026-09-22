@@ -137,8 +137,8 @@ export async function isUserRecentlyWelcomed(chatId: number | string, userId: nu
 }
 
 /**
- * Sends a welcome message to a new user, ensures no second/duplicate message is sent,
- * and automatically deletes the previous welcome message so only the newest one remains!
+ * Sends a welcome message to a new user and ensures no duplicate welcome is sent.
+ * Note: Older messages are preserved and NEVER deleted.
  */
 export async function sendWelcomeAndCleanupOld(
   chatId: number | string,
@@ -146,7 +146,7 @@ export async function sendWelcomeAndCleanupOld(
   replyToMessageId?: number,
   token = TELEGRAM_BOT_TOKEN
 ) {
-  // 1. Drop duplicate triggers (e.g. Telegram firing both 'message.new_chat_members' & 'chat_member')
+  // 1. Drop duplicate triggers (e.g. Telegram firing both 'message.new_chat_members' & 'chat_member' for same join)
   const alreadyWelcomed = await isUserRecentlyWelcomed(chatId, user.id);
   if (alreadyWelcomed) {
     console.log(`[Telegram] Skipped duplicate welcome for user ${user.id} in chat ${chatId}`);
@@ -154,39 +154,21 @@ export async function sendWelcomeAndCleanupOld(
     return { ok: true, skipped_duplicate: true };
   }
 
-  // 2. Delete the old welcome message in this chat so only the newest one stays
-  const chatKey = `telegram:last_welcome:${chatId}`;
-  try {
-    const oldMessageId = await telegramRedis.get<number>(chatKey);
-    if (oldMessageId) {
-      await deleteTelegramMessage(chatId, oldMessageId, token);
-      console.log(`[Telegram] Removed previous welcome message #${oldMessageId} from chat ${chatId}`);
-    }
-  } catch (err) {
-    console.warn(`[Telegram] Could not delete old welcome message:`, err);
-  }
-
-  // 3. Send the newest welcome message
-  const { text, reply_markup } = buildWelcomeMessage(user);
+  // 2. Send the newest welcome message (older messages are kept intact and not deleted)
+  const { text } = buildWelcomeMessage(user);
   const result = await sendTelegramMessage(
     {
       chat_id: chatId,
       text,
       reply_to_message_id: replyToMessageId,
-      reply_markup,
     },
     token
   );
 
-  // 4. Save new message ID so it can be cleaned up when the next member arrives
-  if (result?.ok && result?.result?.message_id) {
-    try {
-      await telegramRedis.set(chatKey, result.result.message_id, { ex: 86400 * 7 }); // 7-day TTL
-    } catch {}
-  }
-
   return result;
 }
+
+export const sendWelcomeMessage = sendWelcomeAndCleanupOld;
 
 /**
  * Community inline buttons for Telegram
@@ -231,7 +213,7 @@ export function buildWelcomeMessage(user: { id: number; first_name?: string; use
 🚀 <i>Explore. Discover. Enjoy.</i>
 `.trim();
 
-  return { text, reply_markup: getCommunityButtons() };
+  return { text };
 }
 
 /**
@@ -252,7 +234,7 @@ export function buildInfoMessage() {
 🚀 <i>Explore. Discover. Enjoy.</i>
 `.trim();
 
-  return { text, reply_markup: getCommunityButtons() };
+  return { text };
 }
 
 /**
