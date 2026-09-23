@@ -31,3 +31,14 @@ The following advertising networks, scripts, and banner placements are strictly 
    - Native Banner Cards: `NativeAdCard` (`container-36a34e7c2d7095493196dd10bc56ad23`).
    - Status: ALWAYS ACTIVE on public routes.
 
+# CRITICAL DEPLOYMENT POLICY: STRICT VERCEL & GITHUB TARGETING
+This codebase (`AllSiteHub`) must ONLY ever be pushed and deployed to the following designated Git repository and Vercel project, even if you or the user log into other Vercel or GitHub accounts:
+
+- **GitHub Remote (`origin`)**: `https://github.com/shobhit0296/allsitehubprimary.git` (branch: `main`)
+- **Vercel Project ID**: `prj_v8mQeRCioyLViMYBiLOLJ31j6RpF`
+- **Vercel Team/Org ID**: `team_nd7r69HKQeVvjuTywupQEJ5x`
+- **Vercel Project Name**: `allsitehub`
+- **Production Domain**: `https://www.allsitehub.site/`
+- **Deployment Process**: Always use `npm run deploy` / `npm run live`. It reads the explicit `VERCEL_TOKEN` configured in `.env.local` so it is locked to this exact project and will never push to or overwrite any other Vercel account or project.
+
+
