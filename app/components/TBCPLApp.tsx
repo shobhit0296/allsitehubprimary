@@ -227,13 +227,6 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
         onlineCount={liveOnlineCount}
       />
 
-      {/* Stake Banner Placement: Positioned directly below Top Navigation, above Front Page Content */}
-      <div
-        id="stake-top-banner-slot"
-        className="w-full max-w-[1200px] mx-auto flex flex-col justify-center items-center overflow-hidden bg-transparent [&:has(.ads-core-ads:not(:empty))]:my-3"
-      >
-        <div className="ads-core-ads" />
-      </div>
 
       <Hero
         totalSites={sites.length}

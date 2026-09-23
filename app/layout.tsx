@@ -230,7 +230,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem('allSiteHub_theme')||'cosmic';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
         />
-        {/* Ad Frequency Reset — bypasses 24h cooldown cookies so Stake ads always show on every visit */}
+        {/* Ad Frequency Reset — clears 24h cooldown so Stake ads show on every visit */}
         <script
           id="ad-frequency-bypass"
           dangerouslySetInnerHTML={{
@@ -245,7 +245,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                       var name = eqPos > -1 ? c.substr(0, eqPos) : c;
                       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;';
                       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname + ';';
-                      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.' + window.location.hostname.replace(/^www\./, '') + ';';
+                      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.' + window.location.hostname.replace(/^www\\./, '') + ';';
                     }
                   }
                   try {
@@ -253,38 +253,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     localStorage.removeItem('ads-click');
                   } catch(e) {}
                 };
-
                 clearAdCookies();
-
-                var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') ||
-                                 Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
-                if (cookieDesc && cookieDesc.configurable) {
-                  var originalGet = cookieDesc.get;
-                  var originalSet = cookieDesc.set;
-
-                  Object.defineProperty(document, 'cookie', {
-                    configurable: true,
-                    enumerable: true,
-                    get: function() {
-                      var val = originalGet.call(this);
-                      if (!val) return '';
-                      return val.split(';')
-                        .map(function(c) { return c.trim(); })
-                        .filter(function(c) {
-                          return !(c.indexOf('ads-counter-') === 0 || c.indexOf('ads-last-tracker-') === 0 || c.indexOf('ads-cap-') === 0);
-                        })
-                        .join('; ');
-                    },
-                    set: function(val) {
-                      if (typeof val === 'string' && (val.indexOf('ads-counter-') === 0 || val.indexOf('ads-last-tracker-') === 0 || val.indexOf('ads-cap-') === 0)) {
-                        return;
-                      }
-                      return originalSet.call(this, val);
-                    }
-                  });
-                }
-
-                setInterval(clearAdCookies, 2000);
               } catch(e) {}
             })();`,
           }}

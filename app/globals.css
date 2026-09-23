@@ -844,28 +844,23 @@ div[class*="monetag"] {
 }
 
 /* ── Stake Official Display Banner & Top-Scroll Styling (Default & Maximized Impressions) ── */
-.ads-core-ads:empty {
-  display: none !important;
-  min-height: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-}
-
-.ads-core-ads:not(:empty) {
+.ads-core-ads {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   width: 100% !important;
-  min-height: 90px !important;
   max-width: 970px !important;
-  margin: 12px auto !important;
+  margin: 0 auto !important;
   visibility: visible !important;
   opacity: 1 !important;
   position: relative !important;
   z-index: 20 !important;
   background: transparent !important;
+}
+
+.ads-core-ads:not(:empty) {
+  min-height: 90px !important;
+  margin: 12px auto !important;
 }
 
 div[id^="ads-1069"],
@@ -875,37 +870,6 @@ iframe[id*="AdsCore"],
 iframe[id*="ads-"] {
   visibility: visible !important;
   opacity: 1 !important;
-}
-
-/* ── Stake Scrolling Banner Slot (Directly below Top Navigation, above Front Page Content) ── */
-#stake-top-banner-slot {
-  width: 100%;
-  max-width: 1200px;
-  background: transparent !important;
-  background-color: transparent !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 40;
-  overflow: hidden;
-  min-height: 0;
-}
-
-#stake-top-banner-slot:empty,
-#stake-top-banner-slot:not(:has(iframe)):not(:has(img)):not(:has(a)) {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* When an active ad creative is loaded in the slot, offset Hero top padding appropriately */
-body:has(#stake-top-banner-slot:has(iframe, img, a)) .page-offset,
-body:has(#stake-top-banner-slot:has(iframe, img, a)) .page-offset-search {
-  padding-top: 1.5rem !important;
 }
 
 /* ── Stake Top-Scroll Ad (Positioned under Top Navigation, Natural Parallax Flow) ── */
