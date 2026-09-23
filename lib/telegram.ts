@@ -32,6 +32,56 @@ export async function logTelegramEvent(event: Record<string, any>) {
   }
 }
 
+/**
+ * Automatically ensures the Telegram webhook is registered and points to the live URL.
+ * Throttled via Redis so it checks at most once every 15 minutes.
+ */
+export async function ensureTelegramWebhookActive(token = TELEGRAM_BOT_TOKEN) {
+  if (!token) return { ok: false, reason: 'no_token' };
+  const checkKey = 'telegram:webhook_last_verified';
+  try {
+    const recentlyVerified = await telegramRedis.get(checkKey);
+    if (recentlyVerified) return { ok: true, cached: true };
+
+    const expectedUrl = `${SITE_URL}/api/telegram/webhook`.replace(
+      /^https?:\/\/allsitehub\.site/i,
+      'https://www.allsitehub.site'
+    );
+
+    const infoRes = await fetch(`https://api.telegram.org/bot${token}/getWebhookInfo`);
+    const infoData = await infoRes.json();
+
+    if (!infoData.ok || !infoData.result?.url || !infoData.result.url.includes('/api/telegram/webhook')) {
+      console.log(`[Telegram Auto-Heal] Webhook was inactive (${infoData.result?.url || 'none'}). Re-registering...`);
+      const setRes = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: expectedUrl,
+          allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
+          drop_pending_updates: false,
+        }),
+      });
+      const setData = await setRes.json();
+      await logTelegramEvent({
+        action: 'auto_healed_webhook',
+        previous_url: infoData.result?.url || 'none',
+        restored_url: expectedUrl,
+        success: setData.ok,
+      });
+      await telegramRedis.set(checkKey, 1, { ex: 900 }); // 15 mins TTL
+      return { ok: setData.ok, repaired: true };
+    }
+
+    await telegramRedis.set(checkKey, 1, { ex: 900 }); // 15 mins TTL
+    return { ok: true, active: true };
+  } catch (err) {
+    console.warn('[Telegram Auto-Heal Error]:', err);
+    return { ok: false, error: String(err) };
+  }
+}
+
+
 interface SendMessageOptions {
   chat_id: number | string;
   text: string;

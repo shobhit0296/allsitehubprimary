@@ -48,24 +48,54 @@ if (!token) {
   process.exit(1);
 }
 
-let offset = 0;
+// If --restore flag passed, immediately register production webhook and exit
+if (process.argv.includes('--restore') || process.argv.includes('-r')) {
+  console.log('🔄 Re-registering production webhook on Telegram...');
+  const webhookUrl = `${SITE_URL}/api/telegram/webhook`.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
+  fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      url: webhookUrl,
+      allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
+      drop_pending_updates: false,
+    }),
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok) {
+        console.log(`✅ Webhook successfully restored to: ${webhookUrl}`);
+      } else {
+        console.error('❌ Failed to restore webhook:', data);
+      }
+      process.exit(0);
+    })
+    .catch(err => {
+      console.error('❌ Error restoring webhook:', err);
+      process.exit(1);
+    });
+} else {
+  let offset = 0;
 
-async function pollUpdates() {
-  console.log('🤖 AllSiteHub Telegram Bot starting in standalone polling mode (no Vercel)...');
-  console.log(`🔗 Target Website: ${SITE_URL}`);
+  async function pollUpdates() {
+    console.log('⚠️  NOTE: Running this script in long-polling mode disables the live production webhook while active.');
+    console.log('   When you finish testing, press Ctrl+C to automatically restore the live webhook,');
+    console.log('   or run: npm run bot -- --restore\n');
+    console.log('🤖 AllSiteHub Telegram Bot starting in standalone polling mode (no Vercel)...');
+    console.log(`🔗 Target Website: ${SITE_URL}`);
 
-  // Automatically delete any registered webhook so polling works without 409 Conflict
-  try {
-    const delRes = await fetch(`https://api.telegram.org/bot${token}/deleteWebhook?drop_pending_updates=true`);
-    const delData = await delRes.json();
-    if (delData.ok) {
-      console.log('✅ Webhook cleared successfully. Ready for long-polling.');
+    // Automatically delete any registered webhook so polling works without 409 Conflict
+    try {
+      const delRes = await fetch(`https://api.telegram.org/bot${token}/deleteWebhook?drop_pending_updates=true`);
+      const delData = await delRes.json();
+      if (delData.ok) {
+        console.log('✅ Webhook cleared for local polling.');
+      }
+    } catch (err) {
+      console.warn('⚠️ Webhook clear warning (continuing):', err);
     }
-  } catch (err) {
-    console.warn('⚠️ Webhook clear warning (continuing):', err);
-  }
 
-  console.log('🚀 Bot is listening for joins and messages! (Press Ctrl+C to stop)\n');
+    console.log('🚀 Bot is listening for joins and messages! (Press Ctrl+C to stop)\n');
 
   while (true) {
     try {
@@ -156,7 +186,10 @@ async function restoreWebhookAndExit() {
   process.exit(0);
 }
 
-process.on('SIGINT', restoreWebhookAndExit);
-process.on('SIGTERM', restoreWebhookAndExit);
+    process.on('SIGINT', restoreWebhookAndExit);
+    process.on('SIGTERM', restoreWebhookAndExit);
 
-pollUpdates();
+    pollUpdates();
+  }
+
+

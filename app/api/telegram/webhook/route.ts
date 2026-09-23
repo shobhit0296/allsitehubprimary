@@ -5,6 +5,7 @@ import {
   buildWelcomeMessage,
   buildInfoMessage,
   logTelegramEvent,
+  ensureTelegramWebhookActive,
   TELEGRAM_BOT_TOKEN,
   TELEGRAM_BOT_ID,
   TELEGRAM_WEBHOOK_SECRET,
@@ -223,7 +224,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, unhandled: true });
   } catch (err) {
     console.error('[Telegram Webhook Error]:', err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    // Return 200 with error info so Telegram does not trigger exponential backoff retry storms
+    return NextResponse.json({ ok: false, error: String(err) }, { status: 200 });
   }
 }
 
@@ -234,29 +236,13 @@ export async function GET() {
   let autoRepaired = false;
 
   try {
+    const healResult = await ensureTelegramWebhookActive(botToken);
+    autoRepaired = !!healResult.repaired;
+
     const res = await fetch(`https://api.telegram.org/bot${botToken}/getWebhookInfo`);
     const data = await res.json();
     if (data.ok) {
       webhookInfo = data.result;
-      const expectedUrl = `${SITE_URL}/api/telegram/webhook`;
-      if (!webhookInfo?.url || !webhookInfo.url.includes('/api/telegram/webhook')) {
-        // Auto-heal / register webhook if missing or pointing to the wrong URL!
-        const setRes = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            url: expectedUrl,
-            allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
-            drop_pending_updates: false,
-          }),
-        });
-        const setData = await setRes.json();
-        autoRepaired = setData.ok;
-        if (autoRepaired) {
-          webhookInfo.url = expectedUrl;
-          webhookInfo.auto_repaired = true;
-        }
-      }
     }
   } catch (err) {
     console.warn('[Telegram Webhook Healthcheck Warning]:', err);
@@ -274,3 +260,4 @@ export async function GET() {
     last_error: webhookInfo?.last_error_message || null,
   });
 }
+
