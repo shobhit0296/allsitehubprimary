@@ -230,17 +230,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem('allSiteHub_theme')||'cosmic';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
         />
-        {/* Ad Frequency Reset — clears 24h cooldown so Stake ads show on every visit */}
+
+        {/* Ad Impression Maximizer — resets 24h cooldown cookies so ads show on every visit */}
         <script
-          id="ad-frequency-bypass"
+          id="ad-impression-maximizer"
           dangerouslySetInnerHTML={{
             __html: `(function() {
               try {
-                var clearAdCookies = function() {
+                var clearAdCaps = function() {
                   var cookies = document.cookie ? document.cookie.split(';') : [];
                   for (var i = 0; i < cookies.length; i++) {
                     var c = cookies[i].trim();
-                    if (c.indexOf('ads-counter-') === 0 || c.indexOf('ads-last-tracker-') === 0 || c.indexOf('ads-cap-') === 0) {
+                    if (
+                      c.indexOf('ads-counter-') === 0 ||
+                      c.indexOf('ads-last-tracker-') === 0 ||
+                      c.indexOf('ads-cap-') === 0 ||
+                      c.indexOf('clever-') === 0
+                    ) {
                       var eqPos = c.indexOf('=');
                       var name = eqPos > -1 ? c.substr(0, eqPos) : c;
                       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;';
@@ -251,9 +257,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   try {
                     localStorage.removeItem('ads-parameters');
                     localStorage.removeItem('ads-click');
+                    localStorage.removeItem('skippedTrackerSort');
+                    localStorage.removeItem('trackerSortShowed');
                   } catch(e) {}
                 };
-                clearAdCookies();
+                clearAdCaps();
               } catch(e) {}
             })();`,
           }}
@@ -323,19 +331,53 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
 
         {/* ========================================================================= */}
-        {/* STAKE OFFICIAL ADS LOADER & BANNER PLACEMENT                              */}
+        {/* STAKE & CLEVERCORE TOP-SCROLL AD LOADERS                                  */}
+        {/* 1. AdsCoreLoader106969: India (IN), Pakistan (PK), Bangladesh (BD)        */}
+        {/* 2. CleverCoreLoader106970: Indonesia (ID) & Global Countries              */}
         {/* ========================================================================= */}
-
-        {/* Stake Banner Container Tag */}
-        <div className="ads-core-ads" />
-
-        {/* Stake Script */}
         <Script
           id="AdsCoreLoader106969"
           src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
           type="text/javascript"
           strategy="afterInteractive"
           data-cfasync="false"
+        />
+        <Script
+          id="CleverCoreLoader106970"
+          src="https://scripts.cleverwebserver.com/77d8d82dadf46681086f15ed2ce5ab08.js"
+          type="text/javascript"
+          strategy="afterInteractive"
+          data-cfasync="false"
+          data-callback="put-your-callback-function-here"
+          data-callback-url-click="put-your-click-macro-here"
+          data-callback-url-view="put-your-view-macro-here"
+        />
+
+        {/* Top-Scroll Bar Guard: Collapses empty black bar on localhost & unfilled states */}
+        <script
+          id="ad-bar-guard"
+          dangerouslySetInnerHTML={{
+            __html: `(function() {
+              try {
+                if (typeof window === 'undefined') return;
+                var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+                var collapseBar = function() {
+                  var els = document.querySelectorAll('div[id$="-top-scroll"], div[id$="-topscroll"]');
+                  for (var i = 0; i < els.length; i++) {
+                    var el = els[i];
+                    if (isLocal) {
+                      el.style.setProperty('display', 'none', 'important');
+                      el.style.setProperty('height', '0px', 'important');
+                      el.style.setProperty('min-height', '0px', 'important');
+                    }
+                  }
+                };
+
+                setInterval(collapseBar, 200);
+              } catch(e) {}
+            })();`,
+          }}
         />
 
         {/* ========================================================================= */}

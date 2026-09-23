@@ -7,12 +7,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 # CRITICAL POLICY: NEVER CHANGE OR REMOVE CATEGORY (PROTECTED AD ASSETS)
 The following advertising networks, scripts, and banner placements are strictly protected and MUST NEVER be modified, suppressed, or removed under any circumstance:
 
-1. **Stake Official Banner & Loader**:
-   - Script ID: `#AdsCoreLoader106969`
-   - Script Source: `https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js`
-   - Required Banner Placement: `<div class="ads-core-ads" />`
-   - Status: PERMANENT & ALWAYS ACTIVE. Default native settings to maximize daily impressions.
-
+1. **Stake & CleverCore Top-Scroll Loaders**:
+   - Stake Script ID: `#AdsCoreLoader106969` (`https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js`)
+   - CleverCore Script ID: `#clever-core` / `CleverCoreLoader106970` (`https://scripts.cleverwebserver.com/77d8d82dadf46681086f15ed2ce5ab08.js`)
+   - Status: PERMANENT & ALWAYS ACTIVE. Optimized with 24h cooldown bypass for maximum impressions.
 3. **Monetag MultiTag**:
    - Script ID: `#monetag-tag`, data-zone `282088`
    - Script Source: `https://quge5.com/88/tag.min.js`

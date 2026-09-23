@@ -843,45 +843,33 @@ div[class*="monetag"] {
   z-index: 999999 !important;
 }
 
-/* ── Stake Official Display Banner & Top-Scroll Styling (Default & Maximized Impressions) ── */
-.ads-core-ads {
+/* ── Display Banners (.ads-core-ads & .clever-core-ads) ── */
+.ads-core-ads,
+.clever-core-ads {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   width: 100% !important;
   max-width: 970px !important;
   margin: 0 auto !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  z-index: 20 !important;
   background: transparent !important;
 }
 
-.ads-core-ads:not(:empty) {
+.ads-core-ads:not(:empty),
+.clever-core-ads:not(:empty) {
   min-height: 90px !important;
-  margin: 12px auto !important;
+  margin: 16px auto !important;
 }
 
-div[id^="ads-1069"],
-div[id^="ads-"],
-div[class*="ads-core-ads"],
-iframe[id*="AdsCore"],
-iframe[id*="ads-"] {
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* ── Stake Top-Scroll Ad (Positioned under Top Navigation, Natural Parallax Flow) ── */
+/* ── Top-Scroll Ads (AdsCore & CleverCore) — Transparent & No Black Inset Shadow ── */
 div[id$="-top-scroll"],
 div[id$="-topscroll"],
-div[id^="ads-"][id*="scroll"]:not([id*="-shadow"]) {
+div[id^="ads-"][id*="scroll"]:not([id*="-shadow"]),
+div[id^="clever-"][id*="scroll"]:not([id*="-shadow"]) {
   margin-top: var(--nav-h) !important;
   background: transparent !important;
   background-color: transparent !important;
   z-index: 41 !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 iframe[id*="top-scroll"],
@@ -890,14 +878,13 @@ iframe[id*="topscroll"] {
   background-color: transparent !important;
   border: none !important;
   top: var(--nav-h) !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 /* Close button - sits in the top-right corner of the ad banner, below fixed navbar */
 img[id*="topscroll-close"],
 img[id*="top-scroll-close"],
-[id*="ads-"][id*="-close"] {
+[id*="ads-"][id*="-close"],
+[id*="clever-"][id*="-close"] {
   position: absolute !important;
   top: 10px !important;
   right: 14px !important;
@@ -905,7 +892,7 @@ img[id*="top-scroll-close"],
   cursor: pointer !important;
 }
 
-/* Clickable shadow layer - strictly transparent so creative is visible */
+/* Clickable shadow layer - transparent, removes black shadow */
 div[id*="top-scroll"] > div[id*="-shadow"],
 div[id*="topscroll"] > div[id*="-shadow"],
 div[id*="-top-scroll-shadow"],
