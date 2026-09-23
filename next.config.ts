@@ -160,13 +160,13 @@ const nextConfig: NextConfig = {
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
         ],
       },
-      // ─── Sites data API & Admin APIs: Never cache at Edge or Cloudflare CDN ───
+      // ─── Sites data API: 5-min Edge CDN cache, purged instantly on writeDB ───
       {
         source: "/api/sites",
         headers: [
-          { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
-          { key: "CDN-Cache-Control", value: "no-store" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
+          { key: "Cache-Control", value: "public, max-age=60, s-maxage=300, stale-while-revalidate=600" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
         ],
       },
       {
@@ -193,13 +193,6 @@ const nextConfig: NextConfig = {
         ],
       },
 
-      // ─── Next.js Static Chunks & CSS/JS Bundles: 1-year immutable cache ───
-      {
-        source: "/_next/static/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
       // ─── Root Static Icons & Assets: 30-day edge cache ───
       {
         source: "/(favicon.ico|apple-touch-icon.png|icon.png|icon.svg|next.svg|vercel.svg|globe.svg|file.svg|window.svg|logo.png|logo-512.png)",

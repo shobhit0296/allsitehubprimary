@@ -19,28 +19,6 @@ export default function CategorySiteGrid({ sites, category, showAdCard = true }:
     setLiveSites(sites);
   }, [sites]);
 
-  useEffect(() => {
-    let mounted = true;
-    async function sync() {
-      try {
-        const res = await fetch('/api/sites', { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          if (mounted && Array.isArray(data.sites)) {
-            const relevant = (category ? data.sites.filter((s: Site) => s.category === category) : data.sites)
-              .sort((a: Site, b: Site) => (a.order ?? 0) - (b.order ?? 0));
-            if (relevant.length > 0) setLiveSites(relevant);
-          }
-        }
-      } catch {
-        // fallback
-      }
-    }
-    sync();
-    return () => {
-      mounted = false;
-    };
-  }, [category]);
 
   const toggleBookmark = useCallback((id: string) => {
     setBookmarks(prev => {

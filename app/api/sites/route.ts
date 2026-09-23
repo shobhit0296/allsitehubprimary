@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readDB } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300; // 5-minute CDN edge cache, instantly purged on admin writeDB
  
 export async function GET() {
   const db = await readDB();
@@ -14,9 +13,9 @@ export async function GET() {
     },
     {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-        'CDN-Cache-Control': 'no-store',
-        'Cloudflare-CDN-Cache-Control': 'no-store',
+        'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
+        'CDN-Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
       },
     }
   );

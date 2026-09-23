@@ -8,8 +8,7 @@ import SiteCard from '../components/SiteCard';
 import Breadcrumbs from '../components/Breadcrumbs';
 import JsonLd from '../components/JsonLd';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300; // ISR: 5-minute edge cache, instant on-demand revalidation via writeDB
 
 export const metadata: Metadata = {
   title: 'Recently Added Websites & Tools',

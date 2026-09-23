@@ -40,61 +40,11 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
   const [activeCategory, setActiveCategory] = useState(categories[0]?.name ?? 'Movies & Shows');
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
 
-  // Keep local state in sync when server props revalidate
+  // Keep local state in sync when server props revalidate (ISR)
   useEffect(() => {
     setLiveSites(sites);
   }, [sites]);
 
-  // Real-time sync from /api/sites to ensure admin edits are immediately live
-  useEffect(() => {
-    let mounted = true;
-    async function syncSites() {
-      try {
-        const res = await fetch(`/api/sites?t=${Date.now()}`, { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          if (mounted && Array.isArray(data.sites) && data.sites.length > 0) {
-            setLiveSites(prev => {
-              if (prev.length === data.sites.length) {
-                const hasChange = data.sites.some((site: Site, idx: number) => {
-                  const p = prev[idx];
-                  return (
-                    !p ||
-                    site.id !== p.id ||
-                    site.name !== p.name ||
-                    site.url !== p.url ||
-                    site.category !== p.category ||
-                    site.order !== p.order ||
-                    site.isTrusted !== p.isTrusted ||
-                    site.isNew !== p.isNew ||
-                    site.isFeatured !== p.isFeatured ||
-                    site.faviconUrl !== p.faviconUrl ||
-                    site.description !== p.description
-                  );
-                });
-                if (!hasChange) return prev; // Preserve array identity if no actual changes
-              }
-              return data.sites;
-            });
-          }
-        }
-      } catch {
-        // keep fallback SSR sites
-      }
-    }
-
-    // Sync on mount
-    syncSites();
-
-    // Re-sync on window focus (e.g. after returning from admin tab)
-    const onFocus = () => syncSites();
-    window.addEventListener('focus', onFocus);
-
-    return () => {
-      mounted = false;
-      window.removeEventListener('focus', onFocus);
-    };
-  }, []);
 
   // ── Scheduled time-of-day live online users (changes every 15-20s) ──
   const liveOnlineCount = useLiveOnlineCounter();
