@@ -843,9 +843,8 @@ div[class*="monetag"] {
   z-index: 999999 !important;
 }
 
-/* ── Permanent Stake & CleverCore Display Banner Styling ── */
-.ads-core-ads:empty,
-.clever-core-ads:empty {
+/* ── Stake Official Display Banner & Top-Scroll Styling (Default & Maximized Impressions) ── */
+.ads-core-ads:empty {
   display: none !important;
   min-height: 0 !important;
   height: 0 !important;
@@ -854,15 +853,14 @@ div[class*="monetag"] {
   border: none !important;
 }
 
-.ads-core-ads:not(:empty),
-.clever-core-ads:not(:empty) {
+.ads-core-ads:not(:empty) {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   width: 100% !important;
   min-height: 90px !important;
   max-width: 970px !important;
-  margin: 10px auto !important;
+  margin: 12px auto !important;
   visibility: visible !important;
   opacity: 1 !important;
   position: relative !important;
@@ -871,12 +869,9 @@ div[class*="monetag"] {
 }
 
 div[id^="ads-1069"],
-div[id^="clever-"],
+div[id^="ads-"],
 div[class*="ads-core-ads"],
-div[class*="clever-core-ads"],
-iframe[id*="CleverCore"],
 iframe[id*="AdsCore"],
-iframe[id*="clever-"],
 iframe[id*="ads-"] {
   visibility: visible !important;
   opacity: 1 !important;
@@ -913,33 +908,16 @@ body:has(#stake-top-banner-slot:has(iframe, img, a)) .page-offset-search {
   padding-top: 1.5rem !important;
 }
 
-/* ── Stake & CleverCore Top-Scroll Ad (Positioned under Top Navigation, Natural Parallax Flow) ── */
+/* ── Stake Top-Scroll Ad (Positioned under Top Navigation, Natural Parallax Flow) ── */
 div[id$="-top-scroll"],
 div[id$="-topscroll"],
-div[id^="ads-"][id*="scroll"]:not([id*="-shadow"]),
-div[id^="clever-"][id*="scroll"]:not([id*="-shadow"]) {
+div[id^="ads-"][id*="scroll"]:not([id*="-shadow"]) {
   margin-top: var(--nav-h) !important;
   background: transparent !important;
   background-color: transparent !important;
   z-index: 41 !important;
-}
-
-/* If TopScroll container has no creative, iframe is about:blank/empty, or marked collapsed, collapse completely */
-div[id*="top-scroll"][data-ad-collapsed="true"],
-div[id*="topscroll"][data-ad-collapsed="true"],
-div[id^="ads-"][id*="scroll"][data-ad-collapsed="true"],
-div[id^="clever-"][id*="scroll"][data-ad-collapsed="true"],
-div[id$="-top-scroll"]:has(iframe[src="about:blank"]),
-div[id$="-top-scroll"]:has(iframe[src=""]),
-div[id$="-topscroll"]:has(iframe[src="about:blank"]),
-div[id$="-topscroll"]:has(iframe[src=""]),
-div[id$="-top-scroll"]:not(:has(iframe)),
-div[id$="-topscroll"]:not(:has(iframe)) {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 iframe[id*="top-scroll"],
@@ -952,11 +930,10 @@ iframe[id*="topscroll"] {
   opacity: 1 !important;
 }
 
-/* Close button - sits neatly in the top-right corner of the ad banner, below fixed navbar */
+/* Close button - sits in the top-right corner of the ad banner, below fixed navbar */
 img[id*="topscroll-close"],
 img[id*="top-scroll-close"],
-[id*="ads-"][id*="-close"],
-[id*="clever-"][id*="-close"] {
+[id*="ads-"][id*="-close"] {
   position: absolute !important;
   top: 10px !important;
   right: 14px !important;

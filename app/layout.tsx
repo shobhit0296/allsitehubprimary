@@ -325,109 +325,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="beforeInteractive"
           data-cfasync="false"
         />
-
-        <Script
-          id="monetag-guard"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function() {
-              try {
-                // Auto-collapse empty/unfilled Clever or AdsBoosters top-scroll ad containers so no black void appears
-                var collapseUnfilledTopScroll = function() {
-                  var containers = document.querySelectorAll('div[id*="top-scroll"], div[id*="topscroll"], div[id^="clever-"][id*="scroll"], div[id^="ads-"][id*="scroll"]');
-                  for (var i = 0; i < containers.length; i++) {
-                    var c = containers[i];
-                    if (c.getAttribute('data-ad-collapsed') === 'true') continue;
-
-                    var iframe = c.querySelector('iframe');
-                    var src = iframe ? (iframe.getAttribute('src') || '') : '';
-
-                    // If container has no iframe or iframe is blank/empty, collapse immediately
-                    if (!iframe || !src || src === 'about:blank') {
-                      c.setAttribute('data-ad-collapsed', 'true');
-                      c.style.setProperty('display', 'none', 'important');
-                      c.style.setProperty('height', '0px', 'important');
-                      c.style.setProperty('min-height', '0px', 'important');
-                      c.style.setProperty('margin', '0px', 'important');
-                      c.style.setProperty('padding', '0px', 'important');
-                      continue;
-                    }
-
-                    // Track age of the container
-                    var ts = parseInt(c.getAttribute('data-ts') || '0', 10);
-                    if (!ts) {
-                      c.setAttribute('data-ts', String(Date.now()));
-                      iframe.addEventListener('error', function() {
-                        c.setAttribute('data-ad-collapsed', 'true');
-                        c.style.setProperty('display', 'none', 'important');
-                        c.style.setProperty('height', '0px', 'important');
-                        c.style.setProperty('min-height', '0px', 'important');
-                        c.style.setProperty('margin', '0px', 'important');
-                      });
-                      continue;
-                    }
-
-                    // If container has lingered without a verified creative for over 1.8s, collapse it to prevent black screen
-                    if (Date.now() - ts > 1800 && !c.getAttribute('data-creative-loaded')) {
-                      var rect = iframe.getBoundingClientRect();
-                      if (rect.height === 0 || rect.width === 0) {
-                        c.setAttribute('data-ad-collapsed', 'true');
-                        c.style.setProperty('display', 'none', 'important');
-                        c.style.setProperty('height', '0px', 'important');
-                        c.style.setProperty('min-height', '0px', 'important');
-                        c.style.setProperty('margin', '0px', 'important');
-                      }
-                    }
-                  }
-                };
-
-                setInterval(collapseUnfilledTopScroll, 400);
-
-                // Listen for ad creative postMessages to acknowledge active rendering
-                window.addEventListener('message', function(e) {
-                  if (!e || !e.data) return;
-                  if (typeof e.data === 'string' && (e.data.indexOf('clever') !== -1 || e.data.indexOf('ads') !== -1)) {
-                    var containers = document.querySelectorAll('div[id*="top-scroll"], div[id*="topscroll"]');
-                    for (var k = 0; k < containers.length; k++) {
-                      containers[k].setAttribute('data-creative-loaded', 'true');
-                    }
-                  }
-                }, false);
-
-                // Immediate collapse and removal when user clicks ANY close button on TopScroll ad
-                document.addEventListener('click', function(e) {
-                  var target = e.target;
-                  if (!target) return;
-                  var closeBtn = target.closest('[id*="close"], [class*="close"], img[alt*="close"]');
-                  if (closeBtn) {
-                    var container = target.closest('div[id*="top-scroll"], div[id*="topscroll"], div[id^="clever-"], div[id^="ads-"]');
-                    if (container) {
-                      container.setAttribute('data-ad-collapsed', 'true');
-                      container.style.setProperty('display', 'none', 'important');
-                      container.style.setProperty('height', '0px', 'important');
-                      container.style.setProperty('min-height', '0px', 'important');
-                      container.style.setProperty('margin', '0px', 'important');
-                      container.style.setProperty('padding', '0px', 'important');
-                      try { container.remove(); } catch(err) {}
-                    }
-                  }
-                }, true);
-
-                var mo = new MutationObserver(function(mutations) {
-                  collapseUnfilledTopScroll();
-                });
-
-                if (document.documentElement) {
-                  mo.observe(document.documentElement, { childList: true, subtree: true });
-                } else {
-                  document.addEventListener('DOMContentLoaded', function() {
-                    mo.observe(document.documentElement, { childList: true, subtree: true });
-                  });
-                }
-              } catch(e) {}
-            })();`,
-          }}
-        />
         <ShaderBackground />
         <div className="relative z-10 flex flex-col flex-1 w-full">
           {children}
@@ -457,52 +354,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
 
         {/* ========================================================================= */}
-        {/* PERMANENT STAKE AD SCRIPTS & BANNER TAGS - NEVER REMOVE UNDER ANY CIRCUMSTANCE */}
-        {/* 1. Indian Tag (AdsCoreLoader106969)                                       */}
-        {/* 2. Global Tag (CleverCoreLoader106970)                                    */}
+        {/* STAKE OFFICIAL ADS LOADER & BANNER PLACEMENT                              */}
         {/* ========================================================================= */}
 
-        {/* Stake Banner Container Tags */}
+        {/* Stake Banner Container Tag */}
         <div className="ads-core-ads" />
-        <div className="clever-core-ads" />
 
-        {/* Stake Indian Script */}
+        {/* Stake Script */}
         <Script
           id="AdsCoreLoader106969"
           src="https://sads.adsboosters.xyz/7d5d63b1d7a48601a1a774c8e8d4a88a.js"
+          type="text/javascript"
           strategy="afterInteractive"
           data-cfasync="false"
-        />
-
-        {/* Stake Global / All Countries Script */}
-        <Script
-          id="clever-core"
-          strategy="afterInteractive"
-          data-cfasync="false"
-          dangerouslySetInnerHTML={{
-            __html: `(function (document, window) {
-              var a, c = document.createElement("script"), f = window.frameElement;
-
-              c.id = "CleverCoreLoader106970";
-              c.src = "https://scripts.cleverwebserver.com/77d8d82dadf46681086f15ed2ce5ab08.js";
-
-              c.async = !0;
-              c.type = "text/javascript";
-              c.setAttribute("data-target", window.name || (f && f.getAttribute("id")));
-              c.setAttribute("data-callback", "put-your-callback-function-here");
-              c.setAttribute("data-callback-url-click", "put-your-click-macro-here");
-              c.setAttribute("data-callback-url-view", "put-your-view-macro-here");
-
-              try {
-                  a = parent.document.getElementsByTagName("script")[0] || document.getElementsByTagName("script")[0];
-              } catch (e) {
-                  a = !1;
-              }
-
-              a || (a = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]);
-              a.parentNode.insertBefore(c, a);
-          })(document, window);`,
-          }}
         />
 
         {/* ========================================================================= */}

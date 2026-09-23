@@ -230,10 +230,9 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
       {/* Stake Banner Placement: Positioned directly below Top Navigation, above Front Page Content */}
       <div
         id="stake-top-banner-slot"
-        className="w-full max-w-[1200px] mx-auto flex flex-col justify-center items-center overflow-hidden bg-transparent [&:has(.ads-core-ads:not(:empty))]:my-3 [&:has(.clever-core-ads:not(:empty))]:my-3"
+        className="w-full max-w-[1200px] mx-auto flex flex-col justify-center items-center overflow-hidden bg-transparent [&:has(.ads-core-ads:not(:empty))]:my-3"
       >
         <div className="ads-core-ads" />
-        <div className="clever-core-ads" />
       </div>
 
       <Hero
@@ -327,9 +326,8 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
                   showAdCard={idx % 2 === 0}
                 />
                 {idx === 0 && (
-                  <div className="w-full flex flex-col items-center justify-center overflow-hidden [&:has(.ads-core-ads:not(:empty))]:my-6 [&:has(.clever-core-ads:not(:empty))]:my-6">
+                  <div className="w-full flex flex-col items-center justify-center overflow-hidden [&:has(.ads-core-ads:not(:empty))]:my-6">
                     <div className="ads-core-ads" />
-                    <div className="clever-core-ads" />
                   </div>
                 )}
               </div>
