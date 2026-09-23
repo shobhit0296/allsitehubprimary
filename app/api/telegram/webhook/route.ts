@@ -234,15 +234,22 @@ export async function GET() {
   const botToken = process.env.TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN;
   let webhookInfo: any = null;
   let autoRepaired = false;
+  let botUsername = 'allsitehub_bot';
 
   try {
-    const healResult = await ensureTelegramWebhookActive(botToken);
+    const healResult = await ensureTelegramWebhookActive(botToken, true);
     autoRepaired = !!healResult.repaired;
 
     const res = await fetch(`https://api.telegram.org/bot${botToken}/getWebhookInfo`);
     const data = await res.json();
     if (data.ok) {
       webhookInfo = data.result;
+    }
+
+    const meRes = await fetch(`https://api.telegram.org/bot${botToken}/getMe`);
+    const meData = await meRes.json();
+    if (meData.ok && meData.result?.username) {
+      botUsername = meData.result.username;
     }
   } catch (err) {
     console.warn('[Telegram Webhook Healthcheck Warning]:', err);
@@ -254,6 +261,7 @@ export async function GET() {
     time: new Date().toISOString(),
     site: SITE_URL,
     bot_id: TELEGRAM_BOT_ID,
+    bot_username: botUsername,
     webhook_url: webhookInfo?.url || 'unregistered',
     auto_repaired: autoRepaired,
     pending_updates: webhookInfo?.pending_update_count ?? 0,

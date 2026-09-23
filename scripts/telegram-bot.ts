@@ -1,8 +1,10 @@
 /**
- * Standalone Telegram Bot Runner (Long-polling mode for local development / testing)
+ * Standalone Telegram Bot Manager & Runner
  *
  * Usage:
- *   npx tsx scripts/telegram-bot.ts
+ *   npm run bot                  (Checks status and ensures production webhook is active)
+ *   npm run bot -- --restore     (Forces re-registration of live production webhook)
+ *   npm run bot -- --poll        (Runs local long-polling for temporary dev testing)
  */
 import fs from 'fs';
 import path from 'path';
@@ -39,6 +41,7 @@ import {
   buildInfoMessage,
   SITE_URL,
   TELEGRAM_BOT_TOKEN,
+  ensureTelegramWebhookActive,
 } from '../lib/telegram';
 
 const token = process.env.TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN || '8741338089:AAHTpVcV1teL3c-XUMSOLJPX1FoadkPSoAg';
@@ -48,148 +51,201 @@ if (!token) {
   process.exit(1);
 }
 
-// If --restore flag passed, immediately register production webhook and exit
-if (process.argv.includes('--restore') || process.argv.includes('-r')) {
-  console.log('🔄 Re-registering production webhook on Telegram...');
-  const webhookUrl = `${SITE_URL}/api/telegram/webhook`.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
-  fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      url: webhookUrl,
-      allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
-      drop_pending_updates: false,
-    }),
-  })
-    .then(r => r.json())
-    .then(data => {
-      if (data.ok) {
-        console.log(`✅ Webhook successfully restored to: ${webhookUrl}`);
-      } else {
-        console.error('❌ Failed to restore webhook:', data);
-      }
-      process.exit(0);
-    })
-    .catch(err => {
-      console.error('❌ Error restoring webhook:', err);
-      process.exit(1);
-    });
-} else {
-  let offset = 0;
+const args = process.argv.slice(2);
+const isPollMode = args.includes('--poll') || args.includes('-p');
+const isRestoreMode = args.includes('--restore') || args.includes('-r');
+const isStatusMode = args.includes('--status') || args.includes('-s');
 
-  async function pollUpdates() {
-    console.log('⚠️  NOTE: Running this script in long-polling mode disables the live production webhook while active.');
-    console.log('   When you finish testing, press Ctrl+C to automatically restore the live webhook,');
-    console.log('   or run: npm run bot -- --restore\n');
-    console.log('🤖 AllSiteHub Telegram Bot starting in standalone polling mode (no Vercel)...');
-    console.log(`🔗 Target Website: ${SITE_URL}`);
+const targetWebhookUrl = `${SITE_URL}/api/telegram/webhook`.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
 
-    // Automatically delete any registered webhook so polling works without 409 Conflict
-    try {
-      const delRes = await fetch(`https://api.telegram.org/bot${token}/deleteWebhook?drop_pending_updates=true`);
-      const delData = await delRes.json();
-      if (delData.ok) {
-        console.log('✅ Webhook cleared for local polling.');
-      }
-    } catch (err) {
-      console.warn('⚠️ Webhook clear warning (continuing):', err);
-    }
-
-    console.log('🚀 Bot is listening for joins and messages! (Press Ctrl+C to stop)\n');
-
-  while (true) {
-    try {
-      const res = await fetch(
-        `https://api.telegram.org/bot${token}/getUpdates?offset=${offset}&timeout=30`,
-      );
-      const data = (await res.json()) as { ok: boolean; result?: any[] };
-
-      if (data.ok && Array.isArray(data.result)) {
-        for (const update of data.result) {
-          offset = update.update_id + 1;
-
-          // 1a. Welcome new members (from message)
-          if (update.message?.new_chat_members) {
-            for (const member of update.message.new_chat_members) {
-              if (member.is_bot) continue;
-              console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (message): ${member.username ? '@' + member.username : member.first_name}`);
-              await sendWelcomeAndCleanupOld(update.message.chat.id, member, update.message.message_id, token);
-            }
-          }
-
-          // 1b. Welcome new members (from chat_member in supergroups)
-          if (update.chat_member) {
-            const { chat, old_chat_member, new_chat_member } = update.chat_member;
-            const wasMember = ['member', 'administrator', 'creator'].includes(old_chat_member?.status);
-            const isNowMember = ['member', 'administrator', 'restricted'].includes(new_chat_member?.status);
-            if (!wasMember && isNowMember && new_chat_member?.user && !new_chat_member.user.is_bot) {
-              const u = new_chat_member.user;
-              console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (supergroup): ${u.username ? '@' + u.username : u.first_name}`);
-              await sendWelcomeAndCleanupOld(chat.id, u, undefined, token);
-            }
-          }
-
-          // 2. Direct Messages & Group Commands
-          if (update.message?.text) {
-            const isPrivate = update.message.chat.type === 'private';
-            const text = update.message.text.trim().toLowerCase();
-            const isBotCommand =
-              text.startsWith('/start') ||
-              text.startsWith('/help') ||
-              text.startsWith('/links') ||
-              text.startsWith('/sites') ||
-              text.startsWith('/info') ||
-              text.startsWith('/about') ||
-              text.startsWith('/community') ||
-              text.includes('@allsitehubsute_bot') ||
-              text.includes('@allsitehub_bot');
-
-            if (isPrivate || isBotCommand) {
-              console.log(`[${new Date().toLocaleTimeString()}] 💬 Responding to command "${update.message.text}" in ${update.message.chat.type} chat (${update.message.chat.id})`);
-              const { text: replyText } = buildInfoMessage();
-              await sendTelegramMessage(
-                {
-                  chat_id: update.message.chat.id,
-                  text: replyText,
-                  reply_to_message_id: update.message.message_id,
-                },
-                token,
-              );
-            }
-          }
-        }
-      }
-    } catch (err) {
-      console.error('[Polling error]:', err);
-      await new Promise(r => setTimeout(r, 3000));
-    }
-  }
-}
-
-async function restoreWebhookAndExit() {
-  console.log('\n🛑 Stopping bot and restoring production webhook...');
+async function restoreWebhook(): Promise<boolean> {
   try {
-    const webhookUrl = `${SITE_URL}/api/telegram/webhook`.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site');
-    await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        url: webhookUrl,
+        url: targetWebhookUrl,
         allowed_updates: ['message', 'callback_query', 'chat_member', 'my_chat_member', 'chat_join_request'],
         drop_pending_updates: false,
       }),
     });
-    console.log(`✅ Webhook restored to ${webhookUrl}`);
-  } catch (err) {
-    console.warn('⚠️ Could not restore webhook:', err);
+    const data = await res.json();
+    return !!data.ok;
+  } catch {
+    return false;
   }
-  process.exit(0);
 }
 
-    process.on('SIGINT', restoreWebhookAndExit);
-    process.on('SIGTERM', restoreWebhookAndExit);
+async function getWebhookStatus() {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/getWebhookInfo`);
+    const data = await res.json();
+    return data.result || null;
+  } catch {
+    return null;
+  }
+}
 
-    pollUpdates();
+async function checkAndDisplayStatus() {
+  console.log('\n==============================================================');
+  console.log('🤖 ALLSITEHUB TELEGRAM BOT - PRODUCTION STATUS');
+  console.log('==============================================================');
+
+  const info = await getWebhookStatus();
+  const currentUrl = info?.url || '';
+
+  if (currentUrl && currentUrl.includes('/api/telegram/webhook')) {
+    console.log(`🌐 Production Webhook: ${currentUrl}`);
+    console.log(`📡 Status:            \x1b[32mACTIVE & HEALTHY\x1b[0m`);
+    console.log(`📨 Pending Updates:   ${info?.pending_update_count ?? 0}`);
+    console.log(`🔍 Last Error:        ${info?.last_error_message || 'None (all good)'}`);
+  } else {
+    console.log(`⚠️  Current Webhook:    ${currentUrl ? currentUrl : '\x1b[31mNONE (INACTIVE)\x1b[0m'}`);
+    console.log('🔄 Restoring live production webhook now...');
+    const restored = await restoreWebhook();
+    if (restored) {
+      console.log(`✅ \x1b[32mSUCCESS: Webhook restored to ${targetWebhookUrl}\x1b[0m`);
+    } else {
+      console.log('❌ Failed to restore webhook. Please check network/token.');
+    }
   }
 
+  console.log('--------------------------------------------------------------');
+  console.log('💡 IMPORTANT NOTE:');
+  console.log('   The AllSiteHub Welcome Bot is hosted 100% on the cloud (Vercel).');
+  console.log('   You do NOT need to keep this terminal or your PC running!');
+  console.log('   New members are automatically welcomed 24/7 via the live webhook.');
+  console.log('--------------------------------------------------------------');
+  console.log('Available Commands:');
+  console.log('   npm run bot                -> Verify live status & auto-heal');
+  console.log('   npm run bot -- --restore   -> Force re-register production webhook');
+  console.log('   npm run bot -- --poll      -> Run local polling (dev/testing only)');
+  console.log('==============================================================\n');
+}
 
+if (isRestoreMode) {
+  console.log(`🔄 Force restoring production webhook to: ${targetWebhookUrl}...`);
+  restoreWebhook().then(ok => {
+    if (ok) {
+      console.log('✅ Webhook restored successfully!');
+      process.exit(0);
+    } else {
+      console.error('❌ Failed to restore webhook.');
+      process.exit(1);
+    }
+  });
+} else if (!isPollMode) {
+  // Default mode: Check status, ensure active, display helpful info
+  checkAndDisplayStatus().then(() => {
+    process.exit(0);
+  });
+} else {
+  // Explicit --poll mode for temporary local testing
+  let offset = 0;
+  let isShuttingDown = false;
+
+  async function cleanupAndExit() {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+    console.log('\n🛑 Stopping local polling and restoring live production webhook...');
+    const ok = await restoreWebhook();
+    if (ok) {
+      console.log(`✅ Live webhook successfully restored to: ${targetWebhookUrl}`);
+    } else {
+      console.warn('⚠️ Could not restore webhook automatically. Run: npm run bot -- --restore');
+    }
+    process.exit(0);
+  }
+
+  process.on('SIGINT', cleanupAndExit);
+  process.on('SIGTERM', cleanupAndExit);
+  process.on('beforeExit', cleanupAndExit);
+
+  async function pollUpdates() {
+    console.log('⚠️  NOTE: Running in local polling mode. The production webhook is paused.');
+    console.log('   When done, press Ctrl+C to automatically restore the live webhook.\n');
+    console.log('🤖 AllSiteHub Telegram Bot starting in local test mode...');
+    console.log(`🔗 Target Website: ${SITE_URL}`);
+
+    try {
+      await fetch(`https://api.telegram.org/bot${token}/deleteWebhook?drop_pending_updates=false`);
+      console.log('✅ Webhook temporarily paused for local polling.');
+    } catch (err) {
+      console.warn('⚠️ Webhook pause warning:', err);
+    }
+
+    console.log('🚀 Listening for new joins and commands (Press Ctrl+C to stop)...\n');
+
+    while (!isShuttingDown) {
+      try {
+        const res = await fetch(
+          `https://api.telegram.org/bot${token}/getUpdates?offset=${offset}&timeout=30`,
+        );
+        const data = (await res.json()) as { ok: boolean; result?: any[] };
+
+        if (data.ok && Array.isArray(data.result)) {
+          for (const update of data.result) {
+            offset = update.update_id + 1;
+
+            // 1a. Welcome new members (message)
+            if (update.message?.new_chat_members) {
+              for (const member of update.message.new_chat_members) {
+                if (member.is_bot) continue;
+                console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (message): ${member.username ? '@' + member.username : member.first_name}`);
+                await sendWelcomeAndCleanupOld(update.message.chat.id, member, update.message.message_id, token);
+              }
+            }
+
+            // 1b. Welcome new members (supergroup chat_member)
+            if (update.chat_member) {
+              const { chat, old_chat_member, new_chat_member } = update.chat_member;
+              const wasMember = ['member', 'administrator', 'creator'].includes(old_chat_member?.status);
+              const isNowMember = ['member', 'administrator', 'restricted'].includes(new_chat_member?.status);
+              if (!wasMember && isNowMember && new_chat_member?.user && !new_chat_member.user.is_bot) {
+                const u = new_chat_member.user;
+                console.log(`[${new Date().toLocaleTimeString()}] 👋 Welcoming new member (supergroup): ${u.username ? '@' + u.username : u.first_name}`);
+                await sendWelcomeAndCleanupOld(chat.id, u, undefined, token);
+              }
+            }
+
+            // 2. Direct Messages & Group Commands
+            if (update.message?.text) {
+              const isPrivate = update.message.chat.type === 'private';
+              const text = update.message.text.trim().toLowerCase();
+              const isBotCommand =
+                text.startsWith('/start') ||
+                text.startsWith('/help') ||
+                text.startsWith('/links') ||
+                text.startsWith('/sites') ||
+                text.startsWith('/info') ||
+                text.startsWith('/about') ||
+                text.startsWith('/community') ||
+                text.includes('@allsitehubsute_bot') ||
+                text.includes('@allsitehub_bot');
+
+              if (isPrivate || isBotCommand) {
+                console.log(`[${new Date().toLocaleTimeString()}] 💬 Responding to command "${update.message.text}" in ${update.message.chat.type} chat (${update.message.chat.id})`);
+                const { text: replyText } = buildInfoMessage();
+                await sendTelegramMessage(
+                  {
+                    chat_id: update.message.chat.id,
+                    text: replyText,
+                    reply_to_message_id: update.message.message_id,
+                  },
+                  token,
+                );
+              }
+            }
+          }
+        }
+      } catch (err) {
+        if (!isShuttingDown) {
+          console.error('[Polling error]:', err);
+          await new Promise(r => setTimeout(r, 3000));
+        }
+      }
+    }
+  }
+
+  pollUpdates();
+}

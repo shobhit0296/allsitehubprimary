@@ -12,7 +12,10 @@
     "seo:data": "node scripts/seo-data-validator.mjs",
     "seo:sitemap": "node scripts/seo-sitemap-validator.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
-    "bot": "tsx scripts/telegram-bot.ts"
+    "bot": "tsx scripts/telegram-bot.ts",
+    "bot:status": "tsx scripts/telegram-bot.ts --status",
+    "bot:restore": "tsx scripts/telegram-bot.ts --restore",
+    "bot:poll": "tsx scripts/telegram-bot.ts --poll"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

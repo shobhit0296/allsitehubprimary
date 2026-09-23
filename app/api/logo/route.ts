@@ -17,6 +17,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { autoFetch4KLogo, getCachedLogoPath, normalizeDomain } from '@/lib/logo-fetcher';
+import { ensureTelegramWebhookActive } from '@/lib/telegram';
 
 // Simple in-memory cache to avoid hammering external sites on repeated requests.
 // In production with multiple serverless instances, each instance has its own cache
@@ -27,6 +28,9 @@ const MEM_TTL_MS = 60 * 60 * 1000; // 1 hour
 export const runtime = 'nodejs'; // needs fs, https — cannot run on Edge
 
 export async function GET(req: NextRequest) {
+  // Fire-and-forget background verification of Telegram bot webhook (cached 10m in Redis)
+  ensureTelegramWebhookActive().catch(() => {});
+
   const rawUrl = req.nextUrl.searchParams.get('url') ?? req.nextUrl.searchParams.get('domain');
   if (!rawUrl) {
     return NextResponse.json(

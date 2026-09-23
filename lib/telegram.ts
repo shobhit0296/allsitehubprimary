@@ -34,14 +34,16 @@ export async function logTelegramEvent(event: Record<string, any>) {
 
 /**
  * Automatically ensures the Telegram webhook is registered and points to the live URL.
- * Throttled via Redis so it checks at most once every 15 minutes.
+ * Throttled via Redis so it checks at most once every 10 minutes, unless force=true.
  */
-export async function ensureTelegramWebhookActive(token = TELEGRAM_BOT_TOKEN) {
+export async function ensureTelegramWebhookActive(token = TELEGRAM_BOT_TOKEN, force = false) {
   if (!token) return { ok: false, reason: 'no_token' };
   const checkKey = 'telegram:webhook_last_verified';
   try {
-    const recentlyVerified = await telegramRedis.get(checkKey);
-    if (recentlyVerified) return { ok: true, cached: true };
+    if (!force) {
+      const recentlyVerified = await telegramRedis.get(checkKey);
+      if (recentlyVerified) return { ok: true, cached: true };
+    }
 
     const expectedUrl = `${SITE_URL}/api/telegram/webhook`.replace(
       /^https?:\/\/allsitehub\.site/i,
@@ -51,8 +53,11 @@ export async function ensureTelegramWebhookActive(token = TELEGRAM_BOT_TOKEN) {
     const infoRes = await fetch(`https://api.telegram.org/bot${token}/getWebhookInfo`);
     const infoData = await infoRes.json();
 
-    if (!infoData.ok || !infoData.result?.url || !infoData.result.url.includes('/api/telegram/webhook')) {
-      console.log(`[Telegram Auto-Heal] Webhook was inactive (${infoData.result?.url || 'none'}). Re-registering...`);
+    const currentUrl = infoData.result?.url || '';
+    const isMatching = currentUrl.replace(/^https?:\/\/allsitehub\.site/i, 'https://www.allsitehub.site') === expectedUrl;
+
+    if (!infoData.ok || !currentUrl || !isMatching) {
+      console.log(`[Telegram Auto-Heal] Webhook was inactive or wrong (${currentUrl || 'none'}). Re-registering to ${expectedUrl}...`);
       const setRes = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,16 +70,16 @@ export async function ensureTelegramWebhookActive(token = TELEGRAM_BOT_TOKEN) {
       const setData = await setRes.json();
       await logTelegramEvent({
         action: 'auto_healed_webhook',
-        previous_url: infoData.result?.url || 'none',
+        previous_url: currentUrl || 'none',
         restored_url: expectedUrl,
         success: setData.ok,
       });
-      await telegramRedis.set(checkKey, 1, { ex: 900 }); // 15 mins TTL
-      return { ok: setData.ok, repaired: true };
+      await telegramRedis.set(checkKey, 1, { ex: 600 }); // 10 mins TTL
+      return { ok: setData.ok, repaired: true, url: expectedUrl };
     }
 
-    await telegramRedis.set(checkKey, 1, { ex: 900 }); // 15 mins TTL
-    return { ok: true, active: true };
+    await telegramRedis.set(checkKey, 1, { ex: 600 }); // 10 mins TTL
+    return { ok: true, active: true, url: currentUrl };
   } catch (err) {
     console.warn('[Telegram Auto-Heal Error]:', err);
     return { ok: false, error: String(err) };
