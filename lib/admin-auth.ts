@@ -9,7 +9,7 @@ const LOCK_MS = 15 * 60 * 1000; // 15 min
 const attempts = new Map<string, { count: number; lockUntil: number }>();
 
 const DEFAULT_SESSION_SECRET = '3fc72e67dee9568f43fad635af72599ac11e5f119c530469f1cdb8dba756d59a';
-const DEFAULT_PASSWORD = 'Ash#VoEdP-gJxoos$2026';
+const DEFAULT_PASSWORD = 'shobhitallsitehubadmin811591448';
 const ALLOWED_PANEL_PATHS = ['shobhitadmin', 'ash-ctrl-c1f3ce7d'];
 
 function getSecret(): string {
