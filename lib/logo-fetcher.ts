@@ -118,7 +118,13 @@ function downloadFile(url: string, dest: string, redirects = 0): Promise<boolean
           return resolve(false);
         }
 
-        const file = fs.createWriteStream(dest);
+        let file: fs.WriteStream;
+        try {
+          file = fs.createWriteStream(dest);
+        } catch {
+          response.resume();
+          return resolve(false);
+        }
         response.pipe(file);
 
         file.on('finish', () => {
@@ -325,5 +331,5 @@ export async function autoFetch4KLogo(
     }
   }
 
-  return null;
+  return `https://www.google.com/s2/favicons?domain=${cleanDomain}&sz=256`;
 }

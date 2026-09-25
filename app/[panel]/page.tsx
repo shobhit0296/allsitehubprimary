@@ -15,12 +15,20 @@ export default async function PanelPage({ params }: { params: Promise<{ panel: s
   if (!verifySessionToken(store.get(ADMIN_COOKIE)?.value)) redirect(`/${panel}/login`);
 
   const db = await readDB();
+  const allCategories = Array.from(
+    new Set([
+      ...CATEGORIES.map(c => c.name),
+      ...(Array.isArray(db.categories) ? db.categories : []),
+      ...db.sites.map(s => s.category).filter(Boolean),
+    ])
+  );
+
   return (
     <AdminDashboard
       panel={panel}
       initialSites={db.sites}
       initialRequests={db.requests ?? []}
-      categories={CATEGORIES.map(c => c.name)}
+      categories={allCategories}
       regions={REGIONS}
     />
   );

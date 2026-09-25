@@ -20,17 +20,24 @@ export async function POST(req: NextRequest, { params }: Params) {
   }
 
   const db = await readDB();
+  const normCat = category.trim().toLowerCase();
   const position = new Map(orderedIds.map((id, index) => [id, index]));
-  const categoryIds = new Set(db.sites.filter(s => s.category === category).map(s => s.id));
 
-  if (categoryIds.size !== orderedIds.length || ![...categoryIds].every(id => position.has(id))) {
-    return NextResponse.json({ error: 'orderedIds must exactly match the sites currently in that category' }, { status: 400 });
-  }
+  let currentCategoryCount = 0;
+  db.sites = db.sites.map(site => {
+    const siteCat = (site.category || '').trim().toLowerCase();
+    if (siteCat === normCat) {
+      if (position.has(site.id)) {
+        return { ...site, order: position.get(site.id)! };
+      } else {
+        const fallbackOrder = orderedIds.length + currentCategoryCount++;
+        return { ...site, order: fallbackOrder };
+      }
+    }
+    return site;
+  });
 
-  db.sites = db.sites.map(site =>
-    position.has(site.id) ? { ...site, order: position.get(site.id)! } : site
-  );
   await writeDB(db);
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, count: orderedIds.length });
 }

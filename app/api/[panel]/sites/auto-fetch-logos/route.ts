@@ -7,11 +7,17 @@
  * Processes sites with concurrency = 10 for ultra-fast bulk execution.
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { readDB, writeDB } from '@/lib/db';
 import { autoFetch4KLogo, getCachedLogoPath } from '@/lib/logo-fetcher';
+import { isAdminRequest, isPanelSegment } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
+
+type Params = { params: Promise<{ panel: string }> };
+
+const NOT_FOUND  = () => new NextResponse(null, { status: 404 });
+const UNAUTHORIZED = () => NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 /** Helper to run an array of async tasks with concurrency limit */
 async function mapConcurrent<T, R>(
@@ -34,7 +40,11 @@ async function mapConcurrent<T, R>(
   return results;
 }
 
-export async function POST() {
+export async function POST(req: NextRequest, { params }: Params) {
+  const { panel } = await params;
+  if (!isPanelSegment(panel)) return NOT_FOUND();
+  if (!isAdminRequest(req)) return UNAUTHORIZED();
+
   try {
     const db = await readDB();
     let updatedCount = 0;

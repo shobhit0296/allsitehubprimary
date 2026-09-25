@@ -78,9 +78,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
   if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   const current = db.sites[idx];
   
-  if (!body.faviconUrl && current.domain) {
-    const fetched = await autoFetch4KLogo(body.domain ?? current.domain);
+  if (body.domain && body.domain !== current.domain && !body.faviconUrl) {
+    const fetched = await autoFetch4KLogo(body.domain);
     if (fetched) body.faviconUrl = fetched;
+  } else if (body.faviconUrl === undefined) {
+    body.faviconUrl = current.faviconUrl;
   }
 
   if (body.category && body.category !== current.category) {
