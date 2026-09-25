@@ -29,8 +29,15 @@ export default function Navbar({
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let prev = typeof window !== 'undefined' ? window.scrollY > 8 : false;
+    setScrolled(prev);
+    const onScroll = () => {
+      const next = window.scrollY > 8;
+      if (next !== prev) {
+        prev = next;
+        setScrolled(next);
+      }
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);

@@ -169,14 +169,29 @@ export default function ShaderBackground() {
 
       let raf = 0;
       let isVisible = true;
+      let isScrolling = false;
+      let scrollTimer: any = null;
+      let lastFrameTime = 0;
+      const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || navigator.maxTouchPoints > 1);
+      const targetFrameInterval = isMobile ? 33 : 16; // 30fps on mobile for battery & 0 dropped scroll frames, 60fps on desktop
+      const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const onVisibilityChange = () => {
         isVisible = !document.hidden;
-        if (isVisible && !raf) {
+        if (isVisible && !raf && !prefersReduced) {
           raf = requestAnimationFrame(render);
         }
       };
       document.addEventListener('visibilitychange', onVisibilityChange);
+
+      const onScroll = () => {
+        isScrolling = true;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          isScrolling = false;
+        }, 120);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
 
       const render = (t: number) => {
         try {
@@ -184,6 +199,20 @@ export default function ShaderBackground() {
             raf = 0;
             return;
           }
+
+          // While user is actively scrolling, yield 100% GPU to smooth scrolling
+          if (isScrolling) {
+            raf = requestAnimationFrame(render);
+            return;
+          }
+
+          // Frame pacing throttle
+          if (t - lastFrameTime < targetFrameInterval) {
+            raf = requestAnimationFrame(render);
+            return;
+          }
+          lastFrameTime = t;
+
           if (!ro) syncSize();
           gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -202,7 +231,10 @@ export default function ShaderBackground() {
           gl.uniform3fv(uAccent2, current.accent2);
 
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-          raf = requestAnimationFrame(render);
+
+          if (!prefersReduced) {
+            raf = requestAnimationFrame(render);
+          }
         } catch {
           raf = 0;
         }
@@ -212,7 +244,9 @@ export default function ShaderBackground() {
       return () => {
         try {
           if (raf) cancelAnimationFrame(raf);
+          clearTimeout(scrollTimer);
           document.removeEventListener('visibilitychange', onVisibilityChange);
+          window.removeEventListener('scroll', onScroll);
           canvas.removeEventListener('webglcontextlost', onContextLost);
           observer.disconnect();
           ro?.disconnect();

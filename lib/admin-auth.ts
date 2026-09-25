@@ -8,13 +8,24 @@ const MAX_ATTEMPTS = 5;
 const LOCK_MS = 15 * 60 * 1000; // 15 min
 const attempts = new Map<string, { count: number; lockUntil: number }>();
 
-const DEFAULT_PANEL_PATH = 'adminshobhit';
-const DEFAULT_PASSWORD = 'shobhitallsitehubadmin8115591448';
-const DEFAULT_SESSION_SECRET = 'a15301313959f1cba07e6b5ee7e46b229aa55d31a0f3b6ab523c839f538c9f36';
+/**
+ * All credentials MUST be supplied via environment variables.
+ * Never add fallback literals here — that defeats the purpose.
+ * Set these in .env.local (local dev) and in Vercel project settings (production).
+ */
+function requireEnv(name: string): string {
+  const val = process.env[name];
+  if (!val) {
+    throw new Error(
+      `[admin-auth] Missing required environment variable: ${name}. ` +
+      'Set it in .env.local (dev) and in your Vercel project settings (production).'
+    );
+  }
+  return val;
+}
 
 function getSecret(): string {
-  const secret = process.env.ADMIN_SESSION_SECRET || DEFAULT_SESSION_SECRET;
-  return secret;
+  return requireEnv('ADMIN_SESSION_SECRET');
 }
 
 function sign(payload: string): string {
@@ -49,7 +60,7 @@ export function verifySessionToken(token: string | undefined | null): boolean {
 
 /** Constant-time password comparison against the ADMIN_PASSWORD env var. */
 export function checkPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || DEFAULT_PASSWORD;
+  const expected = requireEnv('ADMIN_PASSWORD');
   const inputBuf = Buffer.from(input);
   const expectedBuf = Buffer.from(expected);
   const paddedInput = Buffer.concat([inputBuf, Buffer.alloc(Math.max(0, expectedBuf.length - inputBuf.length))]);
@@ -146,18 +157,9 @@ export function isAdminRequest(req: NextRequest): boolean {
  */
 export function isPanelSegment(segment: string | undefined): boolean {
   if (!segment) return false;
-  const configured = process.env.ADMIN_PANEL_PATH?.trim();
-  const validPaths = new Set<string>();
-  if (configured) validPaths.add(configured);
-  validPaths.add(DEFAULT_PANEL_PATH);
-  validPaths.add('shobhitadmin');
+  const panelPath = requireEnv('ADMIN_PANEL_PATH').trim();
 
-  for (const path of validPaths) {
-    const a = Buffer.from(segment);
-    const b = Buffer.from(path);
-    if (a.length === b.length && crypto.timingSafeEqual(a, b)) {
-      return true;
-    }
-  }
-  return false;
+  const a = Buffer.from(segment);
+  const b = Buffer.from(panelPath);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }

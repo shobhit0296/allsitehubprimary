@@ -182,10 +182,15 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
 
   useEffect(() => {
     let ticking = false;
+    let prev = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setShowBackToTop(window.scrollY > 400);
+          const next = window.scrollY > 400;
+          if (next !== prev) {
+            prev = next;
+            setShowBackToTop(next);
+          }
           ticking = false;
         });
         ticking = true;
