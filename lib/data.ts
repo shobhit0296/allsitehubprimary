@@ -53,186 +53,6 @@ export const REGION_FLAGS: Record<string, string> = {
 
 export const SITES: Site[] = [
   {
-  "id": "kdrama-dramacool",
-  "name": "DRAMACOOL",
-  "url": "https://dramacool.city/",
-  "domain": "dramacool.city",
-  "category": "K Drama",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "featured",
-    "trusted"
-  ],
-  "isTrusted": true,
-  "isNew": true,
-  "isFeatured": true,
-  "description": "Stream and watch popular Korean dramas, Asian series, and movies with English subtitles.",
-  "addedAt": 1789445000000,
-  "order": 0,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=dramacool.city&sz=128"
-},
-  {
-  "id": "kdrama-kissasian",
-  "name": "KISSASIAN",
-  "url": "https://kissasian.lu/",
-  "domain": "kissasian.lu",
-  "category": "K Drama",
-  "regions": [
-    "Global"
-  ],
-  "tags": [],
-  "isTrusted": false,
-  "isNew": true,
-  "isFeatured": false,
-  "description": "Popular Asian drama streaming portal with extensive library of ongoing and completed Korean series.",
-  "addedAt": 1789445000000,
-  "order": 1,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=kissasian.lu&sz=128"
-},
-  {
-  "id": "kdrama-kocowa",
-  "name": "KOCOWA+",
-  "url": "https://www.kocowa.com/",
-  "domain": "kocowa.com",
-  "category": "K Drama",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted"
-  ],
-  "isTrusted": true,
-  "isNew": false,
-  "isFeatured": false,
-  "description": "Official Korean entertainment streaming destination with K-Dramas, variety shows, and K-Pop.",
-  "addedAt": 1789445000000,
-  "order": 2,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=kocowa.com&sz=128"
-},
-  {
-  "id": "dl-archive",
-  "name": "INTERNET ARCHIVE",
-  "url": "https://archive.org/",
-  "domain": "archive.org",
-  "category": "Download",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted",
-    "featured"
-  ],
-  "isTrusted": true,
-  "isNew": false,
-  "isFeatured": true,
-  "description": "Non-profit digital library offering millions of free downloadable books, movies, software, and public domain media.",
-  "addedAt": 1789445000000,
-  "order": 0,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=archive.org&sz=128"
-},
-  {
-  "id": "dl-1337x",
-  "name": "1337x",
-  "url": "https://1337x.to/",
-  "domain": "1337x.to",
-  "category": "Download",
-  "regions": [
-    "Global"
-  ],
-  "tags": [],
-  "isTrusted": false,
-  "isNew": false,
-  "isFeatured": false,
-  "description": "Popular directory providing verified magnet and torrent downloads for movies, software, games, and series.",
-  "addedAt": 1789445000000,
-  "order": 1,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=1337x.to&sz=128"
-},
-  {
-  "id": "dl-fitgirl",
-  "name": "FITGIRL REPACKS",
-  "url": "https://fitgirl-repacks.site/",
-  "domain": "fitgirl-repacks.site",
-  "category": "Download",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted"
-  ],
-  "isTrusted": true,
-  "isNew": false,
-  "isFeatured": false,
-  "description": "The official, highly trusted source for ultra-compressed PC repack downloads and software.",
-  "addedAt": 1789445000000,
-  "order": 2,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=fitgirl-repacks.site&sz=128"
-},
-  {
-  "id": "game-steam",
-  "name": "STEAM",
-  "url": "https://store.steampowered.com/",
-  "domain": "store.steampowered.com",
-  "category": "Games",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted",
-    "featured"
-  ],
-  "isTrusted": true,
-  "isNew": false,
-  "isFeatured": true,
-  "description": "The ultimate digital entertainment platform to play, connect, create, and download games.",
-  "addedAt": 1789445000000,
-  "order": 0,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=128"
-},
-  {
-  "id": "game-epic",
-  "name": "EPIC GAMES",
-  "url": "https://store.epicgames.com/",
-  "domain": "store.epicgames.com",
-  "category": "Games",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted"
-  ],
-  "isTrusted": true,
-  "isNew": false,
-  "isFeatured": false,
-  "description": "Curated PC gaming platform offering weekly free games, exclusives, and major titles.",
-  "addedAt": 1789445000000,
-  "order": 1,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=store.epicgames.com&sz=128"
-},
-  {
-  "id": "game-crazygames",
-  "name": "CRAZYGAMES",
-  "url": "https://www.crazygames.com/",
-  "domain": "crazygames.com",
-  "category": "Games",
-  "regions": [
-    "Global"
-  ],
-  "tags": [
-    "trusted"
-  ],
-  "isTrusted": true,
-  "isNew": true,
-  "isFeatured": false,
-  "description": "Instant-play browser games with thousands of free online single and multiplayer games.",
-  "addedAt": 1789445000000,
-  "order": 2,
-  "faviconUrl": "https://www.google.com/s2/favicons?domain=crazygames.com&sz=128"
-},
-
-  {
     "id": "ms2tg2e2jw8vg",
     "name": "ENMA",
     "url": "https://www.enma.lol/home",
@@ -348,24 +168,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/netmirror_gg.png"
   },
   {
-    "id": "ms2tvigbxglzl",
-    "name": "REDFLIX",
-    "url": "https://redflix.club/",
-    "domain": "redflix.club",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785132626987,
-    "order": 1,
-    "faviconUrl": "/logos/redflix_club.png"
-  },
-  {
     "id": "ms2twlltw6obx",
     "name": "YENIME",
     "url": "https://yenime.net/",
@@ -460,11 +262,11 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/moviesbox_com_co.png"
   },
   {
-    "id": "ms2uego1lxbmv",
-    "name": "ANY SHOWS",
-    "url": "https://anishows.org/",
-    "domain": "anishows.org",
-    "category": "Anime",
+    "id": "ms2th1hf7ncwk",
+    "name": "7 movies",
+    "url": "https://7movies.in/",
+    "domain": "7movies.in",
+    "category": "Movies & Shows",
     "regions": [
       "Global"
     ],
@@ -473,9 +275,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785133511137,
-    "order": 2,
-    "faviconUrl": "/logos/anishows_org.svg"
+    "addedAt": 1785131951811,
+    "faviconUrl": "/logos/7movies_in.png",
+    "order": 1
   },
   {
     "id": "ms2ug2xqgt5jg",
@@ -486,8 +288,10 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [],
-    "isTrusted": false,
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
     "isNew": false,
     "isFeatured": false,
     "description": "",
@@ -570,11 +374,70 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/pikashowtv_in.png"
   },
   {
-    "id": "ms2th1hf7ncwk",
-    "name": "7 movies",
-    "url": "https://7movies.in/",
-    "domain": "7movies.in",
-    "category": "Movies & Shows",
+    "id": "dl-fitgirl",
+    "name": "FITGIRL REPACKS",
+    "url": "https://fitgirl-repacks.site/",
+    "domain": "fitgirl-repacks.site",
+    "category": "Download",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "The official, highly trusted source for ultra-compressed PC repack downloads and software.",
+    "addedAt": 1789446376408,
+    "order": 2,
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=fitgirl-repacks.site&sz=128"
+  },
+  {
+    "id": "game-crazygames",
+    "name": "CRAZYGAMES",
+    "url": "https://www.crazygames.com/",
+    "domain": "crazygames.com",
+    "category": "Games",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Instant-play browser games with thousands of free online single and multiplayer games.",
+    "addedAt": 1789446376408,
+    "order": 2,
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=crazygames.com&sz=128"
+  },
+  {
+    "id": "mubgaml3k7frc",
+    "name": "FLIXANI",
+    "url": "https://flixani.studio/",
+    "domain": "flixani.studio",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1790007577815,
+    "order": 2
+  },
+  {
+    "id": "ms2uego1lxbmv",
+    "name": "ANY SHOWS",
+    "url": "https://anishows.org/",
+    "domain": "anishows.org",
+    "category": "Anime",
     "regions": [
       "Global"
     ],
@@ -583,9 +446,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785131951811,
-    "faviconUrl": "/logos/7movies_in.png",
-    "order": 3
+    "addedAt": 1785133511137,
+    "order": 3,
+    "faviconUrl": "/logos/anishows_org.svg"
   },
   {
     "id": "ms2vaqvfr5810",
@@ -658,6 +521,78 @@ export const SITES: Site[] = [
     "addedAt": 1785162208070,
     "order": 3,
     "faviconUrl": "/logos/playtorrio_pages_dev.png"
+  },
+  {
+    "id": "mu27eluoage5p",
+    "name": "HDHub4U",
+    "url": "https://hdhub4u.bi/",
+    "domain": "hdhub4u.bi",
+    "category": "Download",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "HDHub4U streaming platform.",
+    "addedAt": 1789448451360,
+    "order": 3
+  },
+  {
+    "id": "mu27fotacuvhq",
+    "name": "DRAMA PLANETS",
+    "url": "https://www.dramaplanets.online/",
+    "domain": "dramaplanets.online",
+    "category": "K Drama",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "you should add this websites because they will attract more audience like k drama c drama fans cz they r having problems to find websites so if u will add websites for dramas this will be a huge profit for you. thank you",
+    "addedAt": 1789448501854,
+    "order": 3
+  },
+  {
+    "id": "mu27sdpt6xev3",
+    "name": "ANKER GAMES",
+    "url": "https://ankergames.net/",
+    "domain": "ankergames.net",
+    "category": "Games",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "FREE PC GAMES",
+    "addedAt": 1789449094001,
+    "order": 3
+  },
+  {
+    "id": "mu5damms1vagj",
+    "name": "THUGTV",
+    "url": "https://thugtv.online/",
+    "domain": "thugtv.online",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1789639741972,
+    "order": 3
   },
   {
     "id": "ms2tgj8utkoue",
@@ -770,11 +705,11 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/publiciptv_com.png"
   },
   {
-    "id": "ms2tfcv4txa6u",
-    "name": "1 Show",
-    "url": "https://www.1shows.org/",
-    "domain": "1shows.org",
-    "category": "Movies & Shows",
+    "id": "mu27tdq0zmrln",
+    "name": "FILE CR",
+    "url": "https://filecr.com/home/",
+    "domain": "filecr.com",
+    "category": "Download",
     "regions": [
       "Global"
     ],
@@ -784,10 +719,29 @@ export const SITES: Site[] = [
     "isTrusted": true,
     "isNew": false,
     "isFeatured": false,
+    "description": "download anything",
+    "addedAt": 1789449140664,
+    "order": 4
+  },
+  {
+    "id": "mu27wjd635elu",
+    "name": "VIKI",
+    "url": "https://www.viki.com/",
+    "domain": "viki.com",
+    "category": "K Drama",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
     "description": "",
-    "addedAt": 1785131873248,
-    "faviconUrl": "/logos/1shows_org.png",
-    "order": 5
+    "faviconUrl": "/logos/viki_com.png",
+    "addedAt": 1789449287946,
+    "order": 4
   },
   {
     "id": "ms2vjb6mljbxo",
@@ -864,10 +818,48 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/en97_sportplus_watch.png"
   },
   {
-    "id": "ms2tl1qb47f6k",
-    "name": "1FLEX",
-    "url": "https://www.1flex.org/",
-    "domain": "1flex.org",
+    "id": "mu27u3ffmd0yz",
+    "name": "FILMYFLY",
+    "url": "https://filmyfly.bingo/",
+    "domain": "filmyfly.bingo",
+    "category": "Download",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1789449173979,
+    "order": 5
+  },
+  {
+    "id": "mu27y42ir5x0a",
+    "name": "K SHOW",
+    "url": "https://kshow123.tv/",
+    "domain": "kshow123.tv",
+    "category": "K Drama",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1789449361434,
+    "order": 5
+  },
+  {
+    "id": "mu5n6mxigco0x",
+    "name": "RED FLIX",
+    "url": "https://redflix.club/",
+    "domain": "redflix.club",
     "category": "Movies & Shows",
     "regions": [
       "Global"
@@ -879,9 +871,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785132138755,
-    "order": 6,
-    "faviconUrl": "/logos/1flex_org.png"
+    "faviconUrl": "/logos/redflix_club.png",
+    "addedAt": 1789656351895,
+    "order": 5
   },
   {
     "id": "ms2v4fhvkrqz1",
@@ -898,8 +890,28 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785134722675,
-    "order": 6,
+    "order": 5,
     "faviconUrl": "/logos/kaa_lt.png"
+  },
+  {
+    "id": "ms2tfcv4txa6u",
+    "name": "1 Show",
+    "url": "https://www.1shows.org/",
+    "domain": "1shows.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785131873248,
+    "faviconUrl": "/logos/1shows_org.png",
+    "order": 6
   },
   {
     "id": "ms2vjqvwdhbhh",
@@ -971,8 +983,28 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785134739232,
-    "order": 7,
+    "order": 6,
     "faviconUrl": "/logos/justanime_to.png"
+  },
+  {
+    "id": "ms2tl1qb47f6k",
+    "name": "1FLEX",
+    "url": "https://www.1flex.org/",
+    "domain": "1flex.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785132138755,
+    "order": 7,
+    "faviconUrl": "/logos/1flex_org.png"
   },
   {
     "id": "ms3dpquywg3xx",
@@ -993,23 +1025,22 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/shudder_com.png"
   },
   {
-    "id": "mt1lpwjhlmfrf",
-    "name": "NIPPLEFLIX",
-    "url": "https://nippleflix.org/",
-    "domain": "nippleflix.org",
-    "category": "Movies & Shows",
+    "id": "mu241sbzauh9x",
+    "name": "fancode",
+    "url": "https://www.fancode.com/",
+    "domain": "fancode.com",
+    "category": "Live TV & Sports",
     "regions": [
       "Global"
     ],
     "tags": [
-      "trusted"
+      "new"
     ],
-    "isTrusted": true,
-    "isNew": false,
+    "isTrusted": false,
+    "isNew": true,
     "isFeatured": false,
-    "description": "BEST & ADS FREE",
-    "faviconUrl": "https://www.google.com/s2/favicons?domain=nippleflix.org&sz=256",
-    "addedAt": 1787235244541,
+    "description": "Watch on fancode.",
+    "addedAt": 1789442814383,
     "order": 7
   },
   {
@@ -1027,8 +1058,28 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785134772196,
-    "order": 8,
+    "order": 7,
     "faviconUrl": "/logos/animesalt_link.png"
+  },
+  {
+    "id": "mt1lpwjhlmfrf",
+    "name": "NIPPLEFLIX",
+    "url": "https://nippleflix.org/",
+    "domain": "nippleflix.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "BEST & ADS FREE",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=nippleflix.org&sz=256",
+    "addedAt": 1787235244541,
+    "order": 8
   },
   {
     "id": "ms3dvbko7co78",
@@ -1049,6 +1100,24 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/auth_hulu_com.png"
   },
   {
+    "id": "mse7lfl71u1ak",
+    "name": "SENPAI FLIX",
+    "url": "https://senpaiflix.fun/",
+    "domain": "senpaiflix.fun",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785820799275,
+    "order": 8,
+    "faviconUrl": "/logos/senpaiflix_fun.png"
+  },
+  {
     "id": "mskbz4mxt82hu",
     "name": "PvrPlay",
     "url": "https://pvrplay.online",
@@ -1063,28 +1132,8 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "NO ADS, SMOOTH STREAMING",
     "addedAt": 1786190953785,
-    "order": 8,
-    "faviconUrl": "/logos/pvrplay_online.png"
-  },
-  {
-    "id": "ms2tednwv7muc",
-    "name": "PANTYFLIX",
-    "url": "https://pantyflix.org/",
-    "domain": "pantyflix.org",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [
-      "trusted"
-    ],
-    "isTrusted": true,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785131827629,
     "order": 9,
-    "faviconUrl": "/logos/pantyflix_org.png"
+    "faviconUrl": "/logos/pvrplay_online.png"
   },
   {
     "id": "ms3dwt3ldxivm",
@@ -1105,10 +1154,10 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/viki_com.png"
   },
   {
-    "id": "mse7lfl71u1ak",
-    "name": "SENPAI FLIX",
-    "url": "https://senpaiflix.fun/",
-    "domain": "senpaiflix.fun",
+    "id": "msfsfrhgp11w7",
+    "name": "ANIMEXTRONS",
+    "url": "https://animextrons.co.in/",
+    "domain": "animextrons.co.in",
     "category": "Anime",
     "regions": [
       "Global"
@@ -1118,15 +1167,15 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785820799275,
+    "addedAt": 1785916272868,
     "order": 9,
-    "faviconUrl": "/logos/senpaiflix_fun.png"
+    "faviconUrl": "/logos/animextrons_co_in.png"
   },
   {
-    "id": "ms2u0cv0xlvak",
-    "name": "SHUTTLE TV",
-    "url": "https://shuttletv.su/",
-    "domain": "shuttletv.su",
+    "id": "ms2tednwv7muc",
+    "name": "PANTYFLIX",
+    "url": "https://pantyflix.org/",
+    "domain": "pantyflix.org",
     "category": "Movies & Shows",
     "regions": [
       "Global"
@@ -1136,9 +1185,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785132853020,
+    "addedAt": 1785131827629,
     "order": 10,
-    "faviconUrl": "/logos/shuttletv_su.png"
+    "faviconUrl": "/logos/pantyflix_org.png"
   },
   {
     "id": "ms3dxpw7it3tw",
@@ -1159,10 +1208,10 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/paramountplus_com.svg"
   },
   {
-    "id": "msfsfrhgp11w7",
-    "name": "ANIMEXTRONS",
-    "url": "https://animextrons.co.in/",
-    "domain": "animextrons.co.in",
+    "id": "msia0q2cjtntr",
+    "name": "ANIKOTO TV",
+    "url": "https://anikototv.to/",
+    "domain": "anikototv.to",
     "category": "Anime",
     "regions": [
       "Global"
@@ -1172,15 +1221,15 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785916272868,
+    "addedAt": 1786066736628,
     "order": 10,
-    "faviconUrl": "/logos/animextrons_co_in.png"
+    "faviconUrl": "/logos/anikototv_to.png"
   },
   {
-    "id": "ms2ublikhkx0h",
-    "name": "FLY FLIX",
-    "url": "https://flyflix.net/",
-    "domain": "flyflix.net",
+    "id": "ms2u0cv0xlvak",
+    "name": "SHUTTLE TV",
+    "url": "https://shuttletv.su/",
+    "domain": "shuttletv.su",
     "category": "Movies & Shows",
     "regions": [
       "Global"
@@ -1190,9 +1239,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785133377452,
+    "addedAt": 1785132853020,
     "order": 11,
-    "faviconUrl": "/logos/flyflix_net.png"
+    "faviconUrl": "/logos/shuttletv_su.png"
   },
   {
     "id": "ms3dyh5ufxj32",
@@ -1213,10 +1262,10 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/mgmplus_com.svg"
   },
   {
-    "id": "msia0q2cjtntr",
-    "name": "ANIKOTO TV",
-    "url": "https://anikototv.to/",
-    "domain": "anikototv.to",
+    "id": "mslv1yszv725f",
+    "name": "WATCH ANIMEx",
+    "url": "https://watchanimez.me/",
+    "domain": "https://watchanimez.me/",
     "category": "Anime",
     "regions": [
       "Global"
@@ -1226,29 +1275,27 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1786066736628,
+    "addedAt": 1786283465075,
     "order": 11,
-    "faviconUrl": "/logos/anikototv_to.png"
+    "faviconUrl": "/logos/watchanimez_me.png"
   },
   {
-    "id": "ms2udhv2f75gm",
-    "name": "YOU SHOWS",
-    "url": "https://youshows.org/",
-    "domain": "youshows.org",
+    "id": "ms2ublikhkx0h",
+    "name": "FLY FLIX",
+    "url": "https://flyflix.net/",
+    "domain": "flyflix.net",
     "category": "Movies & Shows",
     "regions": [
       "Global"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785133466031,
+    "addedAt": 1785133377452,
     "order": 12,
-    "faviconUrl": "/logos/youshows_org.svg"
+    "faviconUrl": "/logos/flyflix_net.png"
   },
   {
     "id": "ms3dz7jebbvpj",
@@ -1269,42 +1316,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/amcplus_com.png"
   },
   {
-    "id": "mslv1yszv725f",
-    "name": "WATCH ANIMEx",
-    "url": "https://watchanimez.me/",
-    "domain": "https://watchanimez.me/",
-    "category": "Anime",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1786283465075,
-    "order": 12,
-    "faviconUrl": "/logos/watchanimez_me.png"
-  },
-  {
-    "id": "ms2um0ncjossc",
-    "name": "PRIME MOVIES",
-    "url": "https://primeshows.org/",
-    "domain": "primeshows.org",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785133863624,
-    "order": 13,
-    "faviconUrl": "/logos/primeshows_org.png"
-  },
-  {
     "id": "mt1lfg9hm25kc",
     "name": "Ani waves",
     "url": "https://aniwaves.ru/home",
@@ -1321,35 +1332,16 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "its one of the best anime website , you should  list it",
     "addedAt": 1787234756885,
-    "order": 13
+    "order": 12
   },
   {
-    "id": "ms2uwsrnmrviw",
-    "name": "DULO",
-    "url": "https://dulo.cx/",
-    "domain": "dulo.cx",
+    "id": "ms2udhv2f75gm",
+    "name": "YOU SHOWS",
+    "url": "https://youshows.org/",
+    "domain": "youshows.org",
     "category": "Movies & Shows",
     "regions": [
       "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785134366627,
-    "order": 14,
-    "faviconUrl": "/logos/dulo_cx.png"
-  },
-  {
-    "id": "mt1ll4r0eiiiz",
-    "name": "Anime streaming site in all language along with official hindi",
-    "url": "https://aniflix.uno/",
-    "domain": "aniflix.uno",
-    "category": "Anime",
-    "regions": [
-      "US",
-      "IN"
     ],
     "tags": [
       "new"
@@ -1357,27 +1349,10 @@ export const SITES: Site[] = [
     "isTrusted": false,
     "isNew": true,
     "isFeatured": false,
-    "description": "Large library, multiple server, latest anime and lots of customisation along with watch2gather like awesome features",
-    "addedAt": 1787235021900,
-    "order": 14
-  },
-  {
-    "id": "ms2uyznbldhs4",
-    "name": "STIGSTREAM",
-    "url": "https://stigstream.ru/",
-    "domain": "stigstream.ru",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
     "description": "",
-    "addedAt": 1785134468855,
-    "order": 15,
-    "faviconUrl": "/logos/stigstream_ru.png"
+    "addedAt": 1785133466031,
+    "order": 13,
+    "faviconUrl": "/logos/youshows_org.svg"
   },
   {
     "id": "mtbo1c3t14d8c",
@@ -1396,13 +1371,13 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "Watch on animerulz.",
     "addedAt": 1787843798921,
-    "order": 15
+    "order": 13
   },
   {
-    "id": "ms2uzxxstyo73",
-    "name": "FLIXEO",
-    "url": "https://flixeo.tv/home",
-    "domain": "flixeo.tv",
+    "id": "ms2um0ncjossc",
+    "name": "PRIME MOVIES",
+    "url": "https://primeshows.org/",
+    "domain": "primeshows.org",
     "category": "Movies & Shows",
     "regions": [
       "Global"
@@ -1412,9 +1387,9 @@ export const SITES: Site[] = [
     "isNew": false,
     "isFeatured": false,
     "description": "",
-    "addedAt": 1785134513296,
-    "order": 16,
-    "faviconUrl": "/logos/flixeo_tv.png"
+    "addedAt": 1785133863624,
+    "order": 14,
+    "faviconUrl": "/logos/primeshows_org.png"
   },
   {
     "id": "mtbo4ywp7dhp1",
@@ -1433,7 +1408,118 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
     "addedAt": 1787843968441,
+    "order": 14
+  },
+  {
+    "id": "ms2uwsrnmrviw",
+    "name": "DULO",
+    "url": "https://dulo.cx/",
+    "domain": "dulo.cx",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134366627,
+    "order": 15,
+    "faviconUrl": "/logos/dulo_cx.png"
+  },
+  {
+    "id": "mu25o20qf2l9d",
+    "name": "OTANOX",
+    "url": "https://otanox.online/",
+    "domain": "otanox.online",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on OTANOX.",
+    "addedAt": 1789445532986,
+    "order": 15
+  },
+  {
+    "id": "ms2uyznbldhs4",
+    "name": "STIGSTREAM",
+    "url": "https://stigstream.ru/",
+    "domain": "stigstream.ru",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134468855,
+    "order": 16,
+    "faviconUrl": "/logos/stigstream_ru.png"
+  },
+  {
+    "id": "mu25rlfec9p45",
+    "name": "HiAnime",
+    "url": "https://hianime.at/home",
+    "domain": "hianime.at",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on HiAnime.",
+    "addedAt": 1789445698106,
     "order": 16
+  },
+  {
+    "id": "ms2uzxxstyo73",
+    "name": "FLIXEO",
+    "url": "https://flixeo.tv/home",
+    "domain": "flixeo.tv",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134513296,
+    "order": 17,
+    "faviconUrl": "/logos/flixeo_tv.png"
+  },
+  {
+    "id": "mubg753c8ybm0",
+    "name": "Animetsu",
+    "url": "https://animetsu.site/",
+    "domain": "animetsu.site",
+    "category": "Anime",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Best ui fast site large library",
+    "addedAt": 1790007415176,
+    "order": 17
   },
   {
     "id": "ms2v0ta2ph0tm",
@@ -1450,7 +1536,7 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785134553914,
-    "order": 17,
+    "order": 18,
     "faviconUrl": "/logos/willow_arlen_icu.png"
   },
   {
@@ -1468,7 +1554,7 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785165598844,
-    "order": 18,
+    "order": 19,
     "faviconUrl": "/logos/cinrift_me.png"
   },
   {
@@ -1486,27 +1572,25 @@ export const SITES: Site[] = [
     "isFeatured": false,
     "description": "",
     "addedAt": 1785511226860,
-    "order": 19,
+    "order": 20,
     "faviconUrl": "/logos/flixhub_studio.png"
   },
   {
     "id": "mssqu1xlcfcll",
-    "name": "Cinemove — Watch Movies and TV Shows Online Streaming",
+    "name": "Cinemove",
     "url": "https://cinemove.cc/",
     "domain": "cinemove.cc",
     "category": "Movies & Shows",
     "regions": [
       "Global"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
     "addedAt": 1786699640649,
-    "order": 20
+    "order": 21
   },
   {
     "id": "msuj7f7yxawwt",
@@ -1517,15 +1601,13 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "So basically anywhere, trying to make my site more popular, any help is welcome.",
     "addedAt": 1786807759822,
-    "order": 21
+    "order": 22
   },
   {
     "id": "msuj9c8k8b6mg",
@@ -1536,15 +1618,13 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "Watch on 7reels.",
     "addedAt": 1786807849268,
-    "order": 22
+    "order": 23
   },
   {
     "id": "mt1lgmav1n7xt",
@@ -1557,15 +1637,13 @@ export const SITES: Site[] = [
       "IN",
       "FR"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "free movies series and anime without ads",
     "addedAt": 1787234811367,
-    "order": 23
+    "order": 24
   },
   {
     "id": "mt1li8g02200i",
@@ -1576,15 +1654,13 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
     "addedAt": 1787234886720,
-    "order": 24
+    "order": 25
   },
   {
     "id": "mt1lk9re60o47",
@@ -1595,15 +1671,13 @@ export const SITES: Site[] = [
     "regions": [
       "IN"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "The best ui and the largest library",
     "addedAt": 1787234981738,
-    "order": 25
+    "order": 26
   },
   {
     "id": "mtbo3zw6xgpx0",
@@ -1614,15 +1688,13 @@ export const SITES: Site[] = [
     "regions": [
       "US"
     ],
-    "tags": [
-      "new"
-    ],
+    "tags": [],
     "isTrusted": false,
-    "isNew": true,
+    "isNew": false,
     "isFeatured": false,
     "description": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
     "addedAt": 1787843923062,
-    "order": 26
+    "order": 27
   },
   {
     "id": "mtbo4ns1kut2n",
@@ -1633,15 +1705,108 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
+    "addedAt": 1787843954017,
+    "order": 28
+  },
+  {
+    "id": "mu25bubupd8h6",
+    "name": "Netshows",
+    "url": "https://netshows.xyz/",
+    "domain": "netshows.xyz",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "Watch on Netshows.",
+    "addedAt": 1789444963146,
+    "order": 29
+  },
+  {
+    "id": "mu27gwx210awk",
+    "name": "bingr one",
+    "url": "https://bingr.one/",
+    "domain": "bingr.one",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "Bingr is an all-in-one streaming platform for movies, TV shows, anime, and live sports with multi-language audio & subtitles, multi-profile sync, cross-device watch progress, and a clean, fast UI.",
+    "addedAt": 1789448559014,
+    "order": 30
+  },
+  {
+    "id": "mugrhmx2xbpry",
+    "name": "TOFLIX",
+    "url": "https://toflix.co/",
+    "domain": "toflix.co",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
     "tags": [
       "new"
     ],
     "isTrusted": false,
     "isNew": true,
     "isFeatured": false,
-    "description": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
-    "addedAt": 1787843954017,
-    "order": 27
+    "description": "",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=toflix.co&sz=256",
+    "addedAt": 1790328711494,
+    "order": 31
+  },
+  {
+    "id": "mugrj59o2304u",
+    "name": "CHILLFLIX",
+    "url": "https://www.chillflix.lol/",
+    "domain": "chillflix.lol",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=chillflix.lol&sz=256",
+    "addedAt": 1790328781932,
+    "order": 32
+  },
+  {
+    "id": "mugrrf4v3f0o5",
+    "name": "CINEVID",
+    "url": "https://cinevid.st/",
+    "domain": "cinevid.st",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new",
+      "featured"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": true,
+    "description": "",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=cinevid.st&sz=256",
+    "addedAt": 1790329167967,
+    "order": 33
   }
 ];
 

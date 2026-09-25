@@ -12,7 +12,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 300; // ISR: 5-minute edge cache, instant on-demand revalidation via writeDB
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   return COLLECTIONS.map(c => ({

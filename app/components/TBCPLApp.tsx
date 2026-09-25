@@ -40,10 +40,32 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
   const [activeCategory, setActiveCategory] = useState(categories[0]?.name ?? 'Movies & Shows');
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
 
-  // Keep local state in sync when server props revalidate (ISR)
+  // Keep local state in sync when server props change
   useEffect(() => {
     setLiveSites(sites);
   }, [sites]);
+
+  // Re-fetch latest sites when user switches back to this tab (e.g. from admin panel)
+  useEffect(() => {
+    const handleVisibilityOrFocus = () => {
+      if (document.visibilityState === 'visible') {
+        fetch('/api/sites', { cache: 'no-store' })
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data?.sites) && data.sites.length > 0) {
+              setLiveSites(data.sites);
+            }
+          })
+          .catch(() => {});
+      }
+    };
+    window.addEventListener('visibilitychange', handleVisibilityOrFocus);
+    window.addEventListener('focus', handleVisibilityOrFocus);
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityOrFocus);
+      window.removeEventListener('focus', handleVisibilityOrFocus);
+    };
+  }, []);
 
 
   // ── Scheduled time-of-day live online users (changes every 15-20s) ──

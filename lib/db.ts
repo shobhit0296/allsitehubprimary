@@ -93,8 +93,8 @@ async function readDBRedis(): Promise<DB | null> {
       console.warn('[DB] Upstash request limit reached, using static bundle cache for 10 minutes.');
       redisDisabledUntil = Date.now() + 10 * 60 * 1000;
     } else {
-      console.warn('[DB] Redis read failed, temporarily bypassing Redis for 2 minutes:', err);
-      redisDisabledUntil = Date.now() + 2 * 60 * 1000;
+      console.warn('[DB] Redis read failed, will retry next request:', err);
+      redisDisabledUntil = Date.now() + 2 * 1000;
     }
     return null;
   }
@@ -230,7 +230,11 @@ export async function writeDB(data: DB): Promise<void> {
   memoryCache = { data, timestamp: Date.now() };
 
   // 1. Write to Redis immediately
-  await writeDBRedis(data);
+  const success = await writeDBRedis(data);
+  if (!success) {
+    console.error('[DB] CRITICAL: Failed to write to Upstash Redis!');
+    throw new Error('Database write to Redis failed. Please check connection and try again.');
+  }
 
   // 2. Persist to data/db.json on disk if filesystem is writable
   tryWriteLocalDbFile(data);

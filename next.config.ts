@@ -160,13 +160,13 @@ const nextConfig: NextConfig = {
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
         ],
       },
-      // ─── Sites data API: 5-min Edge CDN cache, purged instantly on writeDB ───
+      // ─── Sites data API: No Vercel CDN lock; Cloudflare edge cache purged instantly on writeDB ───
       {
         source: "/api/sites",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=60, s-maxage=300, stale-while-revalidate=600" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
       {
@@ -200,21 +200,21 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
         ],
       },
-      // ─── Content pages: Edge micro-cache (60s) to eliminate Vercel serverless invocation bleed ───
+      // ─── Content pages: Always fresh on Vercel; Cloudflare edge cache handles visitor traffic and purges on writeDB ───
       {
         source: "/",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=300" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
       {
         source: "/:path(category.*|site.*|collections.*|recent|about|dmca|request|how-we-review-websites|privacy|terms)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=300" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
       // ─── Logo API: 7-day Edge CDN cache ───

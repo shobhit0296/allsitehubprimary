@@ -1128,10 +1128,8 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "trusted"
-      ],
-      "isTrusted": true,
+      "tags": [],
+      "isTrusted": false,
       "isNew": false,
       "isFeatured": false,
       "description": "",
@@ -1534,11 +1532,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
       "addedAt": 1786699640649,
@@ -1553,11 +1549,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "So basically anywhere, trying to make my site more popular, any help is welcome.",
       "addedAt": 1786807759822,
@@ -1572,11 +1566,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "Watch on 7reels.",
       "addedAt": 1786807849268,
@@ -1593,11 +1585,9 @@
         "IN",
         "FR"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "free movies series and anime without ads",
       "addedAt": 1787234811367,
@@ -1612,11 +1602,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
       "addedAt": 1787234886720,
@@ -1631,11 +1619,9 @@
       "regions": [
         "IN"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "The best ui and the largest library",
       "addedAt": 1787234981738,
@@ -1650,11 +1636,9 @@
       "regions": [
         "US"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
       "addedAt": 1787843923062,
@@ -1669,11 +1653,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
       "addedAt": 1787843954017,
@@ -1688,11 +1670,9 @@
       "regions": [
         "Global"
       ],
-      "tags": [
-        "new"
-      ],
+      "tags": [],
       "isTrusted": false,
-      "isNew": true,
+      "isNew": false,
       "isFeatured": false,
       "description": "Watch on Netshows.",
       "addedAt": 1789444963146,
@@ -1707,15 +1687,74 @@
       "regions": [
         "Global"
       ],
+      "tags": [],
+      "isTrusted": false,
+      "isNew": false,
+      "isFeatured": false,
+      "description": "Bingr is an all-in-one streaming platform for movies, TV shows, anime, and live sports with multi-language audio & subtitles, multi-profile sync, cross-device watch progress, and a clean, fast UI.",
+      "addedAt": 1789448559014,
+      "order": 30
+    },
+    {
+      "id": "mugrhmx2xbpry",
+      "name": "TOFLIX",
+      "url": "https://toflix.co/",
+      "domain": "toflix.co",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
       "tags": [
         "new"
       ],
       "isTrusted": false,
       "isNew": true,
       "isFeatured": false,
-      "description": "Bingr is an all-in-one streaming platform for movies, TV shows, anime, and live sports with multi-language audio & subtitles, multi-profile sync, cross-device watch progress, and a clean, fast UI.",
-      "addedAt": 1789448559014,
-      "order": 30
+      "description": "",
+      "faviconUrl": "https://www.google.com/s2/favicons?domain=toflix.co&sz=256",
+      "addedAt": 1790328711494,
+      "order": 31
+    },
+    {
+      "id": "mugrj59o2304u",
+      "name": "CHILLFLIX",
+      "url": "https://www.chillflix.lol/",
+      "domain": "chillflix.lol",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": false,
+      "description": "",
+      "faviconUrl": "https://www.google.com/s2/favicons?domain=chillflix.lol&sz=256",
+      "addedAt": 1790328781932,
+      "order": 32
+    },
+    {
+      "id": "mugrrf4v3f0o5",
+      "name": "CINEVID",
+      "url": "https://cinevid.st/",
+      "domain": "cinevid.st",
+      "category": "Movies & Shows",
+      "regions": [
+        "Global"
+      ],
+      "tags": [
+        "new",
+        "featured"
+      ],
+      "isTrusted": false,
+      "isNew": true,
+      "isFeatured": true,
+      "description": "",
+      "faviconUrl": "https://www.google.com/s2/favicons?domain=cinevid.st&sz=256",
+      "addedAt": 1790329167967,
+      "order": 33
     }
   ],
   "categories": [
@@ -1747,996 +1786,5 @@
     "NL",
     "PL"
   ],
-  "requests": [
-    {
-      "id": "ms2qna0totjar",
-      "siteName": "Primeshows",
-      "siteUrl": "https://primeshows.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Tv shows and movies",
-      "status": "approved",
-      "submittedAt": 1785127203965
-    },
-    {
-      "id": "ms2qqyhppnpcm",
-      "siteName": "ShyFlixer",
-      "siteUrl": "https://skyflixer.fun/browse",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Tv shows and movies 🎬",
-      "status": "approved",
-      "submittedAt": 1785127375645
-    },
-    {
-      "id": "ms33zpkxl5ci5",
-      "siteName": "good",
-      "siteUrl": "https://google.com",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785149619009
-    },
-    {
-      "id": "ms738gb22ormr",
-      "siteName": "Flixhub Studio",
-      "siteUrl": "https://flixhub.studio",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "JP",
-          "category": "Anime"
-        },
-        {
-          "region": "CA",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Best servers, fast speed, download option, 100% working, low ads, clean ui, Regular updates, Community ratings and leaderboard, Profile system like Netflix, huge library including OMDB, TMBD, IMDB, ANYLIST AND OTHERS. Organized content in platforms like Netflix, Prime, Apple TV, etc. Anime watch page is designed like anime sites, and the movie watch page is designed like movie sites. Already becoming popular with alot of reviews on social media.",
-      "status": "approved",
-      "submittedAt": 1785390211982
-    },
-    {
-      "id": "ms77swgfnui74",
-      "siteName": "pocketfm",
-      "siteUrl": "https://pocketfm.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "large labrriy and user frindly,soomthly runs",
-      "status": "approved",
-      "submittedAt": 1785397884495
-    },
-    {
-      "id": "ms796b91cyzls",
-      "siteName": "Mova",
-      "siteUrl": "https://mova-mu.vercel.app/",
-      "targets": [
-        {
-          "region": "DE",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Its a movie streaming site with latest movies updated on the basis of releases, no ads, need VPN though (only for india), doesnt need VPN for other countries",
-      "status": "approved",
-      "submittedAt": 1785400189813
-    },
-    {
-      "id": "ms7kgrimvocl3",
-      "siteName": "Mo",
-      "siteUrl": "https://v.moviebox.ph/UqzlwaB4on6",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785419153230
-    },
-    {
-      "id": "ms80c9n0ajfge",
-      "siteName": "StreamingUnity",
-      "siteUrl": "https://streamingunity.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Ui innovative, private server, good archive",
-      "status": "approved",
-      "submittedAt": 1785445817292
-    },
-    {
-      "id": "msahoqzxa7uu0",
-      "siteName": "animewatch",
-      "siteUrl": "https://watchanimeworld.net/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785595885485
-    },
-    {
-      "id": "msazeec9sdmno",
-      "siteName": "Isaimini",
-      "siteUrl": "https://moviesdk.com",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785625635609
-    },
-    {
-      "id": "msb7ynxpd12g4",
-      "siteName": "NetPrime",
-      "siteUrl": "https://www.netprime.cx/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785640018093
-    },
-    {
-      "id": "msbh93bbodrc3",
-      "siteName": "Senpaiflix",
-      "siteUrl": "https://senpaiflix.fun",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "SenpaiFlix is an anime streaming platform built for anime fans who want fast, high-quality streaming with multiple language options in one place.\n\nWhat SenpaiFlix offers:\n\nSubbed Anime\nEnglish Dubbed Anime\nHindi Dubbed Anime\nMulti-Language Streaming\nWatch Together feature\nFast and smooth streaming\nMobile and desktop support\nEasy anime search and discovery\n\nSenpaiFlix focuses on providing a clean, modern, and user-friendly experience with high-quality streaming, synchronized watch parties, and support for anime fans worldwide.\n\nUsers can watch the latest seasonal anime, enjoy classic series, and discover new titles through a fast and responsive interface.\n\nThe platform is regularly updated with new anime releases, feature improvements, and community events.\n\nThank you for considering SenpaiFlix for inclusion in your index.",
-      "status": "approved",
-      "submittedAt": 1785655621127
-    },
-    {
-      "id": "msbjddruplxrv",
-      "siteName": "Flemmix",
-      "siteUrl": "https://flemmix",
-      "targets": [
-        {
-          "region": "FR",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785659180538
-    },
-    {
-      "id": "mse6j4zq1ko0f",
-      "siteName": "netfix",
-      "siteUrl": "https://www.netflix.com/in/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785819012614
-    },
-    {
-      "id": "mse7x8iolnent",
-      "siteName": "ANIFIX",
-      "siteUrl": "https://animextrons.co.in/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "🎬 Complete Anime Experience\n🔐 Discord Login – Easy and secure sign-in\n👤 Personal Profiles – Users can create and customize their own profile\n💬 Comments & Discussions – Interact with other anime fans\n📚 Manga Section – Dedicated manga reading experience\n🧭 Easy Navigation – Simple and user-friendly interface\n⚡ Fast & Mobile-Friendly – Smooth experience across devices\n🎞️ Nostalgic Experience – Bringing back the classic feeling of watching anime\n🎨 Modern UI – Clean, premium, and anime-focused design\n🤝 Community Focused – Built around interaction and discovering anime together\n🌟 All-in-One Platform – Streaming, manga, profiles, comments, and community features in one pla",
-      "status": "approved",
-      "submittedAt": 1785821349984
-    },
-    {
-      "id": "mse87up2m496p",
-      "siteName": "N Mirror",
-      "siteUrl": "https://nmirror.online/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "It has Large collection of Movies, series and Tv shows. You will find out almost all collections here. Moreover, it has AI assitance feature which helps user to explore the movies based on its Mood or Genre prefernce by just chatting to AI. It has multiple servers with 4K quality. Also, Developers Update it on continuous basis so new features comes up.",
-      "status": "approved",
-      "submittedAt": 1785821845286
-    },
-    {
-      "id": "msedbvp6brrwz",
-      "siteName": "Disney+",
-      "siteUrl": "https://www.disneyplus.com/home",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785830431290
-    },
-    {
-      "id": "msegwzqn19anj",
-      "siteName": "pocketfm,com",
-      "siteUrl": "https://pocketfm.com/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Apps"
-        }
-      ],
-      "reason": "i love the story hering and nice apps of auido story and best",
-      "status": "approved",
-      "submittedAt": 1785836455151
-    },
-    {
-      "id": "msekf0krtpvzg",
-      "siteName": "https://movielinkbd.shop/",
-      "siteUrl": "https://movielinkbd.shop/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785842334891
-    },
-    {
-      "id": "msf9agcwb9ftv",
-      "siteName": "FMovies",
-      "siteUrl": "https://fmovies4u.co/home/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785884112464
-    },
-    {
-      "id": "msf9bac7bxx9j",
-      "siteName": "XTubeFlix",
-      "siteUrl": "https://xtubeflix.com/home/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785884151319
-    },
-    {
-      "id": "msf9bxg9hpkg8",
-      "siteName": "9Anime",
-      "siteUrl": "https://9anime.or.at/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1785884181273
-    },
-    {
-      "id": "msfpoo4flvxls",
-      "siteName": "Netmirror",
-      "siteUrl": "https://netprime.click",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "NetPrime helps viewers discover movies, TV series, popular releases, complete seasons, and highly rated titles in one simple place. Browse the NetPrime catalog by genre, country, year, or IMDb rating, then open the title page for details, episodes, and available viewing options.",
-      "status": "approved",
-      "submittedAt": 1785911649567
-    },
-    {
-      "id": "msh703dyq60la",
-      "siteName": "zstream",
-      "siteUrl": "https://zstream.mov",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "large library best sources actively developed mobile,tv native apps, download support and more",
-      "status": "approved",
-      "submittedAt": 1786001202214
-    },
-    {
-      "id": "mshcq5q2tzi5t",
-      "siteName": "OnlyFlix",
-      "siteUrl": "https://onlyflix.to/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Reliable and always working. Fast, and low ads",
-      "status": "approved",
-      "submittedAt": 1786010816378
-    },
-    {
-      "id": "mshcrhwe1qcvc",
-      "siteName": "Braflix",
-      "siteUrl": "https://braflix.uk/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Visually very good, smooth, supports 4k, many many servers, always works, little to no ads",
-      "status": "approved",
-      "submittedAt": 1786010878814
-    },
-    {
-      "id": "mshcs71exe2eq",
-      "siteName": "SWatchSeries",
-      "siteUrl": "https://swatchseries.cx/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Just another option to add when others don't work. Reliable",
-      "status": "approved",
-      "submittedAt": 1786010911394
-    },
-    {
-      "id": "mshmme3qisazy",
-      "siteName": "animelok",
-      "siteUrl": "https://animelok.live/home",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "nice website and also Hindi dub available and english",
-      "status": "approved",
-      "submittedAt": 1786027436775
-    },
-    {
-      "id": "msj04jzzfylzi",
-      "siteName": "Anime Drive",
-      "siteUrl": "https://animedrive.in/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "This Website Is For Downloading Anime And The Best Part Of This Website There Are 0 Ads On Main Pages",
-      "status": "approved",
-      "submittedAt": 1786110585407
-    },
-    {
-      "id": "msj5t4qkaic2d",
-      "siteName": "netflex",
-      "siteUrl": "https://www.netflix.com/pk/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1786120130108
-    },
-    {
-      "id": "mskf2emnnu6g7",
-      "siteName": "TmovieS",
-      "siteUrl": "https://tmovies.watch/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1786196145551
-    },
-    {
-      "id": "mskgwoosacwg2",
-      "siteName": "7reels",
-      "siteUrl": "https://7reels.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "its avery good site with lots of servers and easy to use",
-      "status": "approved",
-      "submittedAt": 1786199237884
-    },
-    {
-      "id": "msklbg8y8exyg",
-      "siteName": "Play Anima",
-      "siteUrl": "https://playanime.online/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "UK",
-          "category": "Anime"
-        },
-        {
-          "region": "CA",
-          "category": "Anime"
-        },
-        {
-          "region": "AU",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "DE",
-          "category": "Anime"
-        },
-        {
-          "region": "FR",
-          "category": "Anime"
-        },
-        {
-          "region": "JP",
-          "category": "Anime"
-        },
-        {
-          "region": "KR",
-          "category": "Anime"
-        },
-        {
-          "region": "MX",
-          "category": "Anime"
-        },
-        {
-          "region": "BR",
-          "category": "Anime"
-        },
-        {
-          "region": "IT",
-          "category": "Anime"
-        },
-        {
-          "region": "ES",
-          "category": "Anime"
-        },
-        {
-          "region": "NL",
-          "category": "Anime"
-        },
-        {
-          "region": "PL",
-          "category": "Anime"
-        }
-      ],
-      "reason": "Large Library, Latest Shows and episode, Tending Anime, Latest Anime Blogs",
-      "status": "approved",
-      "submittedAt": 1786206645250
-    },
-    {
-      "id": "msluz1ij7dgc7",
-      "siteName": "WatchAnimeX",
-      "siteUrl": "https://watchanimez.me/",
-      "targets": [
-        {
-          "region": "UK",
-          "category": "Anime"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "IT",
-          "category": "Anime"
-        },
-        {
-          "region": "JP",
-          "category": "Anime"
-        },
-        {
-          "region": "CA",
-          "category": "Anime"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "FR",
-          "category": "Anime"
-        },
-        {
-          "region": "NL",
-          "category": "Anime"
-        },
-        {
-          "region": "AU",
-          "category": "Anime"
-        }
-      ],
-      "reason": "Multi lang support anime and dub and sub sync progress watching anilist mal and Anicore for high quality metadata",
-      "status": "approved",
-      "submittedAt": 1786283328619
-    },
-    {
-      "id": "mslv2e9ov0i69",
-      "siteName": "https://watchanimez.me/",
-      "siteUrl": "https://watchanimez.me/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1786283485116
-    },
-    {
-      "id": "msmjd48k0j1mt",
-      "siteName": "Cinemove — Watch Movies and TV Shows Online Streaming",
-      "siteUrl": "https://cinemove.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Watch trending movies and TV shows online in one fast, modern streaming hub with smart search, watchlists, and seamless playback.",
-      "status": "approved",
-      "submittedAt": 1786324296116
-    },
-    {
-      "id": "msmvp64tob16z",
-      "siteName": "Tabi",
-      "siteUrl": "https://www.tabii.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "because it has every single premium turkish series that are only accessible in turkey",
-      "status": "approved",
-      "submittedAt": 1786345013837
-    },
-    {
-      "id": "msoy1em156oep",
-      "siteName": "Streaming Site and more",
-      "siteUrl": "https://cinemove.cc",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "Global",
-          "category": "Live TV & Sports"
-        }
-      ],
-      "reason": "We have little advertising.",
-      "status": "approved",
-      "submittedAt": 1786469876281
-    },
-    {
-      "id": "msq73pms74dmg",
-      "siteName": "7reels",
-      "siteUrl": "https://7reels.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1786545566596
-    },
-    {
-      "id": "msu6bouv54lv1",
-      "siteName": "Vuflix",
-      "siteUrl": "https://vuflix.co/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "So basically anywhere, trying to make my site more popular, any help is welcome.",
-      "status": "approved",
-      "submittedAt": 1786786123927
-    },
-    {
-      "id": "msvddvi6og20z",
-      "siteName": "Anime streaming site in all language along with official hindi",
-      "siteUrl": "https://aniflix.uno/",
-      "targets": [
-        {
-          "region": "US",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "Large library, multiple server, latest anime and lots of customisation along with watch2gather like awesome features",
-      "status": "approved",
-      "submittedAt": 1786858449342
-    },
-    {
-      "id": "msvdf8ijtmodx",
-      "siteName": "Multi movies streaming site",
-      "siteUrl": "https://flixhub.aniflix.uno/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "The best ui and the largest library",
-      "status": "approved",
-      "submittedAt": 1786858512859
-    },
-    {
-      "id": "msvdgw32qsgb5",
-      "siteName": "Manga reader",
-      "siteUrl": "https://anireads.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Manga"
-        }
-      ],
-      "reason": "Best ui least adds with a great reader experience and live tracking of manga",
-      "status": "approved",
-      "submittedAt": 1786858590062
-    },
-    {
-      "id": "msvu7amn4mnn5",
-      "siteName": "Anicine",
-      "siteUrl": "https://anicine.xyz/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "in my site have separate movie / tv show / anime section and also you can block ads by going from account section there have many provider and also custum player",
-      "status": "approved",
-      "submittedAt": 1786886695823
-    },
-    {
-      "id": "mt0dac0y08fcx",
-      "siteName": "Pixel Flix",
-      "siteUrl": "https://pixelflix.cc/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "FR",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "free movies series and anime without ads",
-      "status": "approved",
-      "submittedAt": 1787160615011
-    },
-    {
-      "id": "mt0hh2u49326z",
-      "siteName": "Ani waves",
-      "siteUrl": "https://aniwaves.ru/home",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "its one of the best anime website , you should  list it",
-      "status": "approved",
-      "submittedAt": 1787167648156
-    },
-    {
-      "id": "mt8grgrvf4v1u",
-      "siteName": "Anime Play",
-      "siteUrl": "https://dub.animeplay.icu/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
-      "status": "approved",
-      "submittedAt": 1787650182571
-    },
-    {
-      "id": "mt96pfz7635eo",
-      "siteName": "AllFlix",
-      "siteUrl": "https://allflix.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "AllFlix is a clean, ad-free streaming site offering a smooth and user-friendly experience for watching movies and TV shows. With a growing library, modern interface, and fast navigation, we believe AllFlix would be a strong addition to your platform and valuable to your users.",
-      "status": "approved",
-      "submittedAt": 1787693758243
-    },
-    {
-      "id": "mt9o0y7rfal7s",
-      "siteName": "cinehd",
-      "siteUrl": "https://cinehd.vc/",
-      "targets": [
-        {
-          "region": "US",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "it contains movies from almost all paid sites around the world and contains al types of movies,anime,manga,songs all in one place plus we have a choice to switch over a wide range of servers if a current server doent work we can watch the particular movie in almost all available language using this site",
-      "status": "approved",
-      "submittedAt": 1787722848567
-    },
-    {
-      "id": "mt9tskoef1uox",
-      "siteName": "animerulz",
-      "siteUrl": "https://animerulz.co.in/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1787732535470
-    },
-    {
-      "id": "mtbry9m55oqmw",
-      "siteName": "fancode",
-      "siteUrl": "https://www.fancode.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Live TV & Sports"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1787850374189
-    },
-    {
-      "id": "mtldts7746vwb",
-      "siteName": "Primeshows",
-      "siteUrl": "https://primeshows.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1788431312131
-    },
-    {
-      "id": "mtldu0qzxwq1u",
-      "siteName": "Netshows",
-      "siteUrl": "https://netshows.xyz/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1788431323211
-    },
-    {
-      "id": "mtmqexatvl0sj",
-      "siteName": "OTANOX",
-      "siteUrl": "https://otanox.online/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1788512920085
-    },
-    {
-      "id": "mtsagsxg29tvx",
-      "siteName": "HiAnime",
-      "siteUrl": "https://hianime.at/home",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1788848930932
-    },
-    {
-      "id": "mtt0kcnf9oep4",
-      "siteName": "HDHub4U",
-      "siteUrl": "https://hdhub4u.bi/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "approved",
-      "submittedAt": 1788892766475
-    },
-    {
-      "id": "mtxcf732hdchu",
-      "siteName": "bingr one",
-      "siteUrl": "https://bingr.one/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Bingr is an all-in-one streaming platform for movies, TV shows, anime, and live sports with multi-language audio & subtitles, multi-profile sync, cross-device watch progress, and a clean, fast UI.",
-      "status": "approved",
-      "submittedAt": 1789154546078
-    },
-    {
-      "id": "mtylmazw5gd5l",
-      "siteName": "kisskh dramaplanets cinevo etc",
-      "siteUrl": "https://www.dramaplanets.online/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "you should add this websites because they will attract more audience like k drama c drama fans cz they r having problems to find websites so if u will add websites for dramas this will be a huge profit for you. thank you",
-      "status": "approved",
-      "submittedAt": 1789230460460
-    },
-    {
-      "id": "mu720r7fzn13i",
-      "siteName": "Animetsu",
-      "siteUrl": "https://animetsu.site/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "Best ui fast site large library",
-      "status": "approved",
-      "submittedAt": 1789741737915
-    }
-  ]
+  "requests": []
 }

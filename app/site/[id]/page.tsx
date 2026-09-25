@@ -39,7 +39,7 @@ function getSiteOverview(site: { name: string; domain: string; category: string;
   return `${site.name} (${site.domain}) is a curated ${typeDesc} listed in the ${site.category} section on AllSiteHub.${trustDesc}${regionDesc}`;
 }
 
-export const revalidate = 600; // ISR: 10-minute edge cache, instant on-demand revalidation via writeDB
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   const db = await readDB();

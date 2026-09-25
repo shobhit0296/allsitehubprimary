@@ -26,6 +26,41 @@ function run(cmd, desc) {
 async function main() {
   console.log('\x1b[32m🚀 Starting 1-Command Production Deployment...\x1b[0m');
 
+  // 0. Auto-sync latest live DB from Redis into local data/db.json & lib/data.ts
+  try {
+    console.log('\n\x1b[36m⚡ [0/4 Syncing Live Database]\x1b[0m Pulling latest admin changes from Redis...');
+    let envLocal = '';
+    try { envLocal = fs.readFileSync('.env.local', 'utf8'); } catch {}
+    const redisUrl = process.env.KV_REST_API_URL || envLocal.match(/KV_REST_API_URL=["']?([^"'\r\n]+)/)?.[1] || "https://tight-katydid-177010.upstash.io";
+    const redisToken = process.env.KV_REST_API_TOKEN || envLocal.match(/KV_REST_API_TOKEN=["']?([^"'\r\n]+)/)?.[1] || "gQAAAAAAArNyAAIgcDI4NzA1NzRjMTUzMDI0MzRlYTgyZWJlMjhiNDk1NzAxNQ";
+    const redisRes = await fetch(`${redisUrl}/get/allsitehub:db`, {
+      headers: { Authorization: `Bearer ${redisToken}` }
+    });
+    const redisJson = await redisRes.json();
+    let data = redisJson.result;
+    if (typeof data === 'string') {
+      try { data = JSON.parse(data); } catch {}
+    }
+    if (data && Array.isArray(data.sites) && data.sites.length > 0) {
+      fs.writeFileSync('data/db.json', JSON.stringify(data, null, 2), 'utf8');
+      console.log(`\x1b[32m✅ Synced ${data.sites.length} sites from Redis to data/db.json\x1b[0m`);
+      
+      const dataTs = fs.readFileSync('lib/data.ts', 'utf8');
+      const startMarker = 'export const SITES: Site[] = ';
+      const sIdx = dataTs.indexOf(startMarker);
+      if (sIdx !== -1) {
+        const endMarker = ';\n\nexport function filterSites';
+        const eIdx = dataTs.indexOf(endMarker, sIdx);
+        if (eIdx !== -1) {
+          const newContent = dataTs.slice(0, sIdx + startMarker.length) + JSON.stringify(data.sites, null, 2) + dataTs.slice(eIdx);
+          fs.writeFileSync('lib/data.ts', newContent, 'utf8');
+        }
+      }
+    }
+  } catch (syncErr) {
+    console.warn('⚠️  Could not auto-sync from Redis:', syncErr.message);
+  }
+
   // 1. Stage all changes
   run('git add -A', '1/3 Staging Git Changes');
 
