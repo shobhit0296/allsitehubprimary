@@ -94,15 +94,45 @@ export async function PUT(req: NextRequest, { params }: Params) {
   });
 }
 
-/* DELETE — remove request */
+/* DELETE — remove request(s) */
 export async function DELETE(req: NextRequest, { params }: Params) {
   const blocked = await guard(req, params);
   if (blocked) return blocked;
-  const id = new URL(req.url).searchParams.get('id');
-  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
+  const url = new URL(req.url);
+  const singleId = url.searchParams.get('id');
+  const idsParam = url.searchParams.get('ids');
+
+  let idsToDelete: string[] = [];
+
+  if (singleId) {
+    idsToDelete.push(singleId);
+  }
+  if (idsParam) {
+    idsToDelete.push(...idsParam.split(',').map(s => s.trim()).filter(Boolean));
+  }
+
+  // Also check JSON body if no query params
+  if (idsToDelete.length === 0) {
+    try {
+      const body = await req.json();
+      if (body?.id) idsToDelete.push(body.id);
+      if (Array.isArray(body?.ids)) idsToDelete.push(...body.ids);
+    } catch {
+      /* body was empty or not json */
+    }
+  }
+
+  if (idsToDelete.length === 0) {
+    return NextResponse.json({ error: 'id or ids required' }, { status: 400 });
+  }
+
+  const idsSet = new Set(idsToDelete);
   const db = await readDB();
-  db.requests = db.requests.filter(r => r.id !== id);
+  const initialCount = db.requests.length;
+  db.requests = db.requests.filter(r => !idsSet.has(r.id));
+  const deletedCount = initialCount - db.requests.length;
+
   await writeDB(db);
-  return new NextResponse(null, { status: 204 });
+  return NextResponse.json({ success: true, deleted: deletedCount });
 }

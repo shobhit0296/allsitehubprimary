@@ -81,6 +81,104 @@ function findMatchingSite(req: SiteRequest, siteList: Site[]): Site | undefined 
   });
 }
 
+/* ── Content & Quality Filters ── */
+const ADULT_KEYWORDS = [
+  'porn', 'xxx', 'xvideo', 'xvideos', 'xnxx', 'pornhub', 'xhamster', 'hentai', 'erotic', 'erotica',
+  'nsfw', 'nude', 'nudity', 'stripchat', 'onlyfans', 'fansly', 'redtube', 'youporn',
+  'brazzers', 'chaturbate', 'eporner', 'spankbang', 'beeg', 'rule34', 'fetish',
+  'hardcore', 'bhabhi', 'jav', 'tubegalore', 'fap', 'sex', 'sexy', 'cams', 'camwhores',
+  'shemale', 'incest', 'masturbat', 'boobs', 'pussy', 'dick', 'cock', 'slut', 'threesome'
+];
+
+const UNNECESSARY_DOMAINS = new Set([
+  'google.com', 'google.co.in', 'bing.com', 'yahoo.com', 'duckduckgo.com', 'baidu.com', 'yandex.com',
+  'facebook.com', 'instagram.com', 'twitter.com', 'x.com', 'tiktok.com', 'reddit.com',
+  'discord.com', 'discord.gg', 'telegram.org', 't.me', 'whatsapp.com', 'youtube.com', 'youtu.be',
+  'wikipedia.org', 'bit.ly', 'tinyurl.com', 't.co', 'cutt.ly', 'is.gd'
+]);
+
+function checkAdultRequest(req: SiteRequest): { isAdult: boolean; reason?: string } {
+  const text = `${req.siteName || ''} ${req.siteUrl || ''} ${req.reason || ''}`.toLowerCase();
+  const domain = cleanDomain(req.siteUrl);
+  const domainParts = domain.split(/[.-]/);
+
+  for (const kw of ADULT_KEYWORDS) {
+    if (domainParts.includes(kw)) {
+      return { isAdult: true, reason: `Adult keyword "${kw}" in domain` };
+    }
+    const regex = new RegExp(`(?:^|[^a-z0-9])${kw}(?:$|[^a-z0-9])`, 'i');
+    if (regex.test(text)) {
+      return { isAdult: true, reason: `Adult keyword "${kw}"` };
+    }
+  }
+
+  for (const target of req.targets || []) {
+    const cat = (target.category || '').toLowerCase();
+    if (cat.includes('adult') || cat.includes('nsfw') || cat.includes('18+') || cat.includes('porn')) {
+      return { isAdult: true, reason: `18+ Category "${target.category}"` };
+    }
+  }
+
+  return { isAdult: false };
+}
+
+function checkImproperOrUnnecessary(req: SiteRequest): { isImproper: boolean; reason?: string } {
+  const raw = (req.siteUrl || '').trim();
+  if (!raw) return { isImproper: true, reason: 'Empty or missing URL' };
+
+  let urlToParse = raw;
+  if (!/^https?:\/\//i.test(urlToParse)) urlToParse = 'https://' + urlToParse;
+
+  try {
+    const parsed = new URL(urlToParse);
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, '');
+
+    if (UNNECESSARY_DOMAINS.has(host)) {
+      return { isImproper: true, reason: `Unnecessary general platform: ${host}` };
+    }
+    if (!host.includes('.')) {
+      return { isImproper: true, reason: `Missing domain extension: ${host}` };
+    }
+    const parts = host.split('.');
+    const tld = parts[parts.length - 1];
+    if (!tld || tld.length < 2 || !/^[a-z]{2,24}$/i.test(tld)) {
+      return { isImproper: true, reason: `Invalid TLD: .${tld}` };
+    }
+    if (/^\d+\.\d+\.\d+\.\d+$/.test(host)) {
+      return { isImproper: true, reason: `Raw IP address: ${host}` };
+    }
+  } catch {
+    return { isImproper: true, reason: 'Malformed or invalid URL' };
+  }
+
+  return { isImproper: false };
+}
+
+function checkDuplicateRequest(req: SiteRequest, allRequests: SiteRequest[], siteList: Site[]): { isDuplicate: boolean; reason?: string } {
+  const matched = findMatchingSite(req, siteList);
+  if (matched) {
+    return { isDuplicate: true, reason: `Already listed in "${matched.category}"` };
+  }
+
+  const reqDom = cleanDomain(req.siteUrl);
+  const reqUrl = (req.siteUrl || '').toLowerCase().trim().replace(/\/+$/, '');
+
+  const sameReqs = allRequests.filter(r => {
+    const otherDom = cleanDomain(r.siteUrl);
+    const otherUrl = (r.siteUrl || '').toLowerCase().trim().replace(/\/+$/, '');
+    return (reqDom && otherDom && reqDom === otherDom) || (reqUrl && otherUrl && reqUrl === otherUrl);
+  });
+
+  if (sameReqs.length > 1) {
+    const firstId = sameReqs[0].id;
+    if (req.id !== firstId) {
+      return { isDuplicate: true, reason: `Duplicate submission (${sameReqs.length} total entries)` };
+    }
+  }
+
+  return { isDuplicate: false };
+}
+
 export default function AdminDashboard({ panel, initialSites, initialRequests, categories: initialCategories, regions }: Props) {
   const router = useRouter();
   const apiSites = `/api/${panel}/sites`;
@@ -190,10 +288,45 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
 
   /* ── Requests state ── */
   const [requests, setRequests] = useState<SiteRequest[]>(initialRequests);
+  const [reqCategory, setReqCategory] = useState<'clean' | 'adult' | 'duplicates' | 'invalid' | 'all'>('clean');
   const [reqSearch, setReqSearch] = useState('');
   const [reqFilter, setReqFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [reqListingFilter, setReqListingFilter] = useState<'all' | 'listed' | 'not-listed'>('all');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  /* ── Classification & Segmentation ── */
+  const classifiedRequests = useMemo(() => {
+    return requests.map(req => {
+      const adult = checkAdultRequest(req);
+      const improper = checkImproperOrUnnecessary(req);
+      const duplicate = checkDuplicateRequest(req, requests, sites);
+      const isClean = !adult.isAdult && !improper.isImproper && !duplicate.isDuplicate;
+
+      return {
+        req,
+        adult,
+        improper,
+        duplicate,
+        isClean,
+      };
+    });
+  }, [requests, sites]);
+
+  const requestCategoryCounts = useMemo(() => {
+    let clean = 0;
+    let adult = 0;
+    let duplicates = 0;
+    let invalid = 0;
+
+    classifiedRequests.forEach(c => {
+      if (c.adult.isAdult) adult++;
+      else if (c.improper.isImproper) invalid++;
+      else if (c.duplicate.isDuplicate) duplicates++;
+      if (c.isClean) clean++;
+    });
+
+    return { clean, adult, duplicates, invalid, total: requests.length };
+  }, [classifiedRequests, requests.length]);
 
   /* ── Stats ── */
   const stats = useMemo(() => ({
@@ -203,7 +336,14 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     featured: sites.filter(s => s.isFeatured).length,
   }), [sites]);
 
-  const pendingCount = useMemo(() => requests.filter(r => r.status === 'pending').length, [requests]);
+  const pendingCount = useMemo(() => {
+    // Clean pending requests count for main dashboard alerts
+    return classifiedRequests.filter(c => c.isClean && c.req.status === 'pending').length;
+  }, [classifiedRequests]);
+
+  const totalPendingCount = useMemo(() => {
+    return requests.filter(r => r.status === 'pending').length;
+  }, [requests]);
 
   /* ── Request listing stats ── */
   const requestListingStats = useMemo(() => {
@@ -238,23 +378,43 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
 
   /* ── Filtered requests ── */
   const filteredReqs = useMemo(() => {
-    let list = requests;
-    if (reqFilter !== 'all') list = list.filter(r => r.status === reqFilter);
-    if (reqListingFilter === 'listed') {
-      list = list.filter(r => Boolean(findMatchingSite(r, sites)));
-    } else if (reqListingFilter === 'not-listed') {
-      list = list.filter(r => !findMatchingSite(r, sites));
+    let list = classifiedRequests;
+
+    // 1. Segmentation Section Filter
+    if (reqCategory === 'clean') {
+      list = list.filter(c => c.isClean);
+    } else if (reqCategory === 'adult') {
+      list = list.filter(c => c.adult.isAdult);
+    } else if (reqCategory === 'duplicates') {
+      list = list.filter(c => c.duplicate.isDuplicate);
+    } else if (reqCategory === 'invalid') {
+      list = list.filter(c => c.improper.isImproper);
     }
+
+    // 2. Status Filter
+    if (reqFilter !== 'all') {
+      list = list.filter(c => c.req.status === reqFilter);
+    }
+
+    // 3. Directory Listing Filter
+    if (reqListingFilter === 'listed') {
+      list = list.filter(c => Boolean(findMatchingSite(c.req, sites)));
+    } else if (reqListingFilter === 'not-listed') {
+      list = list.filter(c => !findMatchingSite(c.req, sites));
+    }
+
+    // 4. Search Filter
     if (reqSearch.trim()) {
       const q = reqSearch.toLowerCase();
-      list = list.filter(r =>
-        r.siteName.toLowerCase().includes(q) ||
-        r.siteUrl.toLowerCase().includes(q) ||
-        (r.reason && r.reason.toLowerCase().includes(q))
+      list = list.filter(c =>
+        c.req.siteName.toLowerCase().includes(q) ||
+        c.req.siteUrl.toLowerCase().includes(q) ||
+        (c.req.reason && c.req.reason.toLowerCase().includes(q))
       );
     }
+
     return list;
-  }, [requests, reqFilter, reqListingFilter, reqSearch, sites]);
+  }, [classifiedRequests, reqCategory, reqFilter, reqListingFilter, reqSearch, sites]);
 
   /* ── Refresh functions ── */
   const refreshSites = useCallback(async () => {
@@ -576,6 +736,23 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     }
   };
 
+  const deleteMultipleRequests = async (ids: string[], label: string) => {
+    if (ids.length === 0) return;
+    if (!confirm(`Are you sure you want to permanently delete all ${ids.length} ${label}? This cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${apiRequests}?ids=${ids.join(',')}`, { method: 'DELETE' });
+      if (res.ok) {
+        const idsSet = new Set(ids);
+        setRequests(prev => prev.filter(r => !idsSet.has(r.id)));
+        showToast(`✅ Successfully deleted ${ids.length} ${label}`, 'info');
+      } else {
+        showToast('Failed to delete requests.', 'error');
+      }
+    } catch {
+      showToast('Network error deleting requests.', 'error');
+    }
+  };
+
   const setField = (k: keyof typeof EMPTY_FORM, v: unknown) => setForm(prev => ({ ...prev, [k]: v }));
 
   /* ══════════════════ RENDER ══════════════════ */
@@ -885,6 +1062,107 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         {/* ════════════════ REQUESTS TAB ════════════════ */}
         {activeTab === 'requests' && (
           <div>
+            {/* ── Quality & Content Segmentation Tabs ── */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+              {[
+                { id: 'clean', label: 'Clean Requests', icon: '📬', count: requestCategoryCounts.clean, color: '#38bdf8', activeBg: 'rgba(56,189,248,0.18)', activeBorder: 'rgba(56,189,248,0.4)' },
+                { id: 'adult', label: '18+ Adult Filter', icon: '🔞', count: requestCategoryCounts.adult, color: '#f43f5e', activeBg: 'rgba(244,63,94,0.18)', activeBorder: 'rgba(244,63,94,0.45)', isWarning: requestCategoryCounts.adult > 0 },
+                { id: 'duplicates', label: 'Duplicates & Listed', icon: '⚠️', count: requestCategoryCounts.duplicates, color: '#c084fc', activeBg: 'rgba(192,132,252,0.18)', activeBorder: 'rgba(192,132,252,0.4)' },
+                { id: 'invalid', label: 'Invalid / Spam Domains', icon: '🚫', count: requestCategoryCounts.invalid, color: '#fbbf24', activeBg: 'rgba(251,191,36,0.18)', activeBorder: 'rgba(251,191,36,0.4)' },
+                { id: 'all', label: 'All Submissions', icon: '📑', count: requests.length, color: 'var(--text-secondary)', activeBg: 'rgba(255,255,255,0.1)', activeBorder: 'rgba(255,255,255,0.25)' },
+              ].map(tab => {
+                const isSelected = reqCategory === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setReqCategory(tab.id as typeof reqCategory)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 7, padding: '7px 14px', borderRadius: 9,
+                      fontSize: 12, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s',
+                      background: isSelected ? tab.activeBg : 'var(--bg-surface)',
+                      border: `1px solid ${isSelected ? tab.activeBorder : 'var(--border)'}`,
+                      color: isSelected ? tab.color : 'var(--text-muted)',
+                      boxShadow: isSelected ? `0 2px 10px ${tab.activeBg}` : 'none',
+                    }}
+                  >
+                    <span>{tab.icon}</span>
+                    <span>{tab.label}</span>
+                    <span style={{
+                      padding: '1px 6px', borderRadius: 6, fontSize: 11, fontWeight: 800,
+                      background: isSelected ? tab.color : 'rgba(255,255,255,0.06)',
+                      color: isSelected ? '#000' : 'var(--text-muted)',
+                    }}>
+                      {tab.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* ── Category Specific Alert & Batch Purge Banners ── */}
+            {reqCategory === 'adult' && (
+              <div style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.25)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 22 }}>🔞</span>
+                  <div>
+                    <strong style={{ color: '#f87171', fontSize: 13, display: 'block' }}>18+ / Adult Content Filter Active</strong>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: 12 }}>Requests containing explicit adult or NSFW keywords are automatically segregated here away from the public directory queue.</span>
+                  </div>
+                </div>
+                {filteredReqs.length > 0 && (
+                  <button
+                    onClick={() => deleteMultipleRequests(filteredReqs.map(c => c.req.id), '18+ adult requests')}
+                    style={{ padding: '8px 14px', background: 'rgba(244,63,94,0.2)', border: '1px solid rgba(244,63,94,0.4)', borderRadius: 8, color: '#fca5a5', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                  >
+                    <span>🗑️</span>
+                    <span>Purge All 18+ Requests ({filteredReqs.length})</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {reqCategory === 'invalid' && (
+              <div style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.25)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 22 }}>🚫</span>
+                  <div>
+                    <strong style={{ color: '#fbbf24', fontSize: 13, display: 'block' }}>Improper &amp; Unnecessary Domain Filter Active</strong>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: 12 }}>Submissions with missing TLDs, invalid URL syntax, or generic platforms (Google, YouTube homepages, link shorteners) are isolated here.</span>
+                  </div>
+                </div>
+                {filteredReqs.length > 0 && (
+                  <button
+                    onClick={() => deleteMultipleRequests(filteredReqs.map(c => c.req.id), 'invalid domain requests')}
+                    style={{ padding: '8px 14px', background: 'rgba(251,191,36,0.2)', border: '1px solid rgba(251,191,36,0.4)', borderRadius: 8, color: '#fde68a', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                  >
+                    <span>🗑️</span>
+                    <span>Purge All Invalid Requests ({filteredReqs.length})</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {reqCategory === 'duplicates' && (
+              <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.25)', borderRadius: 10, padding: '12px 16px', marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 22 }}>⚠️</span>
+                  <div>
+                    <strong style={{ color: '#c084fc', fontSize: 13, display: 'block' }}>Duplicate &amp; Already-Listed Filter Active</strong>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: 12 }}>Submissions that repeat existing request URLs or belong to websites already active on AllSiteHub.</span>
+                  </div>
+                </div>
+                {filteredReqs.length > 0 && (
+                  <button
+                    onClick={() => deleteMultipleRequests(filteredReqs.map(c => c.req.id), 'duplicate requests')}
+                    style={{ padding: '8px 14px', background: 'rgba(168,85,247,0.2)', border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, color: '#e9d5ff', fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                  >
+                    <span>🗑️</span>
+                    <span>Purge All Duplicates ({filteredReqs.length})</span>
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* Filters */}
             <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
               <div style={{ position: 'relative', flex: '1 1 200px', maxWidth: 300 }}>
@@ -966,18 +1244,25 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
             </div>
 
             <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 12 }}>
-              Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredReqs.length}</strong> requests
+              Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredReqs.length}</strong> requests in{' '}
+              <strong style={{ color: 'var(--text-primary)', textTransform: 'capitalize' }}>{reqCategory === 'clean' ? 'Clean Submissions' : reqCategory}</strong>
             </p>
 
             {filteredReqs.length === 0 ? (
               <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
-                <div style={{ fontSize: 36, marginBottom: 12 }}>📬</div>
-                <p style={{ fontWeight: 600 }}>No matching user requests found.</p>
-                <p style={{ fontSize: 12, marginTop: 4 }}>New site submission requests will appear here instantly.</p>
+                <div style={{ fontSize: 36, marginBottom: 12 }}>
+                  {reqCategory === 'clean' ? '📬' : reqCategory === 'adult' ? '🔞' : reqCategory === 'duplicates' ? '⚠️' : '🚫'}
+                </div>
+                <p style={{ fontWeight: 600 }}>
+                  {reqCategory === 'clean' ? 'No clean requests found.' : `No requests in ${reqCategory} section.`}
+                </p>
+                <p style={{ fontSize: 12, marginTop: 4 }}>
+                  {reqCategory === 'clean' ? 'All clean submissions will appear here for editorial review.' : 'Items matching this filter will be isolated here automatically.'}
+                </p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {filteredReqs.map(req => {
+                {filteredReqs.map(({ req, adult, improper, duplicate, isClean }) => {
                   const st = STATUS_STYLE[req.status] || STATUS_STYLE.pending;
                   const busy = updatingId === req.id;
                   const matchingSite = findMatchingSite(req, sites);
@@ -999,6 +1284,31 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
                           <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: st.bg, color: st.color, border: `1px solid ${st.border}` }}>
                             {st.label}
                           </span>
+
+                          {/* Quality Diagnostic Badges */}
+                          {adult.isAdult && (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(244,63,94,0.18)', color: '#f87171', border: '1px solid rgba(244,63,94,0.35)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <span>🔞</span> {adult.reason}
+                            </span>
+                          )}
+
+                          {improper.isImproper && (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(251,191,36,0.18)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.35)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <span>🚫</span> {improper.reason}
+                            </span>
+                          )}
+
+                          {duplicate.isDuplicate && (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(192,132,252,0.18)', color: '#c084fc', border: '1px solid rgba(192,132,252,0.35)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <span>⚠️</span> {duplicate.reason}
+                            </span>
+                          )}
+
+                          {isClean && (
+                            <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 5, background: 'rgba(56,189,248,0.15)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.3)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                              <span>✓</span> Clean Request
+                            </span>
+                          )}
 
                           {/* Live Listed Indicator */}
                           {isListed ? (
