@@ -22,75 +22,103 @@ export async function GET(req: NextRequest, { params }: Params) {
   const blocked = await guard(req, params);
   if (blocked) return blocked;
   const db = await readDB();
+
+  // Ensure any rejected requests are purged completely from the database
+  const hadRejected = db.requests.some(r => r.status === 'rejected');
+  if (hadRejected) {
+    db.requests = db.requests.filter(r => r.status !== 'rejected');
+    await writeDB(db);
+  }
+
   return NextResponse.json(db.requests.slice().reverse()); // newest first
 }
 
-/* PUT — update status (Approve & auto-publish to live site) */
+/* PUT — update status (Approve & auto-publish to live site, or Reject & completely remove) */
 export async function PUT(req: NextRequest, { params }: Params) {
   const blocked = await guard(req, params);
   if (blocked) return blocked;
-  const { id, status } = await req.json() as { id: string; status: string };
-  if (!id || !status) return NextResponse.json({ error: 'id and status required' }, { status: 400 });
 
+  const body = await req.json() as { id?: string; ids?: string[]; status: string };
+  const { id, ids, status } = body;
+  if ((!id && (!ids || ids.length === 0)) || !status) {
+    return NextResponse.json({ error: 'id or ids and status required' }, { status: 400 });
+  }
+
+  const idsToProcess = ids && ids.length > 0 ? ids : (id ? [id] : []);
+  const idsSet = new Set(idsToProcess);
   const db = await readDB();
-  const idx = db.requests.findIndex(r => r.id === id);
-  if (idx === -1) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-  const requestItem = db.requests[idx];
-  const newStatus = status as 'pending' | 'approved' | 'rejected';
-  db.requests[idx] = { ...requestItem, status: newStatus };
+  // If rejected: REMOVE COMPLETELY from database per policy
+  if (status === 'rejected') {
+    const initialCount = db.requests.length;
+    db.requests = db.requests.filter(r => !idsSet.has(r.id));
+    const removedCount = initialCount - db.requests.length;
+    await writeDB(db);
+    return NextResponse.json({ success: true, removedCount, deleted: true });
+  }
 
-  let createdSite: Site | null = null;
+  // If approved: Auto-publish each site live and update status
+  const addedSites: Site[] = [];
+  let updatedSingleReq: typeof db.requests[0] | null = null;
 
-  // IF APPROVED: Automatically add site to db.sites so it goes LIVE instantly on the main website!
-  if (newStatus === 'approved') {
-    let domain = requestItem.siteUrl;
-    try {
-      domain = new URL(requestItem.siteUrl).hostname.replace(/^www\./, '');
-    } catch {
-      domain = requestItem.siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
-    }
+  for (let i = 0; i < db.requests.length; i++) {
+    const requestItem = db.requests[i];
+    if (idsSet.has(requestItem.id)) {
+      db.requests[i] = { ...requestItem, status: 'approved' };
+      if (id && requestItem.id === id) updatedSingleReq = db.requests[i];
 
-    // Check if a site with the same domain or URL already exists
-    const alreadyExists = db.sites.some(
-      s => s.domain.toLowerCase() === domain.toLowerCase() || s.url.toLowerCase() === requestItem.siteUrl.toLowerCase()
-    );
+      let domain = requestItem.siteUrl;
+      try {
+        domain = new URL(requestItem.siteUrl).hostname.replace(/^www\./, '');
+      } catch {
+        domain = requestItem.siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+      }
 
-    if (!alreadyExists) {
-      const category = requestItem.targets[0]?.category || db.categories[0] || 'Movies & Shows';
-      const targetRegions = Array.from(new Set(requestItem.targets.map(t => t.region).filter(Boolean)));
-      const regions = targetRegions.length > 0 ? targetRegions : ['Global'];
-
-      const maxOrder = db.sites.reduce(
-        (max, s) => (s.category === category ? Math.max(max, s.order ?? 0) : max),
-        -1
+      // Check if site already exists
+      const alreadyExists = db.sites.some(
+        s => s.domain.toLowerCase() === domain.toLowerCase() || s.url.toLowerCase() === requestItem.siteUrl.toLowerCase()
       );
 
-      createdSite = {
-        id: generateId(),
-        name: requestItem.siteName.trim(),
-        url: requestItem.siteUrl.trim(),
-        domain: domain.trim(),
-        category,
-        regions,
-        tags: ['new'],
-        isTrusted: false,
-        isNew: true,
-        isFeatured: false,
-        description: requestItem.reason ? requestItem.reason.trim() : `Watch on ${requestItem.siteName}.`,
-        addedAt: Date.now(),
-        order: maxOrder + 1,
-      };
+      if (!alreadyExists) {
+        const category = requestItem.targets[0]?.category || db.categories[0] || 'Movies & Shows';
+        const targetRegions = Array.from(new Set(requestItem.targets.map(t => t.region).filter(Boolean)));
+        const regions = targetRegions.length > 0 ? targetRegions : ['Global'];
 
-      db.sites.push(createdSite);
+        const maxOrder = db.sites.reduce(
+          (max, s) => (s.category === category ? Math.max(max, s.order ?? 0) : max),
+          -1
+        );
+
+        const createdSite: Site = {
+          id: generateId(),
+          name: requestItem.siteName.trim(),
+          url: requestItem.siteUrl.trim(),
+          domain: domain.trim(),
+          category,
+          regions,
+          tags: ['new'],
+          isTrusted: false,
+          isNew: true,
+          isFeatured: false,
+          description: requestItem.reason ? requestItem.reason.trim() : `Watch on ${requestItem.siteName}.`,
+          addedAt: Date.now(),
+          order: maxOrder + 1,
+        };
+
+        db.sites.push(createdSite);
+        addedSites.push(createdSite);
+      }
     }
   }
 
   await writeDB(db);
 
   return NextResponse.json({
-    request: db.requests[idx],
-    site: createdSite,
+    success: true,
+    approvedCount: idsToProcess.length,
+    request: updatedSingleReq,
+    site: addedSites[0] || null,
+    addedSites,
   });
 }
 

@@ -1763,20 +1763,6 @@
       "submittedAt": 1785127203965
     },
     {
-      "id": "ms2qoubb2yvs7",
-      "siteName": "Primeshows",
-      "siteUrl": "https://primeshows.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Movies and TV shows",
-      "status": "rejected",
-      "submittedAt": 1785127276919
-    },
-    {
       "id": "ms2qqyhppnpcm",
       "siteName": "ShyFlixer",
       "siteUrl": "https://skyflixer.fun/browse",
@@ -1889,20 +1875,6 @@
       "reason": "Ui innovative, private server, good archive",
       "status": "approved",
       "submittedAt": 1785445817292
-    },
-    {
-      "id": "ms8yi66y17h7w",
-      "siteName": "Netmirror Global Hindi",
-      "siteUrl": "https://netmirror.global/explore/movie",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1785503199706
     },
     {
       "id": "msahoqzxa7uu0",
@@ -2121,20 +2093,6 @@
       "reason": "NetPrime helps viewers discover movies, TV series, popular releases, complete seasons, and highly rated titles in one simple place. Browse the NetPrime catalog by genre, country, year, or IMDb rating, then open the title page for details, episodes, and available viewing options.",
       "status": "approved",
       "submittedAt": 1785911649567
-    },
-    {
-      "id": "msh2f1uc09iwf",
-      "siteName": "Ultra Jhakaas",
-      "siteUrl": "https://www.ultrajhakaas.com/series/8-waajun-13-minite/6cu99d0ks3ig",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Regional content",
-      "status": "rejected",
-      "submittedAt": 1785993501972
     },
     {
       "id": "msh703dyq60la",
@@ -2441,192 +2399,6 @@
       "submittedAt": 1786345013837
     },
     {
-      "id": "mso8aao06wz49",
-      "siteName": "ClickMovie",
-      "siteUrl": "https://clickmovie.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Our site offers a premium, user-friendly streaming experience with a clean and modern layout that is fully optimized for mobile devices. Unlike many other platforms, we maintain a strictly non-intrusive environment with minimal ads and zero inappropriate/gambling pop-ups. We update our collection daily with high-quality content to ensure users always find the latest movies and shows smoothly.",
-      "status": "rejected",
-      "submittedAt": 1786426621056
-    },
-    {
-      "id": "mso9yn82l39lp",
-      "siteName": "TNTVs",
-      "siteUrl": "https://tntvs.vercel.app/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        },
-        {
-          "region": "UK",
-          "category": "Apps"
-        },
-        {
-          "region": "CA",
-          "category": "Apps"
-        },
-        {
-          "region": "AU",
-          "category": "Apps"
-        },
-        {
-          "region": "IN",
-          "category": "Apps"
-        },
-        {
-          "region": "DE",
-          "category": "Apps"
-        },
-        {
-          "region": "FR",
-          "category": "Apps"
-        },
-        {
-          "region": "JP",
-          "category": "Apps"
-        },
-        {
-          "region": "KR",
-          "category": "Apps"
-        },
-        {
-          "region": "MX",
-          "category": "Apps"
-        },
-        {
-          "region": "BR",
-          "category": "Apps"
-        },
-        {
-          "region": "IT",
-          "category": "Apps"
-        },
-        {
-          "region": "ES",
-          "category": "Apps"
-        },
-        {
-          "region": "NL",
-          "category": "Apps"
-        },
-        {
-          "region": "PL",
-          "category": "Apps"
-        }
-      ],
-      "reason": "TNTVs is a free, mobile-friendly streaming platform that brings live TV, sports, and M3U playlist support together in one simple app. Users can watch live cricket, football, tennis, basketball, Formula 1, WWE, UFC, news, and other TV channels from around the world.\n\nThe app supports Android phones, Android TV, and Firestick, with a clean and lightweight interface designed for easy navigation. It also supports multiple streaming servers, HD/4K playback, live scores, TV casting, and M3U playlists, giving users flexibility to manage and watch their preferred streams.\n\nTNTVs is completely free with no subscription or sign-up required, making it a convenient option for users looking for an easy way to access live TV and sports streams from their devices.",
-      "status": "rejected",
-      "submittedAt": 1786429436690
-    },
-    {
-      "id": "msocqtcl7e1cd",
-      "siteName": "BoiMate Bangla Islamic PDF",
-      "siteUrl": "https://boimate.com",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Paid"
-        }
-      ],
-      "reason": "Largest Bangla Islamic PDF Collection",
-      "status": "rejected",
-      "submittedAt": 1786434110229
-    },
-    {
-      "id": "msoczy7xgw6tm",
-      "siteName": "https://allsitehub.site/request",
-      "siteUrl": "https://allsitehub.site/request",
-      "targets": [
-        {
-          "region": "FR",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786434536445
-    },
-    {
-      "id": "msoe5teyf9jwq",
-      "siteName": "Fojik",
-      "siteUrl": "https://fojik.site/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Because it have a large amout of movie and series collection. and its easy to download.",
-      "status": "rejected",
-      "submittedAt": 1786436489770
-    },
-    {
-      "id": "msolwuog0g6rs",
-      "siteName": "bingeverse",
-      "siteUrl": "https://bingeverse.online/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "fast loading, great ui, huge repository",
-      "status": "rejected",
-      "submittedAt": 1786449508432
-    },
-    {
-      "id": "msoq9fdtx8gi9",
-      "siteName": "netflix",
-      "siteUrl": "https://www.netflix.com",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Paid"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786456813601
-    },
-    {
-      "id": "msovtldzgorha",
-      "siteName": "Cloudstream",
-      "siteUrl": "https://github.com/recloudstream/cloudstream",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786466152583
-    },
-    {
-      "id": "msow4nf37ctzb",
-      "siteName": "animepahe",
-      "siteUrl": "https://animepahe.pw/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "in this site the anime is display as per the schedule. it include all types of anime with minimal ads and no malware. user experince is good and clean home screen",
-      "status": "rejected",
-      "submittedAt": 1786466668431
-    },
-    {
       "id": "msoy1em156oep",
       "siteName": "Streaming Site and more",
       "siteUrl": "https://cinemove.cc",
@@ -2649,48 +2421,6 @@
       "submittedAt": 1786469876281
     },
     {
-      "id": "msq27k33qdtmu",
-      "siteName": "Netflix.com",
-      "siteUrl": "https://www.netflix.com/in/",
-      "targets": [
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786537347951
-    },
-    {
-      "id": "msq36z7gfl9an",
-      "siteName": "Discovery FTP",
-      "siteUrl": "https://www.discoveryftp",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786539000508
-    },
-    {
-      "id": "msq5msp4lyenu",
-      "siteName": "DuaFile",
-      "siteUrl": "https://duafile.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Name: DuaFile\nSite URL: https://duafile.com/\nBackup URL: https://duafile.net/\nAddition/Removal/Modification: Addition\n\nDescription:\nFree streaming and download site for movies and TV series, (with software, games, music, and eBooks coming soon.) Currently 450,000+ titles available.\n\nWhy it should be added/changed:\nFully Mobile friendly and optimized for every device and screen size\nNo signup or account needed, fully anonymous access\nFast and lightweight with no bloated scripts\nNo ads between pages, only 1 popup on the play page\n\nContent & Library:\nSix content categories: Movies, Series, Software, Games, Music, and eBooks (software, games, music & eBooks coming soon)\n450,000+ titles and growing daily\n\nCore Features:\n45+ embed sources per title (+ multiple fallbacks inside the embed sources itself) - ensuring something always works\nDownload sources available\nContinue Watching and Watch Later, stored locally, no account needed\nDaily trending charts (both global and site-specific)\nMultiple quality options per title - 720p, 1080p, and up to 4K\nUpcoming movies feature\nTimeline feature\nFull metadata: IMDB/TMDB Links, IMDb ratings, cast, genre, production company, and release year\nPowerful search by name, genre, year, tag, description, production company, and crew\n\nAds: No ads between pages, 1 popup on the play page\nSite Language: English\nDownloads: DDL + Torrent",
-      "status": "rejected",
-      "submittedAt": 1786543097800
-    },
-    {
       "id": "msq73pms74dmg",
       "siteName": "7reels",
       "siteUrl": "https://7reels.cc/",
@@ -2705,48 +2435,6 @@
       "submittedAt": 1786545566596
     },
     {
-      "id": "msrt7mwx92y4d",
-      "siteName": "HindiDubbed Anime Library",
-      "siteUrl": "https://hindidub.modrao.com",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Best Hindi dubbed only anime list website",
-      "status": "rejected",
-      "submittedAt": 1786643167425
-    },
-    {
-      "id": "mst9rom4gn75s",
-      "siteName": "Spotify",
-      "siteUrl": "https://open.spotify.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Paid"
-        }
-      ],
-      "reason": "with out adss",
-      "status": "rejected",
-      "submittedAt": 1786731442780
-    },
-    {
-      "id": "msu0zlbx587q1",
-      "siteName": "msbreewc VIP PAGE",
-      "siteUrl": "https://onlyfans.com/msbreewcvip",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Paid"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786777161405
-    },
-    {
       "id": "msu6bouv54lv1",
       "siteName": "Vuflix",
       "siteUrl": "https://vuflix.co/",
@@ -2759,20 +2447,6 @@
       "reason": "So basically anywhere, trying to make my site more popular, any help is welcome.",
       "status": "approved",
       "submittedAt": 1786786123927
-    },
-    {
-      "id": "msuv1g99ea5s3",
-      "siteName": "Sex",
-      "siteUrl": "https://sex.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786827636621
     },
     {
       "id": "msvddvi6og20z",
@@ -2839,86 +2513,6 @@
       "submittedAt": 1786886695823
     },
     {
-      "id": "mswgl1eh5amez",
-      "siteName": "ben.lahcen@bluewin.ch",
-      "siteUrl": "https://example.com/",
-      "targets": [
-        {
-          "region": "FR",
-          "category": "Live TV & Sports"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786924288601
-    },
-    {
-      "id": "mswgp30jmeexh",
-      "siteName": "Ben Lahcen Lassaad",
-      "siteUrl": "https://example.com/",
-      "targets": [
-        {
-          "region": "FR",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786924477315
-    },
-    {
-      "id": "msxmeq0dj9bxb",
-      "siteName": "Nippleflix",
-      "siteUrl": "https://nippleflix.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "CA",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "AU",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1786994537773
-    },
-    {
-      "id": "mt00jttngegwm",
-      "siteName": "Free Streaming Movie",
-      "siteUrl": "https://wovie2.vercel.app/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787139222971
-    },
-    {
       "id": "mt0dac0y08fcx",
       "siteName": "Pixel Flix",
       "siteUrl": "https://pixelflix.cc/",
@@ -2963,34 +2557,6 @@
       "submittedAt": 1787167648156
     },
     {
-      "id": "mt1lgohoy0z1u",
-      "siteName": "Nippleflix",
-      "siteUrl": "https://nippleflix.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787234814204
-    },
-    {
-      "id": "mt7l5tiaunwgn",
-      "siteName": "Le Paris d'avant.fr",
-      "siteUrl": "https://www.leparisdavant.fr/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787597104546
-    },
-    {
       "id": "mt8grgrvf4v1u",
       "siteName": "Anime Play",
       "siteUrl": "https://dub.animeplay.icu/",
@@ -3003,20 +2569,6 @@
       "reason": "Modern interface, reliable server\nRich subtitle , Actively updated\nMedium library, Low Ads , Old site .",
       "status": "approved",
       "submittedAt": 1787650182571
-    },
-    {
-      "id": "mt8gsqpnwsfqz",
-      "siteName": "Gojo Live",
-      "siteUrl": "https://gojolive.site/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "simple ui ezy to use no ads.",
-      "status": "rejected",
-      "submittedAt": 1787650242107
     },
     {
       "id": "mt96pfz7635eo",
@@ -3047,80 +2599,6 @@
       "submittedAt": 1787722848567
     },
     {
-      "id": "mt9rg91qu2zgc",
-      "siteName": "Anime World",
-      "siteUrl": "https://watchanimeworld.pro/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "fast Streaming, Large Library",
-      "status": "rejected",
-      "submittedAt": 1787728601295
-    },
-    {
-      "id": "mt9rjnjy3h38q",
-      "siteName": "Toonstream",
-      "siteUrl": "https://toon-stream.site/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787728760062
-    },
-    {
-      "id": "mt9rplt4ytdbx",
-      "siteName": "Anivortex",
-      "siteUrl": "https://anivortex.in/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "mobile Friendly,Fast Streaming,Tv supported",
-      "status": "rejected",
-      "submittedAt": 1787729037736
-    },
-    {
-      "id": "mt9tqcrf2c06j",
-      "siteName": "ashrium",
-      "siteUrl": "https://www.ashrium.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "because your website is best",
-      "status": "rejected",
-      "submittedAt": 1787732431899
-    },
-    {
-      "id": "mt9tro8ugxyz9",
-      "siteName": "Animepahe",
-      "siteUrl": "https://animepahe.pw/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787732493438
-    },
-    {
       "id": "mt9tskoef1uox",
       "siteName": "animerulz",
       "siteUrl": "https://animerulz.co.in/",
@@ -3135,34 +2613,6 @@
       "submittedAt": 1787732535470
     },
     {
-      "id": "mt9tthbi31f21",
-      "siteName": "Legendary",
-      "siteUrl": "https://legendary1122.myshopify.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787732577774
-    },
-    {
-      "id": "mt9zg50wnl18d",
-      "siteName": "Cricsmart",
-      "siteUrl": "https://cricsmart.in/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Apps"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1787742033008
-    },
-    {
       "id": "mtbry9m55oqmw",
       "siteName": "fancode",
       "siteUrl": "https://www.fancode.com/",
@@ -3175,20 +2625,6 @@
       "reason": "",
       "status": "approved",
       "submittedAt": 1787850374189
-    },
-    {
-      "id": "mtjvhjol7yqp6",
-      "siteName": "OnlineTVcast",
-      "siteUrl": "https://onlinetvcast.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Combines live TV channels, movies, series, and regional streaming-access guides in one mobile-friendly entertainment site.",
-      "status": "rejected",
-      "submittedAt": 1788340041958
     },
     {
       "id": "mtldts7746vwb",
@@ -3219,20 +2655,6 @@
       "submittedAt": 1788431323211
     },
     {
-      "id": "mtlgw8ccx1607",
-      "siteName": "Hitman absolution",
-      "siteUrl": "https://m.taptap.io/app/hitman-absolution-33898888?share_id=2ce9ab64372b&utm_medium=share&utm_source=copylink",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1788436465212
-    },
-    {
       "id": "mtmqexatvl0sj",
       "siteName": "OTANOX",
       "siteUrl": "https://otanox.online/",
@@ -3245,130 +2667,6 @@
       "reason": "",
       "status": "approved",
       "submittedAt": 1788512920085
-    },
-    {
-      "id": "mtmxox3r07aa7",
-      "siteName": "Apex-Type Elite",
-      "siteUrl": "https://skingdom.great-site.net/apextype-elite/index.html",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Paid"
-        }
-      ],
-      "reason": "Keyboard Typing preparation website",
-      "status": "rejected",
-      "submittedAt": 1788525143703
-    },
-    {
-      "id": "mtmy0pfjpte0a",
-      "siteName": "Hardware-Lock Chat Web",
-      "siteUrl": "https://skingdom.great-site.net/index.html",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "Online Chating Website , Only for two People,\nUser A can copy link and send User B , and User B just that open that link , bingo , both will connected and Chat Screen will opened, and just enjoy encrypted P2P Chat Web...",
-      "status": "rejected",
-      "submittedAt": 1788525693631
-    },
-    {
-      "id": "mtn17ryu2qbs1",
-      "siteName": "OlaMovies",
-      "siteUrl": "https://olamovies.dad/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "this is best website it provides 4k quality and amazing. I think this website is No.1 in quality movies and anime",
-      "status": "rejected",
-      "submittedAt": 1788531062358
-    },
-    {
-      "id": "mtn19837vddqd",
-      "siteName": "Toon World4all",
-      "siteUrl": "https://toonworld4all.me/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Anime"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        },
-        {
-          "region": "US",
-          "category": "Anime"
-        },
-        {
-          "region": "UK",
-          "category": "Anime"
-        }
-      ],
-      "reason": "This is No.1 Anime website and best quality",
-      "status": "rejected",
-      "submittedAt": 1788531129907
-    },
-    {
-      "id": "mtn1cnktmri06",
-      "siteName": "KatmovieHD",
-      "siteUrl": "https://katmovieshd.net/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "US",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "UK",
-          "category": "Movies & Shows"
-        },
-        {
-          "region": "IN",
-          "category": "Anime"
-        }
-      ],
-      "reason": "This is best Movie website specially for Hollywood+ hindi",
-      "status": "rejected",
-      "submittedAt": 1788531289949
-    },
-    {
-      "id": "mtr4sbn16s8j7",
-      "siteName": "Brazzers",
-      "siteUrl": "https://www.brazzers.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Paid"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1788778924525
     },
     {
       "id": "mtsagsxg29tvx",
@@ -3385,48 +2683,6 @@
       "submittedAt": 1788848930932
     },
     {
-      "id": "mtsqy32gbffip",
-      "siteName": "Dextro Play",
-      "siteUrl": "https://dextro-app.vercel.app/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Live TV & Sports"
-        }
-      ],
-      "reason": "Dextro Play is a fast and mobile-friendly sports platform for discovering upcoming, live, and completed matches across multiple sports. It features organized schedules, sports categories, tournament information, and a simple user-friendly interface. We would appreciate having Dextro Play listed on your platform so sports fans can easily discover our app.",
-      "status": "rejected",
-      "submittedAt": 1788876611080
-    },
-    {
-      "id": "mtt0iub7iq8ti",
-      "siteName": "Youtube",
-      "siteUrl": "https://www.youtube.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Apps"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1788892696051
-    },
-    {
-      "id": "mtt0jp6ozdnr8",
-      "siteName": "Full4Movies",
-      "siteUrl": "https://www.1full4movies.org/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1788892736064
-    },
-    {
       "id": "mtt0kcnf9oep4",
       "siteName": "HDHub4U",
       "siteUrl": "https://hdhub4u.bi/",
@@ -3439,20 +2695,6 @@
       "reason": "",
       "status": "approved",
       "submittedAt": 1788892766475
-    },
-    {
-      "id": "mtt0lqj2wcy0a",
-      "siteName": "Movie Rulz",
-      "siteUrl": "https://www.5movierulz.ventures/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1788892831118
     },
     {
       "id": "mtxcf732hdchu",
@@ -3469,20 +2711,6 @@
       "submittedAt": 1789154546078
     },
     {
-      "id": "mtxuztakn73y5",
-      "siteName": "Website Hub",
-      "siteUrl": "https://websitehub.site.je/",
-      "targets": [
-        {
-          "region": "IN",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1789185741068
-    },
-    {
       "id": "mtylmazw5gd5l",
       "siteName": "kisskh dramaplanets cinevo etc",
       "siteUrl": "https://www.dramaplanets.online/",
@@ -3497,34 +2725,6 @@
       "submittedAt": 1789230460460
     },
     {
-      "id": "mtzvqwm6md4wi",
-      "siteName": "Goodshort",
-      "siteUrl": "https://www.goodshort.com/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "Good short drama",
-      "status": "rejected",
-      "submittedAt": 1789307937438
-    },
-    {
-      "id": "mu6nj3uw2xes1",
-      "siteName": "Pirateone",
-      "siteUrl": "https://pirateone.qzz.io/",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "",
-      "status": "rejected",
-      "submittedAt": 1789717399881
-    },
-    {
       "id": "mu720r7fzn13i",
       "siteName": "Animetsu",
       "siteUrl": "https://animetsu.site/",
@@ -3537,20 +2737,6 @@
       "reason": "Best ui fast site large library",
       "status": "approved",
       "submittedAt": 1789741737915
-    },
-    {
-      "id": "mu9iov0z92310",
-      "siteName": "jiohostar",
-      "siteUrl": "https://www.hotstar.com/in/home",
-      "targets": [
-        {
-          "region": "Global",
-          "category": "Movies & Shows"
-        }
-      ],
-      "reason": "fast add free and hindi language option for everymovie and series thank you",
-      "status": "rejected",
-      "submittedAt": 1789890668819
     }
   ]
 }

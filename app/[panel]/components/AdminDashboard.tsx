@@ -663,6 +663,8 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
   };
 
   /* ── Requests actions ── */
+  const [batchBusy, setBatchBusy] = useState(false);
+
   const updateReqStatus = async (id: string, status: 'approved' | 'rejected') => {
     setUpdatingId(id);
     try {
@@ -672,11 +674,17 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         body: JSON.stringify({ id, status }),
       });
       if (res.ok) {
-        const data = await res.json();
-        const updatedReq = data.request || data;
-        setRequests(prev => prev.map(r => (r.id === id ? updatedReq : r)));
-        await refreshSites();
-        showToast(`✅ Request ${status} & live database updated!`, 'success');
+        if (status === 'rejected') {
+          // Permanently removed completely from database!
+          setRequests(prev => prev.filter(r => r.id !== id));
+          showToast('✅ Request rejected & completely removed from database!', 'info');
+        } else {
+          const data = await res.json();
+          const updatedReq = data.request || data;
+          setRequests(prev => prev.map(r => (r.id === id ? updatedReq : r)));
+          await refreshSites();
+          showToast('✅ Request approved & published live!', 'success');
+        }
       } else {
         showToast('Failed to update request status.', 'error');
       }
@@ -684,6 +692,60 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
       showToast('Network error updating request.', 'error');
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  /* ── Accept All Showing ── */
+  const handleAcceptAllShowing = async () => {
+    if (filteredReqs.length === 0) return;
+    const count = filteredReqs.length;
+    if (!confirm(`Are you sure you want to approve and publish all ${count} currently showing websites live to the directory?`)) {
+      return;
+    }
+    setBatchBusy(true);
+    try {
+      const ids = filteredReqs.map(c => c.req.id);
+      const res = await fetch(apiRequests, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids, status: 'approved' }),
+      });
+      if (res.ok) {
+        await refreshSites();
+        await refreshRequests();
+        showToast(`✅ Successfully accepted & published ${count} websites live!`, 'success');
+      } else {
+        showToast('Failed to batch approve requests.', 'error');
+      }
+    } catch {
+      showToast('Network error during batch approval.', 'error');
+    } finally {
+      setBatchBusy(false);
+    }
+  };
+
+  /* ── Delete All Showing ── */
+  const handleDeleteAllShowing = async () => {
+    if (filteredReqs.length === 0) return;
+    const count = filteredReqs.length;
+    if (!confirm(`Are you sure you want to permanently delete all ${count} currently showing requests? This will remove them completely.`)) {
+      return;
+    }
+    setBatchBusy(true);
+    try {
+      const ids = filteredReqs.map(c => c.req.id);
+      const res = await fetch(`${apiRequests}?ids=${ids.join(',')}`, { method: 'DELETE' });
+      if (res.ok) {
+        const idsSet = new Set(ids);
+        setRequests(prev => prev.filter(r => !idsSet.has(r.id)));
+        showToast(`✅ Successfully deleted all ${count} requests completely!`, 'info');
+      } else {
+        showToast('Failed to batch delete requests.', 'error');
+      }
+    } catch {
+      showToast('Network error during batch deletion.', 'error');
+    } finally {
+      setBatchBusy(false);
     }
   };
 
@@ -1243,10 +1305,48 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
               </button>
             </div>
 
-            <p style={{ color: 'var(--text-muted)', fontSize: 12, marginBottom: 12 }}>
-              Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredReqs.length}</strong> requests in{' '}
-              <strong style={{ color: 'var(--text-primary)', textTransform: 'capitalize' }}>{reqCategory === 'clean' ? 'Clean Submissions' : reqCategory}</strong>
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: 12, margin: 0 }}>
+                Showing <strong style={{ color: 'var(--text-accent)' }}>{filteredReqs.length}</strong> requests in{' '}
+                <strong style={{ color: 'var(--text-primary)', textTransform: 'capitalize' }}>{reqCategory === 'clean' ? 'Clean Submissions' : reqCategory}</strong>
+              </p>
+
+              {filteredReqs.length > 0 && (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  {/* Accept All Showing */}
+                  <button
+                    onClick={handleAcceptAllShowing}
+                    disabled={batchBusy}
+                    style={{
+                      padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: batchBusy ? 'not-allowed' : 'pointer',
+                      background: 'rgba(16,185,129,0.18)', border: '1px solid rgba(16,185,129,0.4)', color: '#34d399',
+                      display: 'inline-flex', alignItems: 'center', gap: 5, transition: 'all 0.15s',
+                      opacity: batchBusy ? 0.6 : 1,
+                    }}
+                    title="Approve and publish all showing websites live"
+                  >
+                    <span>✓</span>
+                    <span>Accept All ({filteredReqs.length})</span>
+                  </button>
+
+                  {/* Delete All Showing */}
+                  <button
+                    onClick={handleDeleteAllShowing}
+                    disabled={batchBusy}
+                    style={{
+                      padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: batchBusy ? 'not-allowed' : 'pointer',
+                      background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', color: '#f87171',
+                      display: 'inline-flex', alignItems: 'center', gap: 5, transition: 'all 0.15s',
+                      opacity: batchBusy ? 0.6 : 1,
+                    }}
+                    title="Permanently remove all showing requests from database"
+                  >
+                    <span>🗑️</span>
+                    <span>Delete All ({filteredReqs.length})</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {filteredReqs.length === 0 ? (
               <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '60px 20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
@@ -1401,17 +1501,16 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
                           </button>
                         )}
 
-                        {req.status !== 'rejected' && (
                           <button
                             disabled={busy}
                             onClick={() => updateReqStatus(req.id, 'rejected')}
                             style={{ padding: '7px 12px', background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.2)', borderRadius: 8, color: 'var(--red)', fontSize: 12, fontWeight: 600, cursor: busy ? 'not-allowed' : 'pointer', opacity: busy ? 0.5 : 1, transition: 'background 0.15s' }}
                             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(244,63,94,0.18)'}
                             onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'rgba(244,63,94,0.08)'}
+                            title="Reject and completely remove this request"
                           >
-                            ✗ Reject
+                            ✗ Reject & Remove
                           </button>
-                        )}
 
                         <button
                           onClick={() => deleteRequest(req.id)}
