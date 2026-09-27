@@ -111,7 +111,8 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       chat_id: options.chat_id,
       text: options.text,
       parse_mode: options.parse_mode || 'HTML',
-      link_preview_options: { is_disabled: options.disable_web_page_preview ?? true },
+      disable_web_page_preview: true,
+      link_preview_options: { is_disabled: true },
     };
 
     if (options.reply_markup) {
@@ -133,7 +134,20 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
+    let data = await res.json();
+
+    // Auto-fallback to plain text if HTML entity parsing ever fails
+    if (!data.ok && data.description && data.description.includes("can't parse entities")) {
+      console.warn('[Telegram] HTML parse error, retrying as plain text...');
+      delete payload.parse_mode;
+      const retryRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      data = await retryRes.json();
+    }
+
     await logTelegramEvent({
       action: 'sendMessage',
       chat_id: options.chat_id,
@@ -143,7 +157,7 @@ export async function sendTelegramMessage(options: SendMessageOptions, token = T
       message_id: data.result?.message_id,
     });
 
-    if (!res.ok) {
+    if (!res.ok && !data.ok) {
       console.error('[Telegram] sendMessage failed:', data);
     }
     return data;
@@ -247,49 +261,36 @@ export function getCommunityButtons() {
 }
 
 /**
- * Build welcome message for new chat members (welcomes user with @username)
+ * Build welcome message for new chat members
  */
-export function buildWelcomeMessage(user: { id: number; first_name?: string; username?: string }) {
-  const mention = user.username
-    ? `@${user.username}`
-    : `<a href="tg://user?id=${user.id}">${escapeHtml(user.first_name || 'Friend')}</a>`;
+export function buildWelcomeMessage(user?: { id?: number; first_name?: string; username?: string }) {
+  let header = '👋 Welcome to the community! 🚀';
+  if (user) {
+    if (user.username) {
+      header = `👋 Welcome @${escapeHtml(user.username)} to the community! 🚀`;
+    } else if (user.first_name) {
+      header = `👋 Welcome ${escapeHtml(user.first_name)} to the community! 🚀`;
+    }
+  }
 
   const text = `
-👋 <b>Welcome, ${mention}! Welcome to our community!</b>
-
-🌐 <b>AllSiteHub • FreeWebStuff • MoviesNet</b>
-💬 Join our Discord &amp; stay connected.
-
-🔗 <a href="${SITE_URL}/">${SITE_URL}/</a>
-🔗 <a href="${FREEWEBSTUFF_URL}">${FREEWEBSTUFF_URL}</a>
-🔗 <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
-💬 <a href="${DISCORD_URL}">${DISCORD_URL}</a>
-
-🚀 <i>Explore. Discover. Enjoy.</i>
+${header}
+🌐 Explore our websites:
+• 🌐 AllSiteHub: https://www.allsitehub.site/
+• 🛠️ FreeWebStuff: https://freewebstuff.site/
+• 🎬 MoviesNet: https://moviesnet.site/
+👉 Check them out now and discover something useful! 🔥
+❤️ Stay tuned for more!
 `.trim();
 
   return { text };
 }
 
 /**
- * Build general info message (for direct messages, pure text with links)
+ * Build general info message (for direct messages & bot commands)
  */
 export function buildInfoMessage() {
-  const text = `
-👋 <b>Welcome to our community!</b>
-
-🌐 <b>AllSiteHub • FreeWebStuff • MoviesNet</b>
-💬 Join our Discord &amp; stay connected.
-
-🔗 <a href="${SITE_URL}/">${SITE_URL}/</a>
-🔗 <a href="${FREEWEBSTUFF_URL}">${FREEWEBSTUFF_URL}</a>
-🔗 <a href="${MOVIESNET_URL}">${MOVIESNET_URL}</a>
-💬 <a href="${DISCORD_URL}">${DISCORD_URL}</a>
-
-🚀 <i>Explore. Discover. Enjoy.</i>
-`.trim();
-
-  return { text };
+  return buildWelcomeMessage();
 }
 
 /**

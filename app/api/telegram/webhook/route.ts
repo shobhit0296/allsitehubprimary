@@ -82,15 +82,8 @@ export async function POST(req: NextRequest) {
       const chatId = update.message.chat.id;
 
       for (const member of update.message.new_chat_members) {
-        // If the bot itself was added to the group
+        // If the bot itself was added to the group, do not send activation spam
         if (member.is_bot && (member.id === botId || member.username === 'allsitehub_bot')) {
-          await sendTelegramMessage(
-            {
-              chat_id: chatId,
-              text: `🤖 <b>AllSiteHub Welcome Bot Activated!</b>\n\nI will welcome every new member with our official links. 🍿`,
-            },
-            botToken,
-          );
           continue;
         }
 
@@ -161,17 +154,7 @@ export async function POST(req: NextRequest) {
 
     // ── 1d. Handle Bot Added as Admin or Member (my_chat_member) ──
     if (update.my_chat_member) {
-      const { chat, new_chat_member } = update.my_chat_member;
-      if (['member', 'administrator'].includes(new_chat_member?.status)) {
-        await sendTelegramMessage(
-          {
-            chat_id: chat.id,
-            text: `🤖 <b>AllSiteHub Welcome Bot is now active in this group!</b>\n\nEvery new member joining will be greeted automatically with our verified links. 🍿`,
-          },
-          botToken,
-        );
-        return NextResponse.json({ ok: true, action: 'bot_added_to_chat' });
-      }
+      return NextResponse.json({ ok: true, action: 'bot_status_updated' });
     }
 
     // ── 2. Handle Text Messages & Bot Commands ──
