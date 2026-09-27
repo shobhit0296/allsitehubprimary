@@ -381,12 +381,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
 
         {/* ========================================================================= */}
-        {/* ADSTERRA ANTI-ADBLOCK POPUNDER (24H FREQUENCY CAPPED: 1-2 PER 24 HOURS)   */}
-        {/* Limits aggressive popunders to max 2 per 24 hours (min 6h cooldown)       */}
-        {/* to protect user experience, maximize conversion rates, and boost CPM      */}
+        {/* ADSTERRA POPUNDER / ONCLICK ADS (ALWAYS ACTIVE ON PUBLIC ROUTES)          */}
+        {/* Triggers high-CPM OnClick popunder directly on user interactions          */}
         {/* ========================================================================= */}
         <Script
-          id="adsterra-popunder-capper"
+          id="adsterra-popunder-loader"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function() {
@@ -403,88 +402,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   return;
                 }
 
-                var STORAGE_KEY = 'adsterra_pop_impressions';
-                var MAX_PER_24H = 2;
-                var COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6 hours between popunders
-                var WINDOW_MS = 24 * 60 * 60 * 1000;   // 24 hours rolling window
-                var now = Date.now();
+                if (document.getElementById('adsterra-popunder')) return;
 
-                var getHistory = function() {
-                  var list = [];
-                  try {
-                    var raw = localStorage.getItem(STORAGE_KEY);
-                    if (raw) {
-                      var parsed = JSON.parse(raw);
-                      if (Array.isArray(parsed)) {
-                        list = parsed.filter(function(t) {
-                          return typeof t === 'number' && (now - t) < WINDOW_MS;
-                        });
-                      }
-                    }
-                  } catch(e) {}
-                  if (list.length === 0) {
-                    try {
-                      var match = document.cookie.match(/(?:^|; )adsterra_pop_cap=([^;]*)/);
-                      if (match) {
-                        var cParsed = JSON.parse(decodeURIComponent(match[1]));
-                        if (Array.isArray(cParsed)) {
-                          list = cParsed.filter(function(t) {
-                            return typeof t === 'number' && (now - t) < WINDOW_MS;
-                          });
-                        }
-                      }
-                    } catch(e) {}
-                  }
-                  return list;
-                };
-
-                var history = getHistory();
-
-                // Cap at max 2 popunders in any 24h rolling window
-                if (history.length >= MAX_PER_24H) {
-                  return;
-                }
-
-                // Minimum 6 hour cooldown between the 1st and 2nd popunder
-                if (history.length > 0) {
-                  var lastAdTime = history[history.length - 1];
-                  if ((now - lastAdTime) < COOLDOWN_MS) {
-                    return;
-                  }
-                }
-
-                // Inject Adsterra popunder script
                 var s = document.createElement('script');
                 s.id = 'adsterra-popunder';
                 s.src = 'https://bibleearthquake.com/af/43/a8/af43a8a497a35fa461a277ea55d8898a.js';
                 s.setAttribute('data-cfasync', 'false');
                 s.async = true;
 
-                var recorded = false;
-                var recordImpression = function() {
-                  if (recorded) return;
-                  recorded = true;
-                  try {
-                    var currentNow = Date.now();
-                    var updated = getHistory();
-                    updated.push(currentNow);
-                    try {
-                      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-                    } catch(e) {}
-                    var expires = new Date(currentNow + WINDOW_MS).toUTCString();
-                    document.cookie = 'adsterra_pop_cap=' + encodeURIComponent(JSON.stringify(updated)) + '; expires=' + expires + '; path=/; SameSite=Lax';
-                  } catch(e) {}
-                };
-
-                window.addEventListener('click', recordImpression, { capture: true, once: true });
-                window.addEventListener('touchend', recordImpression, { capture: true, once: true });
-
                 var target = document.head || document.getElementsByTagName('head')[0] || document.body;
                 if (target) {
                   target.appendChild(s);
                 }
               } catch(err) {
-                console.error('Adsterra capper error:', err);
+                console.error('Adsterra Popunder error:', err);
               }
             })();`,
           }}

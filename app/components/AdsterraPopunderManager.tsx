@@ -2,10 +2,10 @@
 
 /**
  * AdsterraPopunderManager
- * The Adsterra Anti-AdBlock Popunder / Redirection script is loaded cleanly via
- * the frequency-capped Next.js <Script id="adsterra-popunder-capper"> in app/layout.tsx.
- * It strictly caps popunders to a maximum of 2 per 24 hours (with a 6-hour minimum cooldown
- * between impressions) to preserve user experience, prevent ad fatigue, and maximize CPM.
+ * The Adsterra Popunder / OnClick script is loaded cleanly via
+ * Next.js <Script id="adsterra-popunder-loader"> in app/layout.tsx.
+ * It is fully active on all public routes (auto-suppressed on admin panel)
+ * to deliver high-yield OnClick popunders and maximize CPM.
  */
 export default function AdsterraPopunderManager() {
   return null;

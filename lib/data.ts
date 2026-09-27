@@ -92,24 +92,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/cinezo_net.png"
   },
   {
-    "id": "ms2v90v83veec",
-    "name": "ONDEMAND",
-    "url": "https://ondemand.st/",
-    "domain": "ondemand.st",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785134936996,
-    "order": 0,
-    "faviconUrl": "/logos/ondemand_st.png"
-  },
-  {
     "id": "ms2vbpfemdoqp",
     "name": "MANGABALL",
     "url": "https://mangaball.net/",
@@ -168,6 +150,45 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/netmirror_gg.png"
   },
   {
+    "id": "mugrrf4v3f0o5",
+    "name": "CINEVID",
+    "url": "https://cinevid.st/",
+    "domain": "cinevid.st",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "featured",
+      "trusted"
+    ],
+    "isTrusted": true,
+    "isNew": false,
+    "isFeatured": true,
+    "description": "",
+    "faviconUrl": "https://www.google.com/s2/favicons?domain=cinevid.st&sz=256",
+    "addedAt": 1790329167967,
+    "order": 0
+  },
+  {
+    "id": "ms2v90v83veec",
+    "name": "ONDEMAND",
+    "url": "https://ondemand.st/",
+    "domain": "ondemand.st",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134936996,
+    "order": 1,
+    "faviconUrl": "/logos/ondemand_st.png"
+  },
+  {
     "id": "ms2twlltw6obx",
     "name": "YENIME",
     "url": "https://yenime.net/",
@@ -186,24 +207,6 @@ export const SITES: Site[] = [
     "addedAt": 1785132677729,
     "order": 1,
     "faviconUrl": "/logos/yenime_net.png"
-  },
-  {
-    "id": "ms2v9t0be7pvn",
-    "name": "STREAM EAST",
-    "url": "https://thestreameast.top/",
-    "domain": "thestreameast.top",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785134973467,
-    "order": 1,
-    "faviconUrl": "/logos/thestreameast_top.png"
   },
   {
     "id": "ms2vc7tt9v0wk",
@@ -280,6 +283,24 @@ export const SITES: Site[] = [
     "order": 1
   },
   {
+    "id": "ms2v9t0be7pvn",
+    "name": "STREAM EAST",
+    "url": "https://thestreameast.top/",
+    "domain": "thestreameast.top",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134973467,
+    "order": 2,
+    "faviconUrl": "/logos/thestreameast_top.png"
+  },
+  {
     "id": "ms2ug2xqgt5jg",
     "name": "FLIXHUB",
     "url": "https://flixhub.studio/",
@@ -298,24 +319,6 @@ export const SITES: Site[] = [
     "addedAt": 1785133586654,
     "order": 2,
     "faviconUrl": "/logos/flixhub_studio.png"
-  },
-  {
-    "id": "ms2va88dhq2dv",
-    "name": "STMIFY",
-    "url": "https://stmify.com/",
-    "domain": "stmify.com",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785134993197,
-    "order": 2,
-    "faviconUrl": "/logos/stmify_com.png"
   },
   {
     "id": "ms2vckb0mbtit",
@@ -433,6 +436,24 @@ export const SITES: Site[] = [
     "order": 2
   },
   {
+    "id": "ms2va88dhq2dv",
+    "name": "STMIFY",
+    "url": "https://stmify.com/",
+    "domain": "stmify.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785134993197,
+    "order": 3,
+    "faviconUrl": "/logos/stmify_com.png"
+  },
+  {
     "id": "ms2uego1lxbmv",
     "name": "ANY SHOWS",
     "url": "https://anishows.org/",
@@ -449,24 +470,6 @@ export const SITES: Site[] = [
     "addedAt": 1785133511137,
     "order": 3,
     "faviconUrl": "/logos/anishows_org.svg"
-  },
-  {
-    "id": "ms2vaqvfr5810",
-    "name": "FAMELACK",
-    "url": "https://famelack.com/",
-    "domain": "famelack.com",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785135017355,
-    "order": 3,
-    "faviconUrl": "/logos/famelack_com.png"
   },
   {
     "id": "ms2vd2dtgayp4",
@@ -595,6 +598,24 @@ export const SITES: Site[] = [
     "order": 3
   },
   {
+    "id": "ms2vaqvfr5810",
+    "name": "FAMELACK",
+    "url": "https://famelack.com/",
+    "domain": "famelack.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785135017355,
+    "order": 4,
+    "faviconUrl": "/logos/famelack_com.png"
+  },
+  {
     "id": "ms2tgj8utkoue",
     "name": "1TUBE",
     "url": "https://1tube.org/",
@@ -687,24 +708,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/youcineapkpro_com.png"
   },
   {
-    "id": "ms3e21a50cr4d",
-    "name": "PUBLIC IPTV",
-    "url": "https://publiciptv.com/",
-    "domain": "publiciptv.com",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785166523645,
-    "order": 4,
-    "faviconUrl": "/logos/publiciptv_com.png"
-  },
-  {
     "id": "mu27tdq0zmrln",
     "name": "FILE CR",
     "url": "https://filecr.com/home/",
@@ -742,6 +745,24 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/viki_com.png",
     "addedAt": 1789449287946,
     "order": 4
+  },
+  {
+    "id": "ms3e21a50cr4d",
+    "name": "PUBLIC IPTV",
+    "url": "https://publiciptv.com/",
+    "domain": "publiciptv.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166523645,
+    "order": 5,
+    "faviconUrl": "/logos/publiciptv_com.png"
   },
   {
     "id": "ms2vjb6mljbxo",
@@ -798,24 +819,6 @@ export const SITES: Site[] = [
     "addedAt": 1785166457747,
     "order": 5,
     "faviconUrl": "/logos/onstreamapks_app.png"
-  },
-  {
-    "id": "ms3e2mf403jea",
-    "name": "SPORTPLUS",
-    "url": "https://en97.sportplus.watch/",
-    "domain": "en97.sportplus.watch",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785166551040,
-    "order": 5,
-    "faviconUrl": "/logos/en97_sportplus_watch.png"
   },
   {
     "id": "mu27u3ffmd0yz",
@@ -894,6 +897,24 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/kaa_lt.png"
   },
   {
+    "id": "ms3e2mf403jea",
+    "name": "SPORTPLUS",
+    "url": "https://en97.sportplus.watch/",
+    "domain": "en97.sportplus.watch",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166551040,
+    "order": 6,
+    "faviconUrl": "/logos/en97_sportplus_watch.png"
+  },
+  {
     "id": "ms2tfcv4txa6u",
     "name": "1 Show",
     "url": "https://www.1shows.org/",
@@ -932,24 +953,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/peacocktv_com.png"
   },
   {
-    "id": "ms3e3lwsl5u80",
-    "name": "STREAM EAST",
-    "url": "https://streameastnow.net/",
-    "domain": "streameastnow.net",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785166597036,
-    "order": 6,
-    "faviconUrl": "/logos/streameastnow_net.png"
-  },
-  {
     "id": "mt1lk076av0z8",
     "name": "Manga reader",
     "url": "https://anireads.cc/",
@@ -985,6 +988,24 @@ export const SITES: Site[] = [
     "addedAt": 1785134739232,
     "order": 6,
     "faviconUrl": "/logos/justanime_to.png"
+  },
+  {
+    "id": "ms3e3lwsl5u80",
+    "name": "STREAM EAST",
+    "url": "https://streameastnow.net/",
+    "domain": "streameastnow.net",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [],
+    "isTrusted": false,
+    "isNew": false,
+    "isFeatured": false,
+    "description": "",
+    "addedAt": 1785166597036,
+    "order": 7,
+    "faviconUrl": "/logos/streameastnow_net.png"
   },
   {
     "id": "ms2tl1qb47f6k",
@@ -1025,25 +1046,6 @@ export const SITES: Site[] = [
     "faviconUrl": "/logos/shudder_com.png"
   },
   {
-    "id": "mu241sbzauh9x",
-    "name": "fancode",
-    "url": "https://www.fancode.com/",
-    "domain": "fancode.com",
-    "category": "Live TV & Sports",
-    "regions": [
-      "Global"
-    ],
-    "tags": [
-      "new"
-    ],
-    "isTrusted": false,
-    "isNew": true,
-    "isFeatured": false,
-    "description": "Watch on fancode.",
-    "addedAt": 1789442814383,
-    "order": 7
-  },
-  {
     "id": "ms2v5hpg7we7t",
     "name": "ANIME SALT",
     "url": "https://animesalt.link/",
@@ -1060,6 +1062,25 @@ export const SITES: Site[] = [
     "addedAt": 1785134772196,
     "order": 7,
     "faviconUrl": "/logos/animesalt_link.png"
+  },
+  {
+    "id": "mu241sbzauh9x",
+    "name": "fancode",
+    "url": "https://www.fancode.com/",
+    "domain": "fancode.com",
+    "category": "Live TV & Sports",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on fancode.",
+    "addedAt": 1789442814383,
+    "order": 8
   },
   {
     "id": "mt1lpwjhlmfrf",
@@ -1786,27 +1807,6 @@ export const SITES: Site[] = [
     "faviconUrl": "https://www.google.com/s2/favicons?domain=chillflix.lol&sz=256",
     "addedAt": 1790328781932,
     "order": 32
-  },
-  {
-    "id": "mugrrf4v3f0o5",
-    "name": "CINEVID",
-    "url": "https://cinevid.st/",
-    "domain": "cinevid.st",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [
-      "new",
-      "featured"
-    ],
-    "isTrusted": false,
-    "isNew": true,
-    "isFeatured": true,
-    "description": "",
-    "faviconUrl": "https://www.google.com/s2/favicons?domain=cinevid.st&sz=256",
-    "addedAt": 1790329167967,
-    "order": 33
   }
 ];
 
