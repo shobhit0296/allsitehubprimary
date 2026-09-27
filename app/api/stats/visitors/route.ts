@@ -8,7 +8,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { calculateAllTimeActiveUsers } from '@/lib/activeUsers';
-import { ensureTelegramWebhookActive } from '@/lib/telegram';
 
 export const runtime = 'nodejs';
 
@@ -51,9 +50,6 @@ async function redisIncrBy(key: string, by: number): Promise<number> {
 }
 
 export async function GET() {
-  // Fire-and-forget background verification of Telegram bot webhook
-  ensureTelegramWebhookActive().catch(() => {});
-
   const baseCount = calculateAllTimeActiveUsers();
   const increments = await redisGet(REDIS_KEY);
 

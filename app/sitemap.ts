@@ -4,6 +4,8 @@ import { CATEGORIES } from '@/lib/data';
 import { siteConfig, slugify, shouldIndexWebsitePage } from '@/lib/siteConfig';
 import { COLLECTIONS } from '@/lib/collections';
 
+export const revalidate = 86400;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const db = await readDB();

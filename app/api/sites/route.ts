@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readDB } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
  
 export async function GET() {
   const db = await readDB();
@@ -13,8 +13,8 @@ export async function GET() {
     },
     {
       headers: {
-        'Cache-Control': 'public, max-age=0, must-revalidate',
-        'CDN-Cache-Control': 'no-store',
+        'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+        'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
         'Cloudflare-CDN-Cache-Control': 'public, max-age=86400, stale-while-revalidate=60',
       },
     }

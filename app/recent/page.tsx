@@ -8,7 +8,7 @@ import SiteCard from '../components/SiteCard';
 import Breadcrumbs from '../components/Breadcrumbs';
 import JsonLd from '../components/JsonLd';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Recently Added Websites & Tools',

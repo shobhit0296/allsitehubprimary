@@ -45,25 +45,34 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
     setLiveSites(sites);
   }, [sites]);
 
-  // Re-fetch latest sites when user switches back to this tab (e.g. from admin panel)
+  // Re-fetch latest sites when user switches back to this tab (instant for admins, throttled for regular visitors)
   useEffect(() => {
-    const handleVisibilityOrFocus = () => {
-      if (document.visibilityState === 'visible') {
-        fetch('/api/sites', { cache: 'no-store' })
-          .then(res => res.json())
-          .then(data => {
-            if (Array.isArray(data?.sites) && data.sites.length > 0) {
-              setLiveSites(data.sites);
-            }
-          })
-          .catch(() => {});
+    let lastFetched = Date.now();
+    const handleVisibility = () => {
+      if (document.visibilityState !== 'visible') return;
+      const now = Date.now();
+      const isAdmin = typeof document !== 'undefined' && (
+        document.cookie.includes('ash_admin_') ||
+        document.cookie.includes('shobhitadmin') ||
+        document.cookie.includes('adminshobhit')
+      );
+      // For non-admin visitors, throttle background refetching to at most once per 15 minutes
+      if (!isAdmin && now - lastFetched < 15 * 60 * 1000) {
+        return;
       }
+      lastFetched = now;
+      fetch('/api/sites')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data?.sites) && data.sites.length > 0) {
+            setLiveSites(data.sites);
+          }
+        })
+        .catch(() => {});
     };
-    window.addEventListener('visibilitychange', handleVisibilityOrFocus);
-    window.addEventListener('focus', handleVisibilityOrFocus);
+    document.addEventListener('visibilitychange', handleVisibility);
     return () => {
-      window.removeEventListener('visibilitychange', handleVisibilityOrFocus);
-      window.removeEventListener('focus', handleVisibilityOrFocus);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 

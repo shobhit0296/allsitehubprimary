@@ -20,7 +20,7 @@ function findCategoryBySlug(slug: string) {
   return CATEGORIES.find(c => slugify(c.name) === slug);
 }
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   return CATEGORIES.map(c => ({

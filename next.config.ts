@@ -160,12 +160,12 @@ const nextConfig: NextConfig = {
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
         ],
       },
-      // ─── Sites data API: No Vercel CDN lock; Cloudflare edge cache purged instantly on writeDB ───
+      // ─── Sites data API: 60s Edge CDN micro-cache (purged on writeDB) ───
       {
         source: "/api/sites",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=300" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
           { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
@@ -200,20 +200,29 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" },
         ],
       },
-      // ─── Content pages: Always fresh on Vercel; Cloudflare edge cache handles visitor traffic and purges on writeDB ───
+      // ─── Static Info & Legal Pages: 24h Edge cache ───
+      {
+        source: "/:path(about|dmca|how-we-review-websites|privacy|terms|request)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=604800" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" },
+        ],
+      },
+      // ─── Directory Content Pages: 60s Edge CDN micro-cache with stale-while-revalidate ───
       {
         source: "/",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=600" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=600" },
           { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
       {
-        source: "/:path(category.*|site.*|collections.*|recent|about|dmca|request|how-we-review-websites|privacy|terms)",
+        source: "/:path(category.*|site.*|collections.*|recent)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
-          { key: "CDN-Cache-Control", value: "no-store" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=600" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=600" },
           { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
         ],
       },
