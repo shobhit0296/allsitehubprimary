@@ -235,8 +235,10 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [],
-    "isTrusted": false,
+    "tags": [
+      "trusted"
+    ],
+    "isTrusted": true,
     "isNew": false,
     "isFeatured": false,
     "description": "",
@@ -347,10 +349,12 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [],
+    "tags": [
+      "featured"
+    ],
     "isTrusted": false,
     "isNew": false,
-    "isFeatured": false,
+    "isFeatured": true,
     "description": "",
     "addedAt": 1785135333387,
     "order": 2,
@@ -498,10 +502,12 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [],
+    "tags": [
+      "featured"
+    ],
     "isTrusted": false,
     "isNew": false,
-    "isFeatured": false,
+    "isFeatured": true,
     "description": "",
     "addedAt": 1785135351043,
     "order": 3,
@@ -680,10 +686,12 @@ export const SITES: Site[] = [
     "regions": [
       "Global"
     ],
-    "tags": [],
+    "tags": [
+      "featured"
+    ],
     "isTrusted": false,
     "isNew": false,
-    "isFeatured": false,
+    "isFeatured": true,
     "description": "",
     "addedAt": 1785135392888,
     "order": 4,
@@ -1506,24 +1514,6 @@ export const SITES: Site[] = [
     "order": 16
   },
   {
-    "id": "ms2uzxxstyo73",
-    "name": "FLIXEO",
-    "url": "https://flixeo.tv/home",
-    "domain": "flixeo.tv",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "",
-    "addedAt": 1785134513296,
-    "order": 17,
-    "faviconUrl": "/logos/flixeo_tv.png"
-  },
-  {
     "id": "mubg753c8ybm0",
     "name": "Animetsu",
     "url": "https://animetsu.site/",
@@ -1646,25 +1636,6 @@ export const SITES: Site[] = [
     "description": "Watch on 7reels.",
     "addedAt": 1786807849268,
     "order": 23
-  },
-  {
-    "id": "mt1lgmav1n7xt",
-    "name": "Pixel Flix",
-    "url": "https://pixelflix.cc/",
-    "domain": "pixelflix.cc",
-    "category": "Movies & Shows",
-    "regions": [
-      "Global",
-      "IN",
-      "FR"
-    ],
-    "tags": [],
-    "isTrusted": false,
-    "isNew": false,
-    "isFeatured": false,
-    "description": "free movies series and anime without ads",
-    "addedAt": 1787234811367,
-    "order": 24
   },
   {
     "id": "mt1li8g02200i",
@@ -1807,6 +1778,44 @@ export const SITES: Site[] = [
     "faviconUrl": "https://www.google.com/s2/favicons?domain=chillflix.lol&sz=256",
     "addedAt": 1790328781932,
     "order": 32
+  },
+  {
+    "id": "mum8tei9grbp8",
+    "name": "Streamr",
+    "url": "https://www.streamr.dpdns.org/",
+    "domain": "streamr.dpdns.org",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "fast-streaming, mobile friendly, premium UI/UX, large collections of movies/series along with sports",
+    "addedAt": 1790660144817,
+    "order": 33
+  },
+  {
+    "id": "mum8tywznyr2h",
+    "name": "cinex",
+    "url": "https://cinex.lol/",
+    "domain": "cinex.lol",
+    "category": "Movies & Shows",
+    "regions": [
+      "Global"
+    ],
+    "tags": [
+      "new"
+    ],
+    "isTrusted": false,
+    "isNew": true,
+    "isFeatured": false,
+    "description": "Watch on cinex.",
+    "addedAt": 1790660171267,
+    "order": 34
   }
 ];
 

@@ -21,6 +21,9 @@ export default function AdminLoginForm({ panel }: { panel: string }) {
         body: JSON.stringify({ password }),
       });
       if (res.ok) {
+        try {
+          localStorage.setItem('ash_is_admin', '1');
+        } catch {}
         router.push(`/${panel}`);
         router.refresh();
       } else {

@@ -145,7 +145,7 @@ const nextConfig: NextConfig = {
     return [
       // ─── Admin panel routes: Never cache at Edge or Cloudflare CDN ───
       {
-        source: "/(adminshobhit|shobhitadmin)/:path*",
+        source: "/(adminshobhit|shobhitadmin|ash-ctrl-c1f3ce7d)/:path*",
         headers: [
           { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store" },
@@ -153,24 +153,24 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/(adminshobhit|shobhitadmin)",
+        source: "/(adminshobhit|shobhitadmin|ash-ctrl-c1f3ce7d)",
         headers: [
           { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store" },
           { key: "Cloudflare-CDN-Cache-Control", value: "no-store" },
         ],
       },
-      // ─── Sites data API: 60s Edge CDN micro-cache (purged on writeDB) ───
+      // ─── Sites data API: 15s Edge CDN micro-cache (purged on writeDB) ───
       {
         source: "/api/sites",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=300" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=300" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=15, stale-while-revalidate=60" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=15, stale-while-revalidate=60" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=15, stale-while-revalidate=60" },
         ],
       },
       {
-        source: "/api/(adminshobhit|shobhitadmin)/:path*",
+        source: "/api/(adminshobhit|shobhitadmin|ash-ctrl-c1f3ce7d)/:path*",
         headers: [
           { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store" },
@@ -178,7 +178,7 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/api/(adminshobhit|shobhitadmin)",
+        source: "/api/(adminshobhit|shobhitadmin|ash-ctrl-c1f3ce7d)",
         headers: [
           { key: "Cache-Control", value: "private, no-cache, no-store, max-age=0, must-revalidate" },
           { key: "CDN-Cache-Control", value: "no-store" },
@@ -213,17 +213,17 @@ const nextConfig: NextConfig = {
       {
         source: "/",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=600" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=600" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=120" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=120" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=60, stale-while-revalidate=120" },
         ],
       },
       {
         source: "/:path(category.*|site.*|collections.*|recent)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=600" },
-          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=600" },
-          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=86400, stale-while-revalidate=60" },
+          { key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=120" },
+          { key: "CDN-Cache-Control", value: "public, s-maxage=60, stale-while-revalidate=120" },
+          { key: "Cloudflare-CDN-Cache-Control", value: "public, max-age=60, stale-while-revalidate=120" },
         ],
       },
       // ─── Logo API: 7-day Edge CDN cache ───

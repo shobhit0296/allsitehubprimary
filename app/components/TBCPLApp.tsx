@@ -45,36 +45,76 @@ export default function AllsitehubApp({ sites, categories: initialCategories, re
     setLiveSites(sites);
   }, [sites]);
 
-  // Re-fetch latest sites when user switches back to this tab (instant for admins, throttled for regular visitors)
+  // Re-fetch latest sites helper (supports cache-busting for instant admin updates)
+  const fetchLiveSites = useCallback((force = false) => {
+    const url = force ? `/api/sites?_t=${Date.now()}` : '/api/sites';
+    fetch(url, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data?.sites) && data.sites.length > 0) {
+          setLiveSites(data.sites);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Real-time synchronization across browser tabs (BroadcastChannel + storage event + tab visibility)
   useEffect(() => {
+    // 1. Cross-tab BroadcastChannel for 0ms instant sync when admin saves
+    let bc: BroadcastChannel | null = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      try {
+        bc = new BroadcastChannel('ash_live_sync');
+        bc.onmessage = (event) => {
+          if (event.data?.type === 'DATA_CHANGED') {
+            fetchLiveSites(true);
+          }
+        };
+      } catch {}
+    }
+
+    // 2. Storage event listener (fallback for browsers without BroadcastChannel)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'ash_last_update_ts') {
+        fetchLiveSites(true);
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // 3. Re-fetch when switching back to frontend tab (instant for admins, throttled for visitors)
     let lastFetched = Date.now();
     const handleVisibility = () => {
       if (document.visibilityState !== 'visible') return;
       const now = Date.now();
       const isAdmin = typeof document !== 'undefined' && (
-        document.cookie.includes('ash_admin_') ||
+        document.cookie.includes('ash_admin') ||
+        document.cookie.includes('ash_admin_active') ||
         document.cookie.includes('shobhitadmin') ||
-        document.cookie.includes('adminshobhit')
+        document.cookie.includes('adminshobhit') ||
+        (typeof localStorage !== 'undefined' && localStorage.getItem('ash_is_admin') === '1')
       );
-      // For non-admin visitors, throttle background refetching to at most once per 15 minutes
-      if (!isAdmin && now - lastFetched < 15 * 60 * 1000) {
+
+      // Admins: ALWAYS fetch fresh live sites on tab focus with cache-busting
+      if (isAdmin) {
+        lastFetched = now;
+        fetchLiveSites(true);
         return;
       }
-      lastFetched = now;
-      fetch('/api/sites')
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data?.sites) && data.sites.length > 0) {
-            setLiveSites(data.sites);
-          }
-        })
-        .catch(() => {});
+
+      // Regular visitors: refresh if tab was backgrounded for more than 60 seconds
+      if (now - lastFetched >= 60 * 1000) {
+        lastFetched = now;
+        fetchLiveSites(false);
+      }
     };
     document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
+      if (bc) bc.close();
+      window.removeEventListener('storage', handleStorage);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, []);
+  }, [fetchLiveSites]);
 
 
   // ── Scheduled time-of-day live online users (changes every 15-20s) ──

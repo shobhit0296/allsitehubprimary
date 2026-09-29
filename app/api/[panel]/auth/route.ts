@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   ADMIN_COOKIE,
+  ADMIN_ACTIVE_COOKIE,
   checkPassword,
   createSessionToken,
   isLoginLocked,
@@ -41,6 +42,14 @@ export async function POST(req: NextRequest, { params }: Params) {
     maxAge: MAX_AGE,
     path: '/',
   });
+  // Client-readable cookie so frontend tabs immediately know an admin is authenticated
+  res.cookies.set(ADMIN_ACTIVE_COOKIE, '1', {
+    httpOnly: false,
+    sameSite: 'lax',
+    secure: true,
+    maxAge: MAX_AGE,
+    path: '/',
+  });
   return res;
 }
 
@@ -50,5 +59,6 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
 
   const res = NextResponse.json({ ok: true });
   res.cookies.delete(ADMIN_COOKIE);
+  res.cookies.delete(ADMIN_ACTIVE_COOKIE);
   return res;
 }

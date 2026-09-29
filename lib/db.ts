@@ -126,6 +126,24 @@ export function tryWriteLocalDbFile(data: DB): boolean {
     const filePath = path.join(process.cwd(), 'data', 'db.json');
     if (fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      try {
+        const dataTsPath = path.join(process.cwd(), 'lib', 'data.ts');
+        if (fs.existsSync(dataTsPath)) {
+          const dataTs = fs.readFileSync(dataTsPath, 'utf8');
+          const startMarker = 'export const SITES: Site[] = ';
+          const sIdx = dataTs.indexOf(startMarker);
+          if (sIdx !== -1) {
+            const endMarker = ';\n\nexport function filterSites';
+            const eIdx = dataTs.indexOf(endMarker, sIdx);
+            if (eIdx !== -1) {
+              const newContent = dataTs.slice(0, sIdx + startMarker.length) + JSON.stringify(data.sites, null, 2) + dataTs.slice(eIdx);
+              fs.writeFileSync(dataTsPath, newContent, 'utf8');
+            }
+          }
+        }
+      } catch {
+        // Ignore data.ts sync error
+      }
       return true;
     }
   } catch {

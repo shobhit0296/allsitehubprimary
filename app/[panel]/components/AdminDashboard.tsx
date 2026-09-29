@@ -179,6 +179,20 @@ function checkDuplicateRequest(req: SiteRequest, allRequests: SiteRequest[], sit
   return { isDuplicate: false };
 }
 
+/* ── Cross-tab instant update notifier ── */
+function notifyLiveFrontend() {
+  try {
+    if (typeof window !== 'undefined') {
+      if ('BroadcastChannel' in window) {
+        const bc = new BroadcastChannel('ash_live_sync');
+        bc.postMessage({ type: 'DATA_CHANGED', timestamp: Date.now() });
+        bc.close();
+      }
+      localStorage.setItem('ash_last_update_ts', String(Date.now()));
+    }
+  } catch {}
+}
+
 export default function AdminDashboard({ panel, initialSites, initialRequests, categories: initialCategories, regions }: Props) {
   const router = useRouter();
   const apiSites = `/api/${panel}/sites`;
@@ -234,6 +248,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     try {
       const res = await fetch(`/api/${panel}/sync`, { method: 'POST' });
       if (res.ok) {
+        notifyLiveFrontend();
         const data = await res.json();
         const cfStatus = data.cloudflare?.success ? 'Edge cache purged' : 'Revalidated on server';
         showToast(`⚡ Live sync complete! ${cfStatus} · ${data.sitesCount} sites active.`, 'success');
@@ -275,6 +290,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         }),
       });
       if (res.ok) {
+        notifyLiveFrontend();
         showToast(`Updated "${site.name}" (${tagSlug}: ${updatedVal ? 'ON' : 'OFF'}) — live on website!`, 'success');
       } else {
         await refreshSites();
@@ -438,6 +454,9 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
 
   /* ── Logout ── */
   const logout = async () => {
+    try {
+      localStorage.removeItem('ash_is_admin');
+    } catch {}
     await fetch(apiAuth, { method: 'DELETE' });
     router.push(`/${panel}/login`);
     router.refresh();
@@ -562,6 +581,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         } catch { /* ignore */ }
       }
 
+      notifyLiveFrontend();
       await refreshSites();
       closeModal();
       showToast(
@@ -650,6 +670,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
     try {
       const res = await fetch(`${apiSites}?id=${id}`, { method: 'DELETE' });
       if (res.ok) {
+        notifyLiveFrontend();
         setSites(prev => prev.filter(s => s.id !== id));
         showToast(`✅ "${name}" deleted & live cache purged!`, 'success');
       } else {
@@ -674,6 +695,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         body: JSON.stringify({ id, status }),
       });
       if (res.ok) {
+        notifyLiveFrontend();
         if (status === 'rejected') {
           // Permanently removed completely from database!
           setRequests(prev => prev.filter(r => r.id !== id));
@@ -711,6 +733,7 @@ export default function AdminDashboard({ panel, initialSites, initialRequests, c
         body: JSON.stringify({ ids, status: 'approved' }),
       });
       if (res.ok) {
+        notifyLiveFrontend();
         await refreshSites();
         await refreshRequests();
         showToast(`✅ Successfully accepted & published ${count} websites live!`, 'success');
@@ -2170,6 +2193,7 @@ function CategoryRankTable({
         body: JSON.stringify({ category, orderedIds: ordered.map(s => s.id) }),
       });
       if (res.ok) {
+        notifyLiveFrontend();
         showToast(`✅ "${category}" ranking updated & live on website!`, 'success');
         onReorder();
       } else {

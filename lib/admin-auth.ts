@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import type { NextRequest } from 'next/server';
 
 export const ADMIN_COOKIE = 'ash_admin';
+export const ADMIN_ACTIVE_COOKIE = 'ash_admin_active';
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24h
 
 const MAX_ATTEMPTS = 5;
